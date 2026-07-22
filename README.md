@@ -2,6 +2,25 @@
 
 Trabajo Especial de Grado (TEG) — modelo de nivel de poder para ligas de fútbol que integra rendimiento deportivo, factores económicos y factores ambientales, sobre un motor Glicko-2 modificado (siguiendo como base el paper de Shelopugin & Sirotkin, 2023). Cobertura: 15 ligas nacionales, temporadas 2017-18 a 2024-25.
 
+## Clonar el repositorio
+
+`Data/matches_definitive_complete.csv` (~64 MB) se versiona con **Git LFS**, no directamente en git. Para clonar el repo con ese archivo incluido:
+
+```bash
+# 1. Instalar Git LFS una sola vez por máquina (si no lo tienes)
+git lfs install
+
+# 2. Clonar normalmente — LFS descarga el CSV real automáticamente
+git clone https://github.com/maidatas/glicko2-match-predictor.git
+```
+
+Si ya clonaste el repo antes de tener `git-lfs` instalado, el archivo va a aparecer como un puntero de texto (unas pocas líneas con `oid sha256:...`) en vez del CSV real. Para corregirlo:
+
+```bash
+git lfs install
+git lfs pull
+```
+
 ## Estructura del repositorio
 
 ```
