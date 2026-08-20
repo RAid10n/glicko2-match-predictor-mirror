@@ -11,6 +11,23 @@ class RatingG2A:
 
 
 class Glicko2G2A:
+    """
+    Implementación propia del Glicko-2 modificado para predicción trinomial
+    de resultados de fútbol (H/D/A), con mejoras sobre el motor canónico de
+    Shelopugin y Sirotkin (glicko2.py):
+
+    1. Corrección algebraica del denominador trinomial: unificación simétrica
+       del denominador 1 + exp(delta) + exp(d + s_logit) para evitar
+       desbordamiento del simplex de probabilidades.
+    2. Transformación logit interna del parámetro de empate: el motor recibe
+       P_D en escala de probabilidad (0,1) y aplica internamente
+       s_logit = log(P_D / (1 - P_D)), mejorando la estabilidad numérica
+       del optimizador L-BFGS-B en el espacio no restringido.
+    3. Heurística de estabilización g_constant = 3.0 / pi^2, derivada
+       empíricamente durante la calibración, que suaviza la superficie de
+       pérdida y acelera la convergencia del optimizador sin degradar la
+       log-loss de validación.
+    """
     def __init__(
         self,
         mu: float = 1500.0,
