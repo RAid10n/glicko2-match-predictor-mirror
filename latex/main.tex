@@ -1,0 +1,83 @@
+\documentclass[12pt,oneside]{book}
+\usepackage[spanish,provide=*]{babel}
+\usepackage{graphicx}
+\usepackage{analysis_orax}   % Estilo monocromo + Latin Modern (clásico)
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{multirow}
+
+% ---- Bibliografía: referencias NUMERADAS y ordenadas ALFABÉTICAMENTE
+% ---- por el apellido del primer autor (style=numeric + sorting=nyt).
+% ---- Requiere compilar con biber (XeLaTeX -> biber -> XeLaTeX x2).
+\usepackage[
+	backend=biber,
+	style=numeric,     % etiquetas numéricas [1], [2], ...
+	sorting=nyt,       % orden alfabético: nombre (apellido), año, título
+	giveninits=true,   % nombres de pila como iniciales
+	terseinits=true,
+	uniquename=init
+]{biblatex}
+\DeclareNameAlias{default}{family-given}   % muestra "Apellido, Nombre"
+\addbibresource{references.bib}
+
+\renewcommand{\arraystretch}{1.15}
+\addto\captionsspanish{\renewcommand{\tablename}{Tabla}}
+
+% Entornos matemáticos en español (disponibles para capítulos posteriores)
+\renewcommand{\proofname}{Demostraci\'on}
+\newtheorem{teo}{Teorema}[chapter]
+\newtheorem{cor}{Corolario}[chapter]
+\newtheorem{lemma}{Lema}[chapter]
+\newtheorem{prop}{Proposición}[chapter]
+\newtheorem{definition}{Definición}[chapter]
+\newtheorem{example}{Ejemplo}[chapter]
+\newtheorem{obs}{Nota}[chapter]
+
+\setlength{\parindent}{18pt}
+\setlength{\parskip}{4pt}
+
+% ---- Datos del trabajo (editables) ----
+\newcommand{\titulotrabajo}{Modelo de nivel de poder para ligas de f\'utbol con integraci\'on de rendimiento deportivo y factores econ\'omicos y ambientales entre las temporadas 2017-18 y 2024-25}
+\newcommand{\autortrabajo}{Br. Rubén Alejandro Arellano Platt}
+\newcommand{\cedulaautor}{V-25.013.370}
+\newcommand{\tutortrabajo}{Profa. Maira Valera-L\'opez}
+
+\begin{document}
+
+	%---------- Portada ----------
+	\pagenumbering{roman}
+	\input{portada}
+
+	%---------- Veredicto del jurado ----------
+	\input{veredicto}
+
+	%---------- Índice ----------
+	\tableofcontents
+	\clearpage
+
+	%---------- Contenido ----------
+	\pagenumbering{arabic}
+	\include{introduccion}    % Introducción
+	\include{antecedentes}    % Antecedentes
+	\include{marco_teorico}   % Marco Teórico
+	\include{metodologia}     % Metodología
+	\include{resultados}      % Resultados
+	\include{conclusiones}    % Conclusiones
+	\appendix
+	\include{appendix}        % Extras
+
+
+	%---------- Bibliografía ----------
+	% Cita en el texto con \cite{clave}. Las referencias se toman de references.bib
+	% y aparecen numeradas y en orden alfabético por apellido del primer autor.
+	%\nocite{*}   % TEMPORAL: muestra TODAS las entradas de references.bib para que veas el formato.
+	             % Elimina esta línea cuando ya estés citando con \cite{clave} en el texto.
+	\printbibliography[heading=bibintoc, title={Bibliograf\'ia}]
+
+\end{document}

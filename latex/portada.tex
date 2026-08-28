@@ -1,0 +1,48 @@
+%% ============================================================
+%%  Portada — formato TEG UCV (según imagen de referencia)
+%%  Coloca el escudo de la UCV como "escudo-ucv.png" en esta
+%%  carpeta; si no está, se deja el espacio en blanco.
+%% ============================================================
+\begin{titlepage}
+\thispagestyle{empty}
+\centering
+
+\vspace*{0.5cm}
+
+\IfFileExists{logo_UCV.jpg}{%
+  \includegraphics[width=3cm]{logo_UCV.jpg}%
+}{%
+  \vspace{3cm}% (marcador de posición para el escudo de la UCV)
+}
+
+\vspace{0.6cm}
+
+{\normalsize\scshape
+Universidad Central de Venezuela\\[2pt]
+Facultad de Ciencias\\[2pt]
+Escuela de Matem\'atica\\}
+
+\vspace{2.2cm}
+
+{\Large\bfseries
+\titulotrabajo\par}
+
+\vspace{2.2cm}
+
+\begin{flushright}
+\begin{minipage}{0.62\textwidth}
+\raggedright
+Trabajo Especial de Grado presentado ante la ilustre Universidad Central de Venezuela por el {\bfseries\autortrabajo} para optar al t\'itulo de Licenciado en Matem\'atica.
+
+\vspace{0.8cm}
+
+{\bfseries Tutora: \tutortrabajo.}
+\end{minipage}
+\end{flushright}
+
+\vfill
+
+{\small\scshape Caracas, Venezuela}
+
+\vspace{0.5cm}
+\end{titlepage}

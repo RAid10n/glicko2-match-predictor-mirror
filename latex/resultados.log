@@ -1,0 +1,639 @@
+This is LuaHBTeX, Version 1.18.1 (MiKTeX 24.4) (format=lualatex 2026.8.10)  17 AUG 2026 04:03
+ restricted system commands enabled.
+**resultados.tex
+(./resultados.tex
+LaTeX2e <2024-11-01>
+L3 programming layer <2024-11-02>
+Lua module: luaotfload 2024-02-14 v3.28 Lua based OpenType font support
+Lua module: lualibs 2023-07-13 v2.76 ConTeXt Lua standard libraries.
+Lua module: lualibs-extended 2023-07-13 v2.76 ConTeXt Lua libraries -- extended 
+collection.
+luaotfload | conf : Root cache directory is "C:/Users/ruben/AppData/Local/MiKTeX
+/luatex-cache/generic/names".
+luaotfload | init : Loading fontloader "fontloader-2023-12-28.lua" from kpse-res
+olved path "C:/Program Files/MiKTeX/tex/luatex/luaotfload/fontloader-2023-12-28.
+lua".
+Lua-only attribute luaotfload@noligature = 1
+luaotfload | init : Context OpenType loader version 3.134
+Inserting `luaotfload.node_processor' in `pre_linebreak_filter'.
+Inserting `luaotfload.node_processor' in `hpack_filter'.
+Inserting `luaotfload.glyph_stream' in `glyph_stream_provider'.
+Inserting `luaotfload.define_font' in `define_font'.
+Lua-only attribute luaotfload_color_attribute = 2
+luaotfload | conf : Root cache directory is "C:/Users/ruben/AppData/Local/MiKTeX
+/luatex-cache/generic/names".
+Inserting `luaotfload.harf.strip_prefix' in `find_opentype_file'.
+Inserting `luaotfload.harf.strip_prefix' in `find_truetype_file'.
+Removing  `luaotfload.glyph_stream' from `glyph_stream_provider'.
+Inserting `luaotfload.harf.glyphstream' in `glyph_stream_provider'.
+Inserting `luaotfload.harf.finalize_vlist' in `post_linebreak_filter'.
+Inserting `luaotfload.harf.finalize_hlist' in `hpack_filter'.
+Inserting `luaotfload.cleanup_files' in `wrapup_run'.
+Inserting `luaotfload.harf.finalize_unicode' in `finish_pdffile'.
+Inserting `luaotfload.glyphinfo' in `glyph_info'.
+Lua-only attribute luaotfload.letterspace_done = 3
+Inserting `luaotfload.aux.set_sscale_dimens' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.set_font_index' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.patch_cambria_domh' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.fixup_fontdata' in `luaotfload.patch_font_unsafe'.
+Inserting `luaotfload.aux.set_capheight' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.set_xheight' in `luaotfload.patch_font'.
+Inserting `luaotfload.rewrite_fontname' in `luaotfload.patch_font'.
+Inserting `tracingstacklevels' in `input_level_string'.
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1 P
+   laceholder de cosas
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 1--2
+[]Placeholder
+ []
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3 C
+   alibracion Skellam/LGBM
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 3--4
+[]Calibracion
+ []
+
+! Undefined control sequence.
+l.5 \paragraph
+            {Resultados de calibraci\'on.} La Tabla~\ref{tab:skellam_calibra...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.5 \paragraph{R
+              esultados de calibraci\'on.} La Tabla~\ref{tab:skellam_calibra...
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 5
+.
+("C:/Program Files/MiKTeX/tex/latex/lm/ot1lmr.fd"
+File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for +lmr on input line 5.
+LaTeX Font Info:    No file lmr.fd. on input line 5.
+LaTeX Font Info:    Trying to load font information for +cmr on input line 5.
+LaTeX Font Info:    No file cmr.fd. on input line 5.
+
+
+LaTeX Font Warning: Font shape `/lmr/m/n' undefined
+(Font)              using `/cmr/m/n' instead on input line 5.
+
+
+LaTeX Font Warning: Font shape `/cmr/m/n' undefined
+(Font)              using `/cmr/m/n' instead on input line 5.
+
+! Corrupted NFSS tables.
+wrong@fontshape ...message {Corrupted NFSS tables}
+                                                  error@fontshape else let f...
+l.5 \paragraph{Resultados de calibraci\'o
+                                       n.} La Tabla~\ref{tab:skellam_calibra...
+This error message was generated by an \errmessage
+command, so I can't give any explicit help.
+Pretend that you're Hercule Poirot: Examine all clues,
+and deduce the truth by order and method.
+
+
+LaTeX Font Warning: Font shape `/cmr/m/n' undefined
+(Font)              using `OT1/cmr/m/n' instead on input line 5.
+
+
+LaTeX Font Warning: Font shape `/lmr/m/n' undefined
+(Font)              using `/cmr/m/n' instead on input line 5.
+
+luaotfload | db : Font names database loaded from C:/Users/ruben/AppData/Local/M
+iKTeX/luatex-cache/generic/names/luaotfload-names.luc.gz
+! Undefined control sequence.
+<write> ...nce `tab:skellam_calibracion' on page \thepage 
+                                                  \space undefined\on@line .
+l.5 ...\'on.} La Tabla~\ref{tab:skellam_calibracion}
+                                                   resume el desempe\~no del...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+LaTeX Warning: Reference `tab:skellam_calibracion' on page  undefined on input 
+line 5.
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 5.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 5.
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 5--6
+[]Resultados
+ []
+
+
+Overfull \hbox (10.00002pt too wide) in paragraph at lines 5--6
+calibraci\OT1/lmr/m/n/10 \/lmr/m/n/10 o\nullfont n.
+ []
+
+
+Overfull \hbox (10.85999pt too wide) in paragraph at lines 5--6
+Tabla[]
+ []
+
+
+Overfull \hbox (5.55557pt too wide) in paragraph at lines 5--6
+desempe[]\/lmr/m/n/10 n\nullfont o
+ []
+
+
+Overfull \hbox (57.2223pt too wide) in paragraph at lines 5--6
+\/lmr/m/n/10 [0[]827\OML/cmm/m/it/10 ;  \/lmr/m/n/10 0[]935]$
+ []
+
+
+Overfull \hbox (5.55557pt too wide) in paragraph at lines 5--6
+f[]\/lmr/m/n/10 u\nullfont tbol
+ []
+
+
+Overfull \hbox (31.1112pt too wide) in paragraph at lines 5--6
+($\/lmr/m/n/10 26[]17%$
+ []
+
+
+Overfull \hbox (31.1112pt too wide) in paragraph at lines 5--6
+\/lmr/m/n/10 26[]80%$
+ []
+
+
+Overfull \hbox (31.1112pt too wide) in paragraph at lines 5--6
+($\/lmr/m/n/10 25[]86%$
+ []
+
+
+Overfull \hbox (31.1112pt too wide) in paragraph at lines 5--6
+\/lmr/m/n/10 26[]01%$\nullfont ,
+ []
+
+
+Overfull \hbox (5.00002pt too wide) in paragraph at lines 5--6
+sistem[]\/lmr/m/n/10 a\nullfont tico
+ []
+
+
+! LaTeX Error: Environment table undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.7 \begin{table}
+               [htbp]
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.7 \begin{table}[
+                htbp]
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: \caption outside float.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.9 	\caption
+           {Calibraci\'on del bloque de conteo Skellam/LightGBM.}
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Undefined control sequence.
+l.12 		\toprule
+             
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.13 		Dataset & MAE$_H^{\text
+                            {test}}$ & MAE$_A^{\text{test}}$ & LL$_{\text{dr...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.13 ...aset & MAE$_H^{\text{test}}$ & MAE$_A^{\text
+                                                  {test}}$ & LL$_{\text{draw...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.13 ...test}}$ & MAE$_A^{\text{test}}$ & LL$_{\text
+                                                  {draw}}^{\text{test}}$ & F...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.13 ..._A^{\text{test}}$ & LL$_{\text{draw}}^{\text
+                                                  {test}}$ & Frec. real & Pr...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \midrule 
+         
+l.14 		\midrule
+             
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \bottomrule 
+            
+l.18 		\bottomrule
+                
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: \begin{document} ended by \end{table}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.20 \end{table}
+              
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 7--21
+[][htbp]
+ []
+
+
+Overfull \hbox (5.00002pt too wide) in paragraph at lines 7--21
+Calibraci[]\/lmr/m/n/10 o\nullfont n
+ []
+
+
+Overfull \hbox (138.8894pt too wide) in paragraph at lines 7--21
+[]
+ []
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.22 L
+    os residuos del modelo sobre el conjunto de prueba exhiben media pr\'act...
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 22--23
+[]Los
+ []
+
+
+Overfull \hbox (5.00002pt too wide) in paragraph at lines 22--23
+pr[]\/lmr/m/n/10 a\nullfont cticamente
+ []
+
+
+Overfull \hbox (7.7778pt too wide) in paragraph at lines 22--23
+($\OMS/cmsy/m/n/10 
+ []
+
+
+Overfull \hbox (17.77783pt too wide) in paragraph at lines 22--23
+\/lmr/m/n/10 0[]00$\nullfont )
+ []
+
+
+Overfull \hbox (5.00002pt too wide) in paragraph at lines 22--23
+desviaci[]\/lmr/m/n/10 o\nullfont n
+ []
+
+
+Overfull \hbox (2.77779pt too wide) in paragraph at lines 22--23
+t[]\/lmr/m/n/10 i\nullfont pica
+ []
+
+
+Overfull \hbox (17.77783pt too wide) in paragraph at lines 22--23
+\/lmr/m/n/10 1[]17$
+ []
+
+
+Overfull \hbox (17.77783pt too wide) in paragraph at lines 22--23
+\/lmr/m/n/10 1[]08$
+ []
+
+
+Overfull \hbox (5.00002pt too wide) in paragraph at lines 22--23
+distribuci[]\/lmr/m/n/10 o\nullfont n
+ []
+
+
+Overfull \hbox (2.77779pt too wide) in paragraph at lines 22--23
+t[]\/lmr/m/n/10 i\nullfont picas
+ []
+
+
+Overfull \hbox (5.55557pt too wide) in paragraph at lines 22--23
+f[]\/lmr/m/n/10 u\nullfont tbol. 
+ []
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.24 T
+    abla de Stage 2
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 24--25
+[]Tabla
+ []
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.26 L
+    a Tabla~\ref{tab:stage2_resumen} presenta las estad\'isticas descriptiva...
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Undefined control sequence.
+<write> ...eference `tab:stage2_resumen' on page \thepage 
+                                                  \space undefined\on@line .
+l.26 La Tabla~\ref{tab:stage2_resumen}
+                                     presenta las estad\'isticas descriptiva...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+LaTeX Warning: Reference `tab:stage2_resumen' on page  undefined on input line 
+26.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 26--27
+[]La
+ []
+
+
+Overfull \hbox (10.85999pt too wide) in paragraph at lines 26--27
+Tabla[]
+ []
+
+
+Overfull \hbox (2.77779pt too wide) in paragraph at lines 26--27
+estad[]\/lmr/m/n/10 i\nullfont sticas
+ []
+
+
+Overfull \hbox (10.00003pt too wide) in paragraph at lines 26--27
+\/lmr/m/n/10 10$
+ []
+
+
+Overfull \hbox (4.44444pt too wide) in paragraph at lines 26--27
+m[]\/lmr/m/n/10 e\nullfont tricas
+ []
+
+
+Overfull \hbox (12.81947pt too wide) in paragraph at lines 26--27
+\OML/cmm/m/it/10 F\/lmr/m/n/10 1$\nullfont -
+ []
+
+
+! LaTeX Error: Environment table undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.28 \begin{table}
+                [htbp]
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.28 \begin{table}[
+                 htbp]
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: \caption outside float.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.30 	\caption
+            {Resumen del protocolo de $10$ corridas pareadas (Stage~2). Log-...
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Undefined control sequence.
+l.33 		\toprule
+             
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \cmidrule 
+          
+l.35 		\cmidrule
+              (lr){2-4} \cmidrule(lr){5-7}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.35 		\cmidrule(lr){2-4} \cmidrule
+                                 (lr){5-7}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \midrule 
+         
+l.37 		\midrule
+             
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \bottomrule 
+            
+l.41 		\bottomrule
+                
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: \begin{document} ended by \end{table}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.43 \end{table}
+              
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 28--44
+[][htbp]
+ []
+
+
+Overfull \hbox (10.00003pt too wide) in paragraph at lines 28--44
+\/lmr/m/n/10 10$
+ []
+
+
+Overfull \hbox (12.81947pt too wide) in paragraph at lines 28--44
+\OML/cmm/m/it/10 F\/lmr/m/n/10 1$\nullfont -
+ []
+
+
+Overfull \hbox (8.55695pt too wide) in paragraph at lines 28--44
+($\OML/cmm/m/it/10 D$\nullfont ).
+ []
+
+
+Overfull \hbox (197.22293pt too wide) in paragraph at lines 28--44
+[]
+ []
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.45 E
+    l test $t$ pareado sobre la log-loss binaria arroja $t = 2{,}0667$ ($p =...
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+)
+! Emergency stop.
+<*> resultados.tex
+               
+*** (job aborted, no legal \end found)
+
+
+
+Here is how much of LuaTeX's memory you used:
+ 82 strings out of 475664
+ 100000,552014 words of node,token memory allocated 24778 words of node memory still in use:
+   240 hlist, 5 vlist, 11 rule, 8 disc, 9 local_par, 1 dir, 123 math, 770 glue, 
+55 kern, 32 penalty, 2024 glyph, 317 attribute, 39 glue_spec, 317 attribute_list
+, 1 temp, 2 write nodes
+   avail lists: 3:8,4:19,5:2,8:15,9:1,10:18
+ 23059 multiletter control sequences out of 65536+600000
+ 27 fonts using 1560063 bytes
+ 24i,9n,32p,811b,144s stack positions out of 10000i,1000n,20000p,200000b,200000s
+!  ==> Fatal error occurred, no output PDF file produced!

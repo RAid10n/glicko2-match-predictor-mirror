@@ -1,0 +1,739 @@
+\chapter{Metodolog\'ia}
+\label{ch:metodologia}
+
+\section*{Introducci\'on}
+
+El Cap\'itulo~\ref{ch:marco} construy\'o las bases que fundamentan la arquitectura predictiva: sistemas de rating din\'amico, modelos de conteo, integraci\'on de covariables ex\'ogenas y m\'etricas de evaluaci\'on. El presente cap\'itulo transita de la teor\'ia a la operacionalizaci\'on.
+
+Se describe, de manera lineal, c\'omo se recolectaron y procesaron los datos (Secci\'on~\ref{sec:fuentes}), c\'omo se construyeron los \'indices compuestos y se seleccionaron las covariables ex\'ogenas (Secciones~\ref{sec:procesamiento} y~\ref{sec:seleccion_covariables}), y c\'omo se implement\'o, entren\'o y calibr\'o cada bloque funcional del sistema en cascada (Secciones~\ref{sec:arquitectura} a~\ref{sec:metricas_eval}). Los resultados num\'ericos de los experimentos se reservan para el cap\'itulo siguiente, de modo que este cap\'itulo funcione como manual de replicaci\'on del proceso de inferencia.
+% ============================================================
+% SECCION 3.1 -- Fuentes de datos
+% ============================================================
+
+\section{Fuentes de datos}
+\label{sec:fuentes}
+
+El presente estudio integra informaci\'on proveniente de cinco fuentes principales, seleccionadas por su cobertura temporal, granularidad y confiabilidad en los dominios deportivo, econ\'omico, ambiental e institucional. La estrategia de recolecci\'on combina extracci\'on automatizada v\'ia \textit{web scraping}, consultas a APIs abiertas y transcripci\'on manual de portales especializados. A continuaci\'on se describe cada fuente, el per\'iodo cubierto, las variables recopiladas y las restricciones t\'ecnicas que condicionaron su operacionalizaci\'on.
+
+\subsection{Datos deportivos: FBRef}
+\label{subsec:fbref}
+
+La principal fuente de datos de rendimiento fue el sitio FBRef.com \cite{FBRef}, especializado en estad\'isticas hist\'oricas de f\'utbol. Se recopilaron datos correspondientes al per\'iodo 1 de enero de 2017 al 31 de diciembre de 2025, abarcando un total de  veintitr\'es competiciones distribuidas en cuatro zonas geogr\'aficas, llamadas tambi\'en confederaciones continentales, en conjunto con un torneo global:
+
+\begin{itemize}
+	\item \textbf{Europa:} Premier League (Inglaterra), LaLiga (Espa\~na), Bundesliga (Alemania), Serie A (Italia), Ligue 1 (Francia), Super League (Grecia), UEFA Champions League, UEFA Europa League, UEFA Conference League.
+	\item \textbf{Norteam\'erica, Centroam\'erica y el Caribe:} Major League Soccer (Estados Unidos), Liga MX (M\'exico), CONCACAF Champions League,
+	\item \textbf{Sudam\'erica:} Liga Profesional / Superliga (Argentina), Brasileir\~ao (Brasil), Liga FutVe (Venezuela), Copa Libertadores, Copa Sudamericana.
+	\item \textbf{Asia:} J1 League (Jap\'on), K League 1 (Corea del Sur), Saudi Pro League (Arabia Saudita), Persian Gulf Pro League (Ir\'an), AFC Champions League Elite.
+	\item \textbf{Intercontinental:} FIFA Club World Cup.
+\end{itemize}
+
+La extracci\'on se realiz\'o mediante un sistema de \textit{web scraping} desarrollado en Python (a trav\'es de los scripts \texttt{ScrapperV4a.py}, \texttt{ScrapperV4b.py} y \texttt{ScrapperV4c.py}), dise\~nados para operar de manera resiliente frente a las medidas de protecci\'on anti-automatizaci\'on del sitio. El proceso consta de las siguientes etapas:
+
+\paragraph{Navegaci\'on por \'indice diario.} Para cada fecha en el rango de estudio, se construye la URL del \'indice diario (\texttt{fbref.com/en/matches/YYYY-MM-DD}) y se realiza una petici\'on HTTP utilizando una sesi\'on configurada con \texttt{curl\_cffi} para impersonar la huella TLS de un navegador Chrome. En caso de indisponibilidad, se recurre a \texttt{cloudscraper} o a \texttt{requests} est\'andar como \textit{fallbacks}.
+
+\paragraph{Detecci\'on y bypass de bloqueos.} Si la respuesta contiene c\'odigos de estado 403/429 o p\'aginas de desaf\'io CloudFlare, se activa un mecanismo de \textit{warm-up} mediante Selenium con el navegador Microsoft Edge (perfil temporal, sin modo \textit{headless}). Una vez superado el desaf\'io, las cookies obtenidas se transfieren a la sesi\'on HTTP principal y se persisten en disco (\texttt{fbref\_cookies.json}) para su reutilizaci\'on. Este enfoque h\'ibrido reduce dr\'asticamente la frecuencia de intervenci\'on manual.
+
+\paragraph{Filtrado por competici\'on.} Las p\'aginas de \'indice contienen tablas agrupadas por competici\'on. Se analiza el texto del elemento \texttt{<caption>} de cada tabla, normalizado y sin tildes, y se compara contra una lista de patrones predefinidos (\texttt{LEAGUE\_PATTERNS}), excluyendo aquellos que coinciden con patrones no deseados (\texttt{LEAGUE\_EXCLUDE\_PATTERNS}). Para cada fila de las tablas seleccionadas se extraen: fecha del partido, nombre de la competici\'on, equipo local, equipo visitante, marcador, identificador \'unico del partido (\texttt{match\_id}) y URL de la p\'agina detallada.
+
+\paragraph{Control de frecuencia.} Se implementa un \textit{rate limiting} global que asegura un espaciado m\'inimo entre peticiones (variable entre 6 y 10 segundos, ajustable por variables de entorno) y una ventana deslizante de 300 segundos con m\'aximo 35 peticiones. Esto minimiza el riesgo de bloqueo por parte del servidor.
+
+\paragraph{Descarga de estad\'isticas detalladas.} Opcionalmente, el sistema descarga tablas adicionales de la p\'agina de cada partido, incluyendo estad\'isticas individuales por jugador (tablas cuyo identificador comienza con \texttt{stats\_}) y tablas agregadas de equipo (\texttt{summary}). Estas tablas pueden estar anidadas dentro de comentarios HTML, por lo que el parser procesa tanto elementos visibles como comentados.
+
+\paragraph{Construcci\'on del dataset maestro.} La funci\'on \texttt{build\_master\_dataset()} consolida todos los partidos extra\'idos en un \texttt{DataFrame} de Pandas, ordena cronol\'ogicamente, elimina duplicados por \texttt{match\_id} o por la tupla \texttt{(fecha, local, visitante)}, y genera un identificador \'unico mediante hash MD5:
+\begin{equation}
+	\text{match\_id} = \text{MD5}(\text{competici\'on} \mid \text{fecha} \mid \text{local} \mid \text{visitante}).
+	\label{eq:match_id}
+\end{equation}
+
+El resultado de esta etapa es un dataset crudo de partidos con metadatos b\'asicos, que posteriormente se enriquece con las dem\'as fuentes de datos.
+
+\subsection{Datos econ\'omicos de clubes: Transfermarkt}
+\label{subsec:transfermarkt}
+
+Los datos financieros a nivel de club fueron obtenidos de la plataforma Transfermarkt \cite{Transfermarkt}. Dado que este sitio implementa medidas que impiden el \textit{scraping} automatizado, la recopilaci\'on se realiz\'o de forma manual, transcribiendo la informaci\'on directamente desde el sitio web a archivos de hoja de c\'alculo. Se extrajeron los siguientes campos para cada club, con periodicidad semestral coincidiendo con los cierres de los mercados de fichajes de verano e invierno:
+
+\begin{itemize}
+	\item Valor total de mercado de la plantilla (en millones de euros).
+	\item N\'umero total de jugadores inscritos.
+	\item Cantidad de jugadores extranjeros (cuya nacionalidad no corresponde al pa\'is de la liga).
+	\item Ingresos por venta de jugadores (en millones de euros) por ventana de fichajes.
+	\item Gastos por compra de jugadores (en millones de euros) por ventana de fichajes.
+\end{itemize}
+
+A partir de estas variables se calculan el indicador derivado \textit{net spending}, detallados en la Secci\'on \ref{subsec:integracion}.
+
+\subsection{Datos meteorol\'ogicos: Open-Meteo}
+\label{subsec:openmeteo}
+
+Los datos clim\'aticos asociados a cada partido se obtuvieron a trav\'es de la API hist\'orica de Open-Meteo \cite{OpenMeteo}. Dado que la plataforma impone un l\'imite de 9\,000 peticiones diarias y cada consulta completa requiere seis peticiones por ubicaci\'on, se opt\'o por una estrategia de muestreo mensual eficiente inspirada en la metodolog\'ia de Van Putten \cite{VanPutten2023}, quien emplea un enfoque similar para vincular condiciones clim\'aticas con resultados deportivos.
+
+La metodolog\'ia de consulta fue la siguiente:
+
+\begin{enumerate}
+	\item Para cada estadio se dispone de sus coordenadas geogr\'aficas (latitud y longitud), obtenidas manualmente mediante Google Maps.
+	\item Se consulta la API de Open-Meteo para el d\'ia 15 de cada mes en el rango de estudio, a las 18:00 hora local. Esta hora se selecciona por ser la m\'as frecuente de inicio de los partidos en las ligas analizadas. La ventana horaria es configurable mediante los par\'ametros \texttt{hour\_start} y \texttt{hour\_end}.
+	\item Las variables solicitadas incluyen:
+	\begin{itemize}
+		\item Temperatura a 2 metros del suelo(en grados Celsius).
+		\item Humedad relativa a 2 metros del suelo (en porcentaje).
+		\item Presi\'on atmosf\'erica a nivel del suelo (en hPa).
+	\end{itemize}
+	\item A partir de la temperatura y la humedad relativa se deriva la presi\'on de vapor de agua (\(P_{\mathrm{H_2O}}\), en hPa) mediante la f\'ormula de Magnus:
+	\begin{equation}
+		P_{\mathrm{H_2O}} = 6{.}112 \cdot \exp\!\left(\frac{17{.}67 \cdot T}{T + 243{.}5}\right) \cdot \frac{\mathrm{RH}}{100},
+		\label{eq:magnus}
+	\end{equation}
+	donde \(T\) es la temperatura en grados Celsius y \(\mathrm{RH}\) la humedad relativa.
+	\item Durante el procesamiento posterior, cada partido se asocia al valor clim\'atico del mes correspondiente, asumiendo estabilidad intramensual de las condiciones meteorol\'ogicas en la sede del encuentro.
+\end{enumerate}
+
+Esta estrategia de muestreo mensual equilibra la resoluci\'on temporal necesaria para capturar la estacionalidad clim\'atica con las restricciones de la API, evitando la descarga diaria de aproximadamente 46\,000 registros individuales.
+
+\subsection{Datos macroecon\'omicos de pa\'ises: Datosmacro}
+\label{subsec:datosmacro}
+
+Las variables macroecon\'omicas a nivel de pa\'is se obtuvieron del portal Datosmacro, perteneciente al diario Expansi\'on \cite{Datosmacro}. Este sitio recopila indicadores econ\'omicos oficiales de fuentes como el Banco Mundial, el Fondo Monetario Internacional y los institutos nacionales de estad\'istica. Los datos, de periodicidad anual, fueron transcritos manualmente a una hoja de c\'alculo para los quince pa\'ises incluidos inicialmente en el estudio. Las variables recopiladas son:
+
+\begin{itemize}
+	\item Producto Interno Bruto (PIB, en millones de euros).
+	\item Tasa de inflaci\'on (porcentaje anual).
+	\item Inversi\'on Extranjera Directa (IED, en millones de euros).
+	\item Poblaci\'on (en millones de habitantes).
+	\'Indice de Gini (medida de desigualdad econ\'omica).
+	\item Gasto p\'ublico (en millones de euros).
+	\item Deuda externa (en millones de euros).
+\end{itemize}
+
+% Como se detalla en la Secci\'on \ref{subsec:seleccion_covariables}, estas variables fueron evaluadas como covariables potenciales mediante un procedimiento de selecci\'on por Random Forest, que determin\'o su escasa capacidad predictiva en el contexto del modelo. En consecuencia, fueron excluidas del conjunto final de caracter\'isticas, aunque su recopilaci\'on se reporta por completitud metodol\'ogica.
+
+\subsection{Datos de estadios}
+\label{subsec:estadios}
+
+Se construy\'o una tabla maestra de estadios con informaci\'on de todos los clubes incluidos en el estudio. Las fuentes utilizadas fueron:
+
+\begin{itemize}
+	\item \textbf{Capacidad y ciudad:} Wikipedia, contrastada con Transfermarkt \cite{Transfermarkt}.
+	\item \textbf{Altitud:} Wikipedia y consultas espec\'ificas para estadios de alta monta\~na.
+	\item \textbf{Coordenadas geogr\'aficas (latitud y longitud):} Obtenidas manualmente mediante Google Maps.
+	\item \textbf{Asistencia promedio anual:} Datos hist\'oricos de asistencia recopilados de Transfermarkt \cite{Transfermarkt}.
+\end{itemize}
+
+Esta tabla incluye los siguientes campos para cada estadio: identificador \'unico (\texttt{stadium\_id}), nombre oficial, ciudad, capacidad, altitud (metros sobre el nivel del mar), latitud, longitud y asistencia promedio por temporada (columnas \texttt{Assist\_\{temporada\}}).
+
+\subsection{S\'intesis de los conjuntos de datos generados}
+\label{subsec:datasets}
+
+A partir de la integraci\'on de las fuentes anteriores se generaron tres conjuntos de datos finales, diferenciados por su per\'iodo temporal y su riqueza de variables:
+
+\begin{itemize}
+	\item \textbf{Dataset Lite:} 37\,712 partidos $\times$ 53 variables. Cubre el per\'iodo completo 2017--2025. Incluye resultados, variables econ\'omicas, ambientales y de estadio, pero no incorpora las m\'etricas deportivas detalladas (\'indices compuestos) por no estar disponibles en las primeras temporadas para todas las ligas.
+	\item \textbf{Dataset Full:} 26\,961 partidos $\times$ 56 variables. Cubre el per\'iodo 2019--2025. Incorpora las m\'etricas deportivas agregadas (promedios m\'oviles y \'indices compuestos de autor\'ia) adem\'as de todas las variables del Lite. El recorte temporal obedece a la disponibilidad de datos del FIFA Club World Cup a partir de 2019 y a la completitud de los datos a partir de este a\~no. Esto permiti\'o contar con ventanas de forma \textit{rolling} suficientemente largas para todas las ligas.
+	\item \textbf{Dataset Lite Recortado:} 26\,961 partidos $\times$ 53 variables. Misma ventana temporal que el Full (2019--2025) pero con la estructura de variables del Lite, de modo que permite comparaciones controladas entre modelos con y sin m\'etricas deportivas detalladas.
+\end{itemize}
+
+Para los datasets Full y Lite Recortado se excluyeron las ligas de Ir\'an (Persian Gulf Pro League) y Venezuela (Liga FutVe) por falta de m\'etricas deportivas b\'asicas en el per\'odo analizado, lo que redujo el universo de competiciones a veintiuna.
+
+% ============================================================
+% SECCION 3.2 -- Procesamiento y limpieza de datos
+% ============================================================
+
+\section{Procesamiento y limpieza de datos}
+\label{sec:procesamiento}
+
+Una vez recolectados los datos crudos descritos en la Secci\'on~\ref{sec:fuentes}, se ejecut\'o un pipeline de procesamiento cuyo objetivo es transformar registros dispersos y heterog\'eneos en un panel estructurado listo para la inferencia. El flujo de trabajo se implement\'o en Python (Pandas) y se organiza en seis etapas: 
+
+\begin{enumerate}
+	\item Consolidaci\'on y aplanamiento de las estad\'isticas deportivas.
+	\item Normalizaci\'on de identidades de equipos entre fuentes.
+	\item Integraci\'on horizontal de variables clim\'aticas, de estadio y econ\'omicas.
+	\item Construcci\'on de m\'etricas compuestas y promedios m\'oviles de estado de forma.
+	\item Filtrado temporal y por competici\'on.
+	\item Imputaci\'on de valores faltantes y estandarizaci\'on
+\end{enumerate}
+
+El resultado son tres conjuntos de datos finales que alimentan los bloques de conteo, rating y refinamiento del sistema predictivo.
+
+\subsection{Consolidaci\'on y aplanamiento de registros deportivos}
+\label{subsec:aplanamiento}
+
+Los archivos extra\'idos de FBRef mediante los \textit{scripts} de \textit{scraping} (Secci\'on~\ref{subsec:fbref}) se depositan en lotes anuales. Cada lote contiene, para un partido dado, m\'ultiples filas correspondientes a estad\'isticas individuales de jugadores. El primer paso del pipeline consiste en consolidar estos fragmentos en un \'unico \texttt{DataFrame} por tipo de tabla (\texttt{summary}) y posteriormente aplanar (\textit{flatten}) la estructura a nivel de \emph{equipo-partido} (\textit{team-match}).
+
+\paragraph{Normalizaci\'on de esquemas.} Dado que la estructura de columnas var\'ia ligeramente entre temporadas debido a la aparici\'on de nuevas m\'etricas o renombramientos, se recolecta el conjunto universal de columnas y se fuerza un esquema homog\'eneo: a cada archivo anual se le a\~naden las columnas faltantes con valores nulos (\texttt{pd.NA}), garantizando la concatenabilidad vertical.
+
+\paragraph{Aplanamiento y agregaci\'on.} Para cada partido identificado por su \texttt{match\_id} (ver Ecuaci\'on~\ref{eq:match_id}), las filas individuales se agrupan por equipo y se suman las m\'etricas num\'ericas. Formalmente, para un partido $m$ y un equipo $t$:
+\begin{equation}
+	\text{team\_stats}(m,t) = \sum_{j \in \text{jugadores}(m,t)} \text{player\_stats}_j.
+\end{equation}
+Los metadatos del partido: fecha, competici\'on, rival, se propagan mediante la primera observaci\'on no nula del grupo. El resultado es un registro \'unico por equipo y por partido, que constituye la unidad de observaci\'on base sobre la cual se ensamblan todas las dem\'as fuentes.
+
+\paragraph{Generaci\'on de claves sint\'eticas.} Para facilitar la integraci\'en con fuentes auxiliares, se construye una clave derivada \texttt{match\_id\_new} con formato \texttt{YYYYMMDD\_home\_team\_id\_away\_team\_id}, donde la fecha se extrae del campo \texttt{match\_date} y los identificadores de equipo se propagan desde el mapeo de nombres normalizados. Esta clave, junto con las columnas \texttt{home\_team} y \texttt{away\_team}, sirve como ancla para todos los \textit{merges} posteriores.
+
+\subsection{Normalizaci\'on de identidades y control de calidad}
+\label{subsec:normalizacion}
+
+Un problema cr\'itico al integrar m\'ultiples fuentes es la inconsistencia en la denominaci\'on de los equipos. FBRef, Transfermarkt, Open-Meteo y la tabla maestra de estadios utilizan convenciones ortogr\'aficas distintas (tildes, guiones, abreviaturas, espacios). Se implement\'o un pipeline de normalizaci\'on en dos capas.
+
+\paragraph{Mapeo autom\'atico.} A partir de un archivo de revisi\'on (\texttt{team\_name\_review.csv}) se construye un diccionario \texttt{raw\_name} $\rightarrow$ \texttt{normalized} que se aplica masivamente a todas las columnas de equipo en todos los \texttt{DataFrames}.
+
+\paragraph{Overrides manuales.} Para casos no cubiertos por el mapeo autom\'atico (hom\'onimos internacionales, estadios neutrales, errores de codificaci\'on), se mantuvo un diccionario de correcciones manuales con m\'as de cien entradas. Ejemplos representativos incluyen la distinci\'on entre \texttt{Arsenal} (Inglaterra) y \texttt{ArsenalSarandi} (Argentina), la unificaci\'on de variantes de \texttt{Atl\'etico} (\texttt{AtlMadrid}, \texttt{AtlTucuman}, \texttt{AtlSanLuis}), y la correcci\'on de estadios neutrales (\texttt{Khalifa}, \texttt{SoFi}, \texttt{Wroclaw}).
+
+\paragraph{Verificaci\'on de cobertura.} Tras la normalizaci\'on, se contrastan los conjuntos de equipos \'unicos presentes en cada fuente (estadios, clima, econom\'ia, partidos). Se reportan los equipos faltantes por fuente y se aplican correcciones adicionales hasta lograr una intersecci\'on completa entre las tablas activas del modelo.
+
+\subsection{Integraci\'on de fuentes auxiliares}
+\label{subsec:integracion}
+
+Con el dataset deportivo aplanado como columna vertebral, se procede a la integraci\'on horizontal (\textit{left join}) de las fuentes auxiliares descritas en la Secci\'on~\ref{sec:fuentes}. La estrategia de uni\'on var\'ia seg\'un la granularidad de cada fuente.
+
+\paragraph{Datos clim\'aticos.} Open-Meteo proporciona series temporales diarias por estadio. Para reducir la dimensionalidad y evitar \textit{overfitting} a fluctuaciones puntuales, se construyeron dos tablas derivadas:
+
+\begin{enumerate}
+	\item \texttt{open\_meteo\_historical}, con los registros mensuales representativos indexados por (\texttt{Team}, \texttt{year}, \texttt{month}).
+	\item \texttt{open\_meteo\_monthly}, con promedios hist\'oricos por mes independientes del a\~no, indexados por (\texttt{Team}, \texttt{month}).
+\end{enumerate}
+ 
+ El protocolo de enriquecimiento para cada partido es:
+\begin{enumerate}
+	\item Buscar coincidencia exacta por (\texttt{Team}, \texttt{year}, \texttt{month}) en la tabla hist\'orica.
+	\item Si no existe, recurrir al promedio mensual por (\texttt{Team}, \texttt{month}).
+\end{enumerate}
+A partir de la presi\'on superficial $P_{\text{sup}}$ y la presi\'on de vapor de agua $P_{\mathrm{H_2O}}$ (Ecuaci\'on~\ref{eq:magnus}), se calcula la presi\'on parcial de ox\'igeno:
+\begin{equation}
+	\mathrm{PiO_2} = (P_{\text{sup}} - P_{\mathrm{H_2O}}) \times 0{.}2095,
+\end{equation}
+donde $0{.}2095$ es la fracci\'on molar del ox\'igeno en aire seco. Las variables se prefijan como \texttt{home\_} y \texttt{away\_}, y se computan las diferencias \texttt{diff\_temperature\_2m} y \texttt{diff\_PiO2}.
+
+\noindent
+Esta formulaci\'on operativa es coherente con la ley barom\'etrica derivada en la Proposici\'on~\ref{prop:barometrica} del Marco Te\'orico. All\'i se demuestra que la presi\'on atmosf\'erica disminuye exponencialmente con la altitud \(h\). En la pr\'actica, en lugar de asumir una temperatura constante de la atm\'osfera ideal, se utiliza la presi\'on superficial real reportada por Open-Meteo y se descuenta la presi\'on parcial del vapor de agua; el resultado es una estimaci\'on directa de la presi\'on parcial de ox\'igeno seco, que preserva la dependencia altitudinal impl\'icita en los datos meteorol\'ogicos y evita los supuestos simplificadores del modelo barom\'etrico te\'orico.
+
+\paragraph{Datos de estadios.} La tabla maestra de estadios se une por \texttt{home\_team}. Se extraen capacidad, altitud, coordenadas geogr\'aficas y asistencia. La asistencia requiere una l\'ogica condicional seg\'un el calendario de la competici\'on:
+\begin{itemize}
+	\item \textbf{Competiciones de calendario simple} (MLS, Brasileir\~ao, J1 League, etc.): se usa la columna \texttt{Assist\_YY}, donde \texttt{YY} son los dos \'ultimos d\'igitos del a\~no calendario.
+	\item \textbf{Competiciones de temporada} (Premier League, LaLiga, etc.): se usa \texttt{Assist\_YYZZ}, donde \texttt{YYZZ} representa la temporada en formato interanual, por ejemplo, \texttt{1819} para 2018--2019. El a\~no de inicio de la temporada se determina por el mes del partido: si el mes es $>7$, la temporada comienza en el a\~no actual; en caso contrario, en el a\~no anterior.
+\end{itemize}
+Se calcula el ratio de ocupaci\'on del equipo local:
+\begin{equation}
+	\text{home\_OccRat} = \frac{\text{home\_Assist}}{\text{home\_Capacity}}.
+\end{equation}
+Para equipos con datos de asistencia incompletos en a\~nos espec\'ificos, se realizaron inyecciones manuales de valores faltantes a partir de registros hist\'oricos de Transfermarkt y fuentes secundarias.
+
+\paragraph{Datos econ\'omicos micro.} La tabla de Transfermarkt se une por (\texttt{Team}, \texttt{Year}, \texttt{Semester}), donde el semestre se define como
+\[
+\text{Semestre}_i = 
+\begin{cases} 
+	1, & \text{si } 1 \leq i \leq 6, \\[4pt]
+	2, & \text{si } 7 \leq i \leq 12.
+\end{cases}
+\]
+
+Se extraen: valor de mercado (\texttt{MarketValue}), ingresos por ventas (\texttt{Income}), gastos en compras (\texttt{Expenses}) y n\'umero de jugadores extranjeros (\texttt{Foreign}). Se deriva el \textit{net spending}:
+\begin{equation}
+	\text{NetSpending} = \text{Income} - \text{Expenses},
+\end{equation}
+y las diferencias respecto al rival: \texttt{diff\_MarketValue}, \texttt{diff\_NetSpending} y \texttt{diff\_Foreign}.
+
+\paragraph{Datos macroecon\'omicos.}
+
+Las variables macroecon\'omicas anuales (PIB, inflaci\'on, IED, poblaci\'on, \'indice de Gini, gasto p\'ublico y deuda soberana), obtenidas de Datosmacro, presentaban valores faltantes derivados de retrasos en la publicaci\'on institucional y de la no disponibilidad de series completas para todos los pa\'ises del panel. Para preservar la estructura temporal del dataset sin recurrir a imputaciones ingenuas, se dise\~n\'o un protocolo diferenciado por patr\'on de ausencia: 
+
+\begin{enumerate}
+	\item Interpolaci\'on mediante splines c\'ubicos para \emph{gaps} intra-serie de un a\~no.
+	\item Proyecci\'on univariante mediante ARIMA$(1,1,1)$ y selecci\'on autom\'atica de orden (\emph{autoARIMA}) para a\~nos recientes sin observaci\'on (2024--2025)
+	\item Imputaci\'on m\'ultiple por ecuaciones encadenadas (MICE), empleando como predictores el PIB, la IED y la poblaci\'on, para paneles con m\'ultiples variables faltantes simult\'aneamente.
+\end{enumerate}
+
+El procedimiento se implement\'o en Python (\texttt{statsmodels}, \texttt{pmdarima}, \texttt{sklearn.impute.IterativeImputer}) y se valid\'o comparando las trayectorias ARIMA versus \emph{autoARIMA} por pa\'is y variable. No obstante, como se detalla en la Secci\'on~\ref{sec:seleccion_covariables}, estas variables fueron excluidas del modelo final por baja se\~nal predictiva, por lo que su imputaci\'on se reporta \'unicamente por completitud metodol\'ogica y reproducibilidad del dataset maestro.
+
+\paragraph{Distancia de viaje.} Utilizando las coordenadas geogr\'aficas de los estadios local y visitante, se calcula la distancia geod\'esica en kil\'ometros mediante la f\'ormula de Haversine:
+\begin{equation}
+	\text{travel\_km} = 2R \arcsin\!\left(\sqrt{\sin^2\!\frac{\Delta\varphi}{2} + \cos\varphi_1 \cos\varphi_2 \sin^2\!\frac{\Delta\lambda}{2}}\right),
+\end{equation}
+con $R = 6371\,\text{km}$. Los valores faltantes se imputan recalculando la distancia a partir de un diccionario de coordenadas normalizado; los residuos sin coordenadas disponibles se dejan para imputaci\'on posterior.
+
+\subsection{Construcci\'on de m\'etricas compuestas y ventanas de forma}
+\label{subsec:metricas_compuestas}
+
+Sobre las estad\'isticas agregadas por partido se construyen los \'indices compuestos de autor\'ia y los promedios m\'oviles (\textit{rolling}) que capturan la din\'amica de forma de cada equipo.
+
+\paragraph{\'indices compuestos.} Para cada equipo en cada partido se calculan:
+\begin{align}
+	\text{xG\_teo} &= 0{.}795 \cdot \text{PKatt} + 0{.}358 \cdot\text{SoT}, \label{eq:xg_teo_impl}\\
+	\text{xG\_teo\_np} &= 0{.}358 \cdot \max(0, \text{SoT} - \text{PKatt}),\\
+	\text{TDA} &= \text{TklW} + \text{Int},\\
+	\text{DDI} &= \frac{\text{TDA}}{\text{TDA} + \text{Fls} + 10^{-6}}, \label{eq:ddi_impl}\\
+	\text{xA\_teo} &= 0{.}059 \cdot \text{Crs} + 0{.}0299 \cdot \text{Fld},\\
+	\text{xGA} &= \text{xG\_teo\_np} + \text{xA\_teo}.
+\end{align}
+
+A partir de estos \'indices se derivan m\'etricas diferenciales de valor agregado esperado, como $\text{xOVA} = \text{xGA}_{\text{local}} - \text{xA\_teo}_{\text{visitante}}$, y eficiencias de conversi\'on, como $\text{Eff\_xG} = \text{goals} / (\text{xG\_teo} + 10^{-6})$.
+
+\paragraph{Promedios m\'oviles y reglas de inactividad.} Para capturar la forma reciente sin incurrir en \textit{data leakage}, se computan promedios m\'oviles con ventana deslizante sobre los partidos previos de cada equipo (\texttt{shift(1)}). Se exploraron las ventanas $w \in \{5, 10, 20, 30\}$ partidos. El procedimiento distingue dos familias de variables:
+\begin{itemize}
+	\item \textbf{M\'etricas compuestas} (xG\_teo, xA\_teo, DDI, etc.): \textit{rolling} con \texttt{min\_periods=2}, de modo que el primer valor v\'alido aparece tras dos observaciones previas.
+	\item \textbf{Goles} (anotados y recibidos): \textit{rolling} con \texttt{min\_periods=1}, permitiendo una estimaci\'on inmediata.
+\end{itemize}
+
+Para evitar que una ventana de inactividad prolongada (lesiones colectivas, parones internacionales, pandemia) contamine la forma hist\'orica, se implementa una regla de segmentaci\'on temporal: si el gap entre partidos consecutivos supera los 40 d\'ias, se reinicia el segmento (\texttt{segment\_id}). Adem\'as, si el primer gap de un nuevo segmento excede los 50 d\'ias y el conteo acumulado dentro del segmento es inferior al tama\~no de la ventana, el valor \textit{rolling} se fuerza a nulo, evitando arranques en fr\'io poco informativos.
+
+\paragraph{Diferenciaci\'on por condici\'on.} Adem\'as de los promedios totales (\texttt{goals\_r5}), se computan promedios condicionados por local\'ia: \texttt{goals\_home\_r5} y \texttt{goals\_away\_r5}, que registran el rendimiento del equipo exclusivamente en su rol de local o visitante. Finalmente, todas las variables se expresan como diferencias \texttt{diff\_*} = home - away, aline\'andose con la arquitectura del modelo que interpreta la ventaja relativa entre contendientes.
+
+\subsection{Filtrado temporal y por competici\'on}
+\label{subsec:filtrado}
+
+El dataset consolidado se somete a una bater\'ia de filtros que definen las tres versiones finales descritas en la Secci\'on~\ref{subsec:datasets}.
+
+\paragraph{Recorte temporal del dataset Full.} Dado que las m\'etricas deportivas detalladas (\'indices compuestos y \textit{rolling}) no est\'an disponibles para todas las ligas antes de 2019, el dataset Full excluye:
+\begin{itemize}
+	\item Todos los partidos anteriores al a\~no $2019$.
+	\item Para competiciones de calendario interanual: meses $\leq 6$ del a\~no 2019, correspondientes a la temporada 2018--2019 ya en curso, pero con datos incompletos de m\'etricas avanzadas.
+	\item Partidos con fecha posterior a junio de 2025 (corte del per\'iodo de estudio) para las competiciones de calendario interanual.
+\end{itemize}
+
+\paragraph{Exclusi\'on de ligas sin m\'etricas b\'asicas.} Los equipos de la \textit{Persian Gulf Pro League} (Ir\'an) y \textit{Liga FutVe} (Venezuela) se eliminan del Full y del Lite Recortado porque carecen de m\'etricas deportivas b\'asicas (tiros, faltas, etc.) en el per\'iodo analizado. Esto reduce el universo de 23 a 21 competiciones en estos \textit{datasets}.
+
+\paragraph{Correcci\'on de identidades duplicadas.} Durante la validaci\'on se detectaron hom\'onimos con \texttt{team\_id} compartidos entre equipos de distintos pa\'ises (por ejemplo, \texttt{Arsenal} de Inglaterra y \texttt{Arsenal} de Sarand\'i, o \texttt{Liverpool} y \texttt{Everton} uruguayos mezclados con los ingleses en registros de Copa Libertadores). Se aplicaron las siguientes correcciones:
+\begin{enumerate}
+	\item Reasignaci\'on de \texttt{team\_id} para equipos ingleses en competiciones inglesas.
+	\item Renombrado expl\'icito a \texttt{ArsenalSarandi} para el equipo argentino.
+	\item Eliminaci\'on de partidos de Copa Libertadores donde equipos brit\'anicos aparec\'ian.
+\end{enumerate}
+
+\paragraph{Incorporaci\'on de partidos manuales.} Se identificaron partidos de competiciones clave no capturados por el \textit{scraper} (archivo \texttt{PartidosExtra.csv}). Estos registros se normalizaron, se les gener\'o \texttt{match\_id\_new} y se concatenaron verticalmente al dataset principal, garantizando la alineaci\'on exacta de columnas.
+
+\subsection{Imputaci\'on de valores faltantes y estandarizaci\'on}
+\label{subsec:imputacion}
+
+A pesar de la integraci\'on sistem\'atica, persisten valores faltantes por arranque en fr\'io de equipos, ausencia de datos econ\'omicos para ventanas recientes o falta de registros clim\'aticos puntuales. Se adopt\'o una estrategia de imputaci\'on diferenciada por dominio:
+
+\paragraph{Diferencias econ\'omicas.} Cuando \texttt{diff\_MarketValue} o \texttt{diff\_NetSpending} son nulos debido a ausencia de datos de Transfermarkt para una ventana espec\'ifica, se imputa por $0$, interpretando la falta de informaci\'on como paridad financiera entre los contendientes.
+
+\paragraph{Variables clim\'aticas.} Tras agotar los \textit{lookups} hist\'orico y mensual de Open-Meteo, los residuos de \texttt{diff\_temperature\_2m} y \texttt{diff\_PiO2} se imputan con $0$, asumiendo neutralidad clim\'atica respecto al rival.
+
+\paragraph{Ratio de ocupaci\'on.} Los valores faltantes de \texttt{home\_OccRat} se imputan en dos etapas: primero con el promedio hist\'orico del equipo local; si este no existe, con la mediana global de la muestra de entrenamiento.
+
+\paragraph{Promedios m\'oviles.} Las columnas \texttt{*\_r5} faltantes (tipicamente al inicio de la trayectoria de un equipo o tras un reinicio por inactividad) se rellenan con la media de la columna calculada sobre el conjunto de entrenamiento, preservando la distribuci\'on marginal.
+
+\paragraph{Distancia de viaje.} Los valores nulos de \texttt{travel\_km} se recalculan mediante Haversine sobre un diccionario de coordenadas limpio; los residuos sin coordenadas se imputan con la mediana global.
+
+\paragraph{Estandarizaci\'on.} Las covariables ex\'ogenas que alimentar\'an el perceptr\'on multicapa (Secci\'on~\ref{sec:mlp}) poseen escalas heterog\'eneas (millones de euros, grados Celsius, kil\'ometros, proporciones). Se aplica un \texttt{StandardScaler} (media cero, varianza unitaria) ajustado \emph{exclusivamente} sobre el conjunto de entrenamiento. El escalador se persiste en disco (\texttt{scaler\_features.pkl}) para garantizar la reproducibilidad en inferencia.
+
+\subsection{Generaci\'on de los conjuntos de datos finales}
+\label{subsec:datasets_finales}
+
+Al t\'ermino del pipeline se exportan tres archivos CSV que constituyen la base emp\'irica del trabajo:
+
+\begin{itemize}
+	\item \textbf{Dataset Lite} (\texttt{matches\_final\_model\_clean2.csv}): contiene todos los datos con todas las covariables exogenas preseleccionadas: metadatos, goles, \texttt{diff\_MarketValue}, \texttt{travel\_km}, \texttt{diff\_NetSpending}, \texttt{diff\_temperature\_2m}, \texttt{diff\_PiO2}, \texttt{home\_Assist}, \texttt{diff\_Foreign}, \texttt{home\_OccRat}, y las ventanas de goles condicionadas.
+	
+	\item \textbf{Dataset Full} (\texttt{matches\_definitive\_model\_full2.csv}): recorte del Lite a la ventana 2019--2025 con las 21 competiciones v\'alidas. Incluye las mismas variables de conteo y las covariables ex\'ogenas del Dataset anterior, y se le agregan: \texttt{diff\_xG\_teo\_r5}, \texttt{diff\_xA\_teo\_r5}, \texttt{diff\_DDI\_r5}.
+	
+	\item \textbf{Dataset Lite Recortado}: misma ventana temporal y competiciones que el Full, pero excluyendo expl\'icitamente las m\'etricas deportivas \textit{rolling} de autor\'ia (\texttt{diff\_xG\_teo\_r5}, \texttt{diff\_xA\_teo\_r5}, \texttt{diff\_DDI\_r5}). Esto permite una comparaci\'on controlada del aporte predictivo de las m\'etricas deportivas detalladas.
+\end{itemize}
+
+Todos los datasets mantienen la estructura fila-partido con las columnas de metadatos (\texttt{match\_id\_new}, \texttt{match\_date}, \texttt{Competition}, identificadores de equipos, nombres normalizados) y las columnas de resultado (\texttt{home\_goals}, \texttt{away\_goals}), listos para alimentar la fase de selecci\'on de covariables descrita en la Secci\'on~\ref{sec:seleccion_covariables}.
+
+% ============================================================
+% SECCION 3.3 -- Seleccion de covariables
+% ============================================================
+
+\section{Selecci\'on de covariables}
+\label{sec:seleccion_covariables}
+
+El dataset consolidado descrito en la Secci\'on~\ref{sec:procesamiento} genera un universo de 192 variables derivadas que, en principio, podr\'ian alimentar el modelo predictivo. Sin embargo, incluir el conjunto completo conduce a riesgos de sobreajuste, multicolinealidad entre m\'etricas deportivas de distinta granularidad y, lo m\'as cr\'itico, fugas de informaci\'on (\emph{data leakage}) derivadas de variables calculadas a partir del propio resultado. En consecuencia, se dise\~n\'o un protocolo de selecci\'on en dos pasadas manuales que equilibra capacidad predictiva, interpretabilidad y representaci\'on de los tres dominios te\'oricos del trabajo: deportivo, econ\'omico y ambiental.
+
+\subsection{Primer Random Forest: diagn\'ostico sobre el universo completo}
+\label{subsec:primera_pasada}
+
+Se entren\'o un clasificador \texttt{RandomForestClassifier} ($n_{\text{estimators}}=200$, $\text{max\_depth}=15$, \texttt{random\_state}=42) sobre el conjunto de 192 variables derivadas, utilizando la codificaci\'on trinomial del resultado $\{H,D,A\}$ como variable objetivo. La partici\'on entrenamiento/prueba respet\'o la estructura temporal: entrenamiento en partidos hasta la temporada 2022--23 y evaluaci\'on en 2023--25.
+
+El modelo alcanz\'o una accuracy de $0{.}9112$ sobre el conjunto de prueba, con un \emph{F1-score} ponderado de $0{.}91$. No obstante, el an\'alisis de las importancias de Gini revel\'o una concentraci\'on extrema: las dos variables dominantes fueron \texttt{home\_Goals} e \texttt{away\_Goals} (importancias relativas $0{.}188$ y $0{.}162$, respectivamente), seguidas a gran distancia por los \'indices compuestos de goles esperados. Esta distribuci\'on evidencia \emph{data leakage}: los goles finales del partido no son conocidos en el momento de la predicci\'on, por lo que su inclusi\'on genera una estimaci\'on irrealista del poder predictivo. Asimismo, las variables macroecon\'omicas (PIB, inflaci\'on, Gini, gasto p\'ublico, deuda e IED) ocuparon posiciones marginales en el ranking de importancia, con valores inferiores a $0{.}012$ en todos los casos, confirmando su escasa se\~nal predictiva en la escala del resultado individual.
+
+En consecuencia, se decidi\'o: (i)~eliminar todas las variables derivadas de los marcadores finales (\texttt{home\_Goals}, \texttt{away\_Goals} y sus promedios m\'oviles asociados); (ii)~descartar el bloque macroecon\'omico del conjunto de caracter\'isticas activas, aunque se mantuvieron en el dataset maestro por reproducibilidad; y (iii)~excluir variables intermedias que presentaran redundancia con \'indices compuestos de autor\'ia o que, en su forma cruda, compartieran la misma fuente de \emph{leakage} que los goles.
+
+\subsection{Segundo Random Forest: filtrado y selecci\'on manual}
+\label{subsec:segunda_pasada}
+
+Sobre el dataset filtrado, que excluye las variables de \emph{leakage} y reduce el espacio a m\'etricas ex\'ogenas genuinamente disponibles previo al partido, se reentren\'o el mismo clasificador Random Forest. El desempe\~no cay\'o dr\'asticamente a una accuracy de $0{.}4864$ y un \emph{F1-score} macro de $0{.}37$, evidenciando que la predicci\'on de resultados de f\'utbol es un problema de alta entrop\'ia cuando se eliminan se\~nales espurias. La matriz de confusi\'on revel\'o el patr\'on caracter\'istico ya discutido en la literatura: la clase empate ($D$) colapsa casi por completo bajo una regla de decisi\'on dura $\arg\max$, mientras que el modelo confunde sistem\'aticamente victorias locales y visitantes.
+
+A partir de este modelo filtrado, se seleccion\'o un conjunto reducido mediante un criterio h\'ibrido que pondera la importancia del Random Forest con la representatividad de los tres bloques te\'oricos del trabajo y la ausencia de redundancia funcional. Las variables elegidas se organizan como sigue:
+
+\paragraph{Variables de mayor importancia relativa.} Las seis covariables de mayor peso en el modelo filtrado fueron retenidas directamente:
+\begin{itemize}
+	\item \texttt{diff\_MarketValue}: diferencia de valor de mercado entre local y visitante (millones de euros).
+	\item \texttt{home\_Assist}: asistencia promedio del equipo local.
+	\item \texttt{travel\_km}: distancia geod\'esica entre estadios (km), proxy del desgaste por viaje.
+	\item \texttt{diff\_NetSpending}: diferencia de balance neto de transferencias.
+	\item \texttt{diff\_temperature\_2m}: diferencia de temperatura ambiente entre la sede del local y la del visitante.
+	\item \texttt{diff\_PiO2}: diferencia de presi\'on parcial de ox\'igeno, derivada de la altitud de los estadios.
+\end{itemize}
+
+\paragraph{M\'etricas compuestas de autor\'ia.} Se incorporaron tres \'indices construidos sobre estad\'isticas de juego agregadas en ventana \textit{rolling} de 5 partidos, por constituir aportes metodol\'ogicos propios del trabajo:
+\begin{itemize}
+	\item \texttt{diff\_xG\_teo\_r5}: diferencia de goles esperados te\'oricos.
+	\item \texttt{diff\_xA\_teo\_r5}: diferencia de asistencias esperadas te\'oricas.
+	\item \texttt{diff\_DDI\_r5}: diferencia del \'indice de eficiencia defensiva.
+\end{itemize}
+Estas variables s\'olo se encuentran disponibles en el dataset Full (2019--2025), dado que las estad\'isticas de juego detalladas requeridas para su c\'alculo no est\'an completas en las primeras temporadas del dataset Lite.
+
+\paragraph{Variable de composici\'on de plantilla.} Adicionalmente, se incluy\'o \texttt{diff\_Foreign} (diferencia en n\'umero de jugadores extranjeros) como representante del bloque de diversidad y estructura de roster, aun cuando su importancia individual en el Random Forest no ocup\'o los primeros puestos. Su inclusi\'on busca capturar el efecto de la exposici\'on a distintos estilos de juego y condiciones competitivas, factor te\'oricamente relevante seg\'un la literatura de econom\'ia del deporte.
+
+%\paragraph{Variables excluidas por redundancia o parsimonia.} En aras de evitar la sobrepoblaci\'on del bloque ambiental, se descartaron \texttt{diff\_relative\_humidity\_2m} y \texttt{diff\_surface\_pressure}, quedando representado el factor clim\'atico mediante la temperatura y la presi\'on de ox\'igeno. Asimismo, se excluyeron variables intermedias que operan como componentes de \'indices compuestos ya incluidos: \texttt{diff\_TDA} (base del DDI, adem\'as susceptible de \emph{leakage} en su forma desagregada), \texttt{diff\_xGP\_r5} y \texttt{diff\_xGP\_np\_r5} (bases del xOVA). Finalmente, el ratio de ocupaci\'on \texttt{home\_OccRat} fue evaluado pero excluido posteriormente del modelo final por alta colinealidad lineal con \texttt{home\_Assist}, de modo que ambas variables no coexisten en el vector de entrada del perceptr\'on multicapa.
+
+\subsection{Conjunto final de covariables ex\'ogenas}
+\label{subsec:covariables_finales}
+
+El conjunto activo de covariables ex\'ogenas que alimentar\'an el perceptr\'on multicapa (MLP) descrito en la Secci\'on~\ref{sec:arquitectura} queda conformado por diez variables:
+
+\begin{itemize}
+	\item \textbf{Bloque econ\'omico:} \texttt{diff\_MarketValue}, \texttt{diff\_NetSpending}.
+	\item \textbf{Bloque de composici\'on de plantilla:} \texttt{diff\_Foreign}.
+	\item \textbf{Bloque ambiental y geogr\'afico:} \texttt{diff\_temperature\_2m}, \texttt{diff\_PiO2}, \texttt{travel\_km}.
+	\item \textbf{Bloque de estadio y afici\'on:} \texttt{home\_Assist}.
+	\item \textbf{Bloque deportivo (forma reciente):} \texttt{diff\_xG\_teo\_r5}, \texttt{diff\_xA\_teo\_r5}, \texttt{diff\_DDI\_r5}.
+\end{itemize}
+
+Este vector, junto con las tres probabilidades base $(P_H, P_D, P_A)$ generadas por el sistema de rating y el modelo de conteo, constituye el input $\mathbf{z}_{ij} \in \mathbb{R}^{n},n\in\{10,13\}\}$ del MLP. La reducci\'on dimensional busc\'o mitigar el sobreajuste en la fase de refinamiento no lineal, aunque el dr\'astico descenso de accuracy entre la primera y segunda pasada del Random Forest sugiere que el cuello de botella del sistema no reside en la dimensionalidad, sino en la alta varianza inherente al fen\'omeno deportivo. El an\'alisis detallado del desempe\~no predictivo se reserva para el cap\'itulo de resultados.
+
+% ============================================================
+% SECCION 3.4 -- Arquitectura del sistema predictivo
+% ============================================================
+
+\section{Arquitectura del sistema predictivo}
+\label{sec:arquitectura}
+
+El sistema predictivo se organiza como un pipeline en cascada de tres bloques funcionales: (i)~un bloque de conteo que estima las tasas de goles y deriva una probabilidad de empate; (ii)~un bloque de rating din\'amico que actualiza secuencialmente la fuerza latente de los equipos y genera un vector de probabilidades base; y (iii)~un bloque de refinamiento no param\'etrico que corrige dichas probabilidades mediante un perceptr\'on multicapa (MLP) alimentado con covariables ex\'ogenas. A continuaci\'on se detalla cada componente, su implementaci\'on computacional y el flujo de datos entre ellos.
+
+\subsection{Variable dependiente y codificaci\'on}
+\label{subsec:variable_dependiente}
+
+La variable a predecir es el resultado del partido al finalizar el tiempo reglamentario, codificada en tres clases mutuamente excluyentes: victoria del equipo local ($H$), empate ($D$) o victoria del equipo visitante ($A$). En el bloque de rating se representa mediante el escalar $s_j \in \{1, 0{.}5, 0\}$ seg\'un el resultado observado, notaci\'on can\'onica de los sistemas Elo y Glicko \cite{Glicko2Mod}. Para el bloque de refinamiento (MLP), la codificaci\'on se transforma a un vector indicador \emph{one-hot} $\mathbf{y}_i \in \{0,1\}^3$, donde la componente correspondiente a la clase observada toma valor 1 y las restantes 0.
+
+\subsection{Bloque de conteo: estimaci\'on de tasas y probabilidad de empate}
+\label{subsec:conteo}
+
+El primer bloque del pipeline modela el n\'umero de goles anotados por cada equipo como un proceso de conteo independiente. Se entrenan dos regresores LightGBM con funci\'on objetivo Poisson \cite{ke2017lightgbm}, uno para los goles del equipo local ($\lambda_H$) y otro para los del visitante ($\lambda_A$). 
+
+\paragraph{Conjunto de entrenamiento y partici\'on temporal.} La partici\'on respeta el orden cronol\'ogico: el 70\% inicial de los partidos (ordenados por \texttt{match\_date\_from\_id}) constituye el conjunto de entrenamiento; el 30\% restante, el de prueba. Dentro del entrenamiento se reserva un 10\% final para \emph{early stopping}.
+
+\paragraph{Variables de entrada.} Dado que el objetivo de este bloque es capturar la din\'amica de forma reciente sin introducir \emph{leakage} del resultado final, \'unicamente se utilizan las variables de promedios m\'oviles de goles y goles concedidos en ventanas de 5, 10, 20 y 30 partidos, diferenciadas por condici\'on de local\'ia. Espec\'ificamente, las features son las 32 columnas del grupo \texttt{rolling\_features} (por ejemplo, \texttt{home\_goals\_r5}, \texttt{away\_Gcon\_away\_r30}, etc.).
+
+\paragraph{Hiperpar\'ametros y salida.} Los modelos se configuran con \texttt{n\_estimators=200}, \texttt{learning\_rate=0.05}, \texttt{max\_depth=5} y criterio de parada temprana de 10 iteraciones. A partir de las tasas predichas $\hat{\lambda}_H$ y $\hat{\lambda}_A$, se calcula la probabilidad de empate mediante la distribuci\'on de Skellam evaluada en $k=0$ (Ecuaci\'on~\ref{eq:prob_D_bessel} del Marco Te\'orico):
+\begin{equation}
+	\hat{P}_D^{\text{(Skellam)}} = e^{-(\hat{\lambda}_H + \hat{\lambda}_A)} \, I_0\!\left(2\sqrt{\hat{\lambda}_H \hat{\lambda}_A}\right).
+\end{equation}
+Este valor, denominado \texttt{draw\_prob} en el pipeline, se anexa al dataset y alimenta el bloque de rating como estimaci\'on externa de la frecuencia de empates.
+
+\subsection{Bloque de rating din\'amico: Glicko-2 modificado}
+\label{subsec:rating}
+
+El n\'ucleo inferencial del sistema es una implementaci\'on propia del algoritmo Glicko-2 modificado de Shelopugin y Sirotkin \cite{Glicko2Mod}, contenida en el m\'odulo \texttt{G2Av1513.py}. A diferencia de la versi\'on can\'onica, esta implementaci\'on: (a)~incorpora el empate como categor\'ia estoc\'astica independiente usando la probabilidad de empate del bloque de conteo; (b)~permite una ventaja de local\'ia $h_\ell$ espec\'ifica por liga; y (c)~optimiza conjuntamente los hiperpar\'ametros de calibraci\'on mediante m\'axima verosimilitud.
+
+\paragraph{Estado y actualizaci\'on.} Cada equipo se caracteriza por un estado $(R, RD, \sigma)$ que se actualiza secuencialmente partido a partido, en orden cronol\'ogico estricto. Los valores iniciales por defecto son $R_0 = 1500$, $RD_0 = 80$ y $\sigma_0 = 0{.}06$, aunque el rating inicial medio $\mu_{\text{init}}$ se calibra por liga. La constante de difusi\'on temporal se fija en $\tau = 0{.}8$.
+
+Aunque el valor can\'onico de Glickman \cite{Glickman2022} es \(RD_0=350\), en esta implementaci\'on se fija \(RD_0=80\) tras una calibraci\'on preliminar que mostr\'o una convergencia m\'as estable para el panel de ligas utilizado.
+
+\paragraph{Ventaja de local\'ia y calibraci\'on del empate.} La ventaja de local\'ia no se modela como un par\'ametro estructural fijo, sino que se calibra por liga ($h_\ell$) junto con el t\'ermino de correcci\'on del empate $d$ (denominado \texttt{draw\_adjustment} en el c\'odigo). Ambos se estiman maximizando la log-verosimilitud del resultado observado sobre el conjunto de entrenamiento mediante el algoritmo L-BFGS-B \cite{byrd1995limited}, con las siguientes cotas:
+\begin{itemize}
+	\item $d \in [-5{.}0,\, 5{.}0]$,
+	\item $\mu_{\text{init},\ell} \in [1200,\, 1800]$ (expresado como desviaci\'on respecto a 1500 en el espacio de optimizaci\'on),
+	\item $h_\ell \in [0,\, 200]$ (escalado interno por 10 en el optimizador).
+\end{itemize}
+
+\paragraph{Generaci\'on de probabilidades base.} Para cada partido, el bloque Glicko-2 recibe: (i)~los estados actuales de los equipos; (ii)~la probabilidad de empate $\hat{P}_D^{\text{(Skellam)}}$; y (iii)~la ventaja de local\'ia calibrada $h_\ell$. Devuelve el vector de probabilidades base $(P_H, P_D, P_A)$ seg\'un las Ecuaciones~\ref{eq:prob_victoria_local}--\ref{eq:prob_victoria_visitante} del Marco Te\'orico. Tras observar el resultado real, actualiza los estados de ambos equipos mediante las Ecuaciones~\ref{eq:glicko2_phi_prime}--\ref{eq:glicko2_mu_prime}.
+
+\paragraph{Observaci\'on sobre la ventaja de local\'ia.} Si bien en la versi\'on final del modelo te\'orico el par\'ametro base de ventaja local se anula ($\delta \equiv 0$) para delegar la no linealidad residual al MLP, en la implementaci\'on computacional se mantuvo $h_\ell$ activo durante la fase Glicko-2 como par\'ametro de calibraci\'on por liga, de modo que el rating din\'amico capture la asimetr\'ia estructural antes de que el refinador neuronal intervenga.
+
+\subsection{Bloque de refinamiento: perceptr\'on multicapa}
+\label{subsec:mlp}
+
+El tercer bloque corrige las probabilidades base mediante un perceptr\'on multicapa feedforward que aprende las interacciones no lineales entre el vector de probabilidades del rating y las covariables ex\'ogenas seleccionadas en la Secci\'on~\ref{sec:seleccion_covariables}.
+
+\paragraph{Vector de entrada.} Para cada partido $i$, el input $\mathbf{z}_i \in \mathbb{R}^{13}$ se construye concatenando:
+\begin{itemize}
+	\item Las tres probabilidades base del Glicko-2: $(P_{H,i}, P_{D,i}, P_{A,i})$.
+	\item Las diez covariables ex\'ogenas estandarizadas: \texttt{diff\_MarketValue}, \texttt{diff\_NetSpending}, \texttt{diff\_temperature\_2m}, \texttt{diff\_PiO2}, \texttt{travel\_km}, \texttt{home\_Assist}, \texttt{diff\_Foreign}, \texttt{diff\_xG\_teo\_r5}, \texttt{diff\_xA\_teo\_r5} y \texttt{diff\_DDI\_r5}.
+\end{itemize}
+La estandarizaci\'on (media cero, varianza unitaria) se ajusta exclusivamente sobre el conjunto de entrenamiento mediante \texttt{StandardScaler} de scikit-learn y se aplica al conjunto de prueba.
+
+\paragraph{Arquitectura e hiperpar\'ametros.} La red se implementa en Keras/TensorFlow con la siguiente topolog\'ia:
+\begin{itemize}
+	\item Capa de entrada: 13 neuronas (sin activaci\'on).
+	\item Primera capa oculta: 64 neuronas, activaci\'on ReLU, \emph{dropout} con tasa 0,3.
+	\item Segunda capa oculta: 64 neuronas, activaci\'on ReLU, \emph{dropout} con tasa 0,3.
+	\item Capa de salida: 3 neuronas con activaci\'on \emph{softmax}.
+\end{itemize}
+
+\paragraph{Entrenamiento.} La funci\'on de p\'erdida es la entrop\'ia cruzada categ\'orica (\texttt{categorical\_crossentropy}), equivalente a la log-verosimilitud negativa del modelo multinomial (Proposici\'on~\ref{prop:equivalencia}). El optimizador es Adam con tasa de aprendizaje por defecto ($10^{-3}$). Se utiliza un planificador de tasa adaptativo (\texttt{ReduceLROnPlateau}) que reduce la tasa por un factor 0,5 si la p\'erdida de validaci\'on no decrece durante 3 \'epocas consecutivas. El entrenamiento se ejecuta durante 50 \'epocas con \emph{batches} de tama\~no 64, reservando el 10\% del entrenamiento para validaci\'on interna.
+
+\paragraph{Protocolo de evaluaci\'on: corridas pareadas.} Dado el car\'acter estoc\'astico de la inicializaci\'on de pesos y del \emph{dropout}, se ejecutan 10 corridas pareadas con semillas consecutivas (\texttt{Seed} a \texttt{Seed+9}). En cada corrida se reentrena el Glicko-2 desde cero (manteniendo los hiperpar\'ametros $d$ y $h_\ell$ previamente optimizados) y se ajusta el MLP sobre las probabilidades base resultantes, permitiendo estimar la varianza del desempe\~no y aplicar inferencia estad\'istica (test $t$ pareado) para comparar el modelo base (MLP sobre probabilidades Glicko-2 sin covariables) contra el modelo completo.
+
+\subsection{Flujo de inferencia en cascada}
+\label{subsec:cascada}
+
+El proceso de predicci\'on para un partido nuevo sigue estrictamente el orden de dependencias del pipeline:
+
+\begin{enumerate}
+	\item \textbf{Conteo:} el LightGBM Poisson recibe los promedios m\'oviles de goles de ambos equipos y predice $(\hat{\lambda}_H, \hat{\lambda}_A)$, de donde se deriva $\hat{P}_D^{\text{(Skellam)}}$.
+	\item \textbf{Rating:} el Glicko-2 modificado consulta los estados vigentes de los equipos, incorpora $\hat{P}_D^{\text{(Skellam)}}$ y la ventaja de local\'ia $h_\ell$ calibrada, y emite el vector base $(P_H, P_D, P_A)$.
+	\item \textbf{Refinamiento:} el MLP recibe la concatenaci\'on de $(P_H, P_D, P_A)$ con las covariables ex\'ogenas estandarizadas del partido, y produce el vector refinado $(\tilde{P}_H, \tilde{P}_D, \tilde{P}_A)$.
+\end{enumerate}
+
+Este dise\~no garantiza que cada bloque opera sobre informaci\'on genuinamente disponible antes del partido: los \emph{rollings} de goles son hist\'oricos, los ratings se actualizan secuencialmente sin mirar el futuro, y las covariables ex\'ogenas corresponden a datos de mercado, estadio y clima previos al encuentro.
+
+
+% ============================================================
+% SECCION 3.5 -- Entrenamiento y calibracion
+% ============================================================
+
+\section{Entrenamiento y calibraci\'on}
+\label{sec:entrenamiento}
+
+El pipeline predictivo descrito en la Secci\'on~\ref{sec:arquitectura} requiere una calibraci\'on secuencial de sus tres bloques funcionales: el estimador de tasas de goles, el sistema de rating din\'amico y el refinador neuronal. Dado que cada bloque alimenta al siguiente, el entrenamiento respeta estrictamente el orden de dependencias del sistema en cascada: primero se ajustan los regresores Poisson sobre el conjunto de entrenamiento; con sus predicciones se calibra el Glicko-2 modificado; y sobre las probabilidades base resultantes se entrena el perceptr\'on multicapa. Esta secci\'on detalla los protocolos de optimizaci\'on, los criterios de convergencia y las validaciones m\'inimas que garantizan la reproducibilidad del proceso.
+
+\subsection{Calibraci\'on del bloque de conteo}
+\label{subsec:train_conteo}
+
+El bloque de conteo estima las tasas esperadas de anotaci\'on $\lambda_H$ y $\lambda_A$ mediante dos regresores LightGBM con funci\'on objetivo Poisson, siguiendo el marco te\'orico de la Secci\'on~\ref{sec:modelo_probabilistico} del Cap\'itulo~\ref{ch:marco}. 
+
+\paragraph{Partici\'on temporal.} La muestra se divide cronol\'ogicamente en un $70\%$ inicial para entrenamiento y un $30\%$ final para prueba, preservando el orden temporal mediante la columna \texttt{match\_date\_from\_id}. Dentro del conjunto de entrenamiento se reserva un $10\%$ final como validaci\'on interna para \emph{early stopping}, de modo que los gradientes de la \'ultima iteraci\'on no sobreajusten a la cola cronol\'ogica.
+
+\paragraph{Conjunto de caracter\'isticas.} \'Unicamente se utilizan las $32$ variables del grupo \texttt{rolling\_features}, correspondientes a promedios m\'oviles de goles anotados y recibidos en ventanas de $5$, $10$, $20$ y $30$ partidos, diferenciados por condici\'on de local\'ia. Esta restricci\'on evita \emph{data leakage} al excluir cualquier informaci\'on derivada del marcador final del partido a predecir.
+
+\paragraph{Hiperpar\'ametros y criterio de parada.} Ambos regresores comparten la configuraci\'on: \texttt{n\_estimators}$=200$, \texttt{learning\_rate}$=0{.}05$, \texttt{max\_depth}$=5$ y criterio de parada temprana de $10$ iteraciones sin mejora en el MAE de validaci\'on. La m\'etrica de evaluaci\'on interna es el error absoluto medio (\emph{mean absolute error}, MAE), coherente con la escala de conteo de los goles.
+
+\paragraph{Derivaci\'on de la probabilidad de empate.} Una vez entrenados los modelos, se predicen las tasas $\hat{\lambda}_H$ y $\hat{\lambda}_A$ para todo el dataset. La probabilidad de empate se calcula mediante la funci\'on de masa de la distribuci\'on de Skellam en $k=0$ (Ecuaci\'on~\eqref{eq:prob_D_bessel} del Marco Te\'orico):
+\begin{equation}
+	\hat{P}_D^{\text{(Skellam)}} = e^{-(\hat{\lambda}_H + \hat{\lambda}_A)} \, I_0\!\left(2\sqrt{\hat{\lambda}_H \hat{\lambda}_A}\right),
+\end{equation}
+donde $I_0$ se eval\'ua num\'ericamente mediante la implementaci\'on de \texttt{scipy.special.iv}. El valor resultante se anexa al dataset como \texttt{draw\_prob} y constituye el par\'ametro $s$ requerido por el actualizador Glicko-2 modificado.
+
+%Dado que el actualizador Glicko-2 modificado espera el par\'ametro \(s\) en escala logit, se aplica la transformaci\'on
+%\[
+%s = \log\left(\frac{\hat{P}_D^{\text{(Skellam)}}}{1-\hat{P}_D^{\text{(Skellam)}}}\right)
+%\]
+%antes de incorporar la probabilidad de empate al sistema de rating.
+
+El valor $\hat{P}_D^{\text{Skellam}}$, en escala de probabilidad $(0,1)$, se anexa al dataset como \texttt{draw\_prob}. 
+Este valor constituye la estimaci\'on externa de la probabilidad de empate que alimentar\'a el sistema de rating din\'amico descrito en la subsecci\'on siguiente.
+
+%El motor Glicko-2 modificado (\texttt{G2Av1513.py}) recibe este valor en escala cruda y aplica internamente la transformaci\'on logit para obtener el par\'ametro $s\in\mathbb{R}$ que ingresa en las ecuaciones del modelo (Definici\'on~\ref{def:expectativa_mod}). Esta separaci\'on entre la estimaci\'on de la probabilidad de empate y su transformaci\'on al espacio de par\'ametros del rating garantiza la estabilidad num\'erica del optimizador.
+
+\subsection{Calibraci\'on del bloque de rating}
+\label{subsec:train_rating}
+
+El n\'ucleo inferencial del sistema es la implementaci\'on propia del Glicko-2 modificado de Shelopugin y Sirotkin \cite{Glicko2Mod}, contenida en el m\'odulo \texttt{G2Av1513.py}. A diferencia del modelo can\'onico, esta versi\'on incorpora el empate como categor\'ia estoc\'astica independiente mediante la probabilidad $\hat{P}_D^{\text{(Skellam)}}$ y calibra conjuntamente los hiperpar\'ametros estructurales por liga.
+
+El motor can\'onico de Shelopugin y Sirotkin (\texttt{glicko2.py}) recibe la probabilidad de empate cruda y la incorpora directamente al exponente del t\'ermino de empate. El motor propio (\texttt{G2Av1513.py}) introduce una reparametrizaci\'on logit interna, $s_{\text{logit}} = \operatorname{logit}(\hat{P}_D^{\text{Skellam}})$, que mapea el par\'ametro de empate al espacio real $\mathbb{R}$ antes de su ingreso al exponente. Esta transformaci\'on, junto con otras mejoras de estabilidad num\'erica, se detallan a continuaci\'on; desde el punto de vista del Marco Te\'orico, la estructura probabil\'istica del modelo trinomial (Ecuaciones~\ref{eq:prob_victoria_local}--\ref{eq:prob_victoria_visitante}) permanece inalterada, dado que la reparametrizaci\'on es un cambio de variable biyectivo sobre el dominio $(0,1)$.
+
+\subsubsection{Mejoras de la implementaci\'on propia sobre el motor de referencia}
+
+El motor \texttt{G2Av1513.py} no es una traducci\'on directa del c\'odigo de Shelopugin y Sirotkin, sino una reimplementaci\'on que corrige inconsistencias algebraicas e introduce mecanismos de estabilidad num\'erica necesarios para la calibraci\'on por L-BFGS-B sobre un panel multiliga. A continuaci\'on se sistematizan las diferencias funcionales respecto al motor can\'onico \texttt{glicko2.py}.
+
+\paragraph{Correcci\'on algebraica del denominador trinomial.} 
+En el motor de referencia, la probabilidad de victoria visitante se computa como $P_A = 1/(1 + e^{\delta}(1+e^{d+s}))$, donde el t\'ermino de empate queda inducido por la diferencia de ratings $\delta$. Esta formulaci\'on rompe la simetr\'ia del simplex respecto a las Ecuaciones~\eqref{eq:prob_victoria_local}--\eqref{eq:prob_victoria_visitante} del Marco Te\'orico. El motor \texttt{G2Av1513.py} unifica el denominador como $1 + \exp(\delta) + \exp(d+s_{\text{logit}})$, garantizando que $(P_H, P_D, P_A)$ provengan de una partici\'on consistente del espacio muestral.
+
+\paragraph{Reparametrizaci\'on logit del par\'ametro de empate.} 
+El motor can\'onico alimenta la probabilidad de empate cruda $P_D\in(0,1)$ directamente al exponente. Para probabilidades cercanas a 1, esto produce saturaci\'on num\'erica en aritm\'etica de punto flotante. La implementaci\'on propia aplica la transformaci\'on
+\begin{equation}
+	s_{\text{logit}} = \ln\!\left(\frac{P_D}{1-P_D}\right),
+\end{equation}
+de modo que el argumento del exponente $\exp(d+s_{\text{logit}})$ permanece finito y el espacio de par\'ametros accesible al optimizador L-BFGS-B no requiere restricciones de caja sobre $s$.
+
+\paragraph{Heur\'istica de escala $g$.} 
+La funci\'on de atenuaci\'on $g(\phi_j)$ del Glicko-2 can\'onico depende de la constante $3q^2/\pi^2$ (Ecuaci\'on~\ref{eq:glicko2_g}). En el motor de referencia, el coeficiente num\'erico equivalente es $1{,}5/\pi^2$. Tras una calibraci\'on preliminar sobre el panel de ligas, la implementaci\'on propia adopta $3{,}0/\pi^2$, lo cual suaviza la superficie de p\'erdida del optimizador sin degradar la log-loss de validaci\'on.
+
+\paragraph{Sistema de ventaja parametrizada.} 
+Mientras que el motor can\'onico recibe un escalar fijo \texttt{advantage}, el motor propio permite inyectar un vector de covariables contextuales $\mathbf{f}$ y calcular la ventaja efectiva como combinaci\'on lineal $h_{\text{eff}} = \beta_0 + \sum_k \beta_k f_k$. En la versi\'on calibrada del presente trabajo, esta flexibilidad se utiliza para codificar la ventaja de local\'ia por liga, aunque la arquitectura soporta extensiones futuras.
+
+\paragraph{Mecanismos de estabilidad num\'erica.} 
+Se introducen funciones de \emph{clamping} en tres puntos cr\'iticos: (i)~acotamiento de $\delta_{\mu} = g(\phi_j)(\tilde{\mu}-\mu_j)$ al intervalo $[-50,50]$ para evitar desbordamiento del exponente; (ii)~restricci\'on de la puntuaci\'on esperada al rango $[10^{-12}, 1-10^{-12}]$ previo al c\'alculo de la varianza $v$; y (iii)~protecci\'on contra divisiones por cero en la funci\'on de varianza mediante un valor de retorno de emergencia ($10^{12}$).
+
+\paragraph{Manejo de contextos excepcionales.} 
+La implementaci\'on propia incorpora un multiplicador de atenuaci\'on para partidos disputados durante la pandemia de COVID-19, que reduce la ventaja de local\'ia efectiva cuando la variable indicadora \texttt{pandemic} est\'a activa. Esta extensi\'on no existe en el motor can\'onico.
+
+\begin{obs}[Sobre la funci\'on de actualizaci\'on de volatilidad]
+	Tanto el motor can\'onico de Shelopugin y Sirotkin como la implementaci\'on propia \texttt{G2Av1513.py} omiten el factor $\tau^2$ en el denominador del segundo t\'ermino de la funci\'on $f(x)$ del Paso~5 del algoritmo Glicko-2. Esta simplificaci\'on, heredada del c\'odigo fuente de referencia, no impide la convergencia del m\'etodo de Illinois empleado para la estimaci\'on de $\sigma'$, aunque desv\'ia ligeramente la trayectoria de optimizaci\'on respecto a la formulaci\'on can\'onica de Glickman \cite{Glickman2022}. Dado que ambos motores comparten esta misma estructura, no se documenta como mejora diferencial del presente trabajo.
+\end{obs}
+
+\paragraph{Estado y actualizaci\'on.} Cada equipo se caracteriza por el estado $(R, RD, \sigma)$. Los valores iniciales por defecto son $R_0 = 1500$, $RD_0 = 80$ y $\sigma_0 = 0{.}06$. La constante de difusi\'on temporal se fija en 
+\begin{equation}
+	\tau = 0{.}8,
+\end{equation}
+valor est\'andar para conjuntos de resultados de alta volatilidad \cite{Glickman2022}.
+
+\paragraph{Funci\'on objetivo.} Se maximiza la log-verosimilitud del resultado observado sobre el conjunto de entrenamiento mediante el algoritmo L-BFGS-B \cite{byrd1995limited}. Formalmente, sea $\mathcal{D}_{\text{train}}$ el conjunto de partidos ordenados cronol\'ogicamente. Para cada partido $i$, el modelo genera el vector $(P_{H,i}, P_{D,i}, P_{A,i})$ seg\'un las Ecuaciones~\eqref{eq:prob_victoria_local}--\eqref{eq:prob_victoria_visitante} del Marco Te\'orico, y actualiza secuencialmente los ratings de ambos equipos. La funci\'on a minimizar es la log-verosimilitud negativa promedio:
+\begin{equation}
+	\mathcal{L}_{\text{G2A}}(d, \{\mu_{\text{init},\ell}\}, \{h_\ell\}) = -\frac{1}{|\mathcal{D}_{\text{train}}|}\sum_{i \in \mathcal{D}_{\text{train}}} \log P_{s_i,i},
+\end{equation}
+donde $s_i \in \{H,D,A\}$ es el resultado observado y $P_{s_i,i}$ la probabilidad asignada a dicha clase.
+
+\paragraph{Espacio de par\'ametros y cotas.} El optimizador ajusta simult\'aneamente:
+\begin{itemize}
+	\item El t\'ermino de calibraci\'on del empate $d \in [-5{.}0,\, 5{.}0]$.
+	\item El rating inicial medio por liga $\mu_{\text{init},\ell} \in [1200,\, 1800]$, expresado como desviaci\'on respecto a $1500$ en el espacio de optimizaci\'on.
+	\item La ventaja de local\'ia por liga $h_\ell \in [0,\, 200]$, escalada internamente por un factor $10$ en el optimizador.
+\end{itemize}
+Los valores semilla son $d_0 = 0{.}5$, desviaciones nulas para $\mu_{\text{init},\ell}$ y valor escalado $5{.}0$ para $h_\ell$.
+
+\paragraph{Convergencia y par\'ametros calibrados.}
+El algoritmo L-BFGS-B se ejecuta hasta alcanzar la tolerancia predefinida, registrando el n\'umero de evaluaciones de la funci\'on objetivo y los valores \'optimos de los par\'ametros \(d\), \(\mu_{\text{init},\ell}\) y \(h_\ell\). Estos resultados, junto con el rango final de ratings obtenido tras la actualizaci\'on secuencial sobre el conjunto completo, se reportan en el cap\'itulo de resultados, donde se analiza su interpretaci\'on por liga y por dataset.
+
+\paragraph{Evaluaci\'on aislada del bloque de rating.}
+Para cuantificar el aporte incremental del perceptr\'on multicapa, se eval\'ua el sistema Glicko-2 modificado en aislamiento sobre el conjunto de prueba. Las m\'etricas utilizadas son la log-loss categ\'orica y la log-loss binaria, cuyas definiciones se presentan en la Secci\'on~\ref{sec:metricas_eval}. Los valores obtenidos constituyen la l\'inea base contra la cual se mide el desempe\~no del refinador neuronal y se reportan en el cap\'itulo de resultados, junto con las comparaciones estad\'isticas correspondientes.
+
+%\paragraph{Convergencia y par\'ametros calibrados.} El algoritmo L-BFGS-B converge tras aproximadamente $660$ evaluaciones de la funci\'on objetivo para los datasets Full y Lite Recortado, y $1440$ evaluaciones para el dataset Lite, lo que sugiere una superficie de p\'erdida m\'as compleja en el universo ampliado de competiciones. Los valores \'optimos del par\'ametro de calibraci\'on del empate resultan:
+%\begin{align}
+	%d_{\text{Full}} &= 0{.}9113, \\
+	%d_{\text{Lite}} &= 0{.}9351, \\
+	%d_{\text{Lite Recortado}} &= 0{.}9113.
+%\end{align}
+%La coincidencia entre Full y Lite Recortado (misma ventana temporal) valida la estabilidad del estimador, mientras que el valor ligeramente superior en Lite ($0{.}9351$) refleja la mayor heterogeneidad competitiva al incluir ligas con datos deportivos incompletos (Ir\'an y Venezuela).
+
+% [PLACEHOLDER: Insertar Cuadro con valores calibrados de h_ℓ y μ_init,ℓ por liga.
+% Los archivos JSON originales (glicko_params_*.json) se perdieron y deben regenerarse.
+% Formato sugerido: Liga | μ_init,ℓ | h_ℓ | h_ℓ escala nominal.
+% Nota al estudiante: re-entrenar G2Av1513 o recuperar los JSON de Colab.]
+
+%El rango final de los ratings tras la actualizaci\'on secuencial sobre el conjunto completo es $[1205{.}3,\, 1821{.}2]$ para Full, con un rango de $616$ puntos, y $[1201{.}7,\, 1850{.}4]$ para Lite, con un rango de $648{.}7$ puntos. Estos rangos son coherentes con la escala Glicko-2 y reflejan la dispersi\'on competitiva real del panel.
+
+%\paragraph{Evaluaci\'on aislada del bloque de rating.} Sobre el conjunto de prueba, el sistema Glicko-2 calibrado en aislamiento (sin refinamiento neuronal) alcanza una log-loss de $1{.}0443$ (Full), $1{.}0440$ (Lite) y $1{.}0443$ (Lite Recortado), con log-loss binaria (victoria local vs.\ no victoria local) de $0{.}6527$, $0{.}6506$ y $0{.}6527$, respectivamente. Estos valores constituyen la l\'inea base contra la cual se mide el aporte del perceptr\'on multicapa.
+
+\subsection{Entrenamiento del bloque de refinamiento}
+\label{subsec:train_mlp}
+
+El tercer bloque corrige las probabilidades base mediante un perceptr\'on multicapa feedforward implementado en Keras/TensorFlow. El entrenamiento se describe en t\'erminos de su funci\'on de p\'erdida, optimizador, protocolo de validaci\'on y estrategia de inferencia estad\'istica.
+
+\paragraph{Vector de entrada y estandarizaci\'on.} Para cada partido $i$, el input $\mathbf{z}_i \in \mathbb{R}^{13}$ concatena las probabilidades base $(P_{H,i}, P_{D,i}, P_{A,i})$ generadas por el Glicko-2 modificado con las diez covariables ex\'ogenas estandarizadas seleccionadas en la Secci\'on~\ref{sec:seleccion_covariables}. La estandarizaci\'on (media cero, varianza unitaria) se ajusta exclusivamente sobre el conjunto de entrenamiento mediante \texttt{StandardScaler} de scikit-learn y se aplica al conjunto de prueba, garantizando que la escala de las covariables no condicione la magnitud de los gradientes.
+
+\paragraph{Arquitectura e hiperpar\'ametros de entrenamiento.} La arquitectura de la red se detall\'o en la Secci\'on~\ref{subsec:mlp}; aqu\'i se precisan los hiperpar\'ametros del optimizador:
+\begin{itemize}
+	\item \textbf{Funci\'on de p\'erdida:} entrop\'ia cruzada categ\'orica (\texttt{categorical\_crossentropy}), equivalente a la log-verosimilitud negativa del modelo multinomial (Proposici\'on~\ref{prop:equivalencia} de Cap\'itulo~\ref{ch:marco}).
+	\item \textbf{Optimizador:} Adam con tasa de aprendizaje inicial $\eta_0 = 10^{-3}$ y par\'ametros por defecto $\beta_1 = 0{.}9$, $\beta_2 = 0{.}999$.
+	\item \textbf{Planificador de tasa:} \texttt{ReduceLROnPlateau} que reduce $\eta$ por un factor $0{.}5$ si la p\'erdida de validaci\'on no decrece durante $3$ \'epocas consecutivas.
+	\item \textbf{Configuraci\'on de entrenamiento:} $50$ \'epocas, \emph{batch size} $64$, reservando el $10\%$ del entrenamiento para validaci\'on interna (\texttt{validation\_split}$=0{.}1$).
+\end{itemize}
+
+\paragraph{Protocolo de evaluaci\'on: corridas pareadas.} Dado el car\'acter estoc\'astico de la inicializaci\'on de pesos de la red y del \emph{dropout}, se ejecutan $10$ corridas pareadas con semillas consecutivas $\{\texttt{Seed},\dots,\texttt{Seed}+9\}$, donde $\texttt{Seed}=42$. En cada corrida se reentrena el Glicko-2 desde cero (manteniendo los hiperpar\'ametros $d$ y $h_\ell$ previamente optimizados) y se ajusta el MLP sobre las probabilidades base resultantes. Este dise\~no experimental permite:
+\begin{enumerate}
+	\item Estimar la varianza del desempe\~no atribuible a la aleatoriedad del optimizador neuronal.
+	\item Aplicar inferencia estad\'istica mediante el test $t$ pareado para comparar el modelo base (MLP sobre probabilidades Glicko-2 sin covariables) contra el modelo completo (MLP sobre probabilidades m\'as covariables ex\'ogenas).
+\end{enumerate}
+
+\paragraph{M\'etricas de evaluaci\'on del protocolo.} Para cada corrida se registran: (i)~la log-loss categ\'orica sobre el conjunto de prueba, como m\'etrica principal de calibraci\'on probabil\'istica; (ii)~la log-loss binaria sobre la partici\'on $\{H, \neg H\}$, para mantener comparabilidad con la literatura base; (iii)~la \emph{accuracy} global bajo la regla de decisi\'on dura $\arg\max$; y (iv)~el $F1$-score por clase, con \'enfasis particular en la clase empate ($D$) dada su dificultad estructural de predicci\'on.
+
+\paragraph{Observaci\'on sobre el colapso de la clase empate.} Uno de los fen\'omenos estructurales documentados en la predicci\'on de resultados trinomiales es el colapso de la clase empate bajo la regla de decisi\'on dura $\arg\max$. Desde la perspectiva te\'orica, este colapso puede deberse a la geometr\'ia del simplex de probabilidades: la regi\'on en la cual $P_D > \max\{P_H,P_A\}$ es estrecha cuando la masa probabil\'istica se concentra en las clases extremas, situaci\'on frecuente en modelos de rating que no incorporan informaci\'on contextual del encuentro. En consecuencia, se plantea la hip\'otesis de que la inclusi\'on de covariables ex\'ogenas, econ\'omicas, ambientales y deportivas, podr\'ia expandir dicha regi\'on al introducir se\~nal adicional que modula las probabilidades base m\'as all\'a de la fuerza latente hist\'orica de los equipos. El protocolo de 10 corridas pareadas est\'a dise\~nado para contrastar esta hip\'otesis; no obstante, la verificaci\'on de si dicha expansi\'on ocurre, y de si es estad\'istica y pr\'acticamente significativa, se reserva para el cap\'itulo de Resultados.
+
+%El fen\'omeno de $F1_D = 0$ en el modelo base no es una anomal\'ia de implementaci\'on, sino una propiedad estructural derivada de la geometr\'ia del simplex de probabilidades, como se analiza en la Secci\'on~\ref{subsec:empate} del Marco Te\'orico. En el cap\'itulo de ~(\ref{ch:resultados}) se contrastar\'a si la recuperaci\'on parcial de $F1_D$ observada en el modelo completo es estad\'isticamente y pr\'acticamente significativa, difiriendo toda conclusi\'on sobre el aporte de las covariables ex\'ogenas a la evaluaci\'on emp\'irica. Mientras tanto, esta observaci\'on funciona \'unicamente como descripci\'on del protocolo experimental, no como veredicto sobre la hip\'otesis central.
+
+% ============================================================
+% SECCION 3.6 -- Metricas de evaluacion
+% ============================================================
+
+\section{M\'etricas de evaluaci\'on}
+\label{sec:metricas_eval}
+
+El dise\~no del sistema predictivo exige un esquema de evaluaci\'on que distinga entre calibraci\'on probabil\'istica y capacidad de clasificaci\'on dura. Como se establece en la Secci\'on~\ref{sec:metricas} del Marco Te\'orico, la log-loss categ\'orica constituye la m\'etrica central de optimizaci\'on porque es una \emph{strictly proper scoring rule}: incentiva al modelo a reportar la probabilidad verdadera de cada resultado sin forzar una apuesta binaria. No obstante, para complementar el an\'alisis y mantener comparabilidad con la literatura base, se reportan tambi\'en m\'etricas de clasificaci\'on y un protocolo de inferencia estad\'istica sobre corridas pareadas. Esta secci\'on sistematiza el c\'omputo de dichas m\'etricas sobre cada bloque funcional del pipeline.
+
+\subsection{M\'etricas probabil\'isticas}
+\label{subsec:metricas_prob}
+
+\paragraph{Log-loss categ\'orica.} Sea $\tilde{\mathbf{P}}_i = (\tilde{P}_{H,i}, \tilde{P}_{D,i}, \tilde{P}_{A,i})^\top$ el vector de probabilidades predicho por el modelo para el partido $i$, y sea $\mathbf{y}_i \in \{0,1\}^3$ su codificaci\'on \emph{one-hot}. La log-loss categ\'orica sobre una muestra de $N$ partidos se define como
+\begin{equation}
+	\mathcal{L}_{\mathrm{log}} = -\frac{1}{N}\sum_{i=1}^{N}\sum_{c\in\{H,D,A\}} y_{i,c}\,\log \tilde{P}_{c,i},
+	\label{eq:logloss_impl}
+\end{equation}
+con las probabilidades recortadas al intervalo $[10^{-15}, 1-10^{-15}]$ para estabilidad num\'erica. Como se demostr\'o en la Proposici\'on~\ref{prop:equivalencia}, minimizar \eqref{eq:logloss_impl} es estad\'isticamente equivalente a maximizar la log-verosimilitud del modelo multinomial. En consecuencia, esta m\'etrica se adopta como criterio principal de comparaci\'on entre arquitecturas.
+
+\paragraph{Log-loss binaria.} Para mantener comparabilidad directa con el trabajo base de Shelopugin y Sirotkin \cite{Glicko2Mod}, quienes reportan log-loss sobre la partici\'on binaria $\{H, \neg H\}$, se computa adicionalmente
+\begin{equation}
+	\mathcal{L}_{\mathrm{log}}^{\mathrm{bin}} = -\frac{1}{N}\sum_{i=1}^{N}\Bigl[ y_{i,H}\log \tilde{P}_{H,i} + (1-y_{i,H})\log(1-\tilde{P}_{H,i})\Bigr].
+	\label{eq:logloss_bin_impl}
+\end{equation}
+Si bien \eqref{eq:logloss_bin_impl} preserva la propiedad de \emph{proper scoring rule} sobre el simplex unidimensional, no eval\'ua la coherencia conjunta de $(P_H,P_D,P_A)$. Por tanto, su uso se restringe a referencia cruzada entre el MLP principal, el m\'odulo exploratorio GRU y la l\'inea base del Glicko-2.
+
+\paragraph{Divergencia de Kullback-Leibler y calibraci\'on.} La descomposici\'on cl\'asica de la entrop\'ia cruzada (Proposici\'on~\ref{prop:descomposicion}) vincula la log-loss con la divergencia KL:
+\begin{equation}
+	\mathcal{L}_{\mathrm{log}} = \frac{1}{N}\sum_{i=1}^{N}\Bigl[ H(\mathbf{y}_i) + D_{\mathrm{KL}}(\mathbf{y}_i \,\|\, \tilde{\mathbf{P}}_i)\Bigr],
+\end{equation}
+donde $H(\mathbf{y}_i)$ es la entrop\'ia de Shannon de la distribuci\'on emp\'irica (nula para una etiqueta \emph{one-hot}) y $D_{\mathrm{KL}}$ cuantifica la discrepancia entre la probabilidad predicha y la real. Esta interpretaci\'on justifica el uso de la log-loss como indicador de calibraci\'on: un modelo perfectamente calibrado exhibir\'ia $\mathbb{E}[\tilde{P}_c] = \mathbb{P}(Y=c)$ para cada clase $c$.
+
+\subsection{M\'etricas de clasificaci\'on}
+\label{subsec:metricas_clas}
+
+Las m\'etricas probabil\'isticas eval\'uan la distribuci\'on predicha en su conjunto. Para obtener una etiqueta \'unica, se aplica la regla de decisi\'on dura de m\'axima probabilidad a posteriori:
+\begin{equation}
+	\hat{y}_i = \arg\max_{c\in\{H,D,A\}} \tilde{P}_{c,i}.
+	\label{eq:argmax_impl}
+\end{equation}
+
+A partir de \eqref{eq:argmax_impl} se construye la matriz de confusi\'on $\mathbf{M}\in\mathbb{N}^{3\times 3}$, donde $M_{rc}$ cuenta los partidos cuya clase verdadera es $r$ y cuya clase predicha es $c$. Sobre esta matriz se definen las m\'etricas por clase:
+\begin{align}
+	\text{Precision}_c &= \frac{M_{cc}}{\sum_{r} M_{rc}}, &
+	\text{Recall}_c &= \frac{M_{cc}}{\sum_{c'} M_{cc'}}, &
+	F1_c &= 2\cdot\frac{\text{Precision}_c\cdot\text{Recall}_c}{\text{Precision}_c+\text{Recall}_c}.
+	\label{eq:metricas_clase_impl}
+\end{align}
+
+La \emph{accuracy} global mide la fracci\'on de aciertos:
+\begin{equation}
+	\mathrm{Acc} = \frac{1}{N}\sum_{i=1}^{N} \mathbb{I}(\hat{y}_i = y_i).
+\end{equation}
+
+Dado el desbalance natural entre clases en el f\'utbol profesional (la frecuencia de empates se ubica alrededor del $26\%$), se reportan dos agregaciones del $F1$-score:
+\begin{align}
+	\mathrm{F1}_{\mathrm{macro}} &= \frac{1}{3}\sum_{c\in\{H,D,A\}} F1_c, \\
+	\mathrm{F1}_{\mathrm{weighted}} &= \sum_{c\in\{H,D,A\}} \frac{n_c}{N}\,F1_c,
+\end{align}
+donde $n_c$ es el soporte (n\'umero de observaciones reales) de la clase $c$. El $\mathrm{F1}_{\mathrm{macro}}$ es sensible al desempe\~no en la clase minoritaria (el empate), mientras que el $\mathrm{F1}_{\mathrm{weighted}}$ refleja el comportamiento sobre la distribuci\'on emp\'irica del dataset.
+
+El c\'omputo de \eqref{eq:metricas_clase_impl} se realiza mediante la rutina \texttt{precision\_recall\_fscore\_support} de scikit-learn, con el par\'ametro \texttt{zero\_division=0} para garantizar estabilidad num\'erica cuando una clase no es predicha en absoluto.
+
+\subsection{Protocolo de inferencia estad\'istica}
+\label{subsec:test_t}
+
+La comparaci\'on entre el modelo base (MLP sobre probabilidades Glicko-2 sin covariables ex\'ogenas) y el modelo completo (MLP con covariables) se realiza mediante un \textbf{test $t$ pareado} sobre las $10$ corridas del protocolo descrito en la Secci\'on~\ref{subsec:train_mlp}. Para cada m\'etrica de inter\'es $\mathcal{M}$ (log-loss categ\'orica, log-loss binaria, $F1_D$), se define la diferencia por corrida $\Delta_k = \mathcal{M}_k^{\text{base}} - \mathcal{M}_k^{\text{full}}$ y se contrasta la hip\'otesis nula $H_0: \mathbb{E}[\Delta] = 0$ mediante el estad\'istico
+\begin{equation}
+	t = \frac{\bar{\Delta}}{s_{\Delta}/\sqrt{K}},
+\end{equation}
+con $K=10$ corridas y $s_{\Delta}$ la desviaci\'on est\'andar muestral de las diferencias. El $p$-valor asociado se computa bajo la distribuci\'on $t$ de Student con $K-1$ grados de libertad.
+
+La inferencia formal mediante el test $t$ pareado se establece exclusivamente sobre m\'etricas continuas que satisfacen los supuestos de normalidad: la log-loss categ\'orica y la log-loss binaria. En cuanto a la m\'etrica $F1_D$, si el modelo base no predijera la clase empate en ninguna de las corridas, la varianza intra-condici\'on resultar\'ia nula y la distribuci\'on de las diferencias pareadas dejar\'ia de ser gaussiana, invalidando el estad\'istico $t$. Por esta raz\'on, cualquier comparaci\'on que involucre $F1_D$ se reportar\'a \'unicamente con car\'acter descriptivo, sin asociaci\'on a valores-$p$ ni a conclusiones inferenciales sobre el efecto de las covariables ex\'ogenas.
+
+% Es importante destacar que la inferencia con validez asint\'otica se realiza sobre la log-loss categ\'orica y la log-loss binaria, m\'etricas continuas que satisfacen las condiciones del test t pareado. En el caso de $F1_D$, el modelo base exhibe varianza intra-condici\'on nula ($F1_D≡0$  en todas las semillas), por lo que la distribuci\'on de las diferencias pareadas deja de ser gaussiana y el test t resulta degenerado. En consecuencia, cualquier valor-p  asociado a $F1_D$ debe interpretarse \'unicamente en sentido descriptivo, no como prueba de hip\'otesis sobre el efecto de las covariables ex\'ogenas.
+
+Este dise\~no experimental controla la varianza intra-dataset al parear las corridas por semilla, aislando as\'i el efecto neto de las covariables ex\'ogenas del ruido estoc\'astico del optimizador Adam y del \emph{dropout}.
+
+\subsection{Evaluaci\'on por bloque funcional}
+\label{subsec:eval_bloques}
+
+Cada componente del pipeline se somete a un diagn\'ostico espec\'ifico acorde a su rol inferencial.
+
+\paragraph{Bloque de conteo (Skellam/LightGBM).} Se eval\'ua mediante:
+
+\begin{itemize}
+	\item el MAE de $\hat{\lambda}_H$ y $\hat{\lambda}_A$ respecto a los goles observados, que cuantifica la calibraci\'on del predictor en la escala original de los datos.
+	\item comparaci\'on entre $\hat{P}_D^{\text{(Skellam)}}$ sobre el conjunto de prueba y la frecuencia observada en empates, como indicador de calibracion marginal.
+	\item la log-loss cat\'egorica del vector $\left(P_H,P_D,P_A\right)$ cuando se requiera evaluaci\'on probabilistica.
+\end{itemize}
+
+Adicionalmente, se contrasta la frecuencia observada de empates contra la media de las predicciones para detectar sesgos sistem\'aticos.
+
+\paragraph{Bloque de rating (Glicko-2 modificado).} En aislamiento, el sistema se eval\'ua con la log-loss categ\'orica y la log-loss binaria sobre el conjunto de prueba, utilizando las probabilidades base $(P_H, P_D, P_A)$ generadas antes del refinamiento neuronal. Estos valores constituyen la l\'inea base inferencial contra la cual se mide el aporte predictivo del MLP.
+
+\paragraph{Bloque de refinamiento (MLP).} Es el \'unico bloque evaluado con el protocolo completo: log-loss categ\'orica (m\'etrica principal), log-loss binaria (referencia cruzada), accuracy global, matriz de confusi\'on, y $F1$-score desagregado por clase y agregado (macro/weighted). La evaluaci\'on se ejecuta sobre las $10$ corridas pareadas, reportando media, varianza muestral y resultados del test $t$.
+
+\subsection{Discusi\'on metodol\'ogica sobre el empate}
+\label{subsec:empate_metodologia}
+
+Un fen\'omeno recurrente en la predicci\'on de resultados de f\'utbol es la dificultad de clasificar correctamente la clase empate bajo la regla de decisi\'on dura \eqref{eq:argmax_impl}. En el marco del presente trabajo, este comportamiento no es una anomal\'ia de implementaci\'on, sino una propiedad estructural derivable del modelo de conteo y de la geometr\'ia del simplex de probabilidades, como se expone en la Secci\'on~\ref{subsec:empate} del Marco Te\'orico.
+
+Desde el punto de vista metodol\'ogico, esta observaci\'on impone una distinci\'on rigurosa entre dos conceptos:
+\begin{itemize}
+	\item \textbf{Calibraci\'on probabil\'istica:} un modelo est\'a calibrado cuando la media de sus predicciones $\tilde{P}_D$ coincide con la frecuencia relativa observada de empates. La log-loss, al ser una \emph{strictly proper scoring rule}, incentiva exactamente esta propiedad.
+	\item \textbf{Clasificaci\'on dura:} la regla $\arg\max$ impone una partici\'on del simplex $\Delta^2$ que ignora la magnitud de las probabilidades asignadas a las clases no elegidas. En consecuencia, un modelo puede estar perfectamente calibrado ($\mathbb{E}[\tilde{P}_D] \approx 0{.}26$) y, no obstante, exhibir $\text{Recall}_D = 0$ bajo $\arg\max$.
+\end{itemize}
+
+El protocolo de evaluaci\'on incluye el registro descriptivo de $F1_D$ en ambas configuraciones experimentales (modelo base y modelo completo). La comparaci\'on entre ambas se presenta como un contraste protocolario cuya lectura inferencial requiere la validaci\'on conjunta de las m\'etricas probabil\'isticas globales. La discusi\'on sobre el eventual aporte de las covariables ex\'ogenas al desempe\~no de la clase empate se reserva para el cap\'itulo (\ref{ch:resultados}), donde se analizar\'a el conjunto completo de evidencia num\'erica proveniente de las 10 corridas pareadas.
+
+%Por esta raz\'on, el protocolo de evaluaci\'on del MLP prioriza la log-loss categ\'orica sobre la accuracy. La recuperaci\'on parcial de $F1_D$ en el modelo completo (con covariables ex\'ogenas) respecto al modelo base $(F1_D=0)$ se plantea como hip\'otesis a evaluar en el cap'itulo ~(\ref{ch:resultados}): si dicha recuperaci\'on resulta estad\'isticamente consistente, se interpretar\'a como indicio de que las covariables deportivas, econ\'omicas y ambientales podr\'ian contener se\~nal complementaria no capturada por el sistema de rating puro. El veredicto final sobre su aporte predictivo queda reservado al an\'alisis emp\'irico.
+%La recuperaci\'on parcial de $F1_D$ en el modelo completo (con covariables ex\'ogenas) respecto al modelo base ($F1_D = 0$) se interpreta no como una resoluci\'on del problema, sino como evidencia de que las covariables deportivas, econ\'omicas y ambientales contienen se\~nal complementaria que el sistema de rating puro no captura.

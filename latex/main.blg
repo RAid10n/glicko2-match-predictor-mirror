@@ -1,0 +1,16 @@
+[0] Config.pm:308> INFO - This is Biber 2.20
+[1] Config.pm:311> INFO - Logfile is 'main.blg'
+[473] biber-MSWIN64:340> INFO - === 
+[639] Biber.pm:420> INFO - Reading 'main.bcf'
+[1171] Biber.pm:994> INFO - Found 39 citekeys in bib section 0
+[1235] Biber.pm:4463> INFO - Processing section 0
+[1295] Biber.pm:4654> INFO - Looking for bibtex file 'references.bib' for section 0
+[1592] bibtex.pm:1713> INFO - LaTeX decoding ...
+[1785] bibtex.pm:1519> INFO - Found BibTeX data source 'references.bib'
+[2403] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'variable = shifted' with 'variable = non-ignorable'
+[2403] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[2403] Biber.pm:4283> INFO - Sorting list 'nyt/global//global/global/global' of type 'entry' with template 'nyt' and locale 'es-ES'
+[2865] bbl.pm:676> INFO - Writing 'main.bbl' with encoding 'UTF-8'
+[2920] bbl.pm:779> INFO - Output to main.bbl
+[2924] Biber.pm:131> WARN - Duplicate entry key: 'maher1982' in file 'references.bib', skipping ...
+[2924] Biber.pm:133> INFO - WARNINGS: 1

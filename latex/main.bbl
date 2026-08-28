@@ -1,0 +1,1231 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global/global}
+    \entry{Charu2018}{book}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=020c70dc5cad67c05e0b5981f0dd4b1e}{%
+           family={Aggarwa},
+           familyi={A\bibinitperiod},
+           given={Charu},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{020c70dc5cad67c05e0b5981f0dd4b1e}
+      \strng{fullhash}{020c70dc5cad67c05e0b5981f0dd4b1e}
+      \strng{fullhashraw}{020c70dc5cad67c05e0b5981f0dd4b1e}
+      \strng{bibnamehash}{020c70dc5cad67c05e0b5981f0dd4b1e}
+      \strng{authorbibnamehash}{020c70dc5cad67c05e0b5981f0dd4b1e}
+      \strng{authornamehash}{020c70dc5cad67c05e0b5981f0dd4b1e}
+      \strng{authorfullhash}{020c70dc5cad67c05e0b5981f0dd4b1e}
+      \strng{authorfullhashraw}{020c70dc5cad67c05e0b5981f0dd4b1e}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Neural Newtworks and Deep Learning}
+      \field{year}{2018}
+    \endentry
+    \entry{AFCRanking2024}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=2faf69667e649eb82bbff2c82354bd70}{%
+           family={{Asian Football Confederation}},
+           familyi={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{2faf69667e649eb82bbff2c82354bd70}
+      \strng{fullhash}{2faf69667e649eb82bbff2c82354bd70}
+      \strng{fullhashraw}{2faf69667e649eb82bbff2c82354bd70}
+      \strng{bibnamehash}{2faf69667e649eb82bbff2c82354bd70}
+      \strng{authorbibnamehash}{2faf69667e649eb82bbff2c82354bd70}
+      \strng{authornamehash}{2faf69667e649eb82bbff2c82354bd70}
+      \strng{authorfullhash}{2faf69667e649eb82bbff2c82354bd70}
+      \strng{authorfullhashraw}{2faf69667e649eb82bbff2c82354bd70}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://www.the-afc.com/}}
+      \field{title}{Principles of the {AFC} Club Competitions Ranking System}
+      \field{year}{2024}
+    \endentry
+    \entry{bradley1952}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=a5f44e148696806fac3157838562a830}{%
+           family={Bradley},
+           familyi={B\bibinitperiod},
+           given={Ralph\bibnamedelima Allan},
+           giveni={R\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0a3591c5b9ed914ba95425df62b28c12}{%
+           family={Terry},
+           familyi={T\bibinitperiod},
+           given={Milton\bibnamedelima E.},
+           giveni={M\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Oxford University Press}%
+      }
+      \strng{namehash}{9de9bb18181586d76ddf0bbf0cbb6387}
+      \strng{fullhash}{9de9bb18181586d76ddf0bbf0cbb6387}
+      \strng{fullhashraw}{9de9bb18181586d76ddf0bbf0cbb6387}
+      \strng{bibnamehash}{9de9bb18181586d76ddf0bbf0cbb6387}
+      \strng{authorbibnamehash}{9de9bb18181586d76ddf0bbf0cbb6387}
+      \strng{authornamehash}{9de9bb18181586d76ddf0bbf0cbb6387}
+      \strng{authorfullhash}{9de9bb18181586d76ddf0bbf0cbb6387}
+      \strng{authorfullhashraw}{9de9bb18181586d76ddf0bbf0cbb6387}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Biometrika}
+      \field{title}{Rank Analysis of Incomplete Block Designs: {I}. The Method of Paired Comparisons}
+      \field{year}{1952}
+      \verb{doi}
+      \verb 10.2307/2334029
+      \endverb
+    \endentry
+    \entry{TemperaturaGoles}{online}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=d6a6a5ef42d5e32b778e62b74c2bde17}{%
+           family={Bransen},
+           familyi={B\bibinitperiod},
+           given={Lotte},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{organization}{1}{%
+        {Tussen de Linies}%
+      }
+      \strng{namehash}{d6a6a5ef42d5e32b778e62b74c2bde17}
+      \strng{fullhash}{d6a6a5ef42d5e32b778e62b74c2bde17}
+      \strng{fullhashraw}{d6a6a5ef42d5e32b778e62b74c2bde17}
+      \strng{bibnamehash}{d6a6a5ef42d5e32b778e62b74c2bde17}
+      \strng{authorbibnamehash}{d6a6a5ef42d5e32b778e62b74c2bde17}
+      \strng{authornamehash}{d6a6a5ef42d5e32b778e62b74c2bde17}
+      \strng{authorfullhash}{d6a6a5ef42d5e32b778e62b74c2bde17}
+      \strng{authorfullhashraw}{d6a6a5ef42d5e32b778e62b74c2bde17}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Doelpuntenfestijn bij zonneschijn?}
+      \field{year}{2017}
+      \verb{urlraw}
+      \verb https://www.tussendelinies.nl/doelpuntenfestijn-bij-zonneschijn/
+      \endverb
+      \verb{url}
+      \verb https://www.tussendelinies.nl/doelpuntenfestijn-bij-zonneschijn/
+      \endverb
+    \endentry
+    \entry{byrd1995limited}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=5a28551b79116d5aa47933899f1dfee0}{%
+           family={Byrd},
+           familyi={B\bibinitperiod},
+           given={Richard\bibnamedelima H.},
+           giveni={R\bibinitperiod\bibinitdelim H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8c2f3741ab4369f5590e2e16412db71b}{%
+           family={Lu},
+           familyi={L\bibinitperiod},
+           given={Peihuang},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=88a342d927bf795b0d92af8a5613da31}{%
+           family={Nocedal},
+           familyi={N\bibinitperiod},
+           given={Jorge},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=db29c9e94410252c9dd6938604f708b8}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={Ciyou},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {SIAM}%
+      }
+      \strng{namehash}{baf523517e047c9f98b50b0ed26ebe81}
+      \strng{fullhash}{f5975dd93e119527dc785af7466cba20}
+      \strng{fullhashraw}{f5975dd93e119527dc785af7466cba20}
+      \strng{bibnamehash}{baf523517e047c9f98b50b0ed26ebe81}
+      \strng{authorbibnamehash}{baf523517e047c9f98b50b0ed26ebe81}
+      \strng{authornamehash}{baf523517e047c9f98b50b0ed26ebe81}
+      \strng{authorfullhash}{f5975dd93e119527dc785af7466cba20}
+      \strng{authorfullhashraw}{f5975dd93e119527dc785af7466cba20}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{SIAM Journal on Scientific Computing}
+      \field{title}{A Limited Memory Algorithm for Bound Constrained Optimization}
+      \field{year}{1995}
+      \verb{doi}
+      \verb 10.1137/0916069
+      \endverb
+    \endentry
+    \entry{casella2002}{book}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=c7abc90e14f2761d9325ee092fda0de7}{%
+           family={Casella},
+           familyi={C\bibinitperiod},
+           given={George},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=819beb5f4220e56c3afce0e6c63847a1}{%
+           family={Berger},
+           familyi={B\bibinitperiod},
+           given={Roger\bibnamedelima L.},
+           giveni={R\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Duxbury Press}%
+      }
+      \strng{namehash}{c6df33453b0c6fbb42492656a87f4723}
+      \strng{fullhash}{c6df33453b0c6fbb42492656a87f4723}
+      \strng{fullhashraw}{c6df33453b0c6fbb42492656a87f4723}
+      \strng{bibnamehash}{c6df33453b0c6fbb42492656a87f4723}
+      \strng{authorbibnamehash}{c6df33453b0c6fbb42492656a87f4723}
+      \strng{authornamehash}{c6df33453b0c6fbb42492656a87f4723}
+      \strng{authorfullhash}{c6df33453b0c6fbb42492656a87f4723}
+      \strng{authorfullhashraw}{c6df33453b0c6fbb42492656a87f4723}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{2nd}
+      \field{title}{Statistical Inference}
+      \field{year}{2002}
+    \endentry
+    \entry{MetricasBase}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=0ee80fd25266cd6d5f6d05662ed06f41}{%
+           family={Castellanos},
+           familyi={C\bibinitperiod},
+           given={Adrián},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{0ee80fd25266cd6d5f6d05662ed06f41}
+      \strng{fullhash}{0ee80fd25266cd6d5f6d05662ed06f41}
+      \strng{fullhashraw}{0ee80fd25266cd6d5f6d05662ed06f41}
+      \strng{bibnamehash}{0ee80fd25266cd6d5f6d05662ed06f41}
+      \strng{authorbibnamehash}{0ee80fd25266cd6d5f6d05662ed06f41}
+      \strng{authornamehash}{0ee80fd25266cd6d5f6d05662ed06f41}
+      \strng{authorfullhash}{0ee80fd25266cd6d5f6d05662ed06f41}
+      \strng{authorfullhashraw}{0ee80fd25266cd6d5f6d05662ed06f41}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://objetivoanalista.com/metricas-en-el-futbol-moderno/}}
+      \field{note}{Objetivo Analista}
+      \field{title}{Métricas en el fútbol moderno: concepto, análisis y uso}
+      \field{year}{2020}
+    \endentry
+    \entry{CONCACAFRanking2023}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=94468c6861f766abd9a00bdabdbeaadf}{%
+           family={{Concacaf}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{94468c6861f766abd9a00bdabdbeaadf}
+      \strng{fullhash}{94468c6861f766abd9a00bdabdbeaadf}
+      \strng{fullhashraw}{94468c6861f766abd9a00bdabdbeaadf}
+      \strng{bibnamehash}{94468c6861f766abd9a00bdabdbeaadf}
+      \strng{authorbibnamehash}{94468c6861f766abd9a00bdabdbeaadf}
+      \strng{authornamehash}{94468c6861f766abd9a00bdabdbeaadf}
+      \strng{authorfullhash}{94468c6861f766abd9a00bdabdbeaadf}
+      \strng{authorfullhashraw}{94468c6861f766abd9a00bdabdbeaadf}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://www.concacaf.com/}}
+      \field{title}{How does the {Concacaf} Club Ranking system work?}
+      \field{year}{2023}
+    \endentry
+    \entry{CONMEBOLRanking2021}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=8c15a820452a726add96b8c3efd66a2a}{%
+           family={{CONMEBOL}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{8c15a820452a726add96b8c3efd66a2a}
+      \strng{fullhash}{8c15a820452a726add96b8c3efd66a2a}
+      \strng{fullhashraw}{8c15a820452a726add96b8c3efd66a2a}
+      \strng{bibnamehash}{8c15a820452a726add96b8c3efd66a2a}
+      \strng{authorbibnamehash}{8c15a820452a726add96b8c3efd66a2a}
+      \strng{authornamehash}{8c15a820452a726add96b8c3efd66a2a}
+      \strng{authorfullhash}{8c15a820452a726add96b8c3efd66a2a}
+      \strng{authorfullhashraw}{8c15a820452a726add96b8c3efd66a2a}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://www.conmebol.com/}}
+      \field{title}{Ranking de Clubes {CONMEBOL} 2021}
+      \field{year}{2021}
+    \endentry
+    \entry{cover2006}{book}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=fe5b7bbda12c7502f55ddb9eeded8622}{%
+           family={Cover},
+           familyi={C\bibinitperiod},
+           given={Thomas\bibnamedelima M.},
+           giveni={T\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e6518a9e085a3ee5221c27f5d8f826dc}{%
+           family={Thomas},
+           familyi={T\bibinitperiod},
+           given={Joy\bibnamedelima A.},
+           giveni={J\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley-Interscience}%
+      }
+      \strng{namehash}{e427ba6c0eda5292558c30c786236c01}
+      \strng{fullhash}{e427ba6c0eda5292558c30c786236c01}
+      \strng{fullhashraw}{e427ba6c0eda5292558c30c786236c01}
+      \strng{bibnamehash}{e427ba6c0eda5292558c30c786236c01}
+      \strng{authorbibnamehash}{e427ba6c0eda5292558c30c786236c01}
+      \strng{authornamehash}{e427ba6c0eda5292558c30c786236c01}
+      \strng{authorfullhash}{e427ba6c0eda5292558c30c786236c01}
+      \strng{authorfullhashraw}{e427ba6c0eda5292558c30c786236c01}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{2nd}
+      \field{title}{Elements of Information Theory}
+      \field{year}{2006}
+    \endentry
+    \entry{Cybenko1989}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=5f82e084564c9fa2622446ae39f882ed}{%
+           family={Cybenko},
+           familyi={C\bibinitperiod},
+           given={George},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{5f82e084564c9fa2622446ae39f882ed}
+      \strng{fullhash}{5f82e084564c9fa2622446ae39f882ed}
+      \strng{fullhashraw}{5f82e084564c9fa2622446ae39f882ed}
+      \strng{bibnamehash}{5f82e084564c9fa2622446ae39f882ed}
+      \strng{authorbibnamehash}{5f82e084564c9fa2622446ae39f882ed}
+      \strng{authornamehash}{5f82e084564c9fa2622446ae39f882ed}
+      \strng{authorfullhash}{5f82e084564c9fa2622446ae39f882ed}
+      \strng{authorfullhashraw}{5f82e084564c9fa2622446ae39f882ed}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Mathematics of Control, Signals and Systems}
+      \field{title}{Approximation by Superpositions of a Sigmoidal Function}
+      \field{year}{1989}
+      \verb{doi}
+      \verb 10.1007/BF02551274
+      \endverb
+    \endentry
+    \entry{Elo1978}{incollection}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=bc8003306d2f256ec689a70e2d61d854}{%
+           family={Elo},
+           familyi={E\bibinitperiod},
+           given={Arpad},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {United States Chess Federation}%
+      }
+      \strng{namehash}{bc8003306d2f256ec689a70e2d61d854}
+      \strng{fullhash}{bc8003306d2f256ec689a70e2d61d854}
+      \strng{fullhashraw}{bc8003306d2f256ec689a70e2d61d854}
+      \strng{bibnamehash}{bc8003306d2f256ec689a70e2d61d854}
+      \strng{authorbibnamehash}{bc8003306d2f256ec689a70e2d61d854}
+      \strng{authornamehash}{bc8003306d2f256ec689a70e2d61d854}
+      \strng{authorfullhash}{bc8003306d2f256ec689a70e2d61d854}
+      \strng{authorfullhashraw}{bc8003306d2f256ec689a70e2d61d854}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Chess Life}
+      \field{title}{The Proposed USCF Rating System. Its Development, Theory, and Applications}
+      \field{year}{1967}
+    \endentry
+    \entry{Datosmacro}{online}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=445bdca3c41ac08291fcf2db8c941dbc}{%
+           family={{Expansión}},
+           familyi={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{445bdca3c41ac08291fcf2db8c941dbc}
+      \strng{fullhash}{445bdca3c41ac08291fcf2db8c941dbc}
+      \strng{fullhashraw}{445bdca3c41ac08291fcf2db8c941dbc}
+      \strng{bibnamehash}{445bdca3c41ac08291fcf2db8c941dbc}
+      \strng{authorbibnamehash}{445bdca3c41ac08291fcf2db8c941dbc}
+      \strng{authornamehash}{445bdca3c41ac08291fcf2db8c941dbc}
+      \strng{authorfullhash}{445bdca3c41ac08291fcf2db8c941dbc}
+      \strng{authorfullhashraw}{445bdca3c41ac08291fcf2db8c941dbc}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Datosmacro: Indicadores económicos de países}
+      \verb{urlraw}
+      \verb https://datosmacro.expansion.com/
+      \endverb
+      \verb{url}
+      \verb https://datosmacro.expansion.com/
+      \endverb
+    \endentry
+    \entry{FIFARanking2024}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=a2becd8331c868a15186922a01f69dd4}{%
+           family={{FIFA}},
+           familyi={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{a2becd8331c868a15186922a01f69dd4}
+      \strng{fullhash}{a2becd8331c868a15186922a01f69dd4}
+      \strng{fullhashraw}{a2becd8331c868a15186922a01f69dd4}
+      \strng{bibnamehash}{a2becd8331c868a15186922a01f69dd4}
+      \strng{authorbibnamehash}{a2becd8331c868a15186922a01f69dd4}
+      \strng{authornamehash}{a2becd8331c868a15186922a01f69dd4}
+      \strng{authorfullhash}{a2becd8331c868a15186922a01f69dd4}
+      \strng{authorfullhashraw}{a2becd8331c868a15186922a01f69dd4}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://www.fifa.com/fifa-world-ranking/}}
+      \field{title}{Revision of the {FIFA/Coca-Cola} World Ranking}
+      \field{year}{2024}
+    \endentry
+    \entry{Fonseca}{masterthesis}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=eebc33e0909f24ac1e8ed71ed9c43dbc}{%
+           family={Fonseca},
+           familyi={F\bibinitperiod},
+           given={Jose},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{institution}{1}{%
+        {Instituto Superior Técnico}%
+      }
+      \strng{namehash}{eebc33e0909f24ac1e8ed71ed9c43dbc}
+      \strng{fullhash}{eebc33e0909f24ac1e8ed71ed9c43dbc}
+      \strng{fullhashraw}{eebc33e0909f24ac1e8ed71ed9c43dbc}
+      \strng{bibnamehash}{eebc33e0909f24ac1e8ed71ed9c43dbc}
+      \strng{authorbibnamehash}{eebc33e0909f24ac1e8ed71ed9c43dbc}
+      \strng{authornamehash}{eebc33e0909f24ac1e8ed71ed9c43dbc}
+      \strng{authorfullhash}{eebc33e0909f24ac1e8ed71ed9c43dbc}
+      \strng{authorfullhashraw}{eebc33e0909f24ac1e8ed71ed9c43dbc}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Assessing Team Success in the Big-5 European Football Leagues}
+      \field{type}{Thesis to obtain the Master of Science Degree in Industrial Engineering and Management}
+      \field{year}{2022}
+    \endentry
+    \entry{Glickman1995}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=4fcda38858c83369e122fa60b42ae410}{%
+           family={Glickman},
+           familyi={G\bibinitperiod},
+           given={Mark\bibnamedelima E.},
+           giveni={M\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{4fcda38858c83369e122fa60b42ae410}
+      \strng{fullhash}{4fcda38858c83369e122fa60b42ae410}
+      \strng{fullhashraw}{4fcda38858c83369e122fa60b42ae410}
+      \strng{bibnamehash}{4fcda38858c83369e122fa60b42ae410}
+      \strng{authorbibnamehash}{4fcda38858c83369e122fa60b42ae410}
+      \strng{authornamehash}{4fcda38858c83369e122fa60b42ae410}
+      \strng{authorfullhash}{4fcda38858c83369e122fa60b42ae410}
+      \strng{authorfullhashraw}{4fcda38858c83369e122fa60b42ae410}
+      \field{extraname}{1}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Harvard University}
+      \field{title}{The Glicko system}
+      \field{year}{1995}
+    \endentry
+    \entry{Glickman1999}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=4fcda38858c83369e122fa60b42ae410}{%
+           family={Glickman},
+           familyi={G\bibinitperiod},
+           given={Mark\bibnamedelima E.},
+           giveni={M\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{4fcda38858c83369e122fa60b42ae410}
+      \strng{fullhash}{4fcda38858c83369e122fa60b42ae410}
+      \strng{fullhashraw}{4fcda38858c83369e122fa60b42ae410}
+      \strng{bibnamehash}{4fcda38858c83369e122fa60b42ae410}
+      \strng{authorbibnamehash}{4fcda38858c83369e122fa60b42ae410}
+      \strng{authornamehash}{4fcda38858c83369e122fa60b42ae410}
+      \strng{authorfullhash}{4fcda38858c83369e122fa60b42ae410}
+      \strng{authorfullhashraw}{4fcda38858c83369e122fa60b42ae410}
+      \field{extraname}{2}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Boston University}
+      \field{title}{Parameter estimation in large dynamic paired comparison experiments}
+      \field{year}{1999}
+    \endentry
+    \entry{Glickman2022}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=4fcda38858c83369e122fa60b42ae410}{%
+           family={Glickman},
+           familyi={G\bibinitperiod},
+           given={Mark\bibnamedelima E.},
+           giveni={M\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{4fcda38858c83369e122fa60b42ae410}
+      \strng{fullhash}{4fcda38858c83369e122fa60b42ae410}
+      \strng{fullhashraw}{4fcda38858c83369e122fa60b42ae410}
+      \strng{bibnamehash}{4fcda38858c83369e122fa60b42ae410}
+      \strng{authorbibnamehash}{4fcda38858c83369e122fa60b42ae410}
+      \strng{authornamehash}{4fcda38858c83369e122fa60b42ae410}
+      \strng{authorfullhash}{4fcda38858c83369e122fa60b42ae410}
+      \strng{authorfullhashraw}{4fcda38858c83369e122fa60b42ae410}
+      \field{extraname}{3}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Boston University}
+      \field{title}{Example of the Glicko-2 system}
+      \field{year}{2022}
+    \endentry
+    \entry{gneiting2007}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=cf94799d213c0ab2fd2012473da7440b}{%
+           family={Gneiting},
+           familyi={G\bibinitperiod},
+           given={Tilmann},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=205b9f60128ee13642fa79b6f1330d63}{%
+           family={Raftery},
+           familyi={R\bibinitperiod},
+           given={Adrian\bibnamedelima E.},
+           giveni={A\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{e1cf3b58d0c2bb5af66e55c7f264277d}
+      \strng{fullhash}{e1cf3b58d0c2bb5af66e55c7f264277d}
+      \strng{fullhashraw}{e1cf3b58d0c2bb5af66e55c7f264277d}
+      \strng{bibnamehash}{e1cf3b58d0c2bb5af66e55c7f264277d}
+      \strng{authorbibnamehash}{e1cf3b58d0c2bb5af66e55c7f264277d}
+      \strng{authornamehash}{e1cf3b58d0c2bb5af66e55c7f264277d}
+      \strng{authorfullhash}{e1cf3b58d0c2bb5af66e55c7f264277d}
+      \strng{authorfullhashraw}{e1cf3b58d0c2bb5af66e55c7f264277d}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of the American Statistical Association}
+      \field{title}{Strictly Proper Scoring Rules, Prediction, and Estimation}
+      \field{year}{2007}
+      \verb{doi}
+      \verb 10.1198/016214506000001437
+      \endverb
+    \endentry
+    \entry{Hornik1989}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=bec8dd1340457a82c21b54971e4c9417}{%
+           family={Hornik},
+           familyi={H\bibinitperiod},
+           given={Kurt},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=17a26ba07299c37a45cc2475a9f3bc8d}{%
+           family={Stinchcombe},
+           familyi={S\bibinitperiod},
+           given={Maxwell},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=426e452a5ec8e692f7740ce0d3e3655c}{%
+           family={White},
+           familyi={W\bibinitperiod},
+           given={Halbert},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{31166c18fa8ee825c1eb4693189f9e2a}
+      \strng{fullhash}{31166c18fa8ee825c1eb4693189f9e2a}
+      \strng{fullhashraw}{31166c18fa8ee825c1eb4693189f9e2a}
+      \strng{bibnamehash}{31166c18fa8ee825c1eb4693189f9e2a}
+      \strng{authorbibnamehash}{31166c18fa8ee825c1eb4693189f9e2a}
+      \strng{authornamehash}{31166c18fa8ee825c1eb4693189f9e2a}
+      \strng{authorfullhash}{31166c18fa8ee825c1eb4693189f9e2a}
+      \strng{authorfullhashraw}{31166c18fa8ee825c1eb4693189f9e2a}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Neural Networks}
+      \field{title}{Multilayer Feedforward Networks are Universal Approximators}
+      \field{year}{1989}
+      \verb{doi}
+      \verb 10.1016/0893-6080(89)90020-8
+      \endverb
+    \endentry
+    \entry{IFFHSRanking2021}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=f19b134cd20d0ce321317a82bc2bc4eb}{%
+           family={{International Federation of Football History and Statistics}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{f19b134cd20d0ce321317a82bc2bc4eb}
+      \strng{fullhash}{f19b134cd20d0ce321317a82bc2bc4eb}
+      \strng{fullhashraw}{f19b134cd20d0ce321317a82bc2bc4eb}
+      \strng{bibnamehash}{f19b134cd20d0ce321317a82bc2bc4eb}
+      \strng{authorbibnamehash}{f19b134cd20d0ce321317a82bc2bc4eb}
+      \strng{authornamehash}{f19b134cd20d0ce321317a82bc2bc4eb}
+      \strng{authorfullhash}{f19b134cd20d0ce321317a82bc2bc4eb}
+      \strng{authorfullhashraw}{f19b134cd20d0ce321317a82bc2bc4eb}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Compiled by Karel Stokkermans for RSSSF}
+      \field{title}{The {IFFHS} Club Ranking}
+      \field{year}{2021}
+    \endentry
+    \entry{Iskandaryan2020}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=9344e4269c87bfb31880510a374e627a}{%
+           family={Iskandaryan},
+           familyi={I\bibinitperiod},
+           given={Ditsuhi},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=817d955b543411ce4a8adb00e4b790a8}{%
+           family={Ramos},
+           familyi={R\bibinitperiod},
+           given={Francisco},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e75f1ae6c8216021c6cebc5e3ab7356a}{%
+           family={Palinggi},
+           familyi={P\bibinitperiod},
+           given={Denny\bibnamedelima Asarias},
+           giveni={D\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=54af46f81fc40e94ba90e7654db663c7}{%
+           family={Trilles},
+           familyi={T\bibinitperiod},
+           given={Sergio},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{66b2e5aa8b907fc1a6bc714b2333e70a}
+      \strng{fullhash}{cfdcac6ea9c3dcb831e379bd2dcf8759}
+      \strng{fullhashraw}{cfdcac6ea9c3dcb831e379bd2dcf8759}
+      \strng{bibnamehash}{66b2e5aa8b907fc1a6bc714b2333e70a}
+      \strng{authorbibnamehash}{66b2e5aa8b907fc1a6bc714b2333e70a}
+      \strng{authornamehash}{66b2e5aa8b907fc1a6bc714b2333e70a}
+      \strng{authorfullhash}{cfdcac6ea9c3dcb831e379bd2dcf8759}
+      \strng{authorfullhashraw}{cfdcac6ea9c3dcb831e379bd2dcf8759}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Applied Sciences}
+      \field{title}{The Effect of Weather in Soccer Results: An Approach Using Machine Learning Techniques}
+      \field{year}{2020}
+      \verb{doi}
+      \verb 10.3390/app10196750
+      \endverb
+      \verb{urlraw}
+      \verb https://www.mdpi.com/2076-3417/10/19/6750
+      \endverb
+      \verb{url}
+      \verb https://www.mdpi.com/2076-3417/10/19/6750
+      \endverb
+    \endentry
+    \entry{karlis2003}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=cf8066be4829fb5f69dd7cd67f98db0e}{%
+           family={Karlis},
+           familyi={K\bibinitperiod},
+           given={Dimitris},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=cb5b80fd274dce871390ecd9ef73bfa3}{%
+           family={Ntzoufras},
+           familyi={N\bibinitperiod},
+           given={Ioannis},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{fdcd51fe2cf7e7d00008bfa403bf30d0}
+      \strng{fullhash}{fdcd51fe2cf7e7d00008bfa403bf30d0}
+      \strng{fullhashraw}{fdcd51fe2cf7e7d00008bfa403bf30d0}
+      \strng{bibnamehash}{fdcd51fe2cf7e7d00008bfa403bf30d0}
+      \strng{authorbibnamehash}{fdcd51fe2cf7e7d00008bfa403bf30d0}
+      \strng{authornamehash}{fdcd51fe2cf7e7d00008bfa403bf30d0}
+      \strng{authorfullhash}{fdcd51fe2cf7e7d00008bfa403bf30d0}
+      \strng{authorfullhashraw}{fdcd51fe2cf7e7d00008bfa403bf30d0}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Statistician}
+      \field{title}{Analysis of sports data by using bivariate {Poisson} models}
+      \field{year}{2003}
+      \verb{doi}
+      \verb 10.1111/1467-9884.00366
+      \endverb
+    \endentry
+    \entry{ke2017lightgbm}{inproceedings}{}{}
+      \name{author}{8}{}{%
+        {{un=0,uniquepart=base,hash=dadd87e1dad07728ce408894042b277e}{%
+           family={Ke},
+           familyi={K\bibinitperiod},
+           given={Guolin},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=359e0be87f96079a68d0ebf5355da232}{%
+           family={Meng},
+           familyi={M\bibinitperiod},
+           given={Qi},
+           giveni={Q\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d1cb1c25fa372c0b0885de8a27dc0222}{%
+           family={Finley},
+           familyi={F\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b5857cb363d37a3b1ff2c28da6586fc9}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Taifeng},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=06debc36f6b61a405e8f0da1c7ccd6ca}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Wei},
+           giveni={W\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a70fde7196864f8be0248eba2f7f29c8}{%
+           family={Ma},
+           familyi={M\bibinitperiod},
+           given={Weidong},
+           giveni={W\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=162ccfc475d9d2bc1177357e4913f290}{%
+           family={Ye},
+           familyi={Y\bibinitperiod},
+           given={Qiwei},
+           giveni={Q\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=716b89cbb7332599ebb33cc58a52f648}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Tie-Yan},
+           giveni={T\bibinithyphendelim Y\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Curran Associates, Inc.}%
+      }
+      \strng{namehash}{cec83448a93ad6a5cdc6f494a8f2dbcb}
+      \strng{fullhash}{138b620984178bfaf960c59da39eb14f}
+      \strng{fullhashraw}{138b620984178bfaf960c59da39eb14f}
+      \strng{bibnamehash}{cec83448a93ad6a5cdc6f494a8f2dbcb}
+      \strng{authorbibnamehash}{cec83448a93ad6a5cdc6f494a8f2dbcb}
+      \strng{authornamehash}{cec83448a93ad6a5cdc6f494a8f2dbcb}
+      \strng{authorfullhash}{138b620984178bfaf960c59da39eb14f}
+      \strng{authorfullhashraw}{138b620984178bfaf960c59da39eb14f}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Advances in Neural Information Processing Systems (NeurIPS)}
+      \field{title}{LightGBM: A Highly Efficient Gradient Boosting Decision Tree}
+      \field{year}{2017}
+    \endentry
+    \entry{loshchilov2017adamw}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=1241b8181104f1917578d4c7f9b323b6}{%
+           family={Loshchilov},
+           familyi={L\bibinitperiod},
+           given={Ilya},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=528d4af87fd2ecf5fb8a22db913ce088}{%
+           family={Hutter},
+           familyi={H\bibinitperiod},
+           given={Frank},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {OpenReview.net}%
+      }
+      \strng{namehash}{b308ccb07134a06ec3735828ac4f15e2}
+      \strng{fullhash}{b308ccb07134a06ec3735828ac4f15e2}
+      \strng{fullhashraw}{b308ccb07134a06ec3735828ac4f15e2}
+      \strng{bibnamehash}{b308ccb07134a06ec3735828ac4f15e2}
+      \strng{authorbibnamehash}{b308ccb07134a06ec3735828ac4f15e2}
+      \strng{authornamehash}{b308ccb07134a06ec3735828ac4f15e2}
+      \strng{authorfullhash}{b308ccb07134a06ec3735828ac4f15e2}
+      \strng{authorfullhashraw}{b308ccb07134a06ec3735828ac4f15e2}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{7th International Conference on Learning Representations (ICLR 2019)}
+      \field{title}{Decoupled Weight Decay Regularization}
+      \field{year}{2019}
+      \verb{doi}
+      \verb 10.48550/arXiv.1711.05101
+      \endverb
+    \endentry
+    \entry{maher1982}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=2cad154b11eb4948fc0f32eefaa4eec1}{%
+           family={Maher},
+           familyi={M\bibinitperiod},
+           given={M.\bibnamedelimi J.},
+           giveni={M\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{2cad154b11eb4948fc0f32eefaa4eec1}
+      \strng{fullhash}{2cad154b11eb4948fc0f32eefaa4eec1}
+      \strng{fullhashraw}{2cad154b11eb4948fc0f32eefaa4eec1}
+      \strng{bibnamehash}{2cad154b11eb4948fc0f32eefaa4eec1}
+      \strng{authorbibnamehash}{2cad154b11eb4948fc0f32eefaa4eec1}
+      \strng{authornamehash}{2cad154b11eb4948fc0f32eefaa4eec1}
+      \strng{authorfullhash}{2cad154b11eb4948fc0f32eefaa4eec1}
+      \strng{authorfullhashraw}{2cad154b11eb4948fc0f32eefaa4eec1}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Statistica Neerlandica}
+      \field{title}{Modelling association football scores}
+      \field{year}{1982}
+      \verb{doi}
+      \verb 10.1111/j.1467-9574.1982.tb00782.x
+      \endverb
+    \endentry
+    \entry{OpenMeteo}{online}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=6416a59f90819c052d0abaec137aca32}{%
+           family={{Open-Meteo}},
+           familyi={O\bibinitperiod}}}%
+      }
+      \strng{namehash}{6416a59f90819c052d0abaec137aca32}
+      \strng{fullhash}{6416a59f90819c052d0abaec137aca32}
+      \strng{fullhashraw}{6416a59f90819c052d0abaec137aca32}
+      \strng{bibnamehash}{6416a59f90819c052d0abaec137aca32}
+      \strng{authorbibnamehash}{6416a59f90819c052d0abaec137aca32}
+      \strng{authornamehash}{6416a59f90819c052d0abaec137aca32}
+      \strng{authorfullhash}{6416a59f90819c052d0abaec137aca32}
+      \strng{authorfullhashraw}{6416a59f90819c052d0abaec137aca32}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Open-Meteo: Historical Weather API}
+      \verb{urlraw}
+      \verb https://open-meteo.com/
+      \endverb
+      \verb{url}
+      \verb https://open-meteo.com/
+      \endverb
+    \endentry
+    \entry{VanPutten2023}{thesis}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=041930e4df4570c3178da751ea2158cc}{%
+           family={Putten},
+           familyi={P\bibinitperiod},
+           given={Wessel},
+           giveni={W\bibinitperiod},
+           givenun=0,
+           prefix={van},
+           prefixi={v\bibinitperiod},
+           prefixun=0}}%
+      }
+      \list{institution}{1}{%
+        {Leiden Institute of Advanced Computer Science (LIACS), Universiteit Leiden}%
+      }
+      \strng{namehash}{041930e4df4570c3178da751ea2158cc}
+      \strng{fullhash}{041930e4df4570c3178da751ea2158cc}
+      \strng{fullhashraw}{041930e4df4570c3178da751ea2158cc}
+      \strng{bibnamehash}{041930e4df4570c3178da751ea2158cc}
+      \strng{authorbibnamehash}{041930e4df4570c3178da751ea2158cc}
+      \strng{authornamehash}{041930e4df4570c3178da751ea2158cc}
+      \strng{authorfullhash}{041930e4df4570c3178da751ea2158cc}
+      \strng{authorfullhashraw}{041930e4df4570c3178da751ea2158cc}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Supervisores: dr. Yingjie Fan \& dr. Arno Knobbe}
+      \field{title}{Predicting football matches with the use of weather conditions}
+      \field{type}{mathesis}
+      \field{year}{2023}
+      \verb{urlraw}
+      \verb https://www.liacs.leidenuniv.nl/
+      \endverb
+      \verb{url}
+      \verb https://www.liacs.leidenuniv.nl/
+      \endverb
+    \endentry
+    \entry{EloModelConvergenceFinal}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=0bd76a84a73582925612fd27877bbbec}{%
+           family={Robbins},
+           familyi={R\bibinitperiod},
+           given={Thomas\bibnamedelima R.},
+           giveni={T\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{0bd76a84a73582925612fd27877bbbec}
+      \strng{fullhash}{0bd76a84a73582925612fd27877bbbec}
+      \strng{fullhashraw}{0bd76a84a73582925612fd27877bbbec}
+      \strng{bibnamehash}{0bd76a84a73582925612fd27877bbbec}
+      \strng{authorbibnamehash}{0bd76a84a73582925612fd27877bbbec}
+      \strng{authornamehash}{0bd76a84a73582925612fd27877bbbec}
+      \strng{authorfullhash}{0bd76a84a73582925612fd27877bbbec}
+      \strng{authorfullhashraw}{0bd76a84a73582925612fd27877bbbec}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{East Carolina University}
+      \field{title}{Assessing the Convergence of the Elo Ranking Model}
+      \field{year}{2025}
+    \endentry
+    \entry{Glicko2Mod}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=a11ee4235f58488681e3ce8b6103e9e3}{%
+           family={Shelopugin},
+           familyi={S\bibinitperiod},
+           given={Andrei},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9fbe532b3525ec1beda3f0be11929079}{%
+           family={Sirotkin},
+           familyi={S\bibinitperiod},
+           given={Alexander},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{2c113c257d83b03fee7b7068a0fbcd91}
+      \strng{fullhash}{2c113c257d83b03fee7b7068a0fbcd91}
+      \strng{fullhashraw}{2c113c257d83b03fee7b7068a0fbcd91}
+      \strng{bibnamehash}{2c113c257d83b03fee7b7068a0fbcd91}
+      \strng{authorbibnamehash}{2c113c257d83b03fee7b7068a0fbcd91}
+      \strng{authornamehash}{2c113c257d83b03fee7b7068a0fbcd91}
+      \strng{authorfullhash}{2c113c257d83b03fee7b7068a0fbcd91}
+      \strng{authorfullhashraw}{2c113c257d83b03fee7b7068a0fbcd91}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:2310.11459}
+      \field{title}{Ratings of {European} and {South American} Football Leagues Based on {Glicko-2} with Modifications}
+      \field{year}{2023}
+      \verb{doi}
+      \verb 10.48550/arXiv.2310.11459
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2310.11459
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2310.11459
+      \endverb
+    \endentry
+    \entry{skellam1946}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=7871d073346fd5c7b30acb2ad508be35}{%
+           family={Skellam},
+           familyi={S\bibinitperiod},
+           given={John\bibnamedelima G.},
+           giveni={J\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{7871d073346fd5c7b30acb2ad508be35}
+      \strng{fullhash}{7871d073346fd5c7b30acb2ad508be35}
+      \strng{fullhashraw}{7871d073346fd5c7b30acb2ad508be35}
+      \strng{bibnamehash}{7871d073346fd5c7b30acb2ad508be35}
+      \strng{authorbibnamehash}{7871d073346fd5c7b30acb2ad508be35}
+      \strng{authornamehash}{7871d073346fd5c7b30acb2ad508be35}
+      \strng{authorfullhash}{7871d073346fd5c7b30acb2ad508be35}
+      \strng{authorfullhashraw}{7871d073346fd5c7b30acb2ad508be35}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of the Royal Statistical Society}
+      \field{title}{The frequency distribution of the difference between two {Poisson} variates belonging to different populations}
+      \field{year}{1946}
+    \endentry
+    \entry{FBRef}{online}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=e10dfe18f6742fa95e30b076ba00c198}{%
+           family={{Sports Reference LLC}},
+           familyi={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{e10dfe18f6742fa95e30b076ba00c198}
+      \strng{fullhash}{e10dfe18f6742fa95e30b076ba00c198}
+      \strng{fullhashraw}{e10dfe18f6742fa95e30b076ba00c198}
+      \strng{bibnamehash}{e10dfe18f6742fa95e30b076ba00c198}
+      \strng{authorbibnamehash}{e10dfe18f6742fa95e30b076ba00c198}
+      \strng{authornamehash}{e10dfe18f6742fa95e30b076ba00c198}
+      \strng{authorfullhash}{e10dfe18f6742fa95e30b076ba00c198}
+      \strng{authorfullhashraw}{e10dfe18f6742fa95e30b076ba00c198}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{FBRef.com - Estadísticas de fútbol}
+      \verb{urlraw}
+      \verb https://fbref.com/
+      \endverb
+      \verb{url}
+      \verb https://fbref.com/
+      \endverb
+    \endentry
+    \entry{SZYMAN1}{book}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=c351519d88e719424aaa547442e03956}{%
+           family={Szymanski},
+           familyi={S\bibinitperiod},
+           given={Stefan},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Nation Books}%
+      }
+      \strng{namehash}{c351519d88e719424aaa547442e03956}
+      \strng{fullhash}{c351519d88e719424aaa547442e03956}
+      \strng{fullhashraw}{c351519d88e719424aaa547442e03956}
+      \strng{bibnamehash}{c351519d88e719424aaa547442e03956}
+      \strng{authorbibnamehash}{c351519d88e719424aaa547442e03956}
+      \strng{authornamehash}{c351519d88e719424aaa547442e03956}
+      \strng{authorfullhash}{c351519d88e719424aaa547442e03956}
+      \strng{authorfullhashraw}{c351519d88e719424aaa547442e03956}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{MONEY and SOCCER - A SOCCERNOMICS GUIDE Why Chievo Verona, Unterhaching, and Scunthorpe United Will Never Win the Champions League, Why Manchester City, Roma, and Paris St. Germain Can, and Why Real Madrid, Bayern Munich, and Manchester United Cannot Be Stopped}
+      \field{year}{2015}
+    \endentry
+    \entry{SZYMAN2}{book}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=4eb7bf540c3ee368cc011b03743425d9}{%
+           family={Szymanski\bibnamedelima S.},
+           familyi={S\bibinitperiod\bibinitdelim S\bibinitperiod},
+           given={Kuper\bibnamedelima S.},
+           giveni={K\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Bold Type Books}%
+      }
+      \strng{namehash}{4eb7bf540c3ee368cc011b03743425d9}
+      \strng{fullhash}{4eb7bf540c3ee368cc011b03743425d9}
+      \strng{fullhashraw}{4eb7bf540c3ee368cc011b03743425d9}
+      \strng{bibnamehash}{4eb7bf540c3ee368cc011b03743425d9}
+      \strng{authorbibnamehash}{4eb7bf540c3ee368cc011b03743425d9}
+      \strng{authornamehash}{4eb7bf540c3ee368cc011b03743425d9}
+      \strng{authorfullhash}{4eb7bf540c3ee368cc011b03743425d9}
+      \strng{authorfullhashraw}{4eb7bf540c3ee368cc011b03743425d9}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{SOCCERNOMICS - Why European Men and American Women Win and Billionaire Owners Are Destined to Lose}
+      \field{year}{2022}
+    \endentry
+    \entry{thurstone1927}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=b8dcc68e31c2419d785890fb67be433b}{%
+           family={Thurstone},
+           familyi={T\bibinitperiod},
+           given={Louis\bibnamedelima Leon},
+           giveni={L\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {American Psychological Association}%
+      }
+      \strng{namehash}{b8dcc68e31c2419d785890fb67be433b}
+      \strng{fullhash}{b8dcc68e31c2419d785890fb67be433b}
+      \strng{fullhashraw}{b8dcc68e31c2419d785890fb67be433b}
+      \strng{bibnamehash}{b8dcc68e31c2419d785890fb67be433b}
+      \strng{authorbibnamehash}{b8dcc68e31c2419d785890fb67be433b}
+      \strng{authornamehash}{b8dcc68e31c2419d785890fb67be433b}
+      \strng{authorfullhash}{b8dcc68e31c2419d785890fb67be433b}
+      \strng{authorfullhashraw}{b8dcc68e31c2419d785890fb67be433b}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Psychological Review}
+      \field{title}{A Law of Comparative Judgment}
+      \field{year}{1927}
+      \verb{doi}
+      \verb 10.1037/h0070288
+      \endverb
+    \endentry
+    \entry{Transfermarkt}{online}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=9443448d8a67b1a42d78a49c80baff72}{%
+           family={{Transfermarkt GmbH \& Co. KG}},
+           familyi={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{9443448d8a67b1a42d78a49c80baff72}
+      \strng{fullhash}{9443448d8a67b1a42d78a49c80baff72}
+      \strng{fullhashraw}{9443448d8a67b1a42d78a49c80baff72}
+      \strng{bibnamehash}{9443448d8a67b1a42d78a49c80baff72}
+      \strng{authorbibnamehash}{9443448d8a67b1a42d78a49c80baff72}
+      \strng{authornamehash}{9443448d8a67b1a42d78a49c80baff72}
+      \strng{authorfullhash}{9443448d8a67b1a42d78a49c80baff72}
+      \strng{authorfullhashraw}{9443448d8a67b1a42d78a49c80baff72}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Transfermarkt - Fútbol, datos y mercado de fichajes}
+      \verb{urlraw}
+      \verb https://www.transfermarkt.es/
+      \endverb
+      \verb{url}
+      \verb https://www.transfermarkt.es/
+      \endverb
+    \endentry
+    \entry{UEFARanking2024}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=87f742c3da60a0cb67b4fdd037c89ba5}{%
+           family={{UEFA}},
+           familyi={U\bibinitperiod}}}%
+      }
+      \strng{namehash}{87f742c3da60a0cb67b4fdd037c89ba5}
+      \strng{fullhash}{87f742c3da60a0cb67b4fdd037c89ba5}
+      \strng{fullhashraw}{87f742c3da60a0cb67b4fdd037c89ba5}
+      \strng{bibnamehash}{87f742c3da60a0cb67b4fdd037c89ba5}
+      \strng{authorbibnamehash}{87f742c3da60a0cb67b4fdd037c89ba5}
+      \strng{authornamehash}{87f742c3da60a0cb67b4fdd037c89ba5}
+      \strng{authorfullhash}{87f742c3da60a0cb67b4fdd037c89ba5}
+      \strng{authorfullhashraw}{87f742c3da60a0cb67b4fdd037c89ba5}
+      \field{sortinit}{U}
+      \field{sortinithash}{6901a00e45705986ee5e7ca9fd39adca}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://www.uefa.com/nationalassociations/uefarankings/}}
+      \field{title}{Rankings {UEFA}: Reglamento oficial de competiciones de clubes}
+      \field{year}{2024}
+    \endentry
+    \entry{West1996}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=b7d5aae44970ebd81b2316308658421a}{%
+           family={West},
+           familyi={W\bibinitperiod},
+           given={John\bibnamedelima B.},
+           giveni={J\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{b7d5aae44970ebd81b2316308658421a}
+      \strng{fullhash}{b7d5aae44970ebd81b2316308658421a}
+      \strng{fullhashraw}{b7d5aae44970ebd81b2316308658421a}
+      \strng{bibnamehash}{b7d5aae44970ebd81b2316308658421a}
+      \strng{authorbibnamehash}{b7d5aae44970ebd81b2316308658421a}
+      \strng{authornamehash}{b7d5aae44970ebd81b2316308658421a}
+      \strng{authorfullhash}{b7d5aae44970ebd81b2316308658421a}
+      \strng{authorfullhashraw}{b7d5aae44970ebd81b2316308658421a}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Applied Physiology}
+      \field{title}{Prediction of barometric pressures at high altitudes with the use of model atmospheres}
+      \field{year}{1996}
+      \verb{doi}
+      \verb 10.1152/jappl.1996.81.4.1850
+      \endverb
+    \endentry
+    \entry{xG}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=b8f45fb20972334d8b572204492a5f78}{%
+           family={Yağız},
+           familyi={Y\bibinitperiod},
+           given={Furkan},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{b8f45fb20972334d8b572204492a5f78}
+      \strng{fullhash}{b8f45fb20972334d8b572204492a5f78}
+      \strng{fullhashraw}{b8f45fb20972334d8b572204492a5f78}
+      \strng{bibnamehash}{b8f45fb20972334d8b572204492a5f78}
+      \strng{authorbibnamehash}{b8f45fb20972334d8b572204492a5f78}
+      \strng{authornamehash}{b8f45fb20972334d8b572204492a5f78}
+      \strng{authorfullhash}{b8f45fb20972334d8b572204492a5f78}
+      \strng{authorfullhashraw}{b8f45fb20972334d8b572204492a5f78}
+      \field{sortinit}{Y}
+      \field{sortinithash}{fd67ad5a9ef0f7456bdd9aab10fe1495}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://comparisonator.com/blog/expected-goals-xg-in-football-what-it-means-and-why-it-matters}}
+      \field{note}{Comparisonator}
+      \field{title}{Expected Goals (xG) in Football: What It Means and Why It Matters}
+      \field{year}{2023}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

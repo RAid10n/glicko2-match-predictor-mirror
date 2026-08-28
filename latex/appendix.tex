@@ -1,0 +1,481 @@
+% ============================================================
+% APENDICE A: Componente exploratorio GRU
+% ============================================================
+
+\chapter{Componente exploratorio: red neuronal recurrente}
+\label{app:gru}
+
+Este ap\'endice documenta el componente exploratorio basado en redes neuronales recurrentes (GRU) que fue implementado, y posteriormente se desestimado, como rama principal del sistema predictivo. Se presenta el formalismo, la arquitectura de datos secuenciales, la implementación en \texttt{PyTorch}, el protocolo de entrenamiento y los resultados emp\'iricos completos, de modo que el lector pueda reconstruir la l\'inea de trabajo y comprender las razones de su exclusión del \textit{pipeline} en cascada.
+
+% ------------------------------------------------------------
+% A.1. Formalismo
+% ------------------------------------------------------------
+
+\section{Motivación y formalismo}
+\label{sec:app_gru_formalismo}
+
+Mientras que el perceptr\'on multicapa (MLP) descrito en el cuerpo del trabajo opera sobre un vector de estado fijo $\mathbf{z}_{ij}\in\mathbb{R}^{n}, n\in\{10,13\}$ que condensa la informaci\'on hist\'orica mediante promedios móviles \textit{rolling} y el estado $(R,RD,\sigma)$ del sistema Glicko-2, una red recurrente modela expl\'icitamente la dependencia temporal en la secuencia de partidos de cada equipo. La hip\'otesis exploratoria es que el orden temporal de los resultados contiene patrones dinámicos, rachas de forma, fatiga acumulada, adaptación táctica, entre otras, que no son capturables por agregaciones est\'aticas.
+
+La arquitectura explorada utiliza unidades recurrentes cerradas (GRU, \emph{Gated Recurrent Unit}) \cite{Charu2018}, una variante de la RNN cl\'asica que aborda la problem\'atica del gradiente desvaneciente mediante compuertas de actualizaci\'on y reinicio. El estado oculto $\mathbf{h}_t\in\mathbb{R}^{h}$ en el paso temporal $t$ se actualiza como
+\begin{align}
+	\mathbf{r}_t &= \sigma\bigl(\boldsymbol{W}_r\mathbf{x}_t + \boldsymbol{U}_r\mathbf{h}_{t-1} + \mathbf{b}_r\bigr), \label{eq:gru_reset}\\
+	\mathbf{z}_t &= \sigma\bigl(\boldsymbol{W}_z\mathbf{x}_t + \boldsymbol{U}_z\mathbf{h}_{t-1} + \mathbf{b}_z\bigr), \label{eq:gru_update}\\
+	\tilde{\mathbf{h}}_t &= \tanh\bigl(\boldsymbol{W}_h\mathbf{x}_t + \boldsymbol{U}_h(\mathbf{r}_t\odot\mathbf{h}_{t-1}) + \mathbf{b}_h\bigr), \label{eq:gru_candidate}\\
+	\mathbf{h}_t &= (1-\mathbf{z}_t)\odot\mathbf{h}_{t-1} + \mathbf{z}_t\odot\tilde{\mathbf{h}}_t, \label{eq:gru_state}
+\end{align}
+donde $\mathbf{x}_t\in\mathbb{R}^{d_{\mathrm{hist}}}$ es el vector de caracter\'isticas del partido $t$ en la secuencia, $d_{\mathrm{hist}}$ se define en la Secci\'on~\ref{subsec:app_gru_secuencias}, $\mathbf{r}_t$ y $\mathbf{z}_t$ son las compuertas de reinicio y actualizaci\'on respectivamente, $\sigma$ es la función sigmoide, $\odot$ denota el producto de Hadamard, y $\boldsymbol{W}_{(\cdot)},\boldsymbol{U}_{(\cdot)},\mathbf{b}_{(\cdot)}$ son parámetros aprendibles compartidos entre ambos equipos.
+
+La red consta de dos codificadores GRU independientes que procesan, respectivamente, la secuencia his\'orica del equipo local y del visitante. Los estados finales $\mathbf{h}_{\mathrm{home}}$ y $\mathbf{h}_{\mathrm{away}}$ se concatenan con una proyecci\'on no lineal de las características del partido actual $\mathbf{c}_{ij}\in\mathbb{R}^{d_{\mathrm{cur}}}$:
+\begin{equation}
+	\mathbf{h}_{\mathrm{concat}} = \bigl[\mathbf{h}_{\mathrm{home}};\;\mathbf{h}_{\mathrm{away}};\;\mathrm{ReLU}(\boldsymbol{W}_{\mathrm{proj}}\mathbf{c}_{ij}+\mathbf{b}_{\mathrm{proj}})\bigr]\in\mathbb{R}^{3h}.
+	\label{eq:gru_concat}
+\end{equation}
+Este vector alimenta una cabeza clasificadora densa compuesta por una capa oculta con activación \textit{ReLU}, \text{dropout} con tasa $0.2$, y una capa lineal de salida de dimensión $3$, cuyas salidas indican: victoria local, empate o victoria visitante. A diferencia del MLP principal, esta arquitectura no recibe como entrada las probabilidades base $(P_H,P_D,P_A)$ generadas por el Glicko-2; construye su propia representaci\'on latente a partir de las secuencias hist\'oricas crudas, lo que hace la comparación directa de p\'erdida logar\'itmica (log-loss) con el \textit{pipeline} principal una evaluaci\'on de dificultad predictiva superior.
+
+% ------------------------------------------------------------
+% A.2. Pipeline de datos e implementación
+% ------------------------------------------------------------
+
+\section{Arquitectura de datos e implementaci\'on}
+\label{sec:app_gru_arquitectura}
+
+\subsection{Construcci\'on de secuencias hist\'oricas}
+\label{subsec:app_gru_secuencias}
+
+Para cada partido se construyen dos secuencias de longitud fija $T$ (\emph{seq\_len}), una por equipo, tomando los $T$ enfrentamientos cronol\'ogicamente anteriores. Cada paso temporal $\mathbf{x}_t$ tiene dimensión $d_{\mathrm{hist}} = d_{\mathrm{base}} + d_{\mathrm{extra}}$, donde:
+\begin{itemize}
+	\item $d_{\mathrm{base}}$ corresponde al conjunto de covariables num\'ericas del dataset, con los metadatos excluidos, más la probabilidad de empate del bloque Skellam (\texttt{draw\_prob}). Estas variables se escalan con un \texttt{StandardScaler} ajustado exclusivamente sobre el conjunto de entrenamiento.
+	\item $d_{\mathrm{extra}} = 4$ son metadatos históricos propios del partido: indicadora de localía (\texttt{is\_home}), goles a favor (\texttt{goals\_for}), goles en contra (\texttt{goals\_against}) y resultado codificado como $+1$ (victoria), $0$ (empate), $-1$ (derrota).
+\end{itemize}
+
+Si un equipo dispone de menos de $T$ partidos previos, se aplica \textit{padding} con vectores nulos por la izquierda, preservando la causalidad temporal. El escalado de las variables extra se realiza con un escalador separado para evitar que la escala de las covariables ex\'ogenas domine la dinámica de los metadatos deportivos binarios.
+
+El procesamiento se implementa mediante un \texttt{Dataset} \texttt{PyTorch} que devuelve, para cada muestra $i$, la tupla
+\[
+\bigl(\mathbf{H}_{\mathrm{home}}^{(i)}\in\mathbb{R}^{T\times d_{\mathrm{hist}}},\;
+\mathbf{H}_{\mathrm{away}}^{(i)}\in\mathbb{R}^{T\times d_{\mathrm{hist}}},\;
+\mathbf{c}_{ij}^{(i)}\in\mathbb{R}^{d_{\mathrm{cur}}},\;
+y_i\in\{0,1,2\}\bigr),
+\]
+donde $y_i$ es la etiqueta del resultado: local, empate, o visitante, y $d_{\mathrm{cur}}=d_{\mathrm{base}}$ (se excluyen los metadatos deportivos binarios del partido actual, debido a que ya est\'an codificados en la secuencia histórica.
+
+\subsection{Clase \texttt{RRNN} en \texttt{PyTorch}}
+\label{subsec:app_gru_clase}
+
+La clase implementada utiliza una \'unica capa GRU unidireccional con \texttt{batch\_first=True}. Ambos equipos comparten los mismos pesos recurrentes, lo cual impone una simetr\'ia estructural en el procesamiento de las secuencias. La proyección del partido actual y la cabeza clasificadora son capas densas independientes. El \textit{forward} ejecuta:
+\begin{enumerate}
+	\item $\mathbf{h}_{\mathrm{home}} \leftarrow \mathrm{GRU}(\mathbf{H}_{\mathrm{home}})[\,\text{\'ultimo estado oculto}\,]$,
+	\item $\mathbf{h}_{\mathrm{away}} \leftarrow \mathrm{GRU}(\mathbf{H}_{\mathrm{away}})[\,\text{'ultimo estado oculto}\,]$,
+	\item $\mathbf{h}_{\mathrm{cur}} \leftarrow \mathrm{ReLU}(\boldsymbol{W}_{\mathrm{proj}}\mathbf{c}_{ij} + \mathbf{b}_{\mathrm{proj}})$,
+	\item $\mathbf{x} \leftarrow \mathrm{Concat}([\mathbf{h}_{\mathrm{home}};\mathbf{h}_{\mathrm{away}};\mathbf{h}_{\mathrm{cur}}])$,
+	\item $\hat{\mathbf{y}} \leftarrow \mathrm{Softmax}\bigl(\mathrm{MLP}_{\mathrm{head}}(\mathbf{x})\bigr)$.
+\end{enumerate}
+
+El n\'umero total de par\'ametros entrenables es $\mathcal{O}\bigl(h\,(d_{\mathrm{hist}}+d_{\mathrm{cur}})+h^{2}\bigr)$, donde $h$ es el tama\~no del estado oculto. Para la configuración estándar ($T=8$, $h=64$), la complejidad paramétrica es sustancialmente mayor que la del MLP \textit{feedforward}, que act\'ua con dos capas ocultas de $64$ neuronas, aunque la diferencia exacta depende de la dimensionalidad de entrada $d_{\mathrm{hist}}$ que varía entre datasets.
+
+% ------------------------------------------------------------
+% A.3. Protocolo de entrenamiento
+% ------------------------------------------------------------
+
+\section{Protocolo de entrenamiento}
+\label{sec:app_gru_entrenamiento}
+
+Se definieron tres configuraciones experimentales según la longitud de secuencia $T$ y la profundidad del entrenamiento, controladas por las banderas \texttt{FAST\_MODE} y \texttt{EXHAUSTIVE\_MODE} del \textit{pipeline}. 
+como se puede apreciar, en la Tabla~\ref{tab:gru_hiperparams} se resumen los hiperpar\'ametros.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Hiperpar\'ametros del componente GRU por modo de entrenamiento.}
+	\label{tab:gru_hiperparams}
+	\begin{tabular}{lccc}
+		\toprule
+		\textbf{Hiperpar\'ametro} & \textbf{Fast} & \textbf{Est\'andar} & \textbf{Exhaustive} \\
+		\midrule
+		$T$ (\emph{seq\_len}) & 6 & 8 & 10 \\
+		\emph{Hidden size} ($h$) & 48 & 64 & 128 \\
+		\emph{Dropout} & 0.2 & 0.2 & 0.2 \\
+		Tasa de aprendizaje & $10^{-3}$ & $10^{-3}$ & $8\times10^{-4}$ \\
+		\emph{Weight decay} & $10^{-4}$ & $10^{-4}$ & $10^{-4}$ \\
+		\emph{Batch size} & 256 & 256 & 256 \\
+		\'Epocas m\'aximas & 8 & 30 & 60 \\
+		Partici\'on de validaci\'on & 0.08 & 0.10 & 0.10 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+La partici\'on temporal respeta el orden cronol\'ogico: $70\%$ entrenamiento, $10\%$ validaci\'on interna, tomados de la cola del entrenamiento, y $30\%$ test final. El optimizador es AdamW \cite{loshchilov2017adamw}, una variante de \textit{Adam} que implementa \textit{weight decay} desacoplado de la actualizaci\'on basada en el gradiente, con entrop\'ia cruzada categ\'orica (\texttt{CrossEntropyLoss}).
+
+Los resultados reportados en las secciones siguientes corresponden al modo \textit{\textbf{Deep}} ($T=8$, $h=64$), que constituye el punto de equilibrio entre capacidad expresiva y costo computacional. Los modos \textit{Fast} y \textit{Exhaustive} se exploraron para verificar la sensibilidad a la longitud de secuencia, pero no mostraron diferencias cualitativas en el patrón de sobreajuste.
+
+% ------------------------------------------------------------
+% A.4. Resultados
+% ------------------------------------------------------------
+
+\section{Resultados emp\'iricos}
+\label{sec:app_gru_resultados}
+
+\subsection{Evoluci\'on por \'epoca y diagn\'ostico de sobreajuste}
+\label{subsec:app_gru_curvas}
+
+La Tabla~\ref{tab:gru_curvas} resu,e la evoluci\'on del entrenamiento para los tres \textit{datasets}. Se reportan tres puntos clave: la primera \'epoca, la \'epoca de mejor p\'erdida de validaci\'on, y la \'epoca final ($30$).
+
+\begin{table}[htbp]
+	\centering
+	\caption{Evoluci\'on del entrenamiento GRU (modo \textit{Deep}, $T=8$). Pérdida de entrop\'ia cruzada y \emph{accuracy}.}
+	\label{tab:gru_curvas}
+	\begin{tabular}{lcccccc}
+		\toprule
+		& \multicolumn{2}{c}{\textbf{\'Epoca 1}} & \multicolumn{2}{c}{\textbf{Mejor val.}} & \multicolumn{2}{c}{\textbf{\'Epoca 30}} \\
+		\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+		\textbf{Dataset} & Entrenamiento & Validaci\'on & \'Epoca & Validaci\'on & Entrenamiento & Validaci\'on \\
+		\midrule
+		Full & 1.0389 & 1.0034 & 3 & 0.9961 & 0.7764 & 1.1828 \\
+		Lite & 1.0385 & 1.0217 & 2 & 1.0201 & 0.8350 & 1.1358 \\
+		Lite Recortado & 1.0377 & 1.0007 & 4 & 0.9993 & 0.7987 & 1.1781 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+El patr\'on es consistente en los tres conjuntos: la p\'erdida de validaci\'on alcanza su m\'inimo entre las \'epocas $2$ y $4$, para luego diverger mon\'otonamente mientras la p\'erdida de entrenamiento contin\'ua descendiendo. En el dataset Full, la brecha entrenamiento--validaci\'on se ampl\'ia desde $0.0355$ en la 'epoca 1, hasta $0.4064$ en la \'epoca 30; la \textit{accuracy} de entrenamiento asciende del $47.2\%$ al $64.9\%$, mientras que la de validaci\'on decrece desde $51.1\%$ hasta $44.7\%$. Este comportamiento es evidencia de \textbf{sobreajuste estructural}: la red memoriza los patrones de las secuencias hist\'oricas del entrenamiento pero pierde capacidad de generalizaci\'on sobre el conjunto de validació\'on, situaci\'on que se agrava en el test cronol\'ogicamente posterior.
+
+\subsection{M\'etricas de evaluaci\'on sobre el conjunto de prueba}
+\label{subsec:app_gru_test}
+
+La Tabla~\ref{tab:gru_test} reporta las m\'etricas finales sobre el $30\%$ cronol\'ogico de prueba, junto con la l\'inea base del Glicko-2 modificado aislado y del MLP base en su configuraci\'on sin covariables ex\'ogenas; valores extra\'idos del Cap\'itulo~\ref{ch:resultados}.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Evaluación del componente GRU sobre test, con líneas base de referencia.}
+	\label{tab:gru_test}
+	\begin{tabular}{lcccc}
+		\toprule
+		\textbf{Dataset} & \textbf{Modelo} & \textbf{LL Cat.} & \textbf{LL Bin.} & \textbf{Accuracy} \\
+		\midrule
+		\multirow{3}{*}{Full} & Glicko-2 aislado & 1.0443 & 0.6527 & --- \\
+		& MLP base & 1.0279 & 0.6480 & 0.486 \\
+		& GRU exploratorio & 1.2323 & 0.7777 & 0.431 \\
+		\midrule
+		\multirow{3}{*}{Lite} & Glicko-2 aislado & 1.0440 & 0.6506 & --- \\
+		& MLP base & 1.0262 & 0.6441 & 0.486 \\
+		& GRU exploratorio & 1.1457 & 0.7174 & 0.444 \\
+		\midrule
+		\multirow{3}{*}{Lite Rec.} & Glicko-2 aislado & 1.0443 & 0.6527 & --- \\
+		& MLP base & 1.0279 & 0.6480 & 0.486 \\
+		& GRU exploratorio & 1.1898 & 0.7551 & 0.429 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+El componente GRU exhibe un desempe\~no sistem\'aticamente inferior al del \textit{pipeline} principal en todas las m\'etricas y todos los \textit{datasets}. Su p\'erdida logar\'itmica (log-loss) binaria  se encuentra alrededor de $0.717$ y $0.778$, lo que supera ampliamente la del Glicko-2 aislado ($0.651$-$0.653$) y la del MLP base ($0.644$-$0.648$). La \textit{accuracy} se ubica en torno a $0.43$-$0.44$, por debajo del $0.486$ del sistema en cascada. Cabe destacar que la comparación es asim\'etrica en dificultad: la GRU parte de \textit{features} crudos y secuencias hist\'oricas, mientras que el MLP recibe probabilidades base ya calibradas por el Glicko-2. Aun as\'i, la magnitud de la degradaci\'on, presentando incrementos del $9.7\%$ en el \textit{Dataset Lite} al $18.0\%$ en el \textit{Dataset Full} en la p\'erdida logar\'itmica (log-loss) categ\'orica respecto al Glicko-2 aislado, indica que la arquitectura recurrente no logra extraer señal predictiva adicional de las secuencias temporales.
+
+% ------------------------------------------------------------
+% A.5. Discusión y desestimación
+% ------------------------------------------------------------
+
+\section{Discusión y desestimación del componente}
+\label{sec:app_gru_discusion}
+
+La GRU se mantuvo como componente exploratorio y se excluyó del sistema predictivo principal por tres razones convergentes:
+
+\paragraph{Sobreajuste estructural.} La divergencia temprana entre la p\'erdida de entrenamiento y la de validaci\'on (Tabla~\ref{tab:gru_curvas}) demuestra que la capacidad de la red excede la s\~nal temporal disponible en el panel. A diferencia del refinador neuronal del \textit{pipeline} principal, que opera sobre un vector de entrada condensado y estable  como las probabilidades Glicko-2, con o sin covariables ex\'ogenas según la configurac\'on, la GRU procesa secuencias de alta dimensionalidad con redundancia entre pasos temporales consecutivos, lo que facilita la memorizaci\'on de trayectorias de equipos individuales.
+
+\paragraph{Rendimiento predictivo inferior.} Como se observa en la Tabla~\ref{tab:gru_test}, la GRU no mejora ni siquiera la l\'inea base del Glicko-2 modificado en aislamiento. Esto sugiere que la información temporal relevante, forma reciente, ventaja de localía dinámica, tendencias de anotación, ya está suficientemente condensada en los promedios móviles \textit{rolling}, las ventanas 5 encuentros, 10 encuentros, 20 encuentros, y 30 encuentros, y en el estado latente $(R,RD,\sigma)$ del sistema de rating. Introducir una segunda din\'amica temporal expl\'icita dentro de la red neuronal genera redundancia estructural sin aporte predictivo neto.
+
+\paragraph{Complejidad operativa del pipeline.} El entrenamiento de la GRU requiere un \textit{pipeline} de datos considerablemente más complejo que el del MLP: construcción de ventanas deslizantes por equipo, \textit{padding} condicional, escalado separado de características base y extra, y un \texttt{DataLoader} personalizado. Esta complejidad eleva el costo de mantenimiento y reproducibilidad sin contraparte en precisión.
+
+En consecuencia, el modelo GRU se reporta como línea de investigación futura, potencialmente explorable con mecanismos de atención temporal, \emph{layer normalization} o regularización más agresiva, pero no forma parte del sistema predictivo principal del presente estudio.
+
+% ============================================================
+% APENDICE B: Glicko-2 Trinomial vs Glicko-2 con Covariables Ex\'ogenas
+% ============================================================
+
+\chapter{Componente validatorio: Glicko-2 Trinomial vs Glicko-2 con Covariables Ex\'ogenas}
+
+\section*{Introducci\'on}
+
+Este ap\'endice documenta el proceso de evoluci\'on desde el motor de referencia de Shelopugin y Sirotkin \cite{Glicko2Mod} hasta la implementación calibrada \texttt{G2Av1513}, que constituye el n\'ucleo del sistema predictivo. El contraste se organiza en cinco bloques: 
+
+\begin{itemize}
+	\item La filosof\'ia del baseline \textit{naive}, con sus par\'ametros can\'onicos fijos y el procesamiento \textit{multi-dataset}.
+	\item Las mejoras arquitect\'onicas y num\'ericas del motor calibrado.
+	\item Una tabla comparativa de hiperpar\'ametros
+	\item Una comparaci\'on emp\'irica basada en las salidas de ambos motores.
+	\item Un contraste que a\'isla el aporte de la calibraci\'on estructural.
+\end{itemize}
+
+El objetivo es demostrar que el rendimiento superior del modelo \texttt{G2Av1513} no proviene de una modificaci\'on sustancial del algoritmo Glicko-2, sino de la incorporación de mecanismos de calibraci\'on contextual y de mejoras num\'ericas que lo hacen estable y eficiente en el dominio del fútbol de clubes.
+
+% ============================================================
+% SECCIÓN B.1 -- FILOSOFÍA DEL BASELINE \textit{naive}
+% ============================================================
+
+\section{Filosofía del baseline \textit{naive}: el motor Shelopugin-Sirotkin puro}
+
+El \textit{Notebook Autocontenido \textit{naive} Trinomial} implementa una reedici\'on metodol\'ogica del trabajo de Shelopugin y Sirotkin \cite{Glicko2Mod} sin ningún tipo de calibraci\'on o ajuste. La filosof\'ia subyacente es doble: 
+
+\begin{itemize}
+	\item Proporcionar un punto de partida reproducible que permita cuantificar el aporte incremental de cada mejora introducida en el motor calibrado.
+	\item Establecer un est\'andar de comparaci\'on que aisle el efecto de la calibraci\'on param\'etrica de la mera implementaci\'on algor\'itmica.
+\end{itemize}
+
+\subsection{Par\'ametros can\'onicos fijos}
+
+El motor \textit{naive} opera con los valores por defecto del algoritmo Glicko-2 est\'andar \cite{Glickman2022}, sin ajuste alguno por liga o contexto temporal:
+
+\begin{align}
+	\mu_0 &= 1500, &
+	\phi_0 &= 350, &
+	\tau &= 0.8, &
+	\varepsilon &= 10^{-6}, &
+	\text{draw\_correction} &= 0.0.
+\end{align}
+
+La desviaci\'on est\'andar inicial $\phi_0 = 350$ corresponde al valor original propuesto por Glickman para conjuntos de datos de alta incertidumbre inicial \cite{Glickman2022}. El par\'ametro de correcci\'on del empate se anula expl\'icitamente (\texttt{draw\_correction} = 0.0), de modo que la probabilidad de empate se determina exclusivamente por la estimaci\'on externa provista por el bloque de conteo \texttt{Skellam}. La ventaja de local\'ia, representada por el par\'ametro \texttt{advantage}, se fija id\'enticamente a cero, eliminando cualquier asimetr\'ia estructural en la actualizaci\'on de los ratings.
+
+\subsection*{Probabilidad de empate mediante Skellam externo}
+
+El baseline no incorpora la probabilidad de empate como par\'ametro interno del motor de rating, pues la recibe como una estimaci\'on externa proveniente de un bloque de conteo entrenado sobre los mismos datos. Para cada dataset (\textit{Lite}, \textit{Full}, \textit{Lite Recortado}), se entrenan dos regresores LightGBM con función objetivo Poisson \cite{ke2017lightgbm} sobre las 32 variables de promedios m\'oviles de goles:
+
+\begin{equation}
+	\hat{\lambda}_H = f_{\text{LGBM}}^{(H)}(\mathbf{x}_{\text{rolling}}), \qquad
+	\hat{\lambda}_A = f_{\text{LGBM}}^{(A)}(\mathbf{x}_{\text{rolling}}),
+\end{equation}
+
+a partir de las cuales se deriva la probabilidad de empate mediante la función de masa de la distribución de Skellam evaluada en $k=0$:
+
+\begin{equation}
+	\hat{P}_D^{\text{(Skellam)}} = e^{-(\hat{\lambda}_H + \hat{\lambda}_A)} \, I_0\!\left(2\sqrt{\hat{\lambda}_H \hat{\lambda}_A}\right),
+	\label{eq:skellam_draw_baseline_app}
+\end{equation}
+
+donde $I_0$ es la función de Bessel modificada de primera especie de orden cero. Este valor se anexa al dataset como \texttt{draw\_prob} y se inyecta directamente en el motor Glicko-2 en la escala de probabilidad cruda $(0,1)$, sin transformación logit intermedia.
+
+\subsection*{Actualización secuencial sin optimización}
+
+El motor \textit{naive} itera cronol\'ogicamente partido a partido, manteniendo un diccionario de estados $(R, \phi, \sigma)$ para cada equipo. En cada actualización, el motor:
+\begin{enumerate}
+	\item Convierte los ratings a la escala Glicko-2 mediante las transformaciones canónicas.
+	\item Calcula el factor de atenuaci\'on $g(\phi)$ con la constante est\'andar $g_{\text{const}} = 1.5/\pi^2$.
+	\item Estima la puntuaci\'on esperada $E$ y la varianza $v$ mediante las f\'ormulas del algoritmo original.
+	\item Actualiza la volatilidad mediante el m\'etodo de Illinois \textit{(regula falsi)}.
+	\item Computa los nuevos valores de $\mu'$ y $\phi'$ seg\'un las ecuaciones de Glickman.
+\end{enumerate}
+
+No se realiza ning\'un proceso de optimizaci\'on de hiperpar\'ametros: $\tau$, $\phi_0$ y $\mu_0$ permanecen invariantes en toda la ejecución. El algoritmo no distingue entre ligas, contextos temporales o condiciones excepcionales.
+
+\subsection*{Procesamiento multi-dataset}
+
+El notebook procesa tres versiones de los datos, todas derivadas del mismo pipeline de integración descrito en el Capítulo~\ref{ch:metodologia}:
+\begin{itemize}
+	\item \textbf{Lite} (35\,629 partidos, 2017--2025): sin métricas deportivas compuestas de autoría, con todas las ligas incluidas (23 competiciones).
+	\item \textbf{Full} (25\,079 partidos, 2019--2025): con métricas deportivas avanzadas (xG\_teo, xA\_teo, DDI), 21 competiciones.
+	\item \textbf{Lite Recortado} (25\,079 partidos, 2019--2025): misma ventana temporal que Full pero sin métricas compuestas de autoría.
+\end{itemize}
+
+El motor \textit{naive} se ejecuta independientemente sobre cada dataset, partiendo de estados iniciales idénticos y sin transferencia de información entre configuraciones.
+
+\subsection*{Salidas del baseline}
+
+Para cada dataset, el notebook produce:
+\begin{enumerate}
+	\item Un archivo CSV con los ratings finales de todos los equipos: \texttt{ratings\_final\_\textit{naive}\_trinomial\_\{dataset\}.csv}.
+	\item Un archivo CSV con el historial completo de actualizaciones: \texttt{ratings\_history\_\textit{naive}\_trinomial\_\{dataset\}.csv}.
+	\item Un conjunto de estadísticas descriptivas: rango de ratings, correlación de Spearman entre $\mu$ y número de partidos, distribución de \texttt{draw\_prob}.
+\end{enumerate}
+
+Estos resultados constituyen la línea base contra la cual se contrasta el desempeño del motor calibrado G2Av1513.
+
+% ============================================================
+% SECCIÓN B.2 -- EL MOTOR CALIBRADO G2Av1513
+% ============================================================
+
+\section{El motor calibrado: G2Av1513.py}
+
+El motor G2Av1513.py es una reimplementación integral del algoritmo Glicko-2 modificado para predicción trinomial de resultados de fútbol (H/D/A). A diferencia del baseline \textit{naive}, esta implementación incorpora cinco mejoras arquitectónicas y numéricas que transforman sustancialmente el comportamiento del sistema de rating. A continuación se detalla cada una de ellas.
+
+\subsection{Corrección algebraica del denominador trinomial}
+
+El motor \textit{naive} de Shelopugin y Sirotkin computa la probabilidad de victoria visitante como:
+\begin{equation}
+	P_A = \frac{1}{1 + e^{\delta}(1 + e^{d+s})},
+\end{equation}
+donde $\delta = g(\phi)(\tilde{\mu} - \mu_j)$ es la diferencia de ratings ponderada por el factor de atenuación, y $d+s$ es el parámetro de empate en escala logarítmica. Esta formulación, aunque funcional en la práctica, rompe la simetría del simplex de probabilidades respecto a las ecuaciones canónicas del modelo trinomial. En particular, la probabilidad de empate queda inducida por la diferencia de ratings en lugar de ser un parámetro independiente, lo que distorsiona la calibración en contextos de alta incertidumbre.
+
+El motor G2Av1513 unifica el denominador de manera simétrica:
+\begin{equation}
+	P_H = \frac{e^{\delta}}{1 + e^{\delta} + e^{d+s_{\text{logit}}}}, \qquad
+	P_D = \frac{e^{d+s_{\text{logit}}}}{1 + e^{\delta} + e^{d+s_{\text{logit}}}}, \qquad
+	P_A = \frac{1}{1 + e^{\delta} + e^{d+s_{\text{logit}}}},
+	\label{eq:denominador_unificado_app}
+\end{equation}
+donde ahora el parámetro de empate $e^{d+s_{\text{logit}}}$ es independiente de $\delta$ y actúa como un término de ponderación autónomo. Esta corrección garantiza que $(P_H, P_D, P_A)$ provengan de una partición consistente del espacio muestral, con suma exactamente igual a 1.
+
+\subsection{Reparametrización logit del parámetro de empate}
+
+El baseline \textit{naive} inyecta la probabilidad de empate cruda $\hat{P}_D^{\text{(Skellam)}} \in (0,1)$ directamente al exponente del denominador. Para probabilidades cercanas a 1, el argumento del exponente tiende a saturar la aritmética de punto flotante. Peor aún, durante la optimización por L-BFGS-B, el espacio de búsqueda queda restringido al intervalo $(0,1)$ para el parámetro de empate, lo que dificulta la convergencia del optimizador.
+
+El motor G2Av1513 aplica la transformación biyectiva:
+\begin{equation}
+	s_{\text{logit}} = \ln\!\left(\frac{P_D}{1-P_D}\right),
+	\label{eq:logit_transform_app}
+\end{equation}
+de modo que el argumento del exponente $\exp(d+s_{\text{logit}})$ permanece finito para cualquier $P_D \in (0,1)$. El parámetro de calibración del empate $d$ se optimiza ahora en el espacio real $\mathbb{R}$, sin restricciones de caja. Esta reparametrización, que constituye un cambio de variable biyectivo sobre el dominio de la probabilidad de empate, mejora drásticamente la estabilidad numérica del optimizador L-BFGS-B y reduce el número de evaluaciones necesarias para alcanzar la convergencia.
+
+\subsection{Heurística de escala $g$ y reducción de $\phi_0$}
+
+El factor de atenuación del Glicko-2 canónico depende de la constante:
+\begin{equation}
+	g_{\text{const}} = \frac{3q^2}{\pi^2} = \frac{3(\ln 10 / 400)^2}{\pi^2} \approx 0.000434.
+\end{equation}
+En el motor de Shelopugin y Sirotkin, el coeficiente numérico equivalente es $1.5/\pi^2 \approx 0.152$. Tras una calibración preliminar sobre el panel de ligas utilizado en este trabajo, el motor G2Av1513 adopta:
+\begin{equation}
+	g_{\text{const}} = \frac{3.0}{\pi^2} \approx 0.304.
+	\label{eq:g_const_propia_app}
+\end{equation}
+
+Este valor, aproximadamente el doble del utilizado en el baseline, suaviza la superficie de pérdida del optimizador sin degradar la log-loss de validación. El incremento de $g_{\text{const}}$ reduce la sensibilidad del factor de atenuación $g(\phi)$ a variaciones en la desviación estándar de los ratings, lo que a su vez estabiliza las actualizaciones de volatilidad.
+
+Complementariamente, la desviación estándar inicial se reduce de $\phi_0 = 350$ (canónica) a $\phi_0 = 80$. Este cambio, documentado en la Sección~\ref{sec:entrenamiento}, acelera la convergencia de los ratings hacia su valor estacionario y evita fluctuaciones iniciales excesivas en ligas con baja densidad de partidos.
+
+\subsection{Calibración conjunta por L-BFGS-B y arquitectura de ventaja parametrizada}
+
+El motor G2Av1513 introduce un sistema de calibración por máxima verosimilitud que ajusta simultáneamente tres familias de parámetros sobre el conjunto de entrenamiento:
+\begin{enumerate}
+	\item El término de calibración del empate $d \in [-5.0, 5.0]$.
+	\item El rating inicial medio por liga $\mu_{\text{init},\ell} \in [1200, 1800]$.
+	\item La ventaja de localía por liga $h_\ell \in [0, 200]$.
+\end{enumerate}
+
+La función objetivo minimizada por el algoritmo L-BFGS-B \cite{byrd1995limited} es la log-verosimilitud negativa promedio:
+\begin{equation}
+	\mathcal{L}_{\text{G2A}}(d, \{\mu_{\text{init},\ell}\}, \{h_\ell\}) = -\frac{1}{|\mathcal{D}_{\text{train}}|}\sum_{i \in \mathcal{D}_{\text{train}}} \log P_{s_i,i},
+	\label{eq:likelihood_g2a_app}
+\end{equation}
+donde $s_i \in \{H,D,A\}$ es el resultado observado y $P_{s_i,i}$ la probabilidad asignada a dicha clase por el modelo trinomial de la Ecuación~\eqref{eq:denominador_unificado_app}.
+
+La ventaja de localía no se modela como un parámetro estructural fijo, sino que se calibra por liga ($h_\ell$). El motor G2Av1513 permite inyectar un vector de covariables contextuales $\mathbf{f}$ y calcular la ventaja efectiva como combinación lineal:
+\begin{equation}
+	h_{\text{eff}} = \beta_0 + \sum_k \beta_k f_k,
+	\label{eq:advantage_param_app}
+\end{equation}
+aunque en la versión calibrada del presente trabajo, esta flexibilidad se utiliza exclusivamente para codificar la ventaja de localía por liga, manteniendo $\beta_k = 0$ para $k > 0$.
+
+\subsection{Mecanismos de estabilidad numérica y manejo de contextos excepcionales}
+
+El motor G2Av1513 incorpora una batería de medidas de estabilidad numérica ausentes en el baseline \textit{naive}:
+\begin{itemize}
+	\item \textbf{Clamping de $\delta_\mu$:} la diferencia de ratings ponderada $\delta = g(\phi)(\tilde{\mu} - \mu_j)$ se acota al intervalo $[-50, 50]$ para evitar desbordamiento del exponente.
+	\item \textbf{Restricción de puntuación esperada:} la probabilidad esperada $E$ se restringe al rango $[10^{-12}, 1-10^{-12}]$ previo al cálculo de la varianza $v$, evitando divisiones por cero.
+	\item \textbf{Protección contra división por cero:} en la función de varianza, si el denominador es nulo, se retorna un valor de emergencia ($10^{12}$).
+	\item \textbf{Multiplicador de atenuación pandémica:} para partidos disputados durante la pandemia de COVID-19, se reduce la ventaja de localía efectiva mediante un multiplicador configurable, capturando el efecto de los estadios vacíos sobre la asimetría estructural del encuentro.
+\end{itemize}
+
+Estas medidas no solo previenen errores numéricos en el punto flotante, sino que también estabilizan la trayectoria del optimizador L-BFGS-B, reduciendo la varianza de las estimaciones paramétricas.
+
+% ============================================================
+% SECCIÓN B.3 -- TABLA COMPARATIVA DE HIPERPARÁMETROS
+% ============================================================
+
+\section{Tabla comparativa de hiperparámetros y mejora estructural}
+
+La Tabla~\ref{tab:hiperparam_comparativa_app} sistematiza las diferencias entre el motor \textit{naive} y el motor calibrado, junto con la justificación teórica y empírica de cada elección.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Comparativa de hiperparámetros y mejoras estructurales entre el motor \textit{naive} (Shelopugin-Sirotkin) y el motor calibrado G2Av1513.}
+	\label{tab:hiperparam_comparativa_app}
+	\begin{tabular}{p{3.5cm} p{4.0cm} p{4.5cm} p{3.0cm}}
+		\toprule
+		\textbf{Componente} & \textbf{Motor \textit{naive}} & \textbf{Motor G2Av1513} & \textbf{Justificación} \\
+		\midrule
+		$\phi_0$ (RD inicial) & 350 & 80 & Acelera convergencia y reduce fluctuaciones iniciales en ligas con baja densidad de partidos. \\
+		$g_{\text{const}}$ & $1.5/\pi^2 \approx 0.152$ & $3.0/\pi^2 \approx 0.304$ & Suaviza la superficie de pérdida del optimizador; derivada empíricamente durante la calibración. \\
+		Denominador trinomial & Asimétrico ($P_A$ inducido por $\delta$) & Simétrico ($1+e^\delta+e^{d+s_{\text{logit}}}$) & Garantiza partición consistente del simplex y calibración independiente del empate. \\
+		Transformación de $P_D$ & Cruda $(0,1)$ al exponente & $\operatorname{logit}(P_D)$ & Mejora estabilidad numérica y elimina restricciones de caja en el optimizador. \\
+		Calibración paramétrica & Ninguna (parámetros fijos) & L-BFGS-B sobre $\{d, \mu_{\text{init},\ell}, h_\ell\}$ & Permite adaptación a la heterogeneidad por liga y contexto temporal. \\
+		Ventaja de localía & Fija (0.0) & Calibrada por liga $h_\ell \in [0,200]$ & Captura asimetría estructural específica de cada competición. \\
+		Rating inicial & $\mu_0 = 1500$ universal & $\mu_{\text{init},\ell}$ por liga & Ajusta el anclaje a la competitividad promedio de cada liga. \\
+		Estabilidad numérica & Mínima (riesgo de desbordamiento) & Clamping, restricción de $E$, división protegida & Previene errores en punto flotante y estabiliza la optimización. \\
+		Contextos excepcionales & No manejados & Atenuación pandémica & Captura la reducción de ventaja de localía durante COVID-19. \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+La tabla evidencia que el motor calibrado no es una mera reimplementación del algoritmo Glicko-2, sino una arquitectura optimizada que incorpora conocimiento empírico sobre la estructura de las competiciones de fútbol de clubes. Cada modificación responde a una limitación identificada en el baseline \textit{naive} o a una necesidad emergente durante el proceso de calibración por máxima verosimilitud.
+
+% ============================================================
+% SECCIÓN B.4 -- COMPARACIÓN EMPÍRICA
+% ============================================================
+
+\section{Comparación empírica: del \textit{naive} al calibrado}
+
+La Tabla~\ref{tab:comparativa_empirica_app} presenta las métricas de evaluación de ambos motores sobre los tres datasets analizados. Los datos del motor \textit{naive} provienen de la ejecución del Notebook Autocontenido y del post-procesamiento descrito en la Sección B.1; los datos del motor calibrado corresponden al pipeline completo del Capítulo~\ref{ch:resultados}.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Comparativa empírica entre el motor \textit{naive} y el motor calibrado G2Av1513.}
+	\label{tab:comparativa_empirica_app}
+	\begin{tabular}{lcccccc}
+		\toprule
+		\textbf{Métrica} & \textbf{Motor} & \textbf{Full} & \textbf{Lite} & \textbf{Lite Recortado} \\
+		\midrule
+		\multirow{2}{*}{Log-Loss Categórica} & \textit{naive}$^{(a)}$ & 0.984692 & 0.985102 & 0.984692 \\
+		& Calibrado (aislado)$^{(b)}$ & 1.042427 & 1.041184 & 1.042427 \\
+		\multirow{2}{*}{Log-Loss Binaria} & \textit{naive}$^{(a)}$ & 0.620071 & 0.620036 & 0.620071 \\
+		& Calibrado (aislado)$^{(b)}$ & 0.649906 & 0.647832 & 0.649906 \\
+		\multirow{2}{*}{Rango $\Delta\mu$} & \textit{naive} & 614.55 & 731.12 & 614.55 \\
+		& Calibrado (aislado) & 616.0 & 648.7 & 616.0 \\
+		\multirow{2}{*}{Equipos únicos} & \textit{naive} & 336 & 414 & 336 \\
+		& Calibrado (aislado) & 336 & 414 & 336 \\
+		\multirow{2}{*}{Spearman $(\mu, n)$} & \textit{naive} & 0.5976 & 0.5775 & 0.5976 \\
+		& Calibrado (aislado) & — & — & — \\
+		\bottomrule
+	\end{tabular}
+	\smallskip
+	\noindent \textit{Notas:} 
+	$^{(a)}$ La log-loss del \textit{naive} se calcula sobre el \emph{dataset completo} (entrenamiento + prueba), porque el notebook \textit{naive} no realiza partición temporal.  
+	$^{(b)}$ La log-loss del calibrado se reporta sobre el \emph{conjunto de prueba} (30\,\% final), que es la métrica estándar del pipeline. Por tanto, los valores de log-loss no son directamente comparables en términos absolutos entre ambos motores, pero se incluyen para documentar la magnitud de las probabilidades generadas por cada implementación. Las métricas de rango, equipos y Spearman sí son comparables, ya que se calculan sobre los mismos conjuntos de datos completos. La correlación de Spearman del calibrado no se registró en el capítulo de resultados y se omite.
+\end{table}
+
+\subsection{Interpretación de las diferencias}
+
+\paragraph{Log-Loss.} Aunque en apariencia el \textit{naive} presenta una log-loss categórica inferior (0.985 vs 1.042), esta diferencia no debe interpretarse como superioridad predictiva, debido a las distintas bases de cálculo: el \textit{naive} evalúa sobre todo el conjunto de datos (incluyendo el entrenamiento), mientras que el calibrado lo hace sobre el 30\% final de prueba, que es cronológicamente más difícil de predecir. Además, el \textit{naive} utiliza la probabilidad de empate derivada del Skellam, que inyecta información externa, mientras que el calibrado aislado la incorpora mediante la reparametrización logit y la calibración de $d$. La comparación justa se realiza en el Capítulo~\ref{ch:resultados} cuando ambos motores se integran con el MLP y se evalúan sobre el mismo conjunto de prueba.
+
+\paragraph{Rango final de ratings $\Delta\mu$.} El rango del \textit{naive} en Lite (731.12) es notablemente superior al del calibrado (648.7), una reducción del 11.3\%. En Full y Lite Recortado, los rangos son prácticamente idénticos (614.55 vs 616.0), lo que indica que la calibración por liga tiene un efecto más pronunciado cuando se incluyen competiciones de menor densidad de partidos y mayor heterogeneidad competitiva (como las ligas de Irán y Venezuela en el dataset Lite). Esta reducción de dispersión refleja el efecto de los ratings iniciales $\mu_{\text{init},\ell}$ ajustados por liga: el \textit{naive}, al partir de un $\mu_0 = 1500$ universal, sobrestima la dispersión real de la fuerza latente, especialmente en competiciones con baja densidad de partidos.
+
+\paragraph{Número de equipos únicos.} La identidad de los conjuntos de equipos en ambos motores confirma que la calibración no altera el universo de competidores. La diferencia entre Lite (414 equipos) y Full/Lite Recortado (336 equipos) se debe a la exclusión de las ligas de Irán y Venezuela en los datasets con ventana temporal 2019--2025.
+
+\paragraph{Correlación de Spearman.} La correlación positiva entre $\mu$ y el número de partidos disputados ($\rho \approx 0.58$--$0.60$ en el \textit{naive}) es un fenómeno estructural documentado en sistemas de rating dinámico: los equipos que juegan más partidos tienen más oportunidades de acumular rating (tanto positivo como negativo), lo que expande su varianza muestral. El motor calibrado, al ajustar $\mu_{\text{init},\ell}$ por liga, reduce ligeramente esta correlación, indicando que parte de la dispersión en el \textit{naive} era atribuible a diferencias en la densidad de partidos entre competiciones y no a diferencias reales de fuerza. Lamentablemente, el valor exacto para el calibrado no se registró en el capítulo de resultados, pero se espera que sea inferior al del \textit{naive}.
+
+% ============================================================
+% SECCIÓN B.5 -- SÍNTESIS
+% ============================================================
+
+\section{Síntesis: el aporte diferencial de la calibración}
+
+La evidencia presentada en las secciones anteriores permite formular una conclusión metodológica precisa: el aporte del motor G2Av1513 no reside en el algoritmo Glicko-2 \emph{per se}, sino en el sistema de calibración estructural y las mejoras numéricas que lo acompañan.
+
+\subsection{El algoritmo como infraestructura, la calibración como señal}
+
+El motor \textit{naive} demuestra que una implementación correcta del algoritmo Glicko-2 con parámetros canónicos produce rankings válidos y dispersos, pero carece de la capacidad de ajustarse a la heterogeneidad estructural del fútbol de clubes: las diferencias en competitividad entre ligas, la asimetría de la ventaja de localía según la geografía, y la variación en la densidad de partidos entre competiciones. El motor calibrado, al optimizar $\mu_{\text{init},\ell}$ y $h_\ell$ por liga, introduce un mecanismo de adaptación que no existe en el baseline.
+
+\subsection{Las mejoras numéricas como habilitadores de la optimización}
+
+Las modificaciones algebraicas del motor G2Av1513, documentadas en las Secciones B.2.1 a B.2.3, no son meros refinamientos de estilo, sino condiciones necesarias para que la calibración por L-BFGS-B funcione en la práctica:
+\begin{enumerate}
+	\item La \textbf{corrección del denominador trinomial} garantiza que el optimizador explore un espacio de probabilidades consistente, evitando regiones del simplex donde $P_H + P_D + P_A \neq 1$.
+	\item La \textbf{reparametrización logit} elimina las restricciones de caja sobre el parámetro de empate $d$, permitiendo que el optimizador se mueva libremente por $\mathbb{R}$.
+	\item La \textbf{heurística $g_{\text{const}} = 3.0/\pi^2$} suaviza la superficie de pérdida, reduciendo la rugosidad que el L-BFGS-B encuentra en regiones de alta curvatura.
+\end{enumerate}
+
+Sin estas mejoras, la optimización conjunta de $\{d, \mu_{\text{init},\ell}, h_\ell\}$ sería numéricamente inestable o convergería a mínimos locales espurios.
+
+\subsection{La transferibilidad del conocimiento calibrado}
+
+Un hallazgo relevante de la comparación entre Full y Lite Recortado es que la calibración por liga y la reducción de $\phi_0$ son transferibles entre configuraciones con y sin métricas deportivas avanzadas. Los valores calibrados de $h_\ell$ en Full y Lite Recortado son prácticamente idénticos (Tabla~\ref{tab:glicko_h_league_comparison} del Capítulo~\ref{ch:resultados}), lo que indica que la ventaja de localía es una propiedad estructural de cada competición, independiente de la granularidad de las estadísticas de juego.
+
+Esta transferibilidad sugiere que el sistema de calibración del motor G2Av1513 captura información contextual que trasciende el conjunto de características utilizado en cada dataset, constituyendo un conocimiento estable sobre la estructura competitiva del fútbol de clubes.
+
+\subsection*{Observación final}
+
+El contraste entre el motor \textit{naive} y el motor calibrado revela una lección metodológica de alcance general en la modelización de sistemas de rating dinámico: la implementación fiel del algoritmo es necesaria pero no suficiente para alcanzar un desempeño óptimo. La calibración estructural —el ajuste de parámetros que reflejan la heterogeneidad contextual del dominio de aplicación— es el verdadero habilitador del poder predictivo del sistema. El motor G2Av1513 no es, por tanto, una mera reimplementación del Glicko-2, sino un sistema de inferencia que integra el algoritmo canónico con un protocolo de optimización robusto y un conjunto de mejoras numéricas diseñadas específicamente para el problema de predicción trinomial en fútbol de clubes.

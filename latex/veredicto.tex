@@ -1,0 +1,33 @@
+%% ============================================================
+%%  Veredicto del Jurado — formato TEG UCV (según imagen)
+%%  Ajusta los nombres del jurado según corresponda.
+%% ============================================================
+\thispagestyle{plain}
+\setcounter{page}{2}   % página ii
+
+\vspace*{0.5cm}
+
+\noindent
+Nosotros, los abajo firmantes, designados por la Universidad Central de Venezuela como integrantes del Jurado Examinador del Trabajo Especial de Grado titulado ``\titulotrabajo'', presentado por el \autortrabajo, titular de la C\'edula de Identidad \textbf{\cedulaautor}, certificamos que este trabajo cumple con los requisitos exigidos por nuestra Magna Casa de Estudios para optar al t\'itulo de \textbf{Licenciado en Matem\'atica}.
+
+\vspace{2.2cm}
+
+\newcommand{\firma}[2]{%
+  \begin{center}
+  \rule{7cm}{0.5pt}\\[4pt]
+  {\bfseries #1}\\[2pt]
+  #2
+  \end{center}
+}
+
+\firma{\tutortrabajo}{Tutora}
+
+\vspace{1.4cm}
+
+\firma{Profa. Daniela Torrealba}{Jurado}
+
+\vspace{1.4cm}
+
+\firma{Prof. Máximo Hidalgo}{Jurado}
+
+\clearpage
