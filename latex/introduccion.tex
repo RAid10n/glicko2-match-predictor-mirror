@@ -2,3 +2,34 @@
 \addcontentsline{toc}{chapter}{Introducci\'on}
 \markboth{Introducci\'on}{}
 
+\section*{Contexto y motivación}
+
+El f'utbol profesional ha experimentado una transformación digital en las \'ultimas d\'ecadas, generando un volumen de datos sin precedentes que permite abordar la predicci\'on de resultados desde una perspectiva probabil\'istica. Esta digitalizaci\'on ha facilitado la transici\'on de métricas de conteo simple hacia variables más sofisticadas, como los goles esperados (xG), que eval\'uan la calidad de las oportunidades creadas en lugar de los resultados brutos \cite{xG,MetricasBase}. Sin embargo, los sistemas de clasificaci\'on institucionales, como los rankings de FIFA \cite{FIFARanking2024} , UEFA\cite{UEFARanking2024} , CONMEBOL \cite{CONMEBOLRanking2021}, AFC \cite{AFCRanking2024}, CONCACAF \cite{CONCACAFRanking2023} e IFFHS \cite{IFFHSRanking2021}, operan bajo l\'ogicas predominantemente contables o adaptaciones pragm\'aticas del modelo Elo. Estos sistemas no cuantifican la incertidumbre estad\'istica asociada a la fuerza de cada equipo, no modelan el empate como categor\'ia estoc\'astica independiente y no integran covariables contextuales como factores econ\'omicos, ambientales o deportivos detallados.
+
+La pregunta de investigaci\'on que orienta este trabajo es la siguiente: ¿c\'omo estimar probabil\'isticamente el resultado de un partido integrando informaci\'on deportiva, econ\'omica y ambiental, de forma que el sistema sea actualizable secuencialmente y cuantifique la incertidumbre sobre la fuerza de cada equipo?
+
+Para responder a esta pregunta, se dise\~na un sistema predictivo en cascada que combina tres bloques funcionales: 
+
+\begin{enumerate}
+	\item Un modelo de conteo usando LightGBM con funci\'on objetivo Poisson, que estima las tasas de goles esperados y deriva una probabilidad de empate mediante la distribuci\'on de Skellam.
+	\item Un sistema de rating din\'amico basado en una implementaci\'on propia del algoritmo Glicko-2 modificado de Andrei Shelopugin y Alexander Sirotkin \cite{Glicko2Mod}, que actualiza secuencialmente la fuerza latente de los equipos y cuantifica la incertidumbre a trav\'es de la desviación de rating.
+	\item Un perceptr\'on multicapa que refina las probabilidades base integrando covariables ex\'ogenas estandarizadas (econ\'omicas, ambientales y geogr\'aficas).
+\end{enumerate}
+
+El trabajo se organiza en cinco cap\'itulos. El Cap\'itulo~\ref{ch:marco} presenta el marco te\'orico que fundamenta los sistemas de rating, el modelamiento probabil\'istico del resultado y las m\'etricas de evaluaci\'on. El Cap\'itulo~\ref{ch:metodologia} describe la metodolog\'ia empleada para la recolecci\'on y procesamiento de datos, la selecci\'on de covariables y la implementaci\'on del pipeline predictivo. El Cap\'itulo~\ref{ch:resultados} expone los resultados emp\'iricos obtenidos sobre tres conjuntos de datos y discute sus implicaciones. Finalmente, el Cap\'itulo~\ref{ch:resultados} presenta las conclusiones, las limitaciones del estudio y las l\'ineas de investigación futuras.
+
+\section*{Objetivos}
+
+\subsection*{Objetivo general}
+
+Desarrollar un sistema predictivo en cascada que integre un modelo de conteo, un sistema de rating din'amico y un refinador neuronal para estimar probabilísticamente el resultado de partidos de fútbol a partir de información deportiva, econ\'omica y ambiental, garantizando la actualización secuencial y la cuantificación de la incertidumbre sobre la fuerza de los equipos.
+
+\subsection*{Objetivos espec\'ificos}
+
+\begin{enumerate}
+	\item Implementar un bloque de conteo basado en LightGBM con función objetivo Poisson para estimar las tasas de goles esperados y derivar la probabilidad de empate mediante la distribución de Skellam.
+	\item Construir una implementación propia del algoritmo Glicko-2 modificado de Androei Shelopugin y Alexander Sirotkin \cite{Glicko2Mod} que incorpore el empate como categoría estocástica independiente y permita la calibración de la ventaja de localía por liga mediante máxima verosimilitud.
+	\item Dise\~nar un perceptr\'on multicapa que refine las probabilidades base del sistema de rating integrando covariables ex\'ogenas estandarizadas.
+	\item Evaluar el sistema en tres conjuntos de datos: \textit{Lite}, \textit{Full} y \textit{Lite Recortado}; mediante m\'etricas probabil\'isticas (log-loss) y de clasificaci\'on (accuracy, F1-score, precisión), utilizando un protocolo de 10 corridas pareadas con inferencia estadística mediante test t pareado.
+	\item Analizar el aporte incremental de cada bloque funcional y el impacto de las covariables ex\'ogenas en la calibración global y la detección de empates.
+\end{enumerate}

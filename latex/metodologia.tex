@@ -131,8 +131,8 @@ A partir de la integraci\'on de las fuentes anteriores se generaron tres conjunt
 
 \begin{itemize}
 	\item \textbf{Dataset Lite:} 37\,712 partidos $\times$ 53 variables. Cubre el per\'iodo completo 2017--2025. Incluye resultados, variables econ\'omicas, ambientales y de estadio, pero no incorpora las m\'etricas deportivas detalladas (\'indices compuestos) por no estar disponibles en las primeras temporadas para todas las ligas.
-	\item \textbf{Dataset Full:} 26\,961 partidos $\times$ 56 variables. Cubre el per\'iodo 2019--2025. Incorpora las m\'etricas deportivas agregadas (promedios m\'oviles y \'indices compuestos de autor\'ia) adem\'as de todas las variables del Lite. El recorte temporal obedece a la disponibilidad de datos del FIFA Club World Cup a partir de 2019 y a la completitud de los datos a partir de este a\~no. Esto permiti\'o contar con ventanas de forma \textit{rolling} suficientemente largas para todas las ligas.
-	\item \textbf{Dataset Lite Recortado:} 26\,961 partidos $\times$ 53 variables. Misma ventana temporal que el Full (2019--2025) pero con la estructura de variables del Lite, de modo que permite comparaciones controladas entre modelos con y sin m\'etricas deportivas detalladas.
+	\item \textbf{Dataset Full:} 26\,960 partidos $\times$ 56 variables. Cubre el per\'iodo 2019--2025. Incorpora las m\'etricas deportivas agregadas (promedios m\'oviles y \'indices compuestos de autor\'ia) adem\'as de todas las variables del Lite. El recorte temporal obedece a la disponibilidad de datos del FIFA Club World Cup a partir de 2019 y a la completitud de los datos a partir de este a\~no. Esto permiti\'o contar con ventanas de forma \textit{rolling} suficientemente largas para todas las ligas.
+	\item \textbf{Dataset Lite Recortado:} 26\,960 partidos $\times$ 53 variables. Misma ventana temporal que el Full (2019--2025) pero con la estructura de variables del Lite, de modo que permite comparaciones controladas entre modelos con y sin m\'etricas deportivas detalladas.
 \end{itemize}
 
 Para los datasets Full y Lite Recortado se excluyeron las ligas de Ir\'an (Persian Gulf Pro League) y Venezuela (Liga FutVe) por falta de m\'etricas deportivas b\'asicas en el per\'odo analizado, lo que redujo el universo de competiciones a veintiuna.
@@ -360,9 +360,9 @@ El dataset consolidado descrito en la Secci\'on~\ref{sec:procesamiento} genera u
 \subsection{Primer Random Forest: diagn\'ostico sobre el universo completo}
 \label{subsec:primera_pasada}
 
-Se entren\'o un clasificador \texttt{RandomForestClassifier} ($n_{\text{estimators}}=200$, $\text{max\_depth}=15$, \texttt{random\_state}=42) sobre el conjunto de 192 variables derivadas, utilizando la codificaci\'on trinomial del resultado $\{H,D,A\}$ como variable objetivo. La partici\'on entrenamiento/prueba respet\'o la estructura temporal usando el split $70\/30$.
+Se entren\'o un clasificador \texttt{RandomForestClassifier} ($n_{\text{estimators}}=200$, $\text{max\_depth}=15$, \texttt{random\_state}=42) sobre el conjunto de 192 variables derivadas, utilizando la codificaci\'on trinomial del resultado $\{H,D,A\}$ como variable objetivo. La partici\'on entrenamiento/prueba respet\'o la estructura temporal usando el split $70/30$.
 
-El modelo alcanz\'o una accuracy de $0{.}9112$ sobre el conjunto de prueba, con un \emph{F1-score} ponderado de $0{.}91$. No obstante, el an\'alisis de las importancias de Gini revel\'o una concentraci\'on extrema: las dos variables dominantes fueron \texttt{home\_Goals} e \texttt{away\_Goals}, importancias relativas $0{.}188$ y $0{.}162$, respectivamente, seguidas a gran distancia por los \'indices compuestos de goles esperados. Esta distribuci\'on evidencia \emph{data leakage}: los goles finales del partido no son conocidos en el momento de la predicci\'on, por lo que su inclusi\'on genera una estimaci\'on irrealista del poder predictivo. Asimismo, las variables macroecon\'omicas (PIB, inflaci\'on, Gini, gasto p\'ublico, deuda e IED) ocuparon posiciones marginales en el ranking de importancia, con valores inferiores a $0{.}012$ en todos los casos, confirmando su escasa se\~nal predictiva en la escala del resultado individual. Esto queda en evidencia en la figura~\ref{fig:PrimerRandomForest}
+El modelo alcanz\'o una accuracy de $0{.}9112$ sobre el conjunto de prueba, con un \emph{F1-score} ponderado de $0{.}91$. No obstante, el an\'alisis de las importancias de Gini revel\'o una concentraci\'on extrema: las dos variables dominantes fueron \texttt{home\_Goals} e \texttt{away\_Goals}, importancias relativas $0{.}188$ y $0{.}162$, respectivamente, seguidas a gran distancia por los \'indices compuestos de goles esperados. Esta distribuci\'on evidencia \emph{data leakage}, dado que los goles finales del partido no son conocidos en el momento de la predicci\'on, por lo que su inclusi\'on genera una estimaci\'on irrealista del poder predictivo. Asimismo, las variables macroecon\'omicas (PIB, inflaci\'on, Gini, gasto p\'ublico, deuda e IED) ocuparon posiciones marginales en el ranking de importancia, con valores inferiores a $0{.}012$ en todos los casos, confirmando su escasa se\~nal predictiva en la escala del resultado individual. Esto queda en evidencia en la figura~\ref{fig:PrimerRandomForest}
 
 \begin{figure}[htbp]
 	\centering
@@ -382,17 +382,35 @@ En consecuencia, se decidi\'o lo siguiente
 \subsection{Segundo Random Forest: filtrado y selecci\'on manual}
 \label{subsec:segunda_pasada}
 
-Sobre el dataset filtrado, que excluye las variables de \emph{leakage} y reduce el espacio a m\'etricas ex\'ogenas genuinamente disponibles previo al partido, se reentren\'o el mismo clasificador Random Forest. El desempe\~no cay\'o dr\'asticamente a una accuracy de $0{.}4864$ y un \emph{F1-score} macro de $0{.}37$, evidenciando que la predicci\'on de resultados de f\'utbol es un problema de alta entrop\'ia cuando se eliminan se\~nales espurias. La matriz de confusi\'on revel\'o el patr\'on caracter\'istico ya discutido en la literatura: la clase empate ($D$) colapsa casi por completo bajo una regla de decisi\'on dura $\arg\max$, mientras que el modelo confunde sistem\'aticamente victorias locales y visitantes.
+Sobre las decisiones anteriores se obtuvo un dataset filtrado. Este excluye las variables de \emph{leakage} y reduce el espacio a m\'etricas ex\'ogenas genuinamente disponibles previo al partido. El \textit{dataset} se reentren\'o el mismo clasificador Random Forest. El desempe\~no cay\'o dr\'asticamente a una accuracy de $0{.}4864$ y un \emph{F1-score} macro de $0{.}37$, evidenciando que la predicci\'on de resultados de f\'utbol es un problema de alta entrop\'ia cuando se eliminan se\~nales no validas. La matr\'iz de confusi\'on (Figura ~\ref{fig:SegundaMatrizConfusion}) revel\'o el patr\'on caracter\'istico ya discutido en la literatura (Secci\'on~\ref{subsec:empate}): la clase empate ($D$) colapsa casi por completo bajo una regla de decisi\'on dura $\arg\max$, mientras que el modelo confunde sistem\'aticamente victorias locales y visitantes.
 
-A partir de este modelo filtrado, se seleccion\'o un conjunto reducido mediante un criterio h\'ibrido que pondera la importancia del Random Forest con la representatividad de los tres bloques te\'oricos del trabajo y la ausencia de redundancia funcional. Las variables elegidas se organizan como sigue:
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.9\textwidth]{matrizconfusion2.png}
+	\caption{Distribuci\'on de la importancia de las caracter\'isticas en el clasificador Random Forest.}
+	\label{fig:SegundaMatrizConfusion}
+\end{figure}
+
+Por otra parte, el an\'alisis de importancia de Gini para este modelo filtrado (Figura ~\ref{fig:SegundoRandomForest}) permite identificar las variables con mayor peso relativo.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.9\textwidth]{segundoforest.png}
+	\caption{Distribuci\'on de la importancia de las caracter\'isticas en el clasificador Random Forest.}
+	\label{fig:SegundoRandomForest}
+\end{figure}
+
+\newpage
+
+Esto permite la selecci\'on de un conjunto reducido mediante un criterio h\'ibrido que pondera la importancia del Random Forest con la representatividad de los tres bloques te\'oricos del trabajo y la ausencia de redundancia funcional. Las variables elegidas se organizan como sigue:
 
 \paragraph{Variables de mayor importancia relativa.} Las seis covariables de mayor peso en el modelo filtrado fueron retenidas directamente:
 \begin{itemize}
-	\item \texttt{diff\_MarketValue}: diferencia de valor de mercado entre local y visitante (millones de euros).
+	\item \texttt{diff\_MarketValue}: diferencia de valor de mercado entre local y visitante, medido en millones de euros.
 	\item \texttt{home\_Assist}: asistencia promedio del equipo local.
-	\item \texttt{travel\_km}: distancia geod\'esica entre estadios (km), proxy del desgaste por viaje.
+	\item \texttt{travel\_km}: distancia geod\'esica entre estadios, medido en kil\'ometros a trav\'es de la f\'ormula de Haversine (Secci\'on~\ref{subsec:integracion}).
 	\item \texttt{diff\_NetSpending}: diferencia de balance neto de transferencias.
-	\item \texttt{diff\_temperature\_2m}: diferencia de temperatura ambiente entre la sede del local y la del visitante.
+	\item \texttt{diff\_temperature\_2m}: diferencia de temperatura ambiente entre la sede del local y la del visitante a dos metros de altura respecto al suelo.
 	\item \texttt{diff\_PiO2}: diferencia de presi\'on parcial de ox\'igeno, derivada de la altitud de los estadios.
 \end{itemize}
 
@@ -404,7 +422,7 @@ A partir de este modelo filtrado, se seleccion\'o un conjunto reducido mediante 
 \end{itemize}
 Estas variables s\'olo se encuentran disponibles en el dataset Full (2019--2025), dado que las estad\'isticas de juego detalladas requeridas para su c\'alculo no est\'an completas en las primeras temporadas del dataset Lite.
 
-\paragraph{Variable de composici\'on de plantilla.} Adicionalmente, se incluy\'o \texttt{diff\_Foreign} (diferencia en n\'umero de jugadores extranjeros) como representante del bloque de diversidad y estructura de roster, aun cuando su importancia individual en el Random Forest no ocup\'o los primeros puestos. Su inclusi\'on busca capturar el efecto de la exposici\'on a distintos estilos de juego y condiciones competitivas, factor te\'oricamente relevante seg\'un la literatura de econom\'ia del deporte.
+\paragraph{Variable de composici\'on de plantilla.} Adicionalmente, se incluy\'o \texttt{diff\_Foreign}: diferencia en n\'umero de jugadores extranjeros, como representante del bloque de diversidad y estructura de plantilla, aun cuando su importancia individual en el Random Forest no ocup\'o los primeros puestos. Su inclusi\'on busca capturar el efecto de la exposici\'on a distintos estilos de juego y condiciones competitivas, factor te\'oricamente relevante seg\'un la literatura de econom\'ia del deporte.
 
 %\paragraph{Variables excluidas por redundancia o parsimonia.} En aras de evitar la sobrepoblaci\'on del bloque ambiental, se descartaron \texttt{diff\_relative\_humidity\_2m} y \texttt{diff\_surface\_pressure}, quedando representado el factor clim\'atico mediante la temperatura y la presi\'on de ox\'igeno. Asimismo, se excluyeron variables intermedias que operan como componentes de \'indices compuestos ya incluidos: \texttt{diff\_TDA} (base del DDI, adem\'as susceptible de \emph{leakage} en su forma desagregada), \texttt{diff\_xGP\_r5} y \texttt{diff\_xGP\_np\_r5} (bases del xOVA). Finalmente, el ratio de ocupaci\'on \texttt{home\_OccRat} fue evaluado pero excluido posteriormente del modelo final por alta colinealidad lineal con \texttt{home\_Assist}, de modo que ambas variables no coexisten en el vector de entrada del perceptr\'on multicapa.
 
@@ -418,10 +436,10 @@ El conjunto activo de covariables ex\'ogenas que alimentar\'an el perceptr\'on m
 	\item \textbf{Bloque de composici\'on de plantilla:} \texttt{diff\_Foreign}.
 	\item \textbf{Bloque ambiental y geogr\'afico:} \texttt{diff\_temperature\_2m}, \texttt{diff\_PiO2}, \texttt{travel\_km}.
 	\item \textbf{Bloque de estadio y afici\'on:} \texttt{home\_Assist}.
-	\item \textbf{Bloque deportivo (forma reciente):} \texttt{diff\_xG\_teo\_r5}, \texttt{diff\_xA\_teo\_r5}, \texttt{diff\_DDI\_r5}.
+	\item \textbf{Bloque deportivo:} \texttt{diff\_xG\_teo\_r5}, \texttt{diff\_xA\_teo\_r5}, \texttt{diff\_DDI\_r5}.
 \end{itemize}
 
-Este vector, junto con las tres probabilidades base $(P_H, P_D, P_A)$ generadas por el sistema de rating y el modelo de conteo, constituye el input $\mathbf{z}_{ij} \in \mathbb{R}^{n},n\in\{10,13\}\}$ del MLP. La reducci\'on dimensional busc\'o mitigar el sobreajuste en la fase de refinamiento no lineal, aunque el dr\'astico descenso de accuracy entre la primera y segunda pasada del Random Forest sugiere que el cuello de botella del sistema no reside en la dimensionalidad, sino en la alta varianza inherente al fen\'omeno deportivo. El an\'alisis detallado del desempe\~no predictivo se reserva para el cap\'itulo de resultados.
+Este vector, junto con las tres probabilidades base $(P_H, P_D, P_A)$ generadas por el sistema de rating y el modelo de conteo, constituye el input $\mathbf{z}_{ij} \in \mathbb{R}^{n}$ del MLP, donde $n=10$ en el \textit{dataset Lite} y el \textit{dataset Lite Recortado} y $n=13$ en el \textit{dataset Full}. La reducci\'on dimensional busc\'o mitigar el sobreajuste en la fase de refinamiento no lineal, aunque el dr\'astico descenso de accuracy entre la primera y segunda pasada del Random Forest sugiere que el cuello de botella del sistema no reside en la dimensionalidad, sino en la alta varianza inherente al fen\'omeno deportivo. El an\'alisis detallado del desempe\~no predictivo completo en cascada se reserva para el cap\'itulo~\ref{ch:resultados}.
 
 % ============================================================
 % SECCION 3.4 -- Arquitectura del sistema predictivo
@@ -430,7 +448,15 @@ Este vector, junto con las tres probabilidades base $(P_H, P_D, P_A)$ generadas 
 \section{Arquitectura del sistema predictivo}
 \label{sec:arquitectura}
 
-El sistema predictivo se organiza como un pipeline en cascada de tres bloques funcionales: (i)~un bloque de conteo que estima las tasas de goles y deriva una probabilidad de empate; (ii)~un bloque de rating din\'amico que actualiza secuencialmente la fuerza latente de los equipos y genera un vector de probabilidades base; y (iii)~un bloque de refinamiento no param\'etrico que corrige dichas probabilidades mediante un perceptr\'on multicapa (MLP) alimentado con covariables ex\'ogenas. A continuaci\'on se detalla cada componente, su implementaci\'on computacional y el flujo de datos entre ellos.
+El sistema predictivo se organiza como un pipeline en cascada de tres bloques funcionales: 
+
+\begin{enumerate}
+	\item Un bloque de conteo que estima las tasas de goles y deriva una probabilidad de empate.
+	\item Un bloque de rating din\'amico que actualiza secuencialmente la fuerza latente de los equipos y genera un vector de probabilidades base.
+	\item Un bloque de refinamiento no param\'etrico que corrige dichas probabilidades mediante un perceptr\'on multicapa (MLP) alimentado con covariables ex\'ogenas.
+\end{enumerate}
+
+A continuaci\'on se detalla cada componente, su implementaci\'on computacional y el flujo de datos entre ellos.
 
 \subsection{Variable dependiente y codificaci\'on}
 \label{subsec:variable_dependiente}
@@ -444,9 +470,20 @@ El primer bloque del pipeline modela el n\'umero de goles anotados por cada equi
 
 \paragraph{Conjunto de entrenamiento y partici\'on temporal.} La partici\'on respeta el orden cronol\'ogico: el 70\% inicial de los partidos (ordenados por \texttt{match\_date\_from\_id}) constituye el conjunto de entrenamiento; el 30\% restante, el de prueba. Dentro del entrenamiento se reserva un 10\% final para \emph{early stopping}.
 
-\paragraph{Variables de entrada.} Dado que el objetivo de este bloque es capturar la din\'amica de forma reciente sin introducir \emph{leakage} del resultado final, \'unicamente se utilizan las variables de promedios m\'oviles de goles y goles concedidos en ventanas de 5, 10, 20 y 30 partidos, diferenciadas por condici\'on de local\'ia. Espec\'ificamente, las features son las 32 columnas del grupo \texttt{rolling\_features} (por ejemplo, \texttt{home\_goals\_r5}, \texttt{away\_Gcon\_away\_r30}, etc.).
+\paragraph{Variables de entrada.} Dado que el objetivo de este bloque es capturar la din\'amica de forma reciente sin introducir \emph{leakage} del resultado final, \'unicamente se utilizan las variables de promedios m\'oviles de goles y goles concedidos en ventanas de 5, 10, 20 y 30 partidos, diferenciadas por condici\'on de local\'ia. Espec\'ificamente, las features son 32 columnas que pertenecen al grupo \texttt{rolling\_features}.
 
-\paragraph{Hiperpar\'ametros y salida.} Los modelos se configuran con \texttt{n\_estimators=200}, \texttt{learning\_rate=0.05}, \texttt{max\_depth=5} y criterio de parada temprana de 10 iteraciones. A partir de las tasas predichas $\hat{\lambda}_H$ y $\hat{\lambda}_A$, se calcula la probabilidad de empate mediante la distribuci\'on de Skellam evaluada en $k=0$ (Ecuaci\'on~\ref{eq:prob_D_bessel} del Marco Te\'orico):
+Estas variables se construyen mediante una regla combinatoria que cruza cuatro dimensiones: 
+
+\begin{enumerate}
+	\item El prefijo indica si la estad\'istica corresponde al equipo local (\texttt{home}) o al visitante (\texttt{away})
+	\item La ra\'iz distingue entre goles marcados (\texttt{goals}) y goles recibidos (\texttt{Gcon})
+	\item Para cada prefijo (\texttt{home} y \texttt{away}) se generan dos versiones: la global, sin sufijo adicional, y la condicionada a partidos jugados en la condici\'on del prefijo.
+	\item El sufijo final determina el tama\~no de la ventana, que puede ser 5, 10, 20 o 30 partidos
+\end{enumerate}
+
+El producto de estas dimensiones, es decir, \(2 \times 2 \times 2 \times 4 = 32\), da como resultado las 32 columnas del grupo.
+
+\paragraph{Hiperpar\'ametros y salida.} Los modelos se configuran con \texttt{n\_estimators=200},\\ \texttt{learning\_rate=0.05}, \texttt{max\_depth=5} y criterio de parada temprana de 10 iteraciones. A partir de las tasas predichas $\hat{\lambda}_H$ y $\hat{\lambda}_A$, se calcula la probabilidad de empate mediante la distribuci\'on de Skellam evaluada en $k=0$ (Ecuaci\'on~\ref{eq:prob_D_bessel} del Cap\'itulo~\ref{ch:marco}):
 \begin{equation}
 	\hat{P}_D^{\text{(Skellam)}} = e^{-(\hat{\lambda}_H + \hat{\lambda}_A)} \, I_0\!\left(2\sqrt{\hat{\lambda}_H \hat{\lambda}_A}\right).
 \end{equation}
@@ -455,46 +492,68 @@ Este valor, denominado \texttt{draw\_prob} en el pipeline, se anexa al dataset y
 \subsection{Bloque de rating din\'amico: Glicko-2 modificado}
 \label{subsec:rating}
 
-El n\'ucleo inferencial del sistema es una implementaci\'on propia del algoritmo Glicko-2 modificado de Shelopugin y Sirotkin \cite{Glicko2Mod}, contenida en el m\'odulo \texttt{G2Av1513.py}. A diferencia de la versi\'on can\'onica, esta implementaci\'on: (a)~incorpora el empate como categor\'ia estoc\'astica independiente usando la probabilidad de empate del bloque de conteo; (b)~permite una ventaja de local\'ia $h_\ell$ espec\'ifica por liga; y (c)~optimiza conjuntamente los hiperpar\'ametros de calibraci\'on mediante m\'axima verosimilitud.
+El n\'ucleo inferencial del sistema es una implementaci\'on propia basada en el algoritmo Glicko-2 modificado de Shelopugin y Sirotkin \cite{Glicko2Mod}, contenida en el m\'odulo \texttt{G2Av1513.py}. A diferencia de la versi\'on can\'onica, esta implementaci\'on: 
+
+\begin{enumerate}
+	\item Incorpora el empate como categor\'ia estoc\'astica independiente usando la probabilidad de empate del bloque de conteo.
+	\item ermite una ventaja de local\'ia $h_\ell$ espec\'ifica por liga.
+	\item Optimiza conjuntamente los hiperpar\'ametros de calibraci\'on mediante m\'axima verosimilitud.
+\end{enumerate}
 
 \paragraph{Estado y actualizaci\'on.} Cada equipo se caracteriza por un estado $(R, RD, \sigma)$ que se actualiza secuencialmente partido a partido, en orden cronol\'ogico estricto. Los valores iniciales por defecto son $R_0 = 1500$, $RD_0 = 80$ y $\sigma_0 = 0{.}06$, aunque el rating inicial medio $\mu_{\text{init}}$ se calibra por liga. La constante de difusi\'on temporal se fija en $\tau = 0{.}8$.
 
 Aunque el valor can\'onico de Glickman \cite{Glickman2022} es \(RD_0=350\), en esta implementaci\'on se fija \(RD_0=80\) tras una calibraci\'on preliminar que mostr\'o una convergencia m\'as estable para el panel de ligas utilizado.
 
-\paragraph{Ventaja de local\'ia y calibraci\'on del empate.} La ventaja de local\'ia no se modela como un par\'ametro estructural fijo, sino que se calibra por liga ($h_\ell$) junto con el t\'ermino de correcci\'on del empate $d$ (denominado \texttt{draw\_adjustment} en el c\'odigo). Ambos se estiman maximizando la log-verosimilitud del resultado observado sobre el conjunto de entrenamiento mediante el algoritmo L-BFGS-B \cite{byrd1995limited}, con las siguientes cotas:
+\paragraph{Ventaja de local\'ia y calibraci\'on del empate.} La ventaja de local\'ia no se modela como un par\'ametro estructural fijo, sino que se calibra por liga a trav\'es del par\'ametro $h_\ell$, junto con el t\'ermino de correcci\'on del empate $d$ (denominado \texttt{draw\_adjustment} en el c\'odigo). Ambos se estiman maximizando la log-verosimilitud del resultado observado sobre el conjunto de entrenamiento mediante el algoritmo L-BFGS-B \cite{byrd1995limited}, con las siguientes cotas:
 \begin{itemize}
-	\item $d \in [-5{.}0,\, 5{.}0]$,
-	\item $\mu_{\text{init},\ell} \in [1200,\, 1800]$ (expresado como desviaci\'on respecto a 1500 en el espacio de optimizaci\'on),
-	\item $h_\ell \in [0,\, 200]$ (escalado interno por 10 en el optimizador).
+	\item $d \in [-5{.}0,\, 5{.}0]$.
+	\item $\mu_{\text{init},\ell} \in [1200,\, 1800]$, expresado como desviaci\'on respecto a 1500 en el espacio de optimizaci\'on.
+	\item $h_\ell \in [0,\, 200]$, escalado interno por 10 en el optimizador.
 \end{itemize}
 
-\paragraph{Generaci\'on de probabilidades base.} Para cada partido, el bloque Glicko-2 recibe: (i)~los estados actuales de los equipos; (ii)~la probabilidad de empate $\hat{P}_D^{\text{(Skellam)}}$; y (iii)~la ventaja de local\'ia calibrada $h_\ell$. Devuelve el vector de probabilidades base $(P_H, P_D, P_A)$ seg\'un las Ecuaciones~\ref{eq:prob_victoria_local}--\ref{eq:prob_victoria_visitante} del Marco Te\'orico. Tras observar el resultado real, actualiza los estados de ambos equipos mediante las Ecuaciones~\ref{eq:glicko2_phi_prime}--\ref{eq:glicko2_mu_prime}.
+\paragraph{Generaci\'on de probabilidades base.} Para cada partido, el bloque Glicko-2 recibe: 
 
-\paragraph{Observaci\'on sobre la ventaja de local\'ia.} Si bien en la versi\'on final del modelo te\'orico el par\'ametro base de ventaja local se anula ($\delta \equiv 0$) para delegar la no linealidad residual al MLP, en la implementaci\'on computacional se mantuvo $h_\ell$ activo durante la fase Glicko-2 como par\'ametro de calibraci\'on por liga, de modo que el rating din\'amico capture la asimetr\'ia estructural antes de que el refinador neuronal intervenga.
+\begin{enumerate}
+	\item Los estados actuales de los equipos.
+	\item La probabilidad de empate $\hat{P}_D^{\text{(Skellam)}}$.
+	\item La ventaja de local\'ia calibrada $h_\ell$.
+\end{enumerate}
+
+Devuelve el vector de probabilidades base $(P_H, P_D, P_A)$ seg\'un las Ecuaciones~\ref{eq:prob_victoria_local}--\ref{eq:prob_victoria_visitante} del Cap\'itulo~\ref{ch:marco}. Tras observar el resultado real, actualiza los estados de ambos equipos mediante las Ecuaciones~\ref{eq:glicko2_phi_prime}--\ref{eq:glicko2_mu_prime} del Cap\'itulo~\ref{ch:marco}.
+
+\paragraph{Observaci\'on sobre la ventaja de local\'ia.} Si bien en la versi\'on can\'onica del modelo Glicko-2 modificado de Shelopugin y Sirotkin \cite{Glicko2Mod}, la ventaja de local\'ia se anula ($\delta\equiv 0$). En la implmentaci\'on propia se mantuvo el par\'ametro $h_\ell$ activo durante la fase Glicko-2. Esta decisi\'on responde a dos motivaciones:
+
+\begin{itemize}
+	\item Evidenciar la ventaja local como un fen\'omeno heterog\'eneo entre competiciones.
+	\item Permitir que el Glicko-2 absorba expl\'icitamente la asimetr\'ia sistem\'atica de cada liga, de modo que el perceptr\'on multicapa pueda concentrarse en ajustar las no linealidades residuales.
+\end{itemize} 
+
+De esta forma, se preserva la interpretabilidad del par\'ametro $h_\ell$ como un indicador de ventaja estructural de local\'ia por competici\'on.
+te\'orico el par\'ametro base de ventaja local se anula ($\delta \equiv 0$) para delegar la no linealidad residual al MLP, en la implementaci\'on computacional se mantuvo $h_\ell$ activo durante la fase Glicko-2 como par\'ametro de calibraci\'on por liga, de modo que el rating din\'amico capture la asimetr\'ia estructural antes de que el refinador neuronal intervenga.
 
 \subsection{Bloque de refinamiento: perceptr\'on multicapa}
 \label{subsec:mlp}
 
-El tercer bloque corrige las probabilidades base mediante un perceptr\'on multicapa feedforward que aprende las interacciones no lineales entre el vector de probabilidades del rating y las covariables ex\'ogenas seleccionadas en la Secci\'on~\ref{sec:seleccion_covariables}.
+El tercer bloque corrige las probabilidades base mediante un perceptr\'on multicapa \textit{feedforward} que aprende las interacciones no lineales entre el vector de probabilidades del rating y las covariables ex\'ogenas seleccionadas en la Secci\'on~\ref{sec:seleccion_covariables}.
 
-\paragraph{Vector de entrada.} Para cada partido $i$, el input $\mathbf{z}_i \in \mathbb{R}^{13}$ se construye concatenando:
+\paragraph{Vector de entrada.} Para cada partido $i$, el input $\mathbf{z}_i \in \mathbb{R}^{n}$ (ver Secci\'on~\ref{subsec:covariables_finales}) se construye concatenando:
 \begin{itemize}
 	\item Las tres probabilidades base del Glicko-2: $(P_{H,i}, P_{D,i}, P_{A,i})$.
-	\item Las diez covariables ex\'ogenas estandarizadas: \texttt{diff\_MarketValue}, \texttt{diff\_NetSpending}, \texttt{diff\_temperature\_2m}, \texttt{diff\_PiO2}, \texttt{travel\_km}, \texttt{home\_Assist}, \texttt{diff\_Foreign}, \texttt{diff\_xG\_teo\_r5}, \texttt{diff\_xA\_teo\_r5} y \texttt{diff\_DDI\_r5}.
+	\item Las covariables ex\'ogenas estandarizadas: \texttt{diff\_MarketValue}, \texttt{diff\_NetSpending}, \texttt{diff\_temperature\_2m}, \texttt{diff\_PiO2}, \texttt{travel\_km}, \texttt{home\_Assist}, \texttt{diff\_Foreign} en el caso del \textit{dataset Lite} y el \textit{dataset Lite recortado}; y las mismas covariables incluyendo tambi\'en \texttt{diff\_xG\_teo\_r5}, \texttt{diff\_xA\_teo\_r5} y \texttt{diff\_DDI\_r5} en el \textit{dataset Full}.
 \end{itemize}
-La estandarizaci\'on (media cero, varianza unitaria) se ajusta exclusivamente sobre el conjunto de entrenamiento mediante \texttt{StandardScaler} de scikit-learn y se aplica al conjunto de prueba.
+La estandarizaci\'on de media cero y varianza unitaria, se ajusta exclusivamente sobre el conjunto de entrenamiento mediante \texttt{StandardScaler} de \texttt{scikit-learn} y se aplica al conjunto de prueba.
 
-\paragraph{Arquitectura e hiperpar\'ametros.} La red se implementa en Keras/TensorFlow con la siguiente topolog\'ia:
+\paragraph{Arquitectura e hiperpar\'ametros.} La red se implementa en \texttt{Keras/TensorFlow} con la siguiente topolog\'ia:
 \begin{itemize}
-	\item Capa de entrada: 13 neuronas (sin activaci\'on).
+	\item Capa de entrada: 10 neuronas, sin activaci\'on para el \textit{dataset Lite} y \textit{dataset Lite Recortado}; 13 neuronas, sin activaci\'on para el \textit{dataset Full}.
 	\item Primera capa oculta: 64 neuronas, activaci\'on ReLU, \emph{dropout} con tasa 0,3.
 	\item Segunda capa oculta: 64 neuronas, activaci\'on ReLU, \emph{dropout} con tasa 0,3.
 	\item Capa de salida: 3 neuronas con activaci\'on \emph{softmax}.
 \end{itemize}
 
-\paragraph{Entrenamiento.} La funci\'on de p\'erdida es la entrop\'ia cruzada categ\'orica (\texttt{categorical\_crossentropy}), equivalente a la log-verosimilitud negativa del modelo multinomial (Proposici\'on~\ref{prop:equivalencia}). El optimizador es Adam con tasa de aprendizaje por defecto ($10^{-3}$). Se utiliza un planificador de tasa adaptativo (\texttt{ReduceLROnPlateau}) que reduce la tasa por un factor 0,5 si la p\'erdida de validaci\'on no decrece durante 3 \'epocas consecutivas. El entrenamiento se ejecuta durante 50 \'epocas con \emph{batches} de tama\~no 64, reservando el 10\% del entrenamiento para validaci\'on interna.
+\paragraph{Entrenamiento.} La funci\'on de p\'erdida es la entrop\'ia cruzada categ\'orica \\ (\texttt{categorical\_crossentropy}), equivalente a la log-verosimilitud negativa del modelo multinomial (Proposici\'on~\ref{prop:equivalencia}). El optimizador es Adam con tasa de aprendizaje por defecto ($10^{-3}$). Se utiliza un planificador de tasa adaptativo (\texttt{ReduceLROnPlateau}) que reduce la tasa por un factor 0.5 si la p\'erdida de validaci\'on no decrece durante 3 \'epocas consecutivas. El entrenamiento se ejecuta durante 50 \'epocas con \emph{batches} de tama\~no 64, reservando el 10\% del entrenamiento para validaci\'on interna.
 
-\paragraph{Protocolo de evaluaci\'on: corridas pareadas.} Dado el car\'acter estoc\'astico de la inicializaci\'on de pesos y del \emph{dropout}, se ejecutan 10 corridas pareadas con semillas consecutivas (\texttt{Seed} a \texttt{Seed+9}). En cada corrida se reentrena el Glicko-2 desde cero (manteniendo los hiperpar\'ametros $d$ y $h_\ell$ previamente optimizados) y se ajusta el MLP sobre las probabilidades base resultantes, permitiendo estimar la varianza del desempe\~no y aplicar inferencia estad\'istica (test $t$ pareado) para comparar el modelo base (MLP sobre probabilidades Glicko-2 sin covariables) contra el modelo completo.
+\paragraph{Protocolo de evaluaci\'on: corridas pareadas.} Dado el car\'acter estoc\'astico de la inicializaci\'on de pesos y del \emph{dropout}, se ejecutan 10 corridas pareadas con semillas consecutivas (\texttt{Seed=42} a \texttt{Seed=51}). En cada corrida se reentrena el Glicko-2 desde cero (manteniendo los hiperpar\'ametros $d$ y $h_\ell$ previamente optimizados) y se ajusta el MLP sobre las probabilidades base resultantes, permitiendo estimar la varianza del desempe\~no y aplicar inferencia estad\'istica (test $t$ pareado) para comparar el modelo base (MLP sobre probabilidades Glicko-2 sin covariables) contra el modelo completo.
 
 \subsection{Flujo de inferencia en cascada}
 \label{subsec:cascada}
@@ -530,7 +589,7 @@ El bloque de conteo estima las tasas esperadas de anotaci\'on $\lambda_H$ y $\la
 
 \paragraph{Hiperpar\'ametros y criterio de parada.} Ambos regresores comparten la configuraci\'on: \texttt{n\_estimators}$=200$, \texttt{learning\_rate}$=0{.}05$, \texttt{max\_depth}$=5$ y criterio de parada temprana de $10$ iteraciones sin mejora en el MAE de validaci\'on. La m\'etrica de evaluaci\'on interna es el error absoluto medio (\emph{mean absolute error}, MAE), coherente con la escala de conteo de los goles.
 
-\paragraph{Derivaci\'on de la probabilidad de empate.} Una vez entrenados los modelos, se predicen las tasas $\hat{\lambda}_H$ y $\hat{\lambda}_A$ para todo el dataset. La probabilidad de empate se calcula mediante la funci\'on de masa de la distribuci\'on de Skellam en $k=0$ (Ecuaci\'on~\eqref{eq:prob_D_bessel} del Marco Te\'orico):
+\paragraph{Derivaci\'on de la probabilidad de empate.} Una vez entrenados los modelos, se predicen las tasas $\hat{\lambda}_H$ y $\hat{\lambda}_A$ para todo el dataset. La probabilidad de empate se calcula mediante la funci\'on de masa de la distribuci\'on de Skellam en $k=0$ (Ecuaci\'on~\eqref{eq:prob_D_bessel} del Cap\'itulo~\ref{ch:marco}):
 \begin{equation}
 	\hat{P}_D^{\text{(Skellam)}} = e^{-(\hat{\lambda}_H + \hat{\lambda}_A)} \, I_0\!\left(2\sqrt{\hat{\lambda}_H \hat{\lambda}_A}\right),
 \end{equation}
@@ -552,14 +611,14 @@ Este valor constituye la estimaci\'on externa de la probabilidad de empate que a
 
 El n\'ucleo inferencial del sistema es la implementaci\'on propia del Glicko-2 modificado de Shelopugin y Sirotkin \cite{Glicko2Mod}, contenida en el m\'odulo \texttt{G2Av1513.py}. A diferencia del modelo can\'onico, esta versi\'on incorpora el empate como categor\'ia estoc\'astica independiente mediante la probabilidad $\hat{P}_D^{\text{(Skellam)}}$ y calibra conjuntamente los hiperpar\'ametros estructurales por liga.
 
-El motor can\'onico de Shelopugin y Sirotkin (\texttt{glicko2.py}) recibe la probabilidad de empate cruda y la incorpora directamente al exponente del t\'ermino de empate. El motor propio (\texttt{G2Av1513.py}) introduce una reparametrizaci\'on logit interna, $s_{\text{logit}} = \operatorname{logit}(\hat{P}_D^{\text{Skellam}})$, que mapea el par\'ametro de empate al espacio real $\mathbb{R}$ antes de su ingreso al exponente. Esta transformaci\'on, junto con otras mejoras de estabilidad num\'erica, se detallan a continuaci\'on; desde el punto de vista del Marco Te\'orico, la estructura probabil\'istica del modelo trinomial (Ecuaciones~\ref{eq:prob_victoria_local}--\ref{eq:prob_victoria_visitante}) permanece inalterada, dado que la reparametrizaci\'on es un cambio de variable biyectivo sobre el dominio $(0,1)$.
+El motor can\'onico de Shelopugin y Sirotkin (\texttt{glicko2.py}) recibe la probabilidad de empate cruda y la incorpora directamente al exponente del t\'ermino de empate. El motor propio (\texttt{G2Av1513.py}) introduce una reparametrizaci\'on logit interna, $s_{\text{logit}} = \operatorname{logit}(\hat{P}_D^{\text{Skellam}})$, que mapea el par\'ametro de empate al espacio real $\mathbb{R}$ antes de su ingreso al exponente. Esta transformaci\'on, junto con otras mejoras de estabilidad num\'erica, se detallan a continuaci\'on; desde el punto de vista del Cap\'itulo~\ref{ch:marco}, la estructura probabil\'istica del modelo trinomial (Ecuaciones~\ref{eq:prob_victoria_local}--\ref{eq:prob_victoria_visitante}) permanece inalterada, dado que la reparametrizaci\'on es un cambio de variable biyectivo sobre el dominio $(0,1)$.
 
 \subsubsection{Mejoras de la implementaci\'on propia sobre el motor de referencia}
 
 El motor \texttt{G2Av1513.py} no es una traducci\'on directa del c\'odigo de Shelopugin y Sirotkin, sino una reimplementaci\'on que corrige inconsistencias algebraicas e introduce mecanismos de estabilidad num\'erica necesarios para la calibraci\'on por L-BFGS-B sobre un panel multiliga. A continuaci\'on se sistematizan las diferencias funcionales respecto al motor can\'onico \texttt{glicko2.py}.
 
 \paragraph{Correcci\'on algebraica del denominador trinomial.} 
-En el motor de referencia, la probabilidad de victoria visitante se computa como $P_A = 1/(1 + e^{\delta}(1+e^{d+s}))$, donde el t\'ermino de empate queda inducido por la diferencia de ratings $\delta$. Esta formulaci\'on rompe la simetr\'ia del simplex respecto a las Ecuaciones~\eqref{eq:prob_victoria_local}--\eqref{eq:prob_victoria_visitante} del Marco Te\'orico. El motor \texttt{G2Av1513.py} unifica el denominador como $1 + \exp(\delta) + \exp(d+s_{\text{logit}})$, garantizando que $(P_H, P_D, P_A)$ provengan de una partici\'on consistente del espacio muestral.
+En el motor de referencia, la probabilidad de victoria visitante se computa como $P_A = 1/(1 + e^{\delta}(1+e^{d+s}))$, donde el t\'ermino de empate queda inducido por la diferencia de ratings $\delta$. Esta formulaci\'on rompe la simetr\'ia del simplex respecto a las Ecuaciones~\eqref{eq:prob_victoria_local}--\eqref{eq:prob_victoria_visitante} del Cap\'itulo~\ref{ch:marco}. El motor \texttt{G2Av1513.py} unifica el denominador como $1 + \exp(\delta) + \exp(d+s_{\text{logit}})$, garantizando que $(P_H, P_D, P_A)$ provengan de una partici\'on consistente del espacio muestral.
 
 \paragraph{Reparametrizaci\'on logit del par\'ametro de empate.} 
 El motor can\'onico alimenta la probabilidad de empate cruda $P_D\in(0,1)$ directamente al exponente. Para probabilidades cercanas a 1, esto produce saturaci\'on num\'erica en aritm\'etica de punto flotante. La implementaci\'on propia aplica la transformaci\'on
@@ -569,19 +628,27 @@ El motor can\'onico alimenta la probabilidad de empate cruda $P_D\in(0,1)$ direc
 de modo que el argumento del exponente $\exp(d+s_{\text{logit}})$ permanece finito y el espacio de par\'ametros accesible al optimizador L-BFGS-B no requiere restricciones de caja sobre $s$.
 
 \paragraph{Heur\'istica de escala $g$.} 
-La funci\'on de atenuaci\'on $g(\phi_j)$ del Glicko-2 can\'onico depende de la constante $3q^2/\pi^2$ (Ecuaci\'on~\ref{eq:glicko2_g}). En el motor de referencia, el coeficiente num\'erico equivalente es $1{,}5/\pi^2$. Tras una calibraci\'on preliminar sobre el panel de ligas, la implementaci\'on propia adopta $3{,}0/\pi^2$, lo cual suaviza la superficie de p\'erdida del optimizador sin degradar la log-loss de validaci\'on.
+La funci\'on de atenuaci\'on $g(\phi_j)$ del Glicko-2 can\'onico depende de la constante $3q^2/\pi^2$ (Ecuaci\'on~\ref{eq:glicko2_g}). En el motor de referencia, el coeficiente num\'erico equivalente es $1{.}5/\pi^2$. Tras una calibraci\'on preliminar sobre el panel de ligas, la implementaci\'on propia adopta $3{.}0/\pi^2$, lo cual suaviza la superficie de p\'erdida del optimizador sin degradar la p\'erdida logar\'itmica (log-loss) de validaci\'on.
 
 \paragraph{Sistema de ventaja parametrizada.} 
-Mientras que el motor can\'onico recibe un escalar fijo \texttt{advantage}, el motor propio permite inyectar un vector de covariables contextuales $\mathbf{f}$ y calcular la ventaja efectiva como combinaci\'on lineal $h_{\text{eff}} = \beta_0 + \sum_k \beta_k f_k$. En la versi\'on calibrada del presente trabajo, esta flexibilidad se utiliza para codificar la ventaja de local\'ia por liga, aunque la arquitectura soporta extensiones futuras.
+Mientras que el motor can\'onico recibe un escalar fijo \texttt{advantage}, el motor propio permite inyectar un vector de covariables contextuales $\mathbf{f}$ y calcular la ventaja efectiva como combinaci\'on lineal $h_{\text{eff}} = \beta_0 + \sum_k \beta_k f_k$. En la fase exploratoria de este estudio se evalu\'o una especificaci\'on donde se inclu\'ian las covariables ex\'ogenas; sin embargo el modelo present\'o signos de subajuste en la validaci\'on cruzada, por lo que se opt\'o por restringir la ventaja al intercepto $\beta_0$ calibrando as\'i en su lugar la liga a trav\'es de $h_\ell$. En consecuencia, en la versi\'on calibrada del presente trabajo esta flexibilidad permanece presente por lo que la arquitectura soporta extensiones futuras de calibraci\'on de ventaja de loca\'ia por liga.
 
 \paragraph{Mecanismos de estabilidad num\'erica.} 
-Se introducen funciones de \emph{clamping} en tres puntos cr\'iticos: (i)~acotamiento de $\delta_{\mu} = g(\phi_j)(\tilde{\mu}-\mu_j)$ al intervalo $[-50,50]$ para evitar desbordamiento del exponente; (ii)~restricci\'on de la puntuaci\'on esperada al rango $[10^{-12}, 1-10^{-12}]$ previo al c\'alculo de la varianza $v$; y (iii)~protecci\'on contra divisiones por cero en la funci\'on de varianza mediante un valor de retorno de emergencia ($10^{12}$).
+Se introducen funciones de \emph{clamping} en tres puntos cr\'iticos: 
+
+\begin{enumerate}
+	\item Acotamiento de $\delta_{\mu} = g(\phi_j)(\tilde{\mu}-\mu_j)$ al intervalo $[-50,50]$ para evitar desbordamiento del exponente.
+	\item Restricci\'on de la puntuaci\'on esperada al rango $[10^{-12}, 1-10^{-12}]$ previo al c\'alculo de la varianza $v$.
+	\item rotecci\'on contra divisiones por cero en la funci\'on de varianza mediante un valor de retorno de emergencia ($10^{12}$).
+	\item Acotamiento final de las probabilidasdes $(P_H,P_D,P_A)$ al intervalo $[0,1]$ despu\'es de su c\'omputo, garantizando que el vector de probabilidades permanezca dentro del simplex $\Delta^2$ incluso en condiciones num\'ericamente extremas.
+\end{enumerate}
+(i)~a; (ii)~re; y (iii)~p
 
 \paragraph{Manejo de contextos excepcionales.} 
-La implementaci\'on propia incorpora un multiplicador de atenuaci\'on para partidos disputados durante la pandemia de COVID-19, que reduce la ventaja de local\'ia efectiva cuando la variable indicadora \texttt{pandemic} est\'a activa. Esta extensi\'on no existe en el motor can\'onico.
+La implementaci\'on propia incorpora un multiplicador de atenuaci\'on para partidos disputados durante la pandemia de COVID-19, que reduce la ventaja de local\'ia efectiva cuando la variable indicadora \texttt{pandemic} est\'a activa. Esta extensi\'on est\'a presente en el c\'odigo fuente, aunque no se activa en el pipeline principal del presente trabjo, ya que la variable indicadora se incorpora con valor $0.0$ en todas las ejecuciones. Su permanencia en el repositorio queda como una extensi\'on disponible para futuros an\'alisis que requieran modelar expl\'icitamente el efecto de restricciones sanitarias sobre la ventaja de local\'ia.
 
 \begin{obs}[Sobre la funci\'on de actualizaci\'on de volatilidad]
-	Tanto el motor can\'onico de Shelopugin y Sirotkin como la implementaci\'on propia \texttt{G2Av1513.py} omiten el factor $\tau^2$ en el denominador del segundo t\'ermino de la funci\'on $f(x)$ del Paso~5 del algoritmo Glicko-2. Esta simplificaci\'on, heredada del c\'odigo fuente de referencia, no impide la convergencia del m\'etodo de Illinois empleado para la estimaci\'on de $\sigma'$, aunque desv\'ia ligeramente la trayectoria de optimizaci\'on respecto a la formulaci\'on can\'onica de Glickman \cite{Glickman2022}. Dado que ambos motores comparten esta misma estructura, no se documenta como mejora diferencial del presente trabajo.
+	Tanto el motor can\'onico de Shelopugin y Sirotkin \cite{Glicko2Mod} como la implementaci\'on propia \texttt{G2Av1513.py} omiten el factor $\tau^2$ en el denominador del segundo t\'ermino de la funci\'on $f(x)$ del Paso~5 del algoritmo Glicko-2. Esta simplificaci\'on, heredada del c\'odigo fuente de referencia, no impide la convergencia del m\'etodo de Illinois empleado para la estimaci\'on de $\sigma'$, aunque desv\'ia ligeramente la trayectoria de optimizaci\'on respecto a la formulaci\'on can\'onica de Glickman \cite{Glickman2022}. Dado que ambos motores comparten esta misma estructura, no se documenta como mejora diferencial del presente trabajo.
 \end{obs}
 
 \paragraph{Estado y actualizaci\'on.} Cada equipo se caracteriza por el estado $(R, RD, \sigma)$. Los valores iniciales por defecto son $R_0 = 1500$, $RD_0 = 80$ y $\sigma_0 = 0{.}06$. La constante de difusi\'on temporal se fija en 
@@ -590,7 +657,7 @@ La implementaci\'on propia incorpora un multiplicador de atenuaci\'on para parti
 \end{equation}
 valor est\'andar para conjuntos de resultados de alta volatilidad \cite{Glickman2022}.
 
-\paragraph{Funci\'on objetivo.} Se maximiza la log-verosimilitud del resultado observado sobre el conjunto de entrenamiento mediante el algoritmo L-BFGS-B \cite{byrd1995limited}. Formalmente, sea $\mathcal{D}_{\text{train}}$ el conjunto de partidos ordenados cronol\'ogicamente. Para cada partido $i$, el modelo genera el vector $(P_{H,i}, P_{D,i}, P_{A,i})$ seg\'un las Ecuaciones~\eqref{eq:prob_victoria_local}--\eqref{eq:prob_victoria_visitante} del Marco Te\'orico, y actualiza secuencialmente los ratings de ambos equipos. La funci\'on a minimizar es la log-verosimilitud negativa promedio:
+\paragraph{Funci\'on objetivo.} Se maximiza la log-verosimilitud del resultado observado sobre el conjunto de entrenamiento mediante el algoritmo L-BFGS-B \cite{byrd1995limited}. Formalmente, sea $\mathcal{D}_{\text{train}}$ el conjunto de partidos ordenados cronol\'ogicamente. Para cada partido $i$, el modelo genera el vector $(P_{H,i}, P_{D,i}, P_{A,i})$ seg\'un las Ecuaciones~\eqref{eq:prob_victoria_local}--\eqref{eq:prob_victoria_visitante} del Cap\'itulo~\ref{ch:marco}, y actualiza secuencialmente los ratings de ambos equipos. La funci\'on a minimizar es la log-verosimilitud negativa promedio:
 \begin{equation}
 	\mathcal{L}_{\text{G2A}}(d, \{\mu_{\text{init},\ell}\}, \{h_\ell\}) = -\frac{1}{|\mathcal{D}_{\text{train}}|}\sum_{i \in \mathcal{D}_{\text{train}}} \log P_{s_i,i},
 \end{equation}
@@ -605,10 +672,10 @@ donde $s_i \in \{H,D,A\}$ es el resultado observado y $P_{s_i,i}$ la probabilida
 Los valores semilla son $d_0 = 0{.}5$, desviaciones nulas para $\mu_{\text{init},\ell}$ y valor escalado $5{.}0$ para $h_\ell$.
 
 \paragraph{Convergencia y par\'ametros calibrados.}
-El algoritmo L-BFGS-B se ejecuta hasta alcanzar la tolerancia predefinida, registrando el n\'umero de evaluaciones de la funci\'on objetivo y los valores \'optimos de los par\'ametros \(d\), \(\mu_{\text{init},\ell}\) y \(h_\ell\). Estos resultados, junto con el rango final de ratings obtenido tras la actualizaci\'on secuencial sobre el conjunto completo, se reportan en el cap\'itulo de resultados, donde se analiza su interpretaci\'on por liga y por dataset.
+El algoritmo L-BFGS-B se ejecuta hasta alcanzar la tolerancia predefinida, registrando el n\'umero de evaluaciones de la funci\'on objetivo y los valores \'optimos de los par\'ametros \(d\), \(\mu_{\text{init},\ell}\) y \(h_\ell\). Estos resultados, junto con el rango final de ratings obtenido tras la actualizaci\'on secuencial sobre el conjunto completo, se reportan en el Cap\'itulo~\ref{ch:resultados}, donde se analiza su interpretaci\'on por liga y por dataset.
 
 \paragraph{Evaluaci\'on aislada del bloque de rating.}
-Para cuantificar el aporte incremental del perceptr\'on multicapa, se eval\'ua el sistema Glicko-2 modificado en aislamiento sobre el conjunto de prueba. Las m\'etricas utilizadas son la log-loss categ\'orica y la log-loss binaria, cuyas definiciones se presentan en la Secci\'on~\ref{sec:metricas_eval}. Los valores obtenidos constituyen la l\'inea base contra la cual se mide el desempe\~no del refinador neuronal y se reportan en el cap\'itulo de resultados, junto con las comparaciones estad\'isticas correspondientes.
+Para cuantificar el aporte incremental del perceptr\'on multicapa, se eval\'ua el sistema Glicko-2 modificado en aislamiento sobre el conjunto de prueba. Las m\'etricas utilizadas son la p\'erdida logar\'itmica (log-loss) categ\'orica y la p\'erdida logar\'itmica (log-loss) binaria, cuyas definiciones se presentan en la Secci\'on~\ref{sec:metricas_eval}. Los valores obtenidos constituyen la l\'inea base contra la cual se mide el desempe\~no del refinador neuronal y se reportan en el Cap\'itulo~\ref{ch:resultados}, junto con las comparaciones estad\'isticas correspondientes.
 
 %\paragraph{Convergencia y par\'ametros calibrados.} El algoritmo L-BFGS-B converge tras aproximadamente $660$ evaluaciones de la funci\'on objetivo para los datasets Full y Lite Recortado, y $1440$ evaluaciones para el dataset Lite, lo que sugiere una superficie de p\'erdida m\'as compleja en el universo ampliado de competiciones. Los valores \'optimos del par\'ametro de calibraci\'on del empate resultan:
 %\begin{align}
@@ -630,9 +697,9 @@ Para cuantificar el aporte incremental del perceptr\'on multicapa, se eval\'ua e
 \subsection{Entrenamiento del bloque de refinamiento}
 \label{subsec:train_mlp}
 
-El tercer bloque corrige las probabilidades base mediante un perceptr\'on multicapa feedforward implementado en Keras/TensorFlow. El entrenamiento se describe en t\'erminos de su funci\'on de p\'erdida, optimizador, protocolo de validaci\'on y estrategia de inferencia estad\'istica.
+El tercer bloque corrige las probabilidades base mediante un perceptr\'on multicapa feedforward implementado en \texttt{Keras/TensorFlow}. El entrenamiento se describe en t\'erminos de su funci\'on de p\'erdida, optimizador, protocolo de validaci\'on y estrategia de inferencia estad\'istica.
 
-\paragraph{Vector de entrada y estandarizaci\'on.} Para cada partido $i$, el input $\mathbf{z}_i \in \mathbb{R}^{13}$ concatena las probabilidades base $(P_{H,i}, P_{D,i}, P_{A,i})$ generadas por el Glicko-2 modificado con las diez covariables ex\'ogenas estandarizadas seleccionadas en la Secci\'on~\ref{sec:seleccion_covariables}. La estandarizaci\'on (media cero, varianza unitaria) se ajusta exclusivamente sobre el conjunto de entrenamiento mediante \texttt{StandardScaler} de scikit-learn y se aplica al conjunto de prueba, garantizando que la escala de las covariables no condicione la magnitud de los gradientes.
+\paragraph{Vector de entrada y estandarizaci\'on.} Para cada partido $i$, el input $\mathbf{z}_i \in \mathbb{R}^{n}$ (ves Secci\'on~\ref{subsec:covariables_finales}) concatena las probabilidades base $(P_{H,i}, P_{D,i}, P_{A,i})$ generadas por el Glicko-2 modificado con las covariables ex\'ogenas estandarizadas seleccionadas en la Secci\'on~\ref{sec:seleccion_covariables}. La estandarizaci\'on de media cero y varianza unitaria se ajusta exclusivamente sobre el conjunto de entrenamiento mediante \texttt{StandardScaler} de \texttt{scikit-learn} y se aplica al conjunto de prueba, garantizando que la escala de las covariables no condicione la magnitud de los gradientes.
 
 \paragraph{Arquitectura e hiperpar\'ametros de entrenamiento.} La arquitectura de la red se detall\'o en la Secci\'on~\ref{subsec:mlp}; aqu\'i se precisan los hiperpar\'ametros del optimizador:
 \begin{itemize}
@@ -642,15 +709,22 @@ El tercer bloque corrige las probabilidades base mediante un perceptr\'on multic
 	\item \textbf{Configuraci\'on de entrenamiento:} $50$ \'epocas, \emph{batch size} $64$, reservando el $10\%$ del entrenamiento para validaci\'on interna (\texttt{validation\_split}$=0{.}1$).
 \end{itemize}
 
-\paragraph{Protocolo de evaluaci\'on: corridas pareadas.} Dado el car\'acter estoc\'astico de la inicializaci\'on de pesos de la red y del \emph{dropout}, se ejecutan $10$ corridas pareadas con semillas consecutivas $\{\texttt{Seed},\dots,\texttt{Seed}+9\}$, donde $\texttt{Seed}=42$. En cada corrida se reentrena el Glicko-2 desde cero (manteniendo los hiperpar\'ametros $d$ y $h_\ell$ previamente optimizados) y se ajusta el MLP sobre las probabilidades base resultantes. Este dise\~no experimental permite:
+\paragraph{Protocolo de evaluaci\'on: corridas pareadas.} Dado el car\'acter estoc\'astico de la inicializaci\'on de pesos de la red y del \emph{dropout}, se ejecutan $10$ corridas pareadas con semillas consecutivas $\{\texttt{Seed},\dots,\texttt{Seed}+9\}$, donde $\texttt{Seed}=42$. En cada corrida se reentrena el Glicko-2 desde cero, manteniendo los hiperpar\'ametros $d$ y $h_\ell$ previamente optimizados, y se ajusta el MLP sobre las probabilidades base resultantes. Este dise\~no experimental permite:
 \begin{enumerate}
 	\item Estimar la varianza del desempe\~no atribuible a la aleatoriedad del optimizador neuronal.
-	\item Aplicar inferencia estad\'istica mediante el test $t$ pareado para comparar el modelo base (MLP sobre probabilidades Glicko-2 sin covariables) contra el modelo completo (MLP sobre probabilidades m\'as covariables ex\'ogenas).
+	\item Aplicar inferencia estad\'istica mediante el test $t$ pareado para comparar el modelo base: MLP sobre probabilidades Glicko-2 sin covariables; contra el modelo completo: MLP sobre probabilidades m\'as covariables ex\'ogenas.
 \end{enumerate}
 
-\paragraph{M\'etricas de evaluaci\'on del protocolo.} Para cada corrida se registran: (i)~la log-loss categ\'orica sobre el conjunto de prueba, como m\'etrica principal de calibraci\'on probabil\'istica; (ii)~la log-loss binaria sobre la partici\'on $\{H, \neg H\}$, para mantener comparabilidad con la literatura base; (iii)~la \emph{accuracy} global bajo la regla de decisi\'on dura $\arg\max$; y (iv)~el $F1$-score por clase, con \'enfasis particular en la clase empate ($D$) dada su dificultad estructural de predicci\'on.
+\paragraph{M\'etricas de evaluaci\'on del protocolo.} Para cada corrida se registran:
 
-\paragraph{Observaci\'on sobre el colapso de la clase empate.} Uno de los fen\'omenos estructurales documentados en la predicci\'on de resultados trinomiales es el colapso de la clase empate bajo la regla de decisi\'on dura $\arg\max$. Desde la perspectiva te\'orica, este colapso puede deberse a la geometr\'ia del simplex de probabilidades: la regi\'on en la cual $P_D > \max\{P_H,P_A\}$ es estrecha cuando la masa probabil\'istica se concentra en las clases extremas, situaci\'on frecuente en modelos de rating que no incorporan informaci\'on contextual del encuentro. En consecuencia, se plantea la hip\'otesis de que la inclusi\'on de covariables ex\'ogenas, econ\'omicas, ambientales y deportivas, podr\'ia expandir dicha regi\'on al introducir se\~nal adicional que modula las probabilidades base m\'as all\'a de la fuerza latente hist\'orica de los equipos. El protocolo de 10 corridas pareadas est\'a dise\~nado para contrastar esta hip\'otesis; no obstante, la verificaci\'on de si dicha expansi\'on ocurre, y de si es estad\'istica y pr\'acticamente significativa, se reserva para el cap\'itulo de Resultados.
+\begin{enumerate}
+	\item La p\'erdida logar\'itmica (log-loss) categ\'orica sobre el conjunto de prueba, como m\'etrica principal de calibraci\'on probabil\'istica.
+	\item La p\'erdida logar\'itmica (log-loss) binaria sobre la partici\'on $\{H, \neg H\}$, para mantener comparabilidad con la literatura base \cite{Glicko2Mod}.
+	\item La \emph{accuracy} global bajo la regla de decisi\'on dura $\arg\max$.
+	\item El $F1$-score por clase, con \'enfasis particular en la clase empate ($D$) dada su dificultad estructural de predicci\'on
+\end{enumerate}
+
+\paragraph{Observaci\'on sobre el colapso de la clase empate.} Uno de los fen\'omenos estructurales documentados en la predicci\'on de resultados trinomiales es el colapso de la clase empate bajo la regla de decisi\'on dura $\arg\max$. Desde la perspectiva te\'orica, este colapso puede deberse a la geometr\'ia del simplex de probabilidades: la regi\'on en la cual $P_D > \max\{P_H,P_A\}$ es estrecha cuando la masa probabil\'istica se concentra en las clases extremas, situaci\'on frecuente en modelos de rating que no incorporan informaci\'on contextual del encuentro. En consecuencia, se plantea la hip\'otesis de que la inclusi\'on de covariables ex\'ogenas: econ\'omicas, ambientales y deportivas; podr\'ia expandir dicha regi\'on al introducir se\~nal adicional que modula las probabilidades base m\'as all\'a de la fuerza latente hist\'orica de los equipos. El protocolo de 10 corridas pareadas est\'a dise\~nado para contrastar esta hip\'otesis; no obstante, la verificaci\'on de si dicha expansi\'on ocurre, y de si es estad\'istica y pr\'acticamente significativa, se reserva para el Cap\'itulo~\ref{ch:resultados}.
 
 %El fen\'omeno de $F1_D = 0$ en el modelo base no es una anomal\'ia de implementaci\'on, sino una propiedad estructural derivada de la geometr\'ia del simplex de probabilidades, como se analiza en la Secci\'on~\ref{subsec:empate} del Marco Te\'orico. En el cap\'itulo de ~(\ref{ch:resultados}) se contrastar\'a si la recuperaci\'on parcial de $F1_D$ observada en el modelo completo es estad\'isticamente y pr\'acticamente significativa, difiriendo toda conclusi\'on sobre el aporte de las covariables ex\'ogenas a la evaluaci\'on emp\'irica. Mientras tanto, esta observaci\'on funciona \'unicamente como descripci\'on del protocolo experimental, no como veredicto sobre la hip\'otesis central.
 
@@ -661,12 +735,17 @@ El tercer bloque corrige las probabilidades base mediante un perceptr\'on multic
 \section{M\'etricas de evaluaci\'on}
 \label{sec:metricas_eval}
 
-El dise\~no del sistema predictivo exige un esquema de evaluaci\'on que distinga entre calibraci\'on probabil\'istica y capacidad de clasificaci\'on dura. Como se establece en la Secci\'on~\ref{sec:metricas} del Marco Te\'orico, la log-loss categ\'orica constituye la m\'etrica central de optimizaci\'on porque es una \emph{strictly proper scoring rule}: incentiva al modelo a reportar la probabilidad verdadera de cada resultado sin forzar una apuesta binaria. No obstante, para complementar el an\'alisis y mantener comparabilidad con la literatura base, se reportan tambi\'en m\'etricas de clasificaci\'on y un protocolo de inferencia estad\'istica sobre corridas pareadas. Esta secci\'on sistematiza el c\'omputo de dichas m\'etricas sobre cada bloque funcional del pipeline.
+El dise\~no del sistema predictivo exige un esquema de evaluaci\'on que distinga entre calibraci\'on probabil\'istica y capacidad de clasificaci\'on dura. Como se establece en la Secci\'on~\ref{sec:metricas} del Cap\'itulo~\ref{ch:marco}, la p\'erdida logar\'itmica (log-loss) categ\'orica constituye la m\'etrica central de optimizaci\'on porque es una \emph{strictly proper scoring rule}: incentiva al modelo a reportar la probabilidad verdadera de cada resultado sin forzar una apuesta binaria. No obstante, para complementar el an\'alisis y mantener comparabilidad con la literatura base \cite{Glicko2Mod}, se reportan tambi\'en m\'etricas de clasificaci\'on y un protocolo de inferencia estad\'istica sobre corridas pareadas. Esta secci\'on sistematiza el c\'omputo de dichas m\'etricas sobre cada bloque funcional del pipeline.
 
 \subsection{M\'etricas probabil\'isticas}
 \label{subsec:metricas_prob}
 
-\paragraph{Log-loss categ\'orica.} Sea $\tilde{\mathbf{P}}_i = (\tilde{P}_{H,i}, \tilde{P}_{D,i}, \tilde{P}_{A,i})^\top$ el vector de probabilidades predicho por el modelo para el partido $i$, y sea $\mathbf{y}_i \in \{0,1\}^3$ su codificaci\'on \emph{one-hot}. La log-loss categ\'orica sobre una muestra de $N$ partidos se define como
+Las m\'etricas probabil\'isticas constituyen el criterio principal de evaluaci\'on del sistema, por ser \emph{strictly proper scoring rules} (Secci\'on~\ref{subsec:logloss_metricas}). A continuaci\'on se presentan las definiciones operativas de la log-loss categ\'orica y la p\'erdida logar\'itmica (log-loss) binaria, adaptadas a la notaci\'on del pipeline: 
+
+Sea $\tilde{\mathbf{P}}_i = (\tilde{P}_{H,i}, \tilde{P}_{D,i}, \tilde{P}_{A,i})^\top$ el vector de probabilidades predicho por el modelo para el partido $i$, y sea $\mathbf{y}_i \in \{0,1\}^3$ su codificaci\'on \emph{one-hot}. Entonces:
+
+
+\paragraph{Log-loss categ\'orica.} La log-loss categ\'orica sobre una muestra de $N$ partidos se define como
 \begin{equation}
 	\mathcal{L}_{\mathrm{log}} = -\frac{1}{N}\sum_{i=1}^{N}\sum_{c\in\{H,D,A\}} y_{i,c}\,\log \tilde{P}_{c,i},
 	\label{eq:logloss_impl}
@@ -708,19 +787,19 @@ La \emph{accuracy} global mide la fracci\'on de aciertos:
 	\mathrm{Acc} = \frac{1}{N}\sum_{i=1}^{N} \mathbb{I}(\hat{y}_i = y_i).
 \end{equation}
 
-Dado el desbalance natural entre clases en el f\'utbol profesional (la frecuencia de empates se ubica alrededor del $26\%$), se reportan dos agregaciones del $F1$-score:
+Dado el desbalance natural entre clases en el f\'utbol profesional, pues la frecuencia de empates se ubica alrededor del $26\%$, se reportan dos agregaciones del $F1$-score:
 \begin{align}
 	\mathrm{F1}_{\mathrm{macro}} &= \frac{1}{3}\sum_{c\in\{H,D,A\}} F1_c, \\
 	\mathrm{F1}_{\mathrm{weighted}} &= \sum_{c\in\{H,D,A\}} \frac{n_c}{N}\,F1_c,
 \end{align}
-donde $n_c$ es el soporte (n\'umero de observaciones reales) de la clase $c$. El $\mathrm{F1}_{\mathrm{macro}}$ es sensible al desempe\~no en la clase minoritaria (el empate), mientras que el $\mathrm{F1}_{\mathrm{weighted}}$ refleja el comportamiento sobre la distribuci\'on emp\'irica del dataset.
+donde $n_c$ es el soporte, on\'umero de observaciones reales, de la clase $c$. El $\mathrm{F1}_{\mathrm{macro}}$ es sensible al desempe\~no en la clase minoritaria (el empate), mientras que el $\mathrm{F1}_{\mathrm{weighted}}$ refleja el comportamiento sobre la distribuci\'on emp\'irica del dataset.
 
-El c\'omputo de \eqref{eq:metricas_clase_impl} se realiza mediante la rutina \texttt{precision\_recall\_fscore\_support} de scikit-learn, con el par\'ametro \texttt{zero\_division=0} para garantizar estabilidad num\'erica cuando una clase no es predicha en absoluto.
+El c\'omputo de \eqref{eq:metricas_clase_impl} se realiza mediante la rutina \texttt{precision\_recall\_fscore\_support} de \texttt{scikit-learn}, con el par\'ametro \texttt{zero\_division=0} para garantizar estabilidad num\'erica cuando una clase no es predicha en absoluto.
 
 \subsection{Protocolo de inferencia estad\'istica}
 \label{subsec:test_t}
 
-La comparaci\'on entre el modelo base (MLP sobre probabilidades Glicko-2 sin covariables ex\'ogenas) y el modelo completo (MLP con covariables) se realiza mediante un \textbf{test $t$ pareado} sobre las $10$ corridas del protocolo descrito en la Secci\'on~\ref{subsec:train_mlp}. Para cada m\'etrica de inter\'es $\mathcal{M}$ (log-loss categ\'orica, log-loss binaria, $F1_D$), se define la diferencia por corrida $\Delta_k = \mathcal{M}_k^{\text{base}} - \mathcal{M}_k^{\text{full}}$ y se contrasta la hip\'otesis nula $H_0: \mathbb{E}[\Delta] = 0$ mediante el estad\'istico
+La comparaci\'on entre el modelo base: MLP sobre probabilidades Glicko-2 sin covariables ex\'ogenas; y el modelo completo: MLP sobre probabilidades Glicko-2 con covariables ex\'ogenas, se realiza mediante un \textbf{test $t$ pareado} sobre las $10$ corridas del protocolo descrito en la Secci\'on~\ref{subsec:train_mlp}. Para cada m\'etrica de inter\'es $\mathcal{M}$ (log-loss categ\'orica, log-loss binaria, $F1_D$), se define la diferencia por corrida $\Delta_k = \mathcal{M}_k^{\text{base}} - \mathcal{M}_k^{\text{full}}$ y se contrasta la hip\'otesis nula $H_0: \mathbb{E}[\Delta] = 0$ mediante el estad\'istico
 \begin{equation}
 	t = \frac{\bar{\Delta}}{s_{\Delta}/\sqrt{K}},
 \end{equation}
@@ -749,20 +828,20 @@ Adicionalmente, se contrasta la frecuencia observada de empates contra la media 
 
 \paragraph{Bloque de rating (Glicko-2 modificado).} En aislamiento, el sistema se eval\'ua con la log-loss categ\'orica y la log-loss binaria sobre el conjunto de prueba, utilizando las probabilidades base $(P_H, P_D, P_A)$ generadas antes del refinamiento neuronal. Estos valores constituyen la l\'inea base inferencial contra la cual se mide el aporte predictivo del MLP.
 
-\paragraph{Bloque de refinamiento (MLP).} Es el \'unico bloque evaluado con el protocolo completo: log-loss categ\'orica (m\'etrica principal), log-loss binaria (referencia cruzada), accuracy global, matriz de confusi\'on, y $F1$-score desagregado por clase y agregado (macro/weighted). La evaluaci\'on se ejecuta sobre las $10$ corridas pareadas, reportando media, varianza muestral y resultados del test $t$.
+\paragraph{Bloque de refinamiento (MLP).} Es el \'unico bloque evaluado con el protocolo completo: p\'erdida logar\'itmica (log-loss) categ\'orica como m\'etrica principal), p\'erdida logar\'itmica (log-loss) binaria como referencia cruzada, accuracy global, y $F1$-score desagregado por clase y agregado macro/weighted. La evaluaci\'on se ejecuta sobre las $10$ corridas pareadas, reportando media, varianza muestral y resultados del test $t$.
 
 \subsection{Discusi\'on metodol\'ogica sobre el empate}
 \label{subsec:empate_metodologia}
 
-Un fen\'omeno recurrente en la predicci\'on de resultados de f\'utbol es la dificultad de clasificar correctamente la clase empate bajo la regla de decisi\'on dura \eqref{eq:argmax_impl}. En el marco del presente trabajo, este comportamiento no es una anomal\'ia de implementaci\'on, sino una propiedad estructural derivable del modelo de conteo y de la geometr\'ia del simplex de probabilidades, como se expone en la Secci\'on~\ref{subsec:empate} del Marco Te\'orico.
+Un fen\'omeno recurrente en la predicci\'on de resultados de f\'utbol es la dificultad de clasificar correctamente la clase empate bajo la regla de decisi\'on dura \eqref{eq:argmax_impl}. En el marco del presente trabajo, este comportamiento no es una anomal\'ia de implementaci\'on, sino una propiedad estructural derivable del modelo de conteo y de la geometr\'ia del simplex de probabilidades, como se expone en la Secci\'on~\ref{subsec:empate} del Cap\'itulo~\ref{ch:marco}.
 
 Desde el punto de vista metodol\'ogico, esta observaci\'on impone una distinci\'on rigurosa entre dos conceptos:
 \begin{itemize}
-	\item \textbf{Calibraci\'on probabil\'istica:} un modelo est\'a calibrado cuando la media de sus predicciones $\tilde{P}_D$ coincide con la frecuencia relativa observada de empates. La log-loss, al ser una \emph{strictly proper scoring rule}, incentiva exactamente esta propiedad.
+	\item \textbf{Calibraci\'on probabil\'istica:} un modelo est\'a calibrado cuando la media de sus predicciones $\tilde{P}_D$ coincide con la frecuencia relativa observada de empates. La p\'erdida logar\'itmica (log-loss), al ser una \emph{strictly proper scoring rule}, incentiva exactamente esta propiedad.
 	\item \textbf{Clasificaci\'on dura:} la regla $\arg\max$ impone una partici\'on del simplex $\Delta^2$ que ignora la magnitud de las probabilidades asignadas a las clases no elegidas. En consecuencia, un modelo puede estar perfectamente calibrado ($\mathbb{E}[\tilde{P}_D] \approx 0{.}26$) y, no obstante, exhibir $\text{Recall}_D = 0$ bajo $\arg\max$.
 \end{itemize}
 
-El protocolo de evaluaci\'on incluye el registro descriptivo de $F1_D$ en ambas configuraciones experimentales (modelo base y modelo completo). La comparaci\'on entre ambas se presenta como un contraste protocolario cuya lectura inferencial requiere la validaci\'on conjunta de las m\'etricas probabil\'isticas globales. La discusi\'on sobre el eventual aporte de las covariables ex\'ogenas al desempe\~no de la clase empate se reserva para el cap\'itulo (\ref{ch:resultados}), donde se analizar\'a el conjunto completo de evidencia num\'erica proveniente de las 10 corridas pareadas.
+El protocolo de evaluaci\'on incluye el registro descriptivo de $F1_D$ en ambas configuraciones experimentales (modelo base y modelo completo). La comparaci\'on entre ambas se presenta como un contraste protocolario cuya lectura inferencial requiere la validaci\'on conjunta de las m\'etricas probabil\'isticas globales. La discusi\'on sobre el eventual aporte de las covariables ex\'ogenas al desempe\~no de la clase empate se reserva para el Cap\'itulo~\ref{ch:resultados}, donde se analizar\'a el conjunto completo de evidencia num\'erica proveniente de las 10 corridas pareadas.
 
 %Por esta raz\'on, el protocolo de evaluaci\'on del MLP prioriza la log-loss categ\'orica sobre la accuracy. La recuperaci\'on parcial de $F1_D$ en el modelo completo (con covariables ex\'ogenas) respecto al modelo base $(F1_D=0)$ se plantea como hip\'otesis a evaluar en el cap'itulo ~(\ref{ch:resultados}): si dicha recuperaci\'on resulta estad\'isticamente consistente, se interpretar\'a como indicio de que las covariables deportivas, econ\'omicas y ambientales podr\'ian contener se\~nal complementaria no capturada por el sistema de rating puro. El veredicto final sobre su aporte predictivo queda reservado al an\'alisis emp\'irico.
 %La recuperaci\'on parcial de $F1_D$ en el modelo completo (con covariables ex\'ogenas) respecto al modelo base ($F1_D = 0$) se interpreta no como una resoluci\'on del problema, sino como evidencia de que las covariables deportivas, econ\'omicas y ambientales contienen se\~nal complementaria que el sistema de rating puro no captura.

@@ -1,2 +1,54 @@
 \chapter{Conclusiones, limitaciones y l\'ineas futuras}
 \label{ch:conclusiones}
+
+\section{Conclusiones}
+
+En el presente trabajo se ha dise\~nado, implementado y validado un sistema predictivo en cascada para la estimaci\'on probabil\'istica del resultado de partidos de f\'utbol, integrando informaci\'on deportiva, econ\'omica y ambiental. El sistema se organiza en tres bloques funcionales: 
+
+\begin{enumerate}
+	\item Un modelo de conteo basado en LightGBM con funci\'on objetivo Poisson que estima las tasas de goles esperados y deriva la probabilidad de empate mediante la distribuci\'on de Skellam
+	\item Una implementaci\'on propia del algoritmo Glicko-2 modificado de Shelopugin y Sirotkin \cite{Glicko2Mod}, que actualiza secuencialmente la fuerza latente de los equipos y cuantifica la incertidumbre a trav\'es de la desviaci\'on de rating.
+	\item n perceptr\'on multicapa que refina las probabilidades base integrando covariables ex\'ogenas estandarizadas.
+\end{enumerate}
+
+Los principales hallazgos emp\'iricos son los siguientes:
+
+\begin{enumerate}
+	\item El bloque de conteo logra una calibraci\'on adecuada de las tasas de goles, con errores absolutos medios (MAE) en el rango $0.83–0.94$, y de la probabilidad de empate mediante la distribuci\'on de Skellam, con un sesgo inferior a 1 punto porcentual.
+	\item El sistema de rating din\'amico Glicko-2 modificado establece una l\'inea base inferencial s\'olida, con una log-loss categ\'orica de aproximadamente $1.042$, y cuantifica la fuerza latente de $21–23$ competiciones con ventajas de local\'ia espec\'ificas por liga, que var\'ian entre $18.5$ puntos (J1 League) y $59.9$ puntos (Major League Soccer).
+	\item El refinador neuronal (MLP) mejora netamente la calibraci\'on en un $1.70\%$ respecto al Glicko-2 aislado, reduciendo la p\'erdida logar\'itmica categ\'orica de $1.0424$ a $1.0247$.
+	\item La inclusi\'on de covariables ex\'ogenas produce un efecto mixto: en el \textit{dataset Lite}, mejora la log-loss binaria y la precisi\'on del empate (Prec\_D pasa de $0$ a $0.278$), pero empeora la log-loss categ\'orica global. Este trade-off evidencia que la se\~nal ex\'ogena se concentra en partidos equilibrados, pero no es suficiente para mejorar la distribuci\'on conjunta de probabilidades.
+	\item Los \'indices compuestos de autor\'ia (xG\_teo, xA\_teo, DDI) constituyen el pilar predictivo central. En el dataset \textit{dataset Full}, la presencia de estos \'indices estabiliza el refinamiento neuronal, mientras que en el \textit{dataset Lite Recortado} (sin ellos) las covariables ex\'ogenas a\~naden ruido y degradan el desempe\~no.
+\end{enumerate}
+
+Estos resultados responden afirmativamente a la pregunta de investigaci\'on planteada: es posible estimar probabil\'isticamente el resultado de un partido integrando informaci\'on deportiva, econ\'omica y ambiental mediante un sistema en cascada actualizable secuencialmente que cuantifica la incertidumbre sobre la fuerza de cada equipo.
+
+\section{Limitaciones del estudio}
+
+Los resultados exhiben tres limitaciones estructurales que condicionan la interpretaci\'on de los hallazgos:
+
+\begin{itemize}
+	\item \textbf{Colapso persistente del empate:} aunque el modelo completo recupera parcialmente la clase empate (\(F1_D > 0\)), los valores absolutos permanecen muy por debajo de lo deseable (\(F1_D < 0.01\) bajo la regla de decisi\'on dura \(\arg\max\)). Esto no es un fallo metodol\'ogico, sino una propiedad intr\'inseca del f\'utbol: el empate es un evento puntual en un espacio de conteo discreto, y su predicci\'on \'optima requiere evaluaci\'on distributiva (log-loss) m\'as que etiquetado categ\'orico duro. La literatura especializada reporta hallazgos an\'alogos \cite{gneiting2007}.
+	\item \textbf{Sensibilidad del MLP a la composici\'on de \textit{features}:} la inclusi\'on de covariables ex\'ogenas en el dataset \textit{Full} no produce mejoras netas en la log-loss categ\'orica, lo que sugiere que la arquitectura de refinamiento actual, dos capas ocultas de 64 neuronas con dropout 0.3, puede no ser suficientemente expresiva para modelar las interacciones no lineales entre las m\'etricas deportivas y las variables ex\'ogenas sin incurrir en sobreajuste.
+	\item \textbf{Generalizaci\'on geogr\'afica:} el panel excluye ligas africanas y oce\'anicas, por lo que la validez externa del sistema hacia esas regiones permanece sin verificar. La ventaja de local\'ia calibrada var\'ia significativamente entre competiciones (de 18.5 a 59.9 puntos), lo que indica que el modelo aprende patrones regionales espec\'ificos, pero no se ha evaluado su desempe\~no en contextos geogr\'aficos distintos.
+\end{itemize}
+
+\section{L\'ineas de investigaci\'on futuras}
+
+A partir de los hallazgos y limitaciones identificadas, se proponen las siguientes l\'ineas de trabajo futuro:
+
+\begin{enumerate}
+	\item \textbf{Expansi\'on del panel de ligas:} incorporar competiciones adicionales de Am\'erica, Asia y Europa que no fueron incluidas inicialmente, así como explorar la inclus\'on de ligas africanas y oce\'anicas si los datos de FBRef lo permiten, para evaluar la generalizaci\'on del sistema y enriquecer la calibraci\'on de la ventaja de local\'ia en contextos competitivos diversos.
+	
+	\item \textbf{Exploraci\'on de arquitecturas de refinamiento alternativas:} probar perceptrones multicapa con diferente n\'umero de capas ocultas, neuronas por capa o tasas de dropout, as\'i como evaluar el uso de regularización L1/L2 para reducir el sensibilidad observada en el \textit{dataset Full} y mejorar la calibración global.
+	
+	\item \textbf{Inclusi\'on de nuevas covariables ex\'ogenas:} dado que el pipeline ya est\'a dise\~nado para integrar variables externas, se podr\'ia explorar la incorporaci\'on de datos adicionales, como estad\'isticas de posesión, efectividad en bal\'on parado o indicadores de rendimiento de jugadores clave, siempre que est\'en disponibles previo al partido y no introduzcan \textit{data leakage}.
+	
+	\item \textbf{Mejora de la calibraci\'on de la ventaja de local\'ia:} retomar la idea de modelar \(h_\ell\) como una funci\'on lineal de covariables utilizando técnicas de regularizaci\'on m\'as robustas que las exploradas inicialmente, con el fin de evitar el subajuste documentado en la fase exploratoria.
+	
+	\item \textbf{Validaci\'on externa con datos de otras fuentes:} aplicar el sistema predictivo a conjuntos de datos de otras plataformas para evaluar su robustez frente a diferentes metodolog\'ias de recolecci\'on de estad\'isticas deportivas.
+	
+	\item \textbf{Implementaci\'on de un sistema de predicci\'on en lote:} desarrollar un \textit{pipeline} automatizado que permita generar predicciones para temporadas completas o jornadas espec\'ificas, facilitando su uso en entornos de an\'alisis deportivo sin necesidad de intervenci\'on manual.
+\end{enumerate}
+
+El sistema predictivo en cascada propuesto constituye un avance significativo en la integración de sistemas de rating dinámico, modelamiento de conteo y refinamiento neuronal para la predicción de resultados deportivos, abriendo múltiples líneas de investigación que se mantienen dentro de las capacidades técnicas y metodológicas del presente trabajo.

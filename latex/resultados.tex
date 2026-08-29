@@ -11,7 +11,7 @@ derivados del pipeline predictivo descrito en el Cap\'itulo~\ref{ch:metodologia}
 \end{itemize}
 %se comienza con el bloque de conteo (Skellam/LightGBM), se contin\'ua con el sistema de rating din\'amico (Glicko-2 modificado \texttt{G2Av1513.py}) y se cierra con el refinador neuronal (perceptr\'on multicapa).
 
-Cada bloque se eval\'ua tanto de manera aislada como en interacci\'on con los dem\'as, de modo que el lector pueda cuantificar el aporte incremental de cada componente. El an\'alisis se estructura en torno a tres conjuntos de datos: \textbf{Full} (25\,079 partidos, 2019--2025, con m\'etricas deportivas detalladas), \textbf{Lite} (35\,629 partidos, 2017--2025, sin m\'etricas compuestas de autor\'ia) y \textbf{Lite Recortado} (25\,079 partidos, 2019--2025, sin m\'etricas compuestas de autor\'ia). La comparaci\'on sistem\'atica entre Full y Lite Recortado, que comparten id\'entica ventana temporal pero difieren en la inclusi\'on de \'indices compuestos de autor\'ia, permite aislar el efecto predictivo de las m\'etricas deportivas avanzadas.
+Cada bloque se eval\'ua tanto de manera aislada como en interacci\'on con los dem\'as, de modo que el lector pueda cuantificar el aporte incremental de cada componente. El an\'alisis se estructura en torno a tres conjuntos de datos: \textbf{Full} (26\,690 partidos, 2019--2025, con m\'etricas deportivas detalladas), \textbf{Lite} (37\,712 partidos, 2017--2025, sin m\'etricas compuestas de autor\'ia) y \textbf{Lite Recortado} (26\,690 partidos, 2019--2025, sin m\'etricas compuestas de autor\'ia). La comparaci\'on sistem\'atica entre Full y Lite Recortado, que comparten id\'entica ventana temporal pero difieren en la inclusi\'on de \'indices compuestos de autor\'ia, permite aislar el efecto predictivo de las m\'etricas deportivas avanzadas.
 
 % ============================================================
 % SECCION 4.1 -- Bloque de conteo
@@ -25,7 +25,7 @@ El primer bloque del pipeline estima las tasas esperadas de anotaci\'on $\lambda
 \subsection{Calibraci\'on de las tasas de goles}
 \label{subsec:res_calibracion_goals}
 
-La Tabla~\ref{tab:skellam_mae} resume el error absoluto medio (MAE) de las predicciones de goles sobre el conjunto de prueba (30\% cronol\'ogico final) para cada dataset. Los valores se ubican en el rango $[0{.}827,\,0{.}935]$, consistente con la literatura de modelado de conteo en f\'utbol profesional \cite{maher1982,karlis2003}. N\'otese que el MAE del equipo visitante es sistem\'aticamente inferior al del local, lo cual refleja la menor varianza ofensiva hist\'orica de los conjuntos visitantes en el panel de ligas analizado.
+La Tabla~\ref{tab:skellam_mae} resume el error absoluto medio (MAE) de las predicciones de goles sobre el conjunto de prueba (30\% cronol\'ogico final) para cada dataset. Los valores se ubican en el rango $[0{.}823,\,0{.}935]$, consistente con la literatura de modelado de conteo en f\'utbol profesional \cite{maher1982,karlis2003}. N\'otese que el MAE del equipo visitante es sistem\'aticamente inferior al del local, lo cual refleja la menor varianza ofensiva hist\'orica de los conjuntos visitantes en el panel de ligas analizado.
 
 \begin{table}[htbp]
 	\centering
@@ -35,14 +35,14 @@ La Tabla~\ref{tab:skellam_mae} resume el error absoluto medio (MAE) de las predi
 		\toprule
 		\textbf{Dataset} & \textbf{MAE Home} & \textbf{MAE Away} & \textbf{N Train} & \textbf{N Test} \\
 		\midrule
-		Full & 0{.}9350 & 0{.}8299 & 17\,555 & 7\,524 \\
-		Lite & 0{.}9286 & 0{.}8272 & 24\,940 & 10\,689 \\
-		Lite Recortado & 0{.}9350 & 0{.}8299 & 17\,555 & 7\,524 \\
+		Full & 0{.}9351 & 0{.}8383 & 18\,872 & 8\,088 \\
+		Lite & 0{.}9301 & 0{.}8360 & 26\,398 & 11\,314 \\
+		Lite Recortado & 0{.}9351 & 0{.}8383 & 18\,872 & 8\,088 \\
 		\bottomrule
 	\end{tabular}
 \end{table}
 
-La calibraci\'on marginal de la probabilidad de empate se reporta en la Tabla~\ref{tab:skellam_draw}. La media de las predicciones $\hat{P}_D^{(\text{Skellam})}$ sobre el conjunto de prueba difiere de la frecuencia observada en menos de 0{.}8 puntos porcentuales para el dataset \texttt{Lite}, y aproximadamente 0.31 puntos porcentuales para los datasets \texttt{Full} y \texttt{Lite Recortado}, evidenciando una calibraci\'on marginal adecuada del m\'odulo de conteo. Por otra parte, la p\'erdida logar\'itmica (log-loss) binaria asoaciada a la predicci\'on de empate se mantiene dentro del intervalo $[0{.}572--0{.}578]$, que es el valor de referencia para un clasificador binario sobre una clase con prevalencia cercana al 26\%.
+La calibraci\'on marginal de la probabilidad de empate se reporta en la Tabla~\ref{tab:skellam_draw}. La media de las predicciones $\hat{P}_D^{(\text{Skellam})}$ sobre el conjunto de prueba difiere de la frecuencia observada en menos de 0{.}8 puntos porcentuales para el dataset \texttt{Lite}, y aproximadamente 0.6 puntos porcentuales para los datasets \texttt{Full} y \texttt{Lite Recortado}, evidenciando una calibraci\'on marginal adecuada del m\'odulo de conteo. Por otra parte, la p\'erdida logar\'itmica (log-loss) binaria asoaciada a la predicci\'on de empate se mantiene dentro del intervalo $[0{.}571-0{.}576]$, que es el valor de referencia para un clasificador binario sobre una clase con prevalencia cercana al 26\%.
 
 \begin{table}[htbp]
 	\centering
@@ -52,17 +52,40 @@ La calibraci\'on marginal de la probabilidad de empate se reporta en la Tabla~\r
 		\toprule
 		\textbf{Dataset} & \textbf{Log-Loss} & \textbf{Freq. Real} & \textbf{Media Pred.} & \textbf{Diferencia} \\
 		\midrule
-		Full & $0{.}5721$ & $0{.}2617$ & $0{.}2586$ & $-0{.}0031$ \\
-		Lite & $0{.}5778$ & $0{.}2680$ & $0{.}2601$ & $-0{.}0079$ \\
-		Lite Recortado & $0{.}5721$ & $0{.}2617$ & $0{.}2586$ & $-0{.}0031$ \\
+		Full & $0{.}5718$ & $0{.}2619$ & $0{.}2563$ & $-0{.}0056$ \\
+		Lite & $0{.}5757$ & $0{.}2663$ & $0{.}2579$ & $-0{.}0084$ \\
+		Lite Recortado & $0{.}5718$ & $0{.}2619$ & $0{.}2563$ & $-0{.}0056$ \\
 		\bottomrule
 	\end{tabular}
 \end{table}
 
+La Figura~\ref{fig:draw_calibration} presenta la calibraci\'on de la probabilidad de empate derivada del bloque de conteo para los tres conjuntos de datos. En el \textit{dataset Full} y el \textit{dataset Lite Recortado}, los puntos se alinean pr\'acticamente sobre la diagonal, lo que indica que la probabilidad predicha coincide con la frecuencia real de empates en todos los rangos. En el \textit{dataset Lite}, se observa un punto at\'ipico en el rango bajo de probabilidades, donde la predicci\'on supera significativamente la frecuencia real, alcanzando un valor cercano a $0.5$. Esta desviaci\'on sugiere que, en el universo ampliado de competiciones, el modelo tiende a sobreestimar la probabilidad de empate en partidos donde, a priori, el empate es poco probable. El resto de los puntos, sin embargo, mantienen un buen ajuste.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{drawfullratio.png}
+		\caption{Full}
+		\label{fig:draw_full}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{drawliteratio.png}
+		\caption{Lite}
+		\label{fig:draw_lite}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{drawliterecortado.png}
+		\caption{Lite Recortado}
+		\label{fig:draw_lite_rec}
+	\end{subfigure}
+	\caption{Calibración de la probabilidad de empate (\(\hat{P}_D^{(\text{Skellam})}\)) frente a la frecuencia real observada, para los tres conjuntos de datos. La línea diagonal representa una calibración perfecta.}
+	\label{fig:draw_calibration}
+\end{figure}
+
 \subsection{Diagn\'ostico de residuos}
 \label{subsec:res_residuos}
 
-El an\'alisis de residuos sobre el conjunto de prueba revela medias pr\'oximas a cero, ubicadas en el intervalo $[0{.}002,\,0{.}027]$, y desviaciones t\'ipicas en el intervalo $[1{.}079,\,1{.}171]$, tal como se reporta en la Tabla~\ref{tab:skellam_resid}. La simetr\'ia aproximada de los residuos alrededor del origen sugiere que el modelo Poisson no presenta sesgo sistem\'atico de subestimaci\'on o sobreestimaci\'on en la escala de conteo. No obstante, la desviaci\'on t\'ipica superior a la unidad indica que la varianza observada de los goles excede la varianza te\'orica de la Poisson. Esta sobredispersi\'on es un fen\'omeno documentado en la literatura deportiva y atribuible a la heterogeneidad no observada entre equipos dentro de una misma competencia \cite{karlis2003}.
+El an\'alisis de residuos sobre el conjunto de prueba revela medias pr\'oximas a cero, ubicadas en el intervalo $[0{.}002,\,0{.}034]$, y desviaciones t\'ipicas en el intervalo $[1{.}086,\,1{.}173]$, tal como se reporta en la Tabla~\ref{tab:skellam_resid}. La simetr\'ia aproximada de los residuos alrededor del origen sugiere que el modelo Poisson no presenta sesgo sistem\'atico de subestimaci\'on o sobreestimaci\'on en la escala de conteo. No obstante, la desviaci\'on t\'ipica superior a la unidad indica que la varianza observada de los goles excede la varianza te\'orica de la Poisson. Esta sobredispersi\'on es un fen\'omeno documentado en la literatura deportiva y atribuible a la heterogeneidad no observada entre equipos dentro de una misma competencia \cite{karlis2003}.
 
 \begin{table}[htbp]
 	\centering
@@ -72,12 +95,40 @@ El an\'alisis de residuos sobre el conjunto de prueba revela medias pr\'oximas a
 		\toprule
 		\textbf{Dataset} & $\bar{r}_{\text{home}}$ & $s_{\text{home}}$ & $\bar{r}_{\text{away}}$ & $s_{\text{away}}$ \\
 		\midrule
-		Full & $0{.}004$ & $1{.}171$ & $0{.}027$ & $1{.}083$ \\
-		Lite & $0{.}002$ & $1{.}164$ & $0{.}022$ & $1{.}079$ \\
-		Lite Recortado & $0{.}004$ & $1{.}171$ & $0{.}027$ & $1{.}083$ \\
+		Full & $0{.}004$ & $1{.}173$ & $0{.}034$ & $1{.}089$ \\
+		Lite & $0{.}002$ & $1{.}168$ & $0{.}029$ & $1{.}086$ \\
+		Lite Recortado & $0{.}004$ & $1{.}173$ & $0{.}034$ & $1{.}089$ \\
 		\bottomrule
 	\end{tabular}
 \end{table}
+
+La Figura~\ref{fig:residuals} muestra la distribuci\'on de los residuos del bloque de conteo para los goles del equipo local y visitante. En todos los \textit{datasets}, los residuos presentan una forma aproximadamente normal, centrada en cero, lo que indica que no hay sesgo sistem\'atico en las predicciones. No obstante, se aprecia una cola hacia la derecha en ambos casos, reflejando la presencia de partidos con una diferencia de goles inusualmente alta que el modelo no logra capturar. En el \textit{dataset Lite}, se detectan tres valores at\'ipicos en los residuos del equipo visitante aproximadamente en $-2$, $-0.5$ y $1$, que corresponden a partidos con marcadores extremos en las ligas de menor cobertura estadística. En el \textit{dataset Full} y el \textit{dataset Lite Recortado}, la distribuci\'on es m\'as homog\'enea, con un pico en torno a $0$ que confirma la adecuada calibración del modelo de conteo.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{subfigure}[b]{0.9\textwidth}
+		\includegraphics[width=\textwidth]{residuosfull.png}
+		\caption{Full}
+		\label{fig:res_full}
+	\end{subfigure}
+	
+	\begin{subfigure}[b]{0.9\textwidth}
+		\includegraphics[width=\textwidth]{residuoslite.png}
+		\caption{Lite}
+		\label{fig:res_lite}
+	\end{subfigure}
+	
+	\begin{subfigure}[b]{0.9\textwidth}
+		\includegraphics[width=\textwidth]{residuosliterecortado.png}
+		\caption{Lite Recortado}
+		\label{fig:res_lite_rec}
+	\end{subfigure}
+	
+	\caption{Distribuci\'on de los residuos del bloque de conteo (\(r = \text{goles observados} - \hat{\lambda}\)) para los goles del equipo local y visitante.}
+	\label{fig:residuals}
+\end{figure}
+
+\newpage
 
 % ============================================================
 % SECCION 4.2 -- Bloque de rating
@@ -97,7 +148,7 @@ El segundo bloque implementa el algoritmo Glicko-2 modificado de Shelopugin y Si
 \subsection{Convergencia y par\'ametros calibrados}
 \label{subsec:res_glicko_params}
 
-La Tabla~\ref{tab:glicko_convergencia} resume los par\'ametros globales obtenidos tras la optimizaci\'on. El par\'ametro $d$ exibe estabilidad operacional en los dataset Full y Lite Recortado ($0{.}9113$), coincidentes en ventana temporal. En contraste, el dataset Lite, que extiende el horizonte muestral a las temporadas 2017--2018 e ligas adicionales de menor cobertura estad\'istica, exhibe un valor ligeramente superior ($0{.}9351$). La convergencia del optimizador requiere $660$ evaluaciones para los datasets Full y Lite Recortado y $780$ para Lite, lo que sugiere una superficie de p\'erdida de mayor rugosidad, consecuencia directa de la heteogeneidad introducida por el universo ampliado de competidores.
+La Tabla~\ref{tab:glicko_convergencia} resume los par\'ametros globales obtenidos tras la optimizaci\'on. El par\'ametro $d$ exibe estabilidad operacional en los dataset Full y Lite Recortado ($0{.}9088$), coincidentes en ventana temporal. En contraste, el dataset Lite, que extiende el horizonte muestral a las temporadas 2017--2018 y ligas adicionales de menor cobertura estad\'istica, exhibe un valor ligeramente superior ($0{.}9327$). La convergencia del optimizador requiere $660$ evaluaciones para los datasets Full y Lite Recortado y $780$ para Lite, lo que sugiere una superficie de p\'erdida de mayor rugosidad, consecuencia directa de la heteogeneidad introducida por el universo ampliado de competidores.
 %una superficie de p\'erdida m\'as compleja en el universo ampliado de competiciones.
 
 \begin{table}[htbp]
@@ -108,14 +159,14 @@ La Tabla~\ref{tab:glicko_convergencia} resume los par\'ametros globales obtenido
 		\toprule
 		\textbf{Dataset} & $d$ & $R_{\min}$ & $R_{\max}$ & \textbf{Rango} & \textbf{Evals.} \\
 		\midrule
-		Full & $0{.}9113$ & 1205{.}3 & 1821{.}2 & 616{.}0 & 660 \\
-		Lite & $0{.}9351$ & 1201{.}7 & 1850{.}4 & 648{.}7 & 1440 \\
-		Lite Recortado & $0{.}9113$ & 1205{.}3 & 1821{.}2 & 616{.}0 & 660 \\
+		Full & $0{.}9088$ & 1205{.}9 & 1827{.}6 & 621{.}7 & 660 \\
+		Lite & $0{.}9327$ & 1201{.}4 & 1847{.}0 & 645{.}6 & 780 \\
+		Lite Recortado & $0{.}9088$ & 1205{.}9 & 1827{.}6 & 621{.}7 & 660 \\
 		\bottomrule
 	\end{tabular}
 \end{table}
 
-El rango final de ratings $\Delta_\mu=\mu_\text{max}-\mu_\text{min}\in [616,649]$ es coherente con la escala Glicko-2 y refleja la dispersi\'on competitiva real del panel multiliga. La Tabla~\ref{tab:glicko_h_league_comparison} detalla la ventaja de local\'ia $h_\ell$ calibrada por liga para el dataset Lite, ordenada de mayor a menor efecto. Se observa una heterogeneidad considerable: las competiciones de formato eliminatorio continental (CONCACAF Champions League, UEFA Champions League) y los torneos de calendario simple con mayor desplazamiento geogr\'afico (MLS, Brasileir\~ao) exhiben ventajas superiores a $h_\ell=50$ puntos, mientras que las ligas asi\'aticas (J1 League, K League 1) presentan los valores m\'as bajos, inferiores a los $h_\ell=20$ puntos, consistente con menor presi\'on ambiental y desplazamientos geogr\'aficos reducidos dentro de sus respectivos pa\'ises.
+El rango final de ratings $\Delta_\mu=\mu_\text{max}-\mu_\text{min}\in [621.7,645.6]$ es coherente con la escala Glicko-2 y refleja la dispersi\'on competitiva real del panel multiliga. La Tabla~\ref{tab:glicko_h_league_comparison} detalla la ventaja de local\'ia $h_\ell$ calibrada por liga para el \text{dataset Lite} y el \textit{dataset Full}, ordenada de mayor a menor seg\'un el \textit{dataset Lite}. Se observa una heterogeneidad considerable: las competiciones continentales y los torneos de calendario anual con mayor desplazamiento geogr\'afico (Major League Soccer, Brasileir\~ao) exhiben ventajas superiores a $h_\ell=45$ puntos, mientras que las ligas asi\'aticas (J1 League, K League 1, Persian Gulf Pro League) y la liga francesa (Ligue 1) presentan los valores m\'as bajos, inferiores a los $h_\ell=22$ puntos, consistente con menor presi\'on ambiental y desplazamientos geogr\'aficos reducidos dentro de sus respectivos pa\'ises.
 
 \begin{table}[htbp]
 	\centering
@@ -127,36 +178,38 @@ El rango final de ratings $\Delta_\mu=\mu_\text{max}-\mu_\text{min}\in [616,649]
 		\cmidrule(lr){2-3} \cmidrule(lr){4-5}
 		\textbf{Competici\'on} & {$\mu_{\text{init},\ell}$} & {$h_\ell$} & {$\mu_{\text{init},\ell}$} & {$h_\ell$} \\
 		\midrule
-		Major League Soccer & 1499.99 & 59.76 & 1500.00 & 51.37 \\
-		Brasileir\~ao & 1500.00 & 55.34 & 1499.98 & 51.50 \\
-		CONCACAF Champions League & 1500.03 & 52.52 & 1500.00 & 52.17 \\
-		UEFA Champions League & 1500.00 & 51.48 & 1500.00 & 51.22 \\
-		FIFA Club World Cup & 1500.00 & 50.32 & 1500.00 & 50.10 \\
-		UEFA Europa Conference League & 1500.00 & 50.22 & 1500.00 & 49.85 \\
-		AFC Champions League Two & 1500.01 & 50.17 & -- & -- \\
-		AFC Champions League Elite & 1500.07 & 49.91 & -- & -- \\
-		UEFA Europa League & 1500.00 & 48.78 & 1500.00 & 48.60 \\
-		Copa CONMEBOL Libertadores & 1500.02 & 47.88 & 1500.02 & 45.20 \\
-		Copa CONMEBOL Sudamericana & 1500.01 & 47.25 & 1500.02 & 46.88 \\
-		Liga Profesional Argentina & 1499.99 & 45.27 & 1499.98 & 40.95 \\
-		Serie A & 1500.00 & 41.65 & 1500.00 & 38.76 \\
-		Superliga Argentina & 1500.01 & 39.56 & 1499.99 & 45.23 \\
-		Bundesliga & 1500.00 & 35.17 & 1500.01 & 33.57 \\
-		LaLiga & 1500.01 & 34.92 & 1500.00 & 33.20 \\
-		Super League Grecia & 1499.98 & 32.93 & 1499.97 & 28.77 \\
-		Saudi Pro League & 1499.99 & 32.18 & 1500.00 & 34.57 \\
-		Liga MX & 1500.00 & 31.34 & 1499.92 & 30.86 \\
-		FutVe & 1499.97 & 30.74 & -- & -- \\
-		Premier League & 1500.03 & 25.36 & 1500.05 & 25.39 \\
-		Ligue 1 & 1499.99 & 24.97 & 1499.99 & 24.21 \\
-		K League 1 & 1499.99 & 21.75 & 1500.00 & 17.49 \\
-		Persian Gulf Pro League & 1499.98 & 19.38 & -- & -- \\
-		J1 League & 1499.98 & 18.19 & 1500.00 & 14.79 \\
+		Major League Soccer & 1500.02 & 59.88 & 1500.00 & 52.47 \\
+		Brasileir\~ao & 1500.00 & 54.95 & 1499.99 & 51.59 \\
+		CONCACAF Champions League & 1500.06 & 52.49 & 1500.00 & 51.98 \\
+		FIFA Club World Cup & 1500.00 & 50.37 & 1500.00 & 50.21 \\
+		UEFA Europa Conference League & 1500.00 & 50.05 & 1500.00 & 49.83 \\
+		AFC Champions League Two & 1500.01 & 49.80 & -- & -- \\
+		AFC Champions League Elite & 1500.08 & 49.99 & -- & -- \\
+		UEFA Europa League & 1500.02 & 46.20 & 1500.01 & 46.53 \\
+		Copa CONMEBOL Libertadores & 1500.02 & 47.98 & 1500.03 & 45.62 \\
+		Copa CONMEBOL Sudamericana & 1500.02 & 48.56 & 1500.01 & 48.47 \\
+		UEFA Champions League & 1500.03 & 47.71 & 1500.03 & 47.20 \\
+		Liga Profesional Argentina & 1499.99 & 44.01 & 1499.98 & 41.45 \\
+		Superliga Argentina & 1500.02 & 39.92 & 1499.99 & 45.59 \\
+		Serie A & 1499.98 & 37.07 & 1499.97 & 31.59 \\
+		Super League Grecia & 1499.97 & 33.82 & 1499.97 & 30.20 \\
+		LaLiga & 1500.01 & 32.98 & 1500.00 & 32.12 \\
+		Saudi Pro League & 1499.98 & 32.36 & 1500.00 & 34.95 \\
+		FutVe & 1499.96 & 31.72 & -- & -- \\
+		Liga MX & 1500.00 & 30.58 & 1500.00 & 30.69 \\
+		Bundesliga & 1500.00 & 27.17 & 1500.00 & 27.46 \\
+		Premier League & 1500.03 & 26.02 & 1500.03 & 25.52 \\
+		K League 1 & 1499.99 & 21.61 & 1500.00 & 18.53 \\
+		Ligue 1 & 1499.99 & 21.37 & 1499.98 & 21.25 \\
+		Persian Gulf Pro League & 1499.98 & 19.71 & -- & -- \\
+		J1 League & 1499.98 & 18.52 & 1500.00 & 14.55 \\
 		\bottomrule
 	\end{tabular}
 \end{table}
 
-Los ratings iniciales por liga permanecen pr\'oximos a 1500 en todos los casos, es decir, desplazamientos $|\mu_\text{init}-1500|<0.1$ para cada competencia, lo que indica que el proceso de estumaci\'on por m\'axima verosimilitud no encontr\'o evidencia suficiente para desplazar el anclaje inicial medio de manera sustancial. Esto es esperable dado que el panel multiliga est\'a compuesto por competiciones de alto nivel comparables en sus respectivas regiones.
+Los ratings iniciales por liga permanecen pr\'oximos a 1500 en todos los casos, es decir, desplazamientos $|\mu_\text{init}-1500|<0.1$ para cada competencia, lo que indica que el proceso de estimaci\'on por m\'axima verosimilitud no encontr\'o evidencia suficiente para desplazar el anclaje inicial medio de manera sustancial. Esto es esperable dado que el panel multiliga est\'a compuesto por competiciones de alto nivel comparables en sus respectivas regiones.
+
+\newpage
 
 \subsection{Evaluaci\'on aislada del sistema Glicko-2 modificado}
 \label{subsec:res_glicko_eval}
@@ -171,14 +224,14 @@ La Tabla~\ref{tab:glicko_aislado} presenta las m\'etricas de evaluaci\'on del bl
 		\toprule
 		\textbf{Dataset} & \textbf{Log-Loss Categ\'orica} & \textbf{Log-Loss Binaria} \\
 		\midrule
-		Full & 1{.}0443 & 0{.}6527 \\
-		Lite & 1{.}0440 & 0{.}6506 \\
-		Lite Recortado & 1{.}0443 & 0{.}6527 \\
+		Full & 1{.}0424 & 0{.}6499 \\
+		Lite & 1{.}0411 & 0{.}6478 \\
+		Lite Recortado & 1{.}0424 & 0{.}6499 \\
 		\bottomrule
 	\end{tabular}
 \end{table}
 
-La p\'erdida logar\'itmica (log-loss) categ\'orica del Glicko-2 aislado establece un umbral de referencia cercano a $1.0443$. Cualquier reducci\'on posterior atribuible al MLP se interpretar\'a como ganancia predictiva neto del refinamiento no param\'etrico. En este sentido, el conjunto Lite obtiene una p\'erdida logar\'itmica (log-loss) categ\'orica ligeramente inferior de $1{.}0440$ frente a los $1{.}0443$ del conjunto Full. Este ajuste marginal es un efecto atribuible a la mayor masa muestral de 24940 encuentros en comparaci\'on con los 17555 del conjunto Full y Lite Recortado, la cual reduce la varianza en la estimaci\'on de los ratings.
+La p\'erdida logar\'itmica (log-loss) categ\'orica del Glicko-2 aislado establece un umbral de referencia cercano a $1.0415$. Cualquier reducci\'on posterior atribuible al MLP se interpretar\'a como ganancia predictiva neto del refinamiento no param\'etrico. En este sentido, el conjunto Lite obtiene una p\'erdida logar\'itmica (log-loss) categ\'orica ligeramente inferior de $1{.}0411$ frente a los $1{.}0424$ del conjunto Full. Este ajuste marginal es un efecto atribuible a la mayor masa muestral de 26\,398 encuentros en comparaci\'on con los 18\,872 del conjunto Full y Lite Recortado, la cual reduce la varianza en la estimaci\'on de los ratings.
 % ============================================================
 % SECCION 4.3 -- Bloque de refinamiento (MLP)
 % ============================================================
@@ -186,12 +239,12 @@ La p\'erdida logar\'itmica (log-loss) categ\'orica del Glicko-2 aislado establec
 \section{Resultados del bloque de refinamiento neuronal}
 \label{sec:res_mlp}
 
-El tercer bloque del pipeline refina las probabilidades base del Glicko-2 mediante un perceptr\'on multicapa \textit{feedforward} entrenado sobre el vector concatenado de probabilidades base y covariables ex\'ogenas estandarizadas. Siguiendo el protocolo metodol\'ogico descrito en la Secci\'on~\ref{subsec:train_mlp}, manteniendo fija la salida del modelo Glicko-2 , se ejecutaron 10 corridas pareadas con semillas consecutivas (42--51), reentrenando el MLP en cada iteraci\'on para estimar la varianza del desempe\~no y aplicar inferencia estad\'istica mediante el test $t$ pareado.
+El tercer bloque del pipeline refina las probabilidades base del Glicko-2 mediante un perceptr\'on multicapa \textit{feedforward} entrenado sobre el vector concatenado de probabilidades base y covariables ex\'ogenas estandarizadas. Siguiendo el protocolo metodol\'ogico descrito en la Secci\'on~\ref{subsec:train_mlp}, manteniendo fija la salida del modelo Glicko-2 , se ejecutaron 10 corridas pareadas con semillas consecutivas (\texttt{Seed=42,43,...,51}), reentrenando el MLP en cada iteraci\'on para estimar la varianza del desempe\~no y aplicar inferencia estad\'istica mediante el test $t$ pareado.
 
 \subsection{M\'etricas probabil\'isticas}
 \label{subsec:res_mlp_prob}
 
-La Tabla~\ref{tab:stage2_resumen} condensa las medias de las m\'etricas principales sobre las 10 corridas para cada conjunto de datos y configuraci\'on experimental (base frente a completa). Se reportan: p\'erdida logar\'itmica (log-loss) categ\'orica (victoria local contra empate contra victoria visitante), p\'erdida logar\'itmica (log-loss) binaria (victoria local contra no victoria local) y \textit{$F1$-score} para la clase empate.
+La Tabla~\ref{tab:stage2_resumen} condensa las medias de las m\'etricas principales sobre las 10 corridas para cada conjunto de datos y configuraci\'on experimental, base frente a completa. Se reportan: p\'erdida logar\'itmica (log-loss) categ\'orica, p\'erdida logar\'itmica (log-loss) binaria y \textit{$F1$-score} para la clase empate.
 
 \begin{table}[htbp]
 	\centering
@@ -201,14 +254,14 @@ La Tabla~\ref{tab:stage2_resumen} condensa las medias de las m\'etricas principa
 		\toprule
 		\textbf{Dataset} & \textbf{Config.} & \textbf{LL Cat.} & \textbf{LL Bin.} & \textbf{Acc.} & \textbf{$F1_D$} & \textbf{$F1$-macro} \\
 		\midrule
-		\multirow{2}{*}{Full} & Base & 1{.}0279 $\pm$ 0{.}0002 & 0{.}6480 $\pm$ 0{.}0002 & 0{.}486 & 0{.}0000 & 0{.}324 \\
-		& Completo & 1{.}0289 $\pm$ 0{.}0004 & 0{.}6476 $\pm$ 0{.}0003 & 0{.}486 & 0{.}0081 & 0{.}329 \\
+		\multirow{2}{*}{Full} & Base & 1.0247 $\pm$ 0.0002 & 0.6449 $\pm$ 0.0002 & 0.486 & 0.0000 & 0.324 \\
+		& Completo & 1.0261 $\pm$ 0.0004 & 0.6445 $\pm$ 0.0003 & 0.486 & 0.0033 & 0.329 \\
 		\midrule
-		\multirow{2}{*}{Lite} & Base & 1{.}0262 $\pm$ 0{.}0002 & 0{.}6441 $\pm$ 0{.}0001 & 0{.}486 & 0{.}0000 & 0{.}324 \\
-		& Completo & 1{.}0255 $\pm$ 0{.}0002 & 0{.}6431 $\pm$ 0{.}0002 & 0{.}487 & 0{.}0100 & 0{.}331 \\
+		\multirow{2}{*}{Lite} & Base & 1.0230 $\pm$ 0.0002 & 0.6417 $\pm$ 0.0001 & 0.486 & 0.0000 & 0.324 \\
+		& Completo & 1.0224 $\pm$ 0.0002 & 0.6402 $\pm$ 0.0002 & 0.487 & 0.0063 & 0.331 \\
 		\midrule
-		\multirow{2}{*}{Lite Rec.} & Base & 1{.}0279 $\pm$ 0{.}0002 & 0{.}6480 $\pm$ 0{.}0002 & 0{.}486 & 0{.}0000 & 0{.}324 \\
-		& Completo & 1{.}0293 $\pm$ 0{.}0007 & 0{.}6488 $\pm$ 0{.}0006 & 0{.}485 & 0{.}0006 & 0{.}324 \\
+		\multirow{2}{*}{Lite Rec.} & Base & 1.0247 $\pm$ 0.0002 & 0.6449 $\pm$ 0.0002 & 0.486 & 0.0000 & 0.324 \\
+		& Completo & 1.0273 $\pm$ 0.0007 & 0.6460 $\pm$ 0.0006 & 0.485 & 0.0003 & 0.324 \\
 		\bottomrule
 	\end{tabular}
 \end{table}
@@ -216,17 +269,17 @@ La Tabla~\ref{tab:stage2_resumen} condensa las medias de las m\'etricas principa
 Los resultados revelan un patr\'on diferenciado por dataset que constituye el hallazgo central del cap\'itulo:
 
 \begin{itemize}
-	\item \textbf{Dataset Lite:} el modelo completo, con covariables ex\'ogenas, mejora de manera estad\'isticamente significativa tanto la log-loss categ\'orica ($\Delta = -0{.}00070$) como la log-loss binaria ($\Delta = -0{.}00108$). El test $t$ pareado arroja $p < 0{.}001$ en ambas m\'etricas, confirmando que las covariables econ\'omicas y ambientales aportan se\~nal predictiva complementaria a\'un cuando no se dispone de las m\'etricas deportivas de autor\'ia.
+	\item \textbf{Dataset Lite:} El MLP reduce la log-loss categórica del Glicko-2 aislado en $\Delta=0.0181$ sin las covariables ex\'ogenas y en $\Delta=0.0187$ con las covariables ex\'ogenas. La log-loss binaria sigue una tendencia similar: descendiendo en $\Delta=0.0061$ sin las covariables ex\'ogenas y en $\Delta=0.0076$ con las covariables ex\'ogenas. Estos resultados indican que el MLP, incluso sin covariables ex\'ogenas, mejora sustancialmente la calibraci\'on del sistema de rating produciendo un efecto mixto. La log-loss categ\'orica empeora ligeramente al pasar de la versi\'on sin covariables ex\'ogenas a la versi\'on con covariables ex\'ogenas en $\Delta = 0.0006$ con $p = 0.0292$, lo que indica una descalibraci\'on marginal de la predicci\'on trinomial. En contraste, la log-loss binaria mejora en $\Delta = 0.0015$ con $p < 0.0001$), sugiriendo que las covariables ex\'ogenas ayudan a predecir la victoria local, pero a expensas de la calibraci\'on de las otras dos clases. Por otra parte, el \(F1_D\) pasa de $0$ en el modelo base a $0.0063$ en el modelo completo con $p < 0.0001$. Esta mejora, aunque modesta en t\'erminos absolutos, es estad\'isticamente significativa. La precisi\'on del empate (\(Prec_D\)) respalda esta interpretaci\'on, pues pasa de $0$ a $0.278$, lo que significa que cuando el MLP predice un empate, acierta en aproximadamente 1 de cada 4 casos. Dado que la frecuencia natural del empate en el conjunto de prueba es $0.267$, este resultado indica que el modelo es selectivo y conservador, pero no aleatorio. En conjunto, los resultados del \textit{dataset Lite} muestran que el MLP, incluso sin covariables, mejora la calibraci\'on del Glicko-2. Las covariables ex\'ogenas a\~naden una se\~nal modesta y espec\'ifica: mejoran la detecci\'on de empates en t\'erminos de precisi\'on condicional, pero descalibran la predicci\'on global.
 	
-	\item \textbf{Dataset Full:} el modelo completo muestra un comportamiento divergente: la p\'erdida logar\'itmica (log-loss) categ\'orica se incrementa levemente en $\Delta = +0{.}00094$ y $p = 0{.}0001$, aunque la diferencia es num\'ericamente peque\~na ($<0{.}1\%$ relativo). Mientras que la p\'erdida logar\'itmica (log-loss) binaria mejora marginalmente en $\Delta = -0{.}00035$, $p = 0{.}0687$, no significativa al $5\%$. Este comportamiento sugiere que, al contar con los \'indices compuestos de autor\'ia (xG\_teo, xA\_teo, DDI) en el vector de covariables, la informaci\'on ex\'ogena fuerza al perceptr\'on multicapa (MLP) a  redistribuir la masa probabil\'istica entre las tres clases de forma m\'as agresiva. El modelointenta calibrar la incertidumbre inherente a la clase del empate, lo que puede beneficiar la p\'erdida logar\'itmica (log-loss) binaria, a costa de un costo marginal en la p\'erdida logar\'itmica (log-loss) categ\'orica si la clase empate sigue siendo dif\'icil de calibrar.
+	\item \textbf{Dataset Full:} El MLP reduce la log-loss categórica del Glicko-2 aislado en $\Delta=0.0177$ sin las covariables ex\'ogenas y en $\Delta=0.0163$ con las covariables ex\'ogenas. La log-loss binaria sigue una tendencia similar: descendiendo en $\Delta=0.0050$ sin las covariables ex\'ogenas y en $\Delta=0.0054$ con las covariables ex\'ogenas. Al igual que en el \textit{dataset} anterior, estos resultados indican que el MLP mejora sustancialmente la calibraci\'on del sistema de rating sin importar el uso de las covariables ex\'ogenas, produciendo un efecto mixto. Por otra parte, la log-loss categ\'orica empeora ligeramente al pasar de la versi\'on con covariables ex\'ogenas a la versi\'on sin covariables ex\'ogenas en $\Delta = 0.0014$ con $p = 0.0057$, lo que indica una descalibraci\'on marginal de la predicci\'on trinomial. En contraste, la log-loss binaria mejora en $\Delta = 0.0004$ con $p < 0.0025$), sugiriendo que las covariables ex\'ogenas ayudan a predecir la victoria local, pero a expensas de la calibraci\'on de las otras dos clases. Por otra parte, el \(F1_D\) pasa de $0$ en el modelo base a $0.0033$ en el modelo completo con $p < 0.0001$. Esta mejora es modesta en t\'erminos absolutos, pero estad\'isticamente significativa. La precisi\'on del empate (\(Prec_D\)) respalda esta interpretaci\'on, pues pasa de $0$ a $0.173$, lo que significa que cuando el MLP predice un empate, acierta en aproximadamente 1 de cada 6 casos. Dado que la frecuencia natural del empate en el conjunto de prueba es $0.267$, este resultado indica que el modelo es selectivo y conservador, pero no aleatorio. En conjunto, los resultados del \textit{dataset Full} muestran que el MLP, incluso sin covariables, mejora la calibraci\'on del Glicko-2. Las covariables ex\'ogenas a\~naden una se\~nal modesta y espec\'ifica: mejoran la detecci\'on de empates en t\'erminos de precisi\'on condicional, pero descalibran la predicci\'on global.
 	
-	\item \textbf{Dataset Lite Recortado:} el modelo completo deteriora de manera significativa tanto la p\'erdida logar\'itmica (log-loss) categ\'orica ($\Delta = +0{.}00138$, $p = 0{.}0001$) como la binaria ($\Delta = +0{.}00078$, $p = 0{.}0022$). Este resultado, aparentemente contradictorio con el conjunto de datos Lite, demuestra la importancia de los \'indices compuestos de autor\'ia. Al compartir la ventana temporal reducida del conjunto de datos Full, pero prescindir de las m\'etricas xG\_teo, xA\_teo, DDI, la red neuronal carece de la se;al de uego necesaria para anclarse; en consecuencia, la adici\'on de covariables puramente ambientales y econ\'omicas introduce un nivel de ruido y varianza que supera su aporte informativo en este subconjunto.
+	\item \textbf{Dataset Lite Recortado:} El MLP reduce la log-loss categórica del Glicko-2 aislado en $\Delta=0.0177$ sin las covariables ex\'ogenas y en $\Delta=0.0151$ con las covariables ex\'ogenas. La log-loss binaria sigue una tendencia similar: descendiendo en $\Delta=0.0050$ sin las covariables ex\'ogenas y en $\Delta=0.0039$ con las covariables ex\'ogenas. Estos resultados indican que el MLP mejora sustancialmente la calibraci\'on del sistema de rating sin importar si posee o no las covariables ex\'ogenas, produciendo un efecto mixto. Por otra parte, la log-loss categ\'orica empeora ligeramente al pasar de la versi\'on con covariables ex\'ogenas a la versi\'on sin covariables ex\'ogenas en $\Delta = 0.0026$ con $p < 0.0001$, lo que indica una descalibraci\'on marginal de la predicci\'on trinomial. De la misma manera, la log-loss binaria empeora en $\Delta = 0.0011$ con $p = 0.0001$. Por otra parte, el \(F1_D\) pasa de $0$ en el modelo base a $0.0003$ en el modelo completo con $p = 0.1933$ no significativo. Por otra parte la precisi\'on del empate (\(Prec_D\)) pasa de $0$ a $0.035$, pr\'acticamente nulo dada la frecuencia natural del empate en el conjunto de prueba ($0.267$), este resultado indica que el modelo en esta ocasi\'on es extremadamente conservador en el caso del empate, sin embargo, los resultados del \textit{dataset Lite Recortado} muestran que el MLP, incluso sin covariables, mejora la calibraci\'on del Glicko-2, pero las covariables ex\'ogenas no a\~naden se\~nal alguna que ayuden a mejorar la detecci\'on de empates en t\'erminos de precisi\'on condicional.
 \end{itemize}
 
 \subsection{El colapso de la clase empate y su recuperaci\'on parcial}
 \label{subsec:res_colapso_empate}
 
-Un fen\'omeno estructural recurrente en la predicci\'on de resultados trinomiales es el colapso de la clase empate bajo la regla de decisi\'on dura $\arg\max$, como se anticip\'o te\'oricamente en la Secci\'on~\ref{subsec:empate} del Marco Te\'orico. La Tabla~\ref{tab:stage2_f1d} detalla el $F1$-score de la clase $D$ para cada corrida.
+Un fen\'omeno estructural recurrente en la predicci\'on de resultados trinomiales es el colapso de la clase empate bajo la regla de decisi\'on dura $\arg\max$, como se anticip\'o te\'oricamente en la Secci\'on~\ref{subsec:empate} del Cap\'itulo~\ref{ch:marco}. La Tabla~\ref{tab:stage2_f1d} detalla el $F1$-score de la clase $D$ para cada corrida.
 
 \begin{table}[htbp]
 	\centering
@@ -237,27 +290,29 @@ Un fen\'omeno estructural recurrente en la predicci\'on de resultados trinomiale
 		& \multicolumn{2}{c|}{\textbf{Full}} & \multicolumn{2}{c|}{\textbf{Lite}} & \multicolumn{2}{c}{\textbf{Lite Recortado}} \\
 		\textbf{Run} & Base & Completo & Base & Completo & Base & Completo \\
 		\midrule
-		1 & 0{.}000 & 0{.}003 & 0{.}000 & 0{.}012 & 0{.}000 & 0{.}000 \\
-		2 & 0{.}000 & 0{.}008 & 0{.}000 & 0{.}014 & 0{.}000 & 0{.}004 \\
-		3 & 0{.}000 & 0{.}013 & 0{.}000 & 0{.}012 & 0{.}000 & 0{.}001 \\
-		4 & 0{.}000 & 0{.}012 & 0{.}000 & 0{.}008 & 0{.}000 & 0{.}000 \\
-		5 & 0{.}000 & 0{.}010 & 0{.}000 & 0{.}012 & 0{.}000 & 0{.}000 \\
-		6 & 0{.}000 & 0{.}006 & 0{.}000 & 0{.}011 & 0{.}000 & 0{.}000 \\
-		7 & 0{.}000 & 0{.}017 & 0{.}000 & 0{.}006 & 0{.}000 & 0{.}000 \\
-		8 & 0{.}000 & 0{.}001 & 0{.}000 & 0{.}010 & 0{.}000 & 0{.}000 \\
-		9 & 0{.}000 & 0{.}002 & 0{.}000 & 0{.}006 & 0{.}000 & 0{.}000 \\
-		10 & 0{.}000 & 0{.}010 & 0{.}000 & 0{.}008 & 0{.}000 & 0{.}001 \\
+		1 & 0.000 & 0.000 & 0.000 & 0.005 & 0.000 & 0.000 \\
+		2 & 0.000 & 0.003 & 0.000 & 0.005 & 0.000 & 0.001 \\
+		3 & 0.000 & 0.007 & 0.000 & 0.007 & 0.000 & 0.000 \\
+		4 & 0.000 & 0.003 & 0.000 & 0.004 & 0.000 & 0.000 \\
+		5 & 0.000 & 0.003 & 0.000 & 0.008 & 0.000 & 0.000 \\
+		6 & 0.000 & 0.001 & 0.000 & 0.006 & 0.000 & 0.002 \\
+		7 & 0.000 & 0.007 & 0.000 & 0.008 & 0.000 & 0.000 \\
+		8 & 0.000 & 0.000 & 0.000 & 0.007 & 0.000 & 0.000 \\
+		9 & 0.000 & 0.006 & 0.000 & 0.007 & 0.000 & 0.000 \\
+		10 & 0.000 & 0.005 & 0.000 & 0.008 & 0.000 & 0.000 \\
 		\midrule
-		\textbf{Media} & 0{.}000 & 0{.}008 & 0{.}000 & 0{.}010 & 0{.}000 & 0{.}001 \\
+		\textbf{Media} & 0.000 & 0.0033 & 0.000 & 0.0063 & 0.000 & 0.0003 \\
 		\bottomrule
 	\end{tabular}
 \end{table}
 
 El modelo base (MLP sobre probabilidades Glicko-2 \'unicamente) exhibe $F1_D \equiv 0$ en todas las corridas y todos los datasets: bajo la regla $\arg\max$, el sistema nunca predice la clase empate como m\'as probable. Este colapso total no es una anomal\'ia de implementaci\'on, sino una propiedad geom\'etrica del simplex de probabilidades derivada del modelo de conteo, como se demostr\'o en la Proposici\'on~\ref{prop:limites} y la Secci\'on~\ref{subsec:empate}.
 
-El modelo completo recupera parcialmente la clase empate en Full ($F1_D = 0{.}0081$) y de manera m\'as pronunciada en Lite ($F1_D = 0{.}0100$). El test $t$ pareado sobre $F1_D$ resulta significativo para Full ($p = 0{.}0007$) y Lite ($p < 0{.}0001$), aunque no para Lite Recortado ($p = 0{.}1677$). Esta recuperaci\'on, aunque modesta en t\'erminos absolutos, constituye evidencia emp\'irica de que las covariables ex\'ogenas contienen se\~nal que expande la regi\'on del simplex donde $P_D > \max\{P_H, P_A\}$, modulando la distribuci\'on de probabilidades m\'as all\'a de la fuerza latente hist\'orica capturada por el rating.
+El modelo completo recupera parcialmente la clase empate en Full ($F1_D = 0{.}0033$) y de manera m\'as pronunciada en Lite ($F1_D = 0{.}0063$). El test $t$ pareado sobre $F1_D$ resulta significativo para Full ($p = 0{.}0025$) y Lite ($p < 0{.}0001$), aunque no para Lite Recortado ($p = 0{.}1933$). Esta recuperaci\'on, aunque modesta en t\'erminos absolutos, constituye evidencia emp\'irica de que las covariables ex\'ogenas contienen se\~nal que expande la regi\'on del simplex donde $P_D > \max\{P_H, P_A\}$, modulando la distribuci\'on de probabilidades m\'as all\'a de la fuerza latente hist\'orica capturada por el rating.
 
 Es importante destacar que la recuperaci\'on de $F1_D$ ocurre simult\'aneamente con un empeoramiento de la log-loss categ\'orica en Full y Lite Recortado. Esta tensi\'on entre calibraci\'on probabil\'istica global y clasificaci\'on dura por clase ilustra la distinci\'on fundamental entre ambos objetivos: la log-loss, al ser una \emph{strictly proper scoring rule} (Proposici\'on~\ref{prop:proper}), penaliza cualquier desviaci\'on de la probabilidad verdadera en todo el simplex, mientras que $F1_D$ solo mide el desempe\~no sobre la frontera de decisi\'on dura. Un modelo que asigne $P_D = 0{.}30$ a un partido que termina en empate contribuye positivamente a la p\'erdida logar\'itmica (log-loss), es decir, menor penalizaci\'on aun cuando $\arg\max$ seleccione $H$ o $A$ si alguna de esas clases supera 0{.}30.
+
+Un hallazgo complementario a la recuperaci\'on del \(F1_D\) es el comportamiento de la precisi\'on condicional de la clase empate (\(Prec_D\)). En el \textit{dataset Lite}, la precisi\'on del empate pasa de $0$ en la versi\'on sin covariables ex\'ogenas a $0.278$ en la versi\'on con covariables ex\'ogenas. Dado que la frecuencia natural del empate en el conjunto de prueba es $0.267$, este resultado indica que, cuando el MLP predice un empate, lo hace con una precisi\'on acorde a la frecuencia real del evento, e incluso ligeramente superior. En el \textit{dataset Full}, la precisi\'on alcanza $0.162$, mientras que en el \textit{dataset Lite Recortado} apenas llega a $0.035$. Dado que las frecuencias naturales del empate es $0.267$, en el \textit{dataset Full} la precisi\'on est\'a por debajo de la frecuencia natural, mientras que en el \textit{dataset Lite Recortado} es pr\'acticamente nula. Esto sugiere que las covariables ex\'ogenas permiten al modelo identificar partidos con alta propensi\'on al empate principalmente en el \textit{dataset Lite}, mientras que en el \textit{dataset Full} y el \textit{dataset Lite Recortado} el efecto es mucho m\'as limitado.
 
 \subsection{Inferencia estad\'istica: test $t$ pareado}
 \label{subsec:res_test_t}
@@ -290,7 +345,7 @@ La \'unica configuraci\'on en la que el modelo completo mejora de manera un\'ivo
 \section{Discusi\'on integrada}
 \label{sec:res_discusion}
 
-En esta secci\'pm se analiza el comportamiento del sistema predictivo en cascada a partir de los experimentos evaluados en el \textit{Stage 2}. El objetivo principal es determinar el aporte de cada componente funcional y contrastar el impacto real de la integraci\'on de las covariables ex\'ogenas frente a los \'indices compuestos de autor\'ia. A lo largo del desarrollo se examina la jerarqu\'ia del aporte predictivo entre las configuraciones \textit{Lite}, \textit{Full} y \textit{Lite Recortado}, evaluando como la disponibilidad y granularidad de la informaci\'on condicionan la calibraci\'on de las probabilidades. Asimismo, se presentan brevemente las limitaciones del modelo para finalizar con una s\'intesis de los hallazgos que fundamentan las conclusiones finales de la investigaci\'on.
+En esta secci\'on se analiza el comportamiento del sistema predictivo en cascada a partir de los experimentos evaluados en el \textit{Stage 2}. El objetivo principal es determinar el aporte de cada componente funcional y contrastar el impacto real de la integraci\'on de las covariables ex\'ogenas frente a los \'indices compuestos de autor\'ia. A lo largo del desarrollo se examina la jerarqu\'ia del aporte predictivo entre las configuraciones \textit{Lite}, \textit{Full} y \textit{Lite Recortado}, evaluando como la disponibilidad y granularidad de la informaci\'on condicionan la calibraci\'on de las probabilidades. Asimismo, se presentan brevemente las limitaciones del modelo para finalizar con una s\'intesis de los hallazgos que fundamentan las conclusiones finales de la investigaci\'on.
 
 \subsection{Jerarqu\'ia de aporte predictivo por bloque}
 \label{subsec:res_jerarquia}
@@ -305,27 +360,27 @@ Los resultados permiten establecer una jerarqu\'ia clara del aporte predictivo d
 		\toprule
 		\textbf{Bloque} & \textbf{LL Cat.} & \textbf{LL Bin.} & \textbf{Accuracy} \\
 		\midrule
-		Skellam/LGBM (draw only) & 0{.}5721 & -- & -- \\
-		Glicko-2 modificado (aislado) & 1{.}0443 & 0{.}6527 & -- \\
-		MLP base (prob. Glicko-2 solas) & 1{.}0279 & 0{.}6480 & 0{.}486 \\
-		MLP completo (prob. + ex\'ogenas) & 1{.}0289 & 0{.}6476 & 0{.}486 \\
+		Skellam/LGBM (draw only) & 0.5718 & -- & -- \\
+		Glicko-2 modificado (aislado) & 1.0424 & 0.6499 & -- \\
+		MLP base (prob. Glicko-2 solas) & 1.0247 & 0.6449 & 0.486 \\
+		MLP completo (prob. + ex\'ogenas) & 1.0261 & 0.6445 & 0.486 \\
 		\bottomrule
 	\end{tabular}
 \end{table}
 
-El salto m\'as pronunciado ocurre entre el Glicko-2 aislado y el MLP base: la reducci\'on de 1{.}0443 a 1{.}0279 en log-loss categ\'orica ($\Delta = -0{.}0164$, $-1{.}57\%$ relativo) atestigua que el perceptr\'on multicapa, incluso sin covariables ex\'ogenas, corrige desviaciones sistem\'aticas del sistema de rating puro. Este efecto se debe probablemente a que la red aprende a ajustar las probabilidades base cuando la diferencia de ratings no captura completamente la asimetr\'ia estructural del enfrentamiento.
+El salto m\'as pronunciado ocurre entre el Glicko-2 aislado y el MLP base: la reducci\'on de $1{.}0424$ a $1{.}0247$ en la p\'erdida logar\'itmica (log-loss) categ\'orica ($\Delta = -0{.}0177$, $-1{.}70\%$ relativo) atestigua que el perceptr\'on multicapa, incluso sin covariables ex\'ogenas, corrige desviaciones sistem\'aticas del sistema de rating puro. Este efecto se debe probablemente a que la red aprende a ajustar las probabilidades base cuando la diferencia de ratings no captura completamente la asimetr\'ia estructural del enfrentamiento.
 
-El aporte incremental de las covariables ex\'ogenas es m\'as modesto y depende cr\'iticamente de la composici\'on del vector de caracter\'isticas: en Lite, sin \'indices deportivos de autor\'ia, las covariables econ\'omicas y ambientales producen mejoras significativas; en Full , con los \'indices deportivos de autor\'ia \texttt{xG\_teo}, \texttt{xA\_teo}, y \texttt{DDI}, el refinamiento adicional es marginal o incluso negativo en log-loss categ\'orica, aunque positivo en la recuperaci\'on de la clase empate.
+El aporte incremental de las covariables ex\'ogenas es m\'as modesto y depende cr\'iticamente de la composici\'on del vector de caracter\'isticas: en el \textit{dataset Lite}, sin \'indices deportivos de autor\'ia, las covariables econ\'omicas y ambientales producen mejoras significativas; en el \textit{dataset Full} , con los \'indices deportivos de autor\'ia \texttt{xG\_teo}, \texttt{xA\_teo}, y \texttt{DDI}, el refinamiento adicional es marginal o incluso negativo en la p\'erdida logar\'itmica (log-loss) categ\'orica, aunque positivo en la recuperaci\'on de la clase empate.
 
 \subsection{El rol de las m\'etricas deportivas avanzadas}
 \label{subsec:res_rol_metricas}
 
-La comparaci\'on entre Full y Lite Recortado, que tienen id\'entica ventana temporal, misma arquitectura, con la \'unica diferencia en la inclusi\'on de \'indices compuestos de autor\'ia, constituye el experimento natural m\'as limpio del trabajo. Los resultados del \textit{Stage 2} muestran que:
+La comparaci\'on entre el \textit{dataset Full} y el \textit{dataset Lite Recortado}, que tienen id\'entica ventana temporal, misma arquitectura, con la \'unica diferencia en la inclusi\'on de \'indices compuestos de autor\'ia, constituye el experimento natural m\'as limpio del trabajo. Los resultados del \textit{Stage 2} muestran que:
 
 \begin{itemize}
 	\item En el Glicko-2 aislado, ambos datasets son indistinguibles (log-loss 1{.}0443), dado que el rating din\'amico no utiliza las covariables ex\'ogenas.
-	\item En el MLP completo, Full mantiene una log-loss categ\'orica de 1{.}0289 mientras que Lite Recortado se deteriora a 1{.}0293. Aunque la diferencia es peque\~na, el patr\'on es consistente: los \'indices compuestos de autor\'ia (\texttt{xG\_teo}, \texttt{xA\_teo}, \texttt{DDI}) aportan una se\~nal t\'actica que estabiliza el refinamiento neuronal, evitando que el modelo sobreajuste al ruido de las covariables econ\'omicas o ambientales.
-	\item El $F1_D$ en Full (0{.}0081) supera ampliamente el de Lite Recortado (0{.}0006), confirmando que los \'indices compuestos son especialmente \'utiles para modular la probabilidad de empate en enfrentamientos equilibrados.
+	\item En el MLP completo, el \textit{dataset Full} mantiene una log-loss categ\'orica de 1{.}0261 mientras que el \textit{dataset Lite Recortado} se deteriora a 1{.}0273. Aunque la diferencia es peque\~na, el patr\'on es consistente: los \'indices compuestos de autor\'ia (\texttt{xG\_teo}, \texttt{xA\_teo}, \texttt{DDI}) aportan una se\~nal t\'actica que estabiliza el refinamiento neuronal, evitando que el modelo sobreajuste al ruido de las covariables econ\'omicas o ambientales.
+	\item El $F1_D$ en el \textit{dataset Full} (0{.}0033) supera ampliamente el de el \textit{dataset Lite Recortado} (0{.}0003), confirmando que los \'indices compuestos son especialmente \'utiles para modular la probabilidad de empate en enfrentamientos equilibrados.
 \end{itemize}
 
 Este hallazgo responde parcialmente a la pregunta de investigaci\'on planteada en el Cap\'itulo~\ref{ch:marco}: la integraci\'on de informaci\'on deportiva, econ\'omica y ambiental mejora la predicci\'on cuando los tres bloques operan en conjunto, pero el aporte relativo de cada dominio depende de la disponibilidad de m\'etricas de alta granularidad. Las covariables econ\'omicas y ambientales act\'uan como complemento, no como sustituto, de las m\'etricas deportivas avanzadas.
@@ -339,7 +394,7 @@ Los resultados exhiben tres limitaciones estructurales que condicionan la interp
 
 \paragraph{Sensibilidad del MLP a la composici\'on de features.} La inclusi\'on de covariables ex\'ogenas en Full no produce mejoras netas en la p\'erdida logar\'itmica (log-loss) categ\'orica, lo que sugiere que la arquitectura de refinamiento actual, dos capas ocultas de $64$ neuronas con dropout $0{.}3$, puede no ser suficientemente expresiva para modelar las interacciones no lineales entre las m\'etricas deportivas y las variables ex\'ogenas sin incurrir en sobreajuste. Experimentos con arquitecturas m\'as profundas o mecanismos de atenci\'on podr\'ian explorarse en trabajos futuros.
 
-\paragraph{Generalizaci\'on geogr\'afica.} La ventaja de local\'ia calibrada var\'ia entre $14{.}8$ puntos, en la J1 League de Jap\'on y $52{.}2$ puntos en la CONCACAF Champions League, lo que indica qu\'e el modelo aprende patrones regionales espec\'ificos. No obstante, el panel excluye ligas africanas y oce\'anicas, por lo que la validez externa del sistema hacia esas regiones permanece sin verificar.
+\paragraph{Generalizaci\'on geogr\'afica.} La ventaja de local\'ia calibrada var\'ia entre $18{.}5$ puntos, en la J1 League de Jap\'on y $52{.}2$ puntos en la CONCACAF Champions League, lo que indica qu\'e el modelo aprende patrones regionales espec\'ificos. No obstante, el panel excluye ligas africanas y oce\'anicas, por lo que la validez externa del sistema hacia esas regiones permanece sin verificar.
 
 \subsection{Recapitulaci\'on de hallazgos}
 \label{subsec:res_sintesis}
@@ -347,8 +402,8 @@ Los resultados exhiben tres limitaciones estructurales que condicionan la interp
 En t\'erminos generales, el sistema predictivo en cascada propuesto en este trabajo logra:
 \begin{enumerate}
 	\item Una calibraci\'on adecuada de las tasas de goles mediante LightGBM-Poisson, con MAE $\approx 0{.}83$--$0{.}94$, y de la probabilidad de empate mediante la distribuci\'on de Skellam, con sesgo $< 1$ punto porcentual.
-	\item Una l\'inea base inferencial s\'olida con el Glicko-2 modificado el cual posee una p\'erdida logar\'itmica (log-loss) categ\'orica $\approx 1{.}044$), que cuantifica la fuerza latente de $21 \text{ a } 23$ competiciones con ventajas de local\'ia espec\'ificas por liga.
-	\item Una mejora neta del $1{.}57\%$ en p\'erdida logar\'itmica (log-loss) categ\'orica atribuible al refinador MLP, con recuperaci\'on parcial pero significativa de la clase empate cuando se integran covariables ex\'ogenas.
+	\item Una l\'inea base inferencial s\'olida con el Glicko-2 modificado el cual posee una p\'erdida logar\'itmica (log-loss) categ\'orica $\approx 1{.}042$), que cuantifica la fuerza latente de $21 \text{ a } 23$ competiciones con ventajas de local\'ia espec\'ificas por liga.
+	\item Una mejora neta del $1{.}70\%$ en p\'erdida logar\'itmica (log-loss) categ\'orica atribuible al refinador MLP, con recuperaci\'on parcial pero significativa de la clase empate cuando se integran covariables ex\'ogenas.
 	\item Evidencia emp\'irica de que las \'indices compuestos de autor\'ia (xG\_teo, xA\_teo, DDI) constituyen el pilar predictivo central, mientras que las covariables econ\'omicas y ambientales aportan valor complementario condicionado a la ausencia de se\~nal t\'actica detallada.
 \end{enumerate}
 
