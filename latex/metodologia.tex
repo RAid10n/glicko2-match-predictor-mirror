@@ -18,7 +18,7 @@ El presente estudio integra informaci\'on proveniente de cinco fuentes principal
 \subsection{Datos deportivos: FBRef}
 \label{subsec:fbref}
 
-La principal fuente de datos de rendimiento fue el sitio FBRef.com \cite{FBRef}, especializado en estad\'isticas hist\'oricas de f\'utbol. Se recopilaron datos correspondientes al per\'iodo 1 de enero de 2017 al 31 de diciembre de 2025, abarcando un total de  veintitr\'es competiciones distribuidas en cuatro zonas geogr\'aficas, llamadas tambi\'en confederaciones continentales, en conjunto con un torneo global:
+La fuente de datos de rendimiento fue el sitio FBRef.com \cite{FBRef}, especializado en estad\'isticas hist\'oricas de f\'utbol. Se recopilaron datos correspondientes al per\'iodo 1 de enero de 2017 al 31 de diciembre de 2025, abarcando un total de  veintitr\'es competiciones distribuidas en cuatro zonas geogr\'aficas, llamadas tambi\'en confederaciones continentales, en conjunto con un torneo global:
 
 \begin{itemize}
 	\item \textbf{Europa:} Premier League (Inglaterra), LaLiga (Espa\~na), Bundesliga (Alemania), Serie A (Italia), Ligue 1 (Francia), Super League (Grecia), UEFA Champions League, UEFA Europa League, UEFA Conference League.
@@ -28,7 +28,7 @@ La principal fuente de datos de rendimiento fue el sitio FBRef.com \cite{FBRef},
 	\item \textbf{Intercontinental:} FIFA Club World Cup.
 \end{itemize}
 
-La extracci\'on se realiz\'o mediante un sistema de \textit{web scraping} desarrollado en Python (a trav\'es de los scripts \texttt{ScrapperV4a.py}, \texttt{ScrapperV4b.py} y \texttt{ScrapperV4c.py}), dise\~nados para operar de manera resiliente frente a las medidas de protecci\'on anti-automatizaci\'on del sitio. El proceso consta de las siguientes etapas:
+La extracci\'on se realiz\'o mediante un sistema de \textit{web scraping} desarrollado en Python, a trav\'es de los scripts \texttt{ScrapperV4a.py}, \texttt{ScrapperV4b.py} y \texttt{ScrapperV4c.py}, dise\~nados para operar de manera resiliente frente a las medidas de protecci\'on anti-automatizaci\'on del sitio. El proceso consta de las siguientes etapas:
 
 \paragraph{Navegaci\'on por \'indice diario.} Para cada fecha en el rango de estudio, se construye la URL del \'indice diario (\texttt{fbref.com/en/matches/YYYY-MM-DD}) y se realiza una petici\'on HTTP utilizando una sesi\'on configurada con \texttt{curl\_cffi} para impersonar la huella TLS de un navegador Chrome. En caso de indisponibilidad, se recurre a \texttt{cloudscraper} o a \texttt{requests} est\'andar como \textit{fallbacks}.
 
@@ -45,6 +45,9 @@ La extracci\'on se realiz\'o mediante un sistema de \textit{web scraping} desarr
 	\text{match\_id} = \text{MD5}(\text{competici\'on} \mid \text{fecha} \mid \text{local} \mid \text{visitante}).
 	\label{eq:match_id}
 \end{equation}
+
+\paragraph{Variables extra\'idas.}
+Cada archivo descargado para un equipo y partido contiene, adem\'as de los metadatos del encuentro, la informaci\'on desagregada por jugador y una fila consolidada. Los metadatos invariantes extra\'idos son: identificador del partido a trav\'es de \textit{Match ID} y \textit{FBref Match ID}, fecha, competici\'on y nombre del equipo. A nivel de jugador, se capturan el dorsal, la nacionalidad, la posici\'on espec\'ifica en ese partido y la edad expresada en a\~nos y d\'ias. Finalmente, las m\'etricas deportivas de acumulaci\'on que constituyen el insumo central del an\'alisis son: minutos jugados (min), goles (goals), asistencias (assist), penales marcados (goalspen), penales intentados (attpen), tiros totales (shots), tiros a puerta (shtarget), tarjetas amarillas (yellowcard), tarjetas rojas (redcard), faltas cometidas (fouls), faltas recibidas (foulsd), fueras de juego (offside), centros (crosses), entradas ganadas (tacklesw), intercepciones (interceptions), autogoles (owngoal), penales ganados (penkickgen) y penales concedidos (penkickcon).
 
 El resultado de esta etapa es un dataset crudo de partidos con metadatos b\'asicos, que posteriormente se enriquece con las dem\'as fuentes de datos.
 
@@ -161,11 +164,12 @@ Los archivos extra\'idos de FBRef mediante los \textit{scripts} de \textit{scrap
 
 \paragraph{Normalizaci\'on de esquemas.} Dado que la estructura de columnas var\'ia ligeramente entre temporadas debido a la aparici\'on de nuevas m\'etricas o renombramientos, se recolecta el conjunto universal de columnas y se fuerza un esquema homog\'eneo: a cada archivo anual se le a\~naden las columnas faltantes con valores nulos (\texttt{pd.NA}), garantizando la concatenabilidad vertical.
 
-\paragraph{Aplanamiento y agregaci\'on.} Para cada partido identificado por su \texttt{match\_id} (ver Ecuaci\'on~\ref{eq:match_id}), las filas individuales se agrupan por equipo y se suman las m\'etricas num\'ericas. Formalmente, para un partido $m$ y un equipo $t$:
+\paragraph{Aplanamiento y agregaci\'on.} Para cada partido identificado por su \texttt{match\_id} (ver Ecuaci\'on~\ref{eq:match_id}), la agregaci\'on de las m\'etricas num\'ericas por equipo sigue formalmente la definici\'on:
 \begin{equation}
 	\text{team\_stats}(m,t) = \sum_{j \in \text{jugadores}(m,t)} \text{player\_stats}_j.
 \end{equation}
-Los metadatos del partido: fecha, competici\'on, rival, se propagan mediante la primera observaci\'on no nula del grupo. El resultado es un registro \'unico por equipo y por partido, que constituye la unidad de observaci\'on base sobre la cual se ensamblan todas las dem\'as fuentes.
+
+Si bien esta sumatoria representa la definici\'on conceptual de las estad\'isticas agregadas del equipo, la implementaci\'on pr\'actica aprovecha que cada archivo descargado contiene en su \'ultima fila una consolidaci\'on precalculada de dicha suma. Dicha fila se identifica porque los campos de identificaci\'on individual del jugador (dorsal, nacionalidad, posici\'on y edad) aparecen vac\'ios, mientras que las m\'etricas deportivas ya vienen totalizadas. Por tanto, el preprocesamiento no recalcula esta sumatoria sobre las filas de jugadores, sino que extrae directamente esta fila consolidada mediante la lectura de la \'ultima fila, asegurando la consistencia con los totales oficiales reportados por la fuente. Los metadatos del partido: fecha, competici\'on, rival, se propagan mediante la primera observaci\'on no nula del grupo. El resultado es un registro \'unico por equipo y por partido, que constituye la unidad de observaci\'on base sobre la cual se ensamblan todas las dem\'as fuentes.
 
 \paragraph{Generaci\'on de claves sint\'eticas.} Para facilitar la integraci\'en con fuentes auxiliares, se construye una clave derivada \texttt{match\_id\_new} con formato \texttt{YYYYMMDD\_home\_team\_id\_away\_team\_id}, donde la fecha se extrae del campo \texttt{match\_date} y los identificadores de equipo se propagan desde el mapeo de nombres normalizados. Esta clave, junto con las columnas \texttt{home\_team} y \texttt{away\_team}, sirve como ancla para todos los \textit{merges} posteriores.
 
@@ -176,9 +180,9 @@ Un problema cr\'itico al integrar m\'ultiples fuentes es la inconsistencia en la
 
 \paragraph{Mapeo autom\'atico.} A partir de un archivo de revisi\'on (\texttt{team\_name\_review.csv}) se construye un diccionario \texttt{raw\_name} $\rightarrow$ \texttt{normalized} que se aplica masivamente a todas las columnas de equipo en todos los \texttt{DataFrames}.
 
-\paragraph{Overrides manuales.} Para casos no cubiertos por el mapeo autom\'atico (hom\'onimos internacionales, estadios neutrales, errores de codificaci\'on), se mantuvo un diccionario de correcciones manuales con m\'as de cien entradas. Ejemplos representativos incluyen la distinci\'on entre \texttt{Arsenal} (Inglaterra) y \texttt{ArsenalSarandi} (Argentina), la unificaci\'on de variantes de \texttt{Atl\'etico} (\texttt{AtlMadrid}, \texttt{AtlTucuman}, \texttt{AtlSanLuis}), y la correcci\'on de estadios neutrales (\texttt{Khalifa}, \texttt{SoFi}, \texttt{Wroclaw}).
+\paragraph{Overrides manuales.} Para casos no cubiertos por el mapeo autom\'atico, se mantuvo un diccionario de correcciones manuales con m\'as de cien entradas. Ejemplos representativos incluyen la distinci\'on entre \texttt{Arsenal} (Inglaterra) y \texttt{ArsenalSarandi} (Argentina), la unificaci\'on de variantes de \texttt{Atl\'etico} (\texttt{AtlMadrid}, \texttt{AtlTucuman}, \texttt{AtlSanLuis}), y la correcci\'on de estadios neutrales (\texttt{Khalifa}, \texttt{SoFi}, \texttt{Wroclaw}).
 
-\paragraph{Verificaci\'on de cobertura.} Tras la normalizaci\'on, se contrastan los conjuntos de equipos \'unicos presentes en cada fuente (estadios, clima, econom\'ia, partidos). Se reportan los equipos faltantes por fuente y se aplican correcciones adicionales hasta lograr una intersecci\'on completa entre las tablas activas del modelo.
+\paragraph{Verificaci\'on de cobertura.} Tras la normalizaci\'on, se contrastan los conjuntos de equipos \'unicos presentes en cada fuente: estadios, clima, econom\'ia, partidos. Se reportan los equipos faltantes por fuente y se aplican correcciones adicionales hasta lograr una intersecci\'on completa entre las tablas activas del modelo.
 
 \subsection{Integraci\'on de fuentes auxiliares}
 \label{subsec:integracion}
@@ -206,16 +210,16 @@ donde $0{.}2095$ es la fracci\'on molar del ox\'igeno en aire seco. Las variable
 \noindent
 Esta formulaci\'on operativa es coherente con la ley barom\'etrica derivada en la Proposici\'on~\ref{prop:barometrica} del Marco Te\'orico. All\'i se demuestra que la presi\'on atmosf\'erica disminuye exponencialmente con la altitud \(h\). En la pr\'actica, en lugar de asumir una temperatura constante de la atm\'osfera ideal, se utiliza la presi\'on superficial real reportada por Open-Meteo y se descuenta la presi\'on parcial del vapor de agua; el resultado es una estimaci\'on directa de la presi\'on parcial de ox\'igeno seco, que preserva la dependencia altitudinal impl\'icita en los datos meteorol\'ogicos y evita los supuestos simplificadores del modelo barom\'etrico te\'orico.
 
-\paragraph{Datos de estadios.} La tabla maestra de estadios se une por \texttt{home\_team}. Se extraen capacidad, altitud, coordenadas geogr\'aficas y asistencia. La asistencia requiere una l\'ogica condicional seg\'un el calendario de la competici\'on:
+\paragraph{Datos de estadios.} La tabla maestra de estadios se une por \texttt{home\_team}. Se extraen capacidad, altitud, coordenadas geogr\'aficas y asistencia promedio por temporada. La asistencia requiere una l\'ogica condicional seg\'un el calendario de la competici\'on:
 \begin{itemize}
-	\item \textbf{Competiciones de calendario simple} (MLS, Brasileir\~ao, J1 League, etc.): se usa la columna \texttt{Assist\_YY}, donde \texttt{YY} son los dos \'ultimos d\'igitos del a\~no calendario.
-	\item \textbf{Competiciones de temporada} (Premier League, LaLiga, etc.): se usa \texttt{Assist\_YYZZ}, donde \texttt{YYZZ} representa la temporada en formato interanual, por ejemplo, \texttt{1819} para 2018--2019. El a\~no de inicio de la temporada se determina por el mes del partido: si el mes es $>7$, la temporada comienza en el a\~no actual; en caso contrario, en el a\~no anterior.
+	\item \textbf{Competiciones de calendario anual} (MLS, Brasileir\~ao, J1 League, etc.): se considera que la columna \texttt{Assist\_XXYY} corresponde a la temporada donde \texttt{20YY}, donde \texttt{YY} son los dos \'ultimos d\'igitos del a\~no calendario.
+	\item \textbf{Competiciones de calendario interanual} (Premier League, LaLiga, etc.): se usa \texttt{Assist\_YYZZ}, donde \texttt{YYZZ} representa la temporada en formato interanual, por ejemplo, \texttt{1819} para 2018--2019. El a\~no de inicio de la temporada se determina por el mes del partido: si el mes es $>7$, la temporada comienza en el a\~no actual; en caso contrario, en el a\~no anterior.
 \end{itemize}
 Se calcula el ratio de ocupaci\'on del equipo local:
 \begin{equation}
 	\text{home\_OccRat} = \frac{\text{home\_Assist}}{\text{home\_Capacity}}.
 \end{equation}
-Para equipos con datos de asistencia incompletos en a\~nos espec\'ificos, se realizaron inyecciones manuales de valores faltantes a partir de registros hist\'oricos de Transfermarkt y fuentes secundarias.
+Para equipos con datos de asistencia incompletos en a\~nos espec\'ificos, se realizaron inyecciones manuales de valores faltantes a partir de registros hist\'oricos de Transfermarkt.
 
 \paragraph{Datos econ\'omicos micro.} La tabla de Transfermarkt se une por (\texttt{Team}, \texttt{Year}, \texttt{Semester}), donde el semestre se define como
 \[
@@ -234,7 +238,19 @@ y las diferencias respecto al rival: \texttt{diff\_MarketValue}, \texttt{diff\_N
 
 \paragraph{Datos macroecon\'omicos.}
 
-Las variables macroecon\'omicas anuales (PIB, inflaci\'on, IED, poblaci\'on, \'indice de Gini, gasto p\'ublico y deuda soberana), obtenidas de Datosmacro, presentaban valores faltantes derivados de retrasos en la publicaci\'on institucional y de la no disponibilidad de series completas para todos los pa\'ises del panel. Para preservar la estructura temporal del dataset sin recurrir a imputaciones ingenuas, se dise\~n\'o un protocolo diferenciado por patr\'on de ausencia: 
+Las variables macroecon\'omicas anuales abarcadas en este estudio son:
+
+\begin{itemize}
+	\item Producto Interno Bruto (PIB).
+	\item Inflaci\'on anual.
+	\item Indice de inversi\'on extranjera (IED).
+	\item Poblaci\'on.
+	\item \'Indice de Gini.
+	\item Gasto P\'ublico.
+	\item Deuda soberana.
+\end{itemize}
+
+Estas fueron obtenidas de Datosmacro \cite{Datosmacro}, las mismas presentaban valores faltantes derivados de retrasos en la publicaci\'on institucional y de la no disponibilidad de series completas para todos los pa\'ises del panel. Para preservar la estructura temporal del dataset sin recurrir a imputaciones ingenuas, se dise\~n\'o un protocolo diferenciado por patr\'on de ausencia: 
 
 \begin{enumerate}
 	\item Interpolaci\'on mediante splines c\'ubicos para \emph{gaps} intra-serie de un a\~no.
@@ -242,7 +258,7 @@ Las variables macroecon\'omicas anuales (PIB, inflaci\'on, IED, poblaci\'on, \'i
 	\item Imputaci\'on m\'ultiple por ecuaciones encadenadas (MICE), empleando como predictores el PIB, la IED y la poblaci\'on, para paneles con m\'ultiples variables faltantes simult\'aneamente.
 \end{enumerate}
 
-El procedimiento se implement\'o en Python (\texttt{statsmodels}, \texttt{pmdarima}, \texttt{sklearn.impute.IterativeImputer}) y se valid\'o comparando las trayectorias ARIMA versus \emph{autoARIMA} por pa\'is y variable. No obstante, como se detalla en la Secci\'on~\ref{sec:seleccion_covariables}, estas variables fueron excluidas del modelo final por baja se\~nal predictiva, por lo que su imputaci\'on se reporta \'unicamente por completitud metodol\'ogica y reproducibilidad del dataset maestro.
+El procedimiento se implement\'o en Python utilizando \texttt{statsmodels}, \texttt{pmdarima}, \\ \texttt{sklearn.impute.IterativeImputer} y se valid\'o comparando las trayectorias ARIMA versus \emph{autoARIMA} por pa\'is y variable. No obstante, como se detalla en la Secci\'on~\ref{sec:seleccion_covariables}, estas variables fueron excluidas del modelo final por baja se\~nal predictiva, por lo que su imputaci\'on se reporta \'unicamente por completitud metodol\'ogica y reproducibilidad del dataset maestro.
 
 \paragraph{Distancia de viaje.} Utilizando las coordenadas geogr\'aficas de los estadios local y visitante, se calcula la distancia geod\'esica en kil\'ometros mediante la f\'ormula de Haversine:
 \begin{equation}
@@ -257,13 +273,15 @@ Sobre las estad\'isticas agregadas por partido se construyen los \'indices compu
 
 \paragraph{\'indices compuestos.} Para cada equipo en cada partido se calculan:
 \begin{align}
-	\text{xG\_teo} &= 0{.}795 \cdot \text{PKatt} + 0{.}358 \cdot\text{SoT}, \label{eq:xg_teo_impl}\\
-	\text{xG\_teo\_np} &= 0{.}358 \cdot \max(0, \text{SoT} - \text{PKatt}),\\
-	\text{TDA} &= \text{TklW} + \text{Int},\\
-	\text{DDI} &= \frac{\text{TDA}}{\text{TDA} + \text{Fls} + 10^{-6}}, \label{eq:ddi_impl}\\
-	\text{xA\_teo} &= 0{.}059 \cdot \text{Crs} + 0{.}0299 \cdot \text{Fld},\\
+	\text{xG\_teo} &= 0{.}795 \cdot \text{attpen} + 0{.}358 \cdot\text{shtarget}, \label{eq:xg_teo_impl}\\
+	\text{xG\_teo\_np} &= 0{.}358 \cdot \max(0, \text{shtarget} - \text{attpen}),\\
+	\text{TDA} &= \text{tacklesw} + \text{interceptions},\\
+	\text{DDI} &= \frac{\text{TDA}}{\text{TDA} + \text{douls} + 10^{-6}}, \label{eq:ddi_impl}\\
+	\text{xA\_teo} &= 0{.}059 \cdot \text{crosses} + 0{.}0299 \cdot \text{foulsd},\\
 	\text{xGA} &= \text{xG\_teo\_np} + \text{xA\_teo}.
 \end{align}
+
+basados en las variables extra\'idas en la secci\'on~\ref{subsec:fbref}
 
 A partir de estos \'indices se derivan m\'etricas diferenciales de valor agregado esperado, como $\text{xOVA} = \text{xGA}_{\text{local}} - \text{xA\_teo}_{\text{visitante}}$, y eficiencias de conversi\'on, como $\text{Eff\_xG} = \text{goals} / (\text{xG\_teo} + 10^{-6})$.
 
@@ -284,12 +302,12 @@ El dataset consolidado se somete a una bater\'ia de filtros que definen las tres
 
 \paragraph{Recorte temporal del dataset Full.} Dado que las m\'etricas deportivas detalladas (\'indices compuestos y \textit{rolling}) no est\'an disponibles para todas las ligas antes de 2019, el dataset Full excluye:
 \begin{itemize}
-	\item Todos los partidos anteriores al a\~no $2019$.
-	\item Para competiciones de calendario interanual: meses $\leq 6$ del a\~no 2019, correspondientes a la temporada 2018--2019 ya en curso, pero con datos incompletos de m\'etricas avanzadas.
-	\item Partidos con fecha posterior a junio de 2025 (corte del per\'iodo de estudio) para las competiciones de calendario interanual.
+	\item Todos los partidos anteriores al a\~no $2019$ para las competencias de calendario anual.
+	\item Los partidos anteriores al segundo semestre del a\~no 2019 para las competiciones de calendario interanual, esto corresponde a la temporada 2019--2020.
+	\item Partidos con fecha posterior a junio de 2025 para las competiciones de calendario interanual.
 \end{itemize}
 
-\paragraph{Exclusi\'on de ligas sin m\'etricas b\'asicas.} Los equipos de la \textit{Persian Gulf Pro League} (Ir\'an) y \textit{Liga FutVe} (Venezuela) se eliminan del Full y del Lite Recortado porque carecen de m\'etricas deportivas b\'asicas (tiros, faltas, etc.) en el per\'iodo analizado. Esto reduce el universo de 23 a 21 competiciones en estos \textit{datasets}.
+\paragraph{Exclusi\'on de ligas sin m\'etricas b\'asicas.} Los equipos de la \textit{Persian Gulf Pro League} de RI Ir\'an y \textit{Liga FutVe} de la Rep\'ublica Bolivariana de Venezuela se eliminan del \textit{dataset} Full y del \textit{dataset} Lite Recortado debido a que carecen de m\'etricas deportivas b\'asicas (tiros, faltas, etc.) en el per\'iodo analizado. Esto reduce el universo de 23 a 21 competiciones en estos \textit{datasets}.
 
 \paragraph{Correcci\'on de identidades duplicadas.} Durante la validaci\'on se detectaron hom\'onimos con \texttt{team\_id} compartidos entre equipos de distintos pa\'ises (por ejemplo, \texttt{Arsenal} de Inglaterra y \texttt{Arsenal} de Sarand\'i, o \texttt{Liverpool} y \texttt{Everton} uruguayos mezclados con los ingleses en registros de Copa Libertadores). Se aplicaron las siguientes correcciones:
 \begin{enumerate}
@@ -311,24 +329,22 @@ A pesar de la integraci\'on sistem\'atica, persisten valores faltantes por arran
 
 \paragraph{Ratio de ocupaci\'on.} Los valores faltantes de \texttt{home\_OccRat} se imputan en dos etapas: primero con el promedio hist\'orico del equipo local; si este no existe, con la mediana global de la muestra de entrenamiento.
 
-\paragraph{Promedios m\'oviles.} Las columnas \texttt{*\_r5} faltantes (tipicamente al inicio de la trayectoria de un equipo o tras un reinicio por inactividad) se rellenan con la media de la columna calculada sobre el conjunto de entrenamiento, preservando la distribuci\'on marginal.
-
 \paragraph{Distancia de viaje.} Los valores nulos de \texttt{travel\_km} se recalculan mediante Haversine sobre un diccionario de coordenadas limpio; los residuos sin coordenadas se imputan con la mediana global.
 
-\paragraph{Estandarizaci\'on.} Las covariables ex\'ogenas que alimentar\'an el perceptr\'on multicapa (Secci\'on~\ref{sec:mlp}) poseen escalas heterog\'eneas (millones de euros, grados Celsius, kil\'ometros, proporciones). Se aplica un \texttt{StandardScaler} (media cero, varianza unitaria) ajustado \emph{exclusivamente} sobre el conjunto de entrenamiento. El escalador se persiste en disco (\texttt{scaler\_features.pkl}) para garantizar la reproducibilidad en inferencia.
+\paragraph{Estandarizaci\'on.} Las covariables ex\'ogenas que alimentar\'an el perceptr\'on multicapa (Secci\'on~\ref{sec:mlp}) poseen escalas heterog\'eneas (millones de euros, grados Celsius, kil\'ometros, proporciones). Se aplica un \texttt{StandardScaler} (media cero, varianza unitaria) ajustado \emph{exclusivamente} sobre el conjunto de entrenamiento. El escalador se guarda en disco (\texttt{scaler\_features.pkl}) para garantizar la reproducibilidad en inferencia.
 
 \subsection{Generaci\'on de los conjuntos de datos finales}
 \label{subsec:datasets_finales}
 
-Al t\'ermino del pipeline se exportan tres archivos CSV que constituyen la base emp\'irica del trabajo:
+Al t\'ermino del pipeline se exportan dos archivos CSV que constituyen la base emp\'irica del trabajo:
 
 \begin{itemize}
 	\item \textbf{Dataset Lite} (\texttt{matches\_final\_model\_clean2.csv}): contiene todos los datos con todas las covariables exogenas preseleccionadas: metadatos, goles, \texttt{diff\_MarketValue}, \texttt{travel\_km}, \texttt{diff\_NetSpending}, \texttt{diff\_temperature\_2m}, \texttt{diff\_PiO2}, \texttt{home\_Assist}, \texttt{diff\_Foreign}, \texttt{home\_OccRat}, y las ventanas de goles condicionadas.
 	
 	\item \textbf{Dataset Full} (\texttt{matches\_definitive\_model\_full2.csv}): recorte del Lite a la ventana 2019--2025 con las 21 competiciones v\'alidas. Incluye las mismas variables de conteo y las covariables ex\'ogenas del Dataset anterior, y se le agregan: \texttt{diff\_xG\_teo\_r5}, \texttt{diff\_xA\_teo\_r5}, \texttt{diff\_DDI\_r5}.
-	
-	\item \textbf{Dataset Lite Recortado}: misma ventana temporal y competiciones que el Full, pero excluyendo expl\'icitamente las m\'etricas deportivas \textit{rolling} de autor\'ia (\texttt{diff\_xG\_teo\_r5}, \texttt{diff\_xA\_teo\_r5}, \texttt{diff\_DDI\_r5}). Esto permite una comparaci\'on controlada del aporte predictivo de las m\'etricas deportivas detalladas.
 \end{itemize}
+
+Por otra parte el \textbf{Dataset Lite Recortado} no se genera como un archivo CSV, pues se genera como un recorte del \textit{dataset} Lite justo antes del entrenamiento, este contiene la misma ventana temporal y competiciones que el \textit{dataset} Full, pero excluyendo expl\'icitamente las m\'etricas deportivas \textit{rolling} de autor\'ia (\texttt{diff\_xG\_teo\_r5}, \texttt{diff\_xA\_teo\_r5}, \texttt{diff\_DDI\_r5}). Esto permite una comparaci\'on controlada del aporte predictivo de las m\'etricas deportivas detalladas.
 
 Todos los datasets mantienen la estructura fila-partido con las columnas de metadatos (\texttt{match\_id\_new}, \texttt{match\_date}, \texttt{Competition}, identificadores de equipos, nombres normalizados) y las columnas de resultado (\texttt{home\_goals}, \texttt{away\_goals}), listos para alimentar la fase de selecci\'on de covariables descrita en la Secci\'on~\ref{sec:seleccion_covariables}.
 
@@ -344,11 +360,24 @@ El dataset consolidado descrito en la Secci\'on~\ref{sec:procesamiento} genera u
 \subsection{Primer Random Forest: diagn\'ostico sobre el universo completo}
 \label{subsec:primera_pasada}
 
-Se entren\'o un clasificador \texttt{RandomForestClassifier} ($n_{\text{estimators}}=200$, $\text{max\_depth}=15$, \texttt{random\_state}=42) sobre el conjunto de 192 variables derivadas, utilizando la codificaci\'on trinomial del resultado $\{H,D,A\}$ como variable objetivo. La partici\'on entrenamiento/prueba respet\'o la estructura temporal: entrenamiento en partidos hasta la temporada 2022--23 y evaluaci\'on en 2023--25.
+Se entren\'o un clasificador \texttt{RandomForestClassifier} ($n_{\text{estimators}}=200$, $\text{max\_depth}=15$, \texttt{random\_state}=42) sobre el conjunto de 192 variables derivadas, utilizando la codificaci\'on trinomial del resultado $\{H,D,A\}$ como variable objetivo. La partici\'on entrenamiento/prueba respet\'o la estructura temporal usando el split $70\/30$.
 
-El modelo alcanz\'o una accuracy de $0{.}9112$ sobre el conjunto de prueba, con un \emph{F1-score} ponderado de $0{.}91$. No obstante, el an\'alisis de las importancias de Gini revel\'o una concentraci\'on extrema: las dos variables dominantes fueron \texttt{home\_Goals} e \texttt{away\_Goals} (importancias relativas $0{.}188$ y $0{.}162$, respectivamente), seguidas a gran distancia por los \'indices compuestos de goles esperados. Esta distribuci\'on evidencia \emph{data leakage}: los goles finales del partido no son conocidos en el momento de la predicci\'on, por lo que su inclusi\'on genera una estimaci\'on irrealista del poder predictivo. Asimismo, las variables macroecon\'omicas (PIB, inflaci\'on, Gini, gasto p\'ublico, deuda e IED) ocuparon posiciones marginales en el ranking de importancia, con valores inferiores a $0{.}012$ en todos los casos, confirmando su escasa se\~nal predictiva en la escala del resultado individual.
+El modelo alcanz\'o una accuracy de $0{.}9112$ sobre el conjunto de prueba, con un \emph{F1-score} ponderado de $0{.}91$. No obstante, el an\'alisis de las importancias de Gini revel\'o una concentraci\'on extrema: las dos variables dominantes fueron \texttt{home\_Goals} e \texttt{away\_Goals}, importancias relativas $0{.}188$ y $0{.}162$, respectivamente, seguidas a gran distancia por los \'indices compuestos de goles esperados. Esta distribuci\'on evidencia \emph{data leakage}: los goles finales del partido no son conocidos en el momento de la predicci\'on, por lo que su inclusi\'on genera una estimaci\'on irrealista del poder predictivo. Asimismo, las variables macroecon\'omicas (PIB, inflaci\'on, Gini, gasto p\'ublico, deuda e IED) ocuparon posiciones marginales en el ranking de importancia, con valores inferiores a $0{.}012$ en todos los casos, confirmando su escasa se\~nal predictiva en la escala del resultado individual. Esto queda en evidencia en la figura~\ref{fig:PrimerRandomForest}
 
-En consecuencia, se decidi\'o: (i)~eliminar todas las variables derivadas de los marcadores finales (\texttt{home\_Goals}, \texttt{away\_Goals} y sus promedios m\'oviles asociados); (ii)~descartar el bloque macroecon\'omico del conjunto de caracter\'isticas activas, aunque se mantuvieron en el dataset maestro por reproducibilidad; y (iii)~excluir variables intermedias que presentaran redundancia con \'indices compuestos de autor\'ia o que, en su forma cruda, compartieran la misma fuente de \emph{leakage} que los goles.
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.9\textwidth]{primerforest.png}
+	\caption{Distribuci\'on de la importancia de las caracter\'isticas en el clasificador Random Forest.}
+	\label{fig:PrimerRandomForest}
+\end{figure}
+
+En consecuencia, se decidi\'o lo siguiente
+
+\begin{enumerate}
+	\item Eliminar todas las variables derivadas de los marcadores finales (\texttt{home\_Goals}, \texttt{away\_Goals} y sus promedios m\'oviles asociados).
+	\item Descartar el bloque macroecon\'omico del conjunto de caracter\'isticas activas, aunque se mantuvieron en el dataset maestro por reproducibilidad.
+	\item Excluir variables intermedias que presentaran redundancia con \'indices compuestos de autor\'ia o que, en su forma cruda, compartieran la misma fuente de \emph{leakage} que los goles.
+\end{enumerate}
 
 \subsection{Segundo Random Forest: filtrado y selecci\'on manual}
 \label{subsec:segunda_pasada}

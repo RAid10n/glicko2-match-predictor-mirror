@@ -241,20 +241,20 @@ El baseline no incorpora la probabilidad de empate como par\'ametro interno del 
 	\hat{\lambda}_A = f_{\text{LGBM}}^{(A)}(\mathbf{x}_{\text{rolling}}),
 \end{equation}
 
-a partir de las cuales se deriva la probabilidad de empate mediante la función de masa de la distribución de Skellam evaluada en $k=0$:
+a partir de las cuales se deriva la probabilidad de empate mediante la funci\'on de masa de la distribuci\'on de Skellam evaluada en $k=0$:
 
 \begin{equation}
 	\hat{P}_D^{\text{(Skellam)}} = e^{-(\hat{\lambda}_H + \hat{\lambda}_A)} \, I_0\!\left(2\sqrt{\hat{\lambda}_H \hat{\lambda}_A}\right),
 	\label{eq:skellam_draw_baseline_app}
 \end{equation}
 
-donde $I_0$ es la función de Bessel modificada de primera especie de orden cero. Este valor se anexa al dataset como \texttt{draw\_prob} y se inyecta directamente en el motor Glicko-2 en la escala de probabilidad cruda $(0,1)$, sin transformación logit intermedia.
+donde $I_0$ es la funci\'on de Bessel modificada de primera especie de orden cero (Definida en la secci\'on \ref{subsec:skellam}, ecuaci\'on \ref{eq:bessel_series}). Este valor se anexa al dataset como \texttt{draw\_prob} y se inyecta directamente en el motor Glicko-2 en la escala de probabilidad cruda $(0,1)$, sin transformaci\'on logit intermedia.
 
-\subsection*{Actualización secuencial sin optimización}
+\subsection*{Actualizaci\'on secuencial sin optimizaci\'on}
 
-El motor \textit{naive} itera cronol\'ogicamente partido a partido, manteniendo un diccionario de estados $(R, \phi, \sigma)$ para cada equipo. En cada actualización, el motor:
+El motor \textit{naive} itera cronol\'ogicamente partido a partido, manteniendo un diccionario de estados $(R, \phi, \sigma)$ para cada equipo. En cada actualizaci\'on, el motor:
 \begin{enumerate}
-	\item Convierte los ratings a la escala Glicko-2 mediante las transformaciones canónicas.
+	\item Convierte los ratings a la escala Glicko-2 mediante las transformaciones can\'onicas \cite{Glickman2022}.
 	\item Calcula el factor de atenuaci\'on $g(\phi)$ con la constante est\'andar $g_{\text{const}} = 1.5/\pi^2$.
 	\item Estima la puntuaci\'on esperada $E$ y la varianza $v$ mediante las f\'ormulas del algoritmo original.
 	\item Actualiza la volatilidad mediante el m\'etodo de Illinois \textit{(regula falsi)}.
@@ -267,12 +267,12 @@ No se realiza ning\'un proceso de optimizaci\'on de hiperpar\'ametros: $\tau$, $
 
 El notebook procesa tres versiones de los datos, todas derivadas del mismo pipeline de integración descrito en el Capítulo~\ref{ch:metodologia}:
 \begin{itemize}
-	\item \textbf{Lite} (35\,629 partidos, 2017--2025): sin métricas deportivas compuestas de autoría, con todas las ligas incluidas (23 competiciones).
-	\item \textbf{Full} (25\,079 partidos, 2019--2025): con métricas deportivas avanzadas (xG\_teo, xA\_teo, DDI), 21 competiciones.
-	\item \textbf{Lite Recortado} (25\,079 partidos, 2019--2025): misma ventana temporal que Full pero sin métricas compuestas de autoría.
+	\item \textbf{Lite} (37\,712 partidos, 2017--2025): sin métricas deportivas compuestas de autor\'ia, con todas las ligas incluidas (23 competiciones).
+	\item \textbf{Full} (26\,691 partidos, 2019--2025): con las m\'etricas deportivas compuestas de autor\'ia (xG\_teo, xA\_teo, DDI), 21 competiciones.
+	\item \textbf{Lite Recortado} (26\,691 partidos, 2019--2025): misma ventana temporal que Full pero sin las m\'etricas deportivas compuestas de autoría.
 \end{itemize}
 
-El motor \textit{naive} se ejecuta independientemente sobre cada dataset, partiendo de estados iniciales idénticos y sin transferencia de información entre configuraciones.
+El motor \textit{naive} se ejecuta independientemente sobre cada dataset, partiendo de estados iniciales id\'enticos y sin transferencia de informaci\'on entre configuraciones.
 
 \subsection*{Salidas del baseline}
 
