@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.18.1 (MiKTeX 24.4) (format=lualatex 2026.8.10)  31 AUG 2026 11:58
+This is LuaHBTeX, Version 1.18.1 (MiKTeX 24.4) (format=lualatex 2026.8.10)  31 AUG 2026 15:39
  restricted system commands enabled.
 **main.tex
 (./main.tex
@@ -1269,8 +1269,8 @@ LaTeX Font Info:    Font shape `TU/LatinModernMono(0)/m/n' will be
 
 
 [6]
-Overfull \hbox (1.12245pt too wide) detected at line 250
- \TU/LatinModernRoman(0)/b/n/11.5 
+Overfull \hbox (1.32945pt too wide) detected at line 250
+ \TU/LatinModernRoman(0)/b/n/11.5 
  []
 
 )
@@ -1765,34 +1765,36 @@ s pro-ba-bi-li-da-des ba-se in-te-gran-do co-va-ria-bles exóge-
 [108]
 
 LaTeX Font Warning: Font shape `TU/LatinModernMono(0)/b/n' undefined
-(Font)              using `TU/LatinModernMono(0)/m/n' instead on input line 62.
+(Font)              using `TU/LatinModernMono(0)/m/n' instead on input line 64.
 
 
 LaTeX Font Info:    Font shape `TU/LatinModernMono(0)/b/n' will be
-(Font)              scaled to size 12.0pt on input line 62.
+(Font)              scaled to size 12.0pt on input line 64.
 
 
 [109]
-Overfull \hbox (29.9027pt too wide) in paragraph at lines 126--137
+
+[110]
+Overfull \hbox (29.9027pt too wide) in paragraph at lines 130--141
  [][] 
  []
 
 
 
-[110]
-
 [111]
 
 [112]
+
+[113]
 \bbl@ensure@spanish {Apéndice} B.
 
 
-[113
+[114
 
 ]
 
-[114]
-Overfull \hbox (117.10599pt too wide) in paragraph at lines 281--282
+[115]
+Overfull \hbox (117.10599pt too wide) in paragraph at lines 287--288
 []\TU/LatinModernRoman(0)/m/n/11.5 Un ar-chi-vo CSV con los ra-tings fi-na-les 
 de to-dos los equi-pos: \TU/LatinModernMono(0)/m/n/11.5 ratings_final_\TU/Latin
 ModernMono(0)/m/it/11.5 naive\TU/LatinModernMono(0)/m/n/11.5 _trinomial_{dataset
@@ -1800,7 +1802,7 @@ ModernMono(0)/m/it/11.5 naive\TU/LatinModernMono(0)/m/n/11.5 _trinomial_{dataset
  []
 
 
-Overfull \hbox (135.27989pt too wide) in paragraph at lines 282--283
+Overfull \hbox (135.27989pt too wide) in paragraph at lines 288--289
 []\TU/LatinModernRoman(0)/m/n/11.5 Un ar-chi-vo CSV con el his-to-rial com-ple-t
 o de ac-tua-li-za-cio-nes: \TU/LatinModernMono(0)/m/n/11.5 ratings_history_\TU/
 LatinModernMono(0)/m/it/11.5 naive\TU/LatinModernMono(0)/m/n/11.5 _trinomial_{da
@@ -1809,165 +1811,165 @@ taset}.csv\TU/LatinModernRoman(0)/m/n/11.5 .
 
 
 
-[115]
-
 [116]
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 324.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 324.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 324.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\phi' on input line 324.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 324.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 324.
-
-
 
 [117]
 
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 330.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 330.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 330.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\phi' on input line 330.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 330.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 330.
+
+
+
 [118]
-Underfull \hbox (badness 10000) in paragraph at lines 391--392
+
+[119]
+Underfull \hbox (badness 10000) in paragraph at lines 397--398
 []|\TU/LatinModernRoman(0)/m/n/11.5 Ace-le-ra con-ver-
  []
 
 
-Underfull \hbox (badness 1552) in paragraph at lines 391--392
+Underfull \hbox (badness 1552) in paragraph at lines 397--398
 \TU/LatinModernRoman(0)/m/n/11.5 gen-cia y re-du-ce
  []
 
 
-Underfull \hbox (badness 1888) in paragraph at lines 392--393
+Underfull \hbox (badness 1888) in paragraph at lines 398--399
 \TU/LatinModernRoman(0)/m/n/11.5 fi-cie de pér-di-da
  []
 
 
-Underfull \hbox (badness 2221) in paragraph at lines 392--393
+Underfull \hbox (badness 2221) in paragraph at lines 398--399
 \TU/LatinModernRoman(0)/m/n/11.5 del op-ti-mi-za-dor;
  []
 
 
-Underfull \hbox (badness 1852) in paragraph at lines 392--393
+Underfull \hbox (badness 1852) in paragraph at lines 398--399
 \TU/LatinModernRoman(0)/m/n/11.5 de-ri-va-da em-pí-ri-
  []
 
 
-Underfull \hbox (badness 2521) in paragraph at lines 393--394
+Underfull \hbox (badness 2521) in paragraph at lines 399--400
 []|\TU/LatinModernRoman(0)/m/n/11.5 Ga-ran-ti-za par-ti-
  []
 
 
-Underfull \hbox (badness 7685) in paragraph at lines 393--394
+Underfull \hbox (badness 7685) in paragraph at lines 399--400
 \TU/LatinModernRoman(0)/m/n/11.5 ción con-sis-ten-te
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 393--394
+Underfull \hbox (badness 10000) in paragraph at lines 399--400
 \TU/LatinModernRoman(0)/m/n/11.5 del sim-plex y
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 393--394
+Underfull \hbox (badness 10000) in paragraph at lines 399--400
 \TU/LatinModernRoman(0)/m/n/11.5 ca-li-bra-ción in-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 393--394
+Underfull \hbox (badness 10000) in paragraph at lines 399--400
 \TU/LatinModernRoman(0)/m/n/11.5 de-pen-dien-te del
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 394--394
+Underfull \hbox (badness 10000) in paragraph at lines 400--400
 []|\TU/LatinModernRoman(0)/m/n/11.5 Trans-for-ma-ción de
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 394--395
+Underfull \hbox (badness 10000) in paragraph at lines 400--401
 []|\TU/LatinModernRoman(0)/m/n/11.5 Me-jo-ra es-ta-bi-li-
  []
 
 
-Underfull \hbox (badness 1394) in paragraph at lines 394--395
+Underfull \hbox (badness 1394) in paragraph at lines 400--401
 \TU/LatinModernRoman(0)/m/n/11.5 dad nu-mé-ri-ca y
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 394--395
+Underfull \hbox (badness 10000) in paragraph at lines 400--401
 \TU/LatinModernRoman(0)/m/n/11.5 eli-mi-na res-tric-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 395--395
+Underfull \hbox (badness 10000) in paragraph at lines 401--401
 []|\TU/LatinModernRoman(0)/m/n/11.5 Nin-gu-na (pa-rá-me-tros
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 395--395
+Underfull \hbox (badness 10000) in paragraph at lines 401--401
 []|\TU/LatinModernRoman(0)/m/n/11.5 L-BFGS-B so-bre
  []
 
 
-Underfull \hbox (badness 2426) in paragraph at lines 395--396
+Underfull \hbox (badness 2426) in paragraph at lines 401--402
 []|\TU/LatinModernRoman(0)/m/n/11.5 Per-mi-te adap-ta-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 396--397
+Underfull \hbox (badness 10000) in paragraph at lines 402--403
 []|\TU/LatinModernRoman(0)/m/n/11.5 Cap-tu-ra asi-me-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 396--397
+Underfull \hbox (badness 10000) in paragraph at lines 402--403
 \TU/LatinModernRoman(0)/m/n/11.5 tría es-truc-tu-ral
  []
 
 
-Underfull \hbox (badness 3281) in paragraph at lines 398--399
+Underfull \hbox (badness 3281) in paragraph at lines 404--405
 []|\TU/LatinModernRoman(0)/m/n/11.5 Pre-vie-ne erro-res
  []
 
 
-Underfull \hbox (badness 2253) in paragraph at lines 399--400
+Underfull \hbox (badness 2253) in paragraph at lines 405--406
 \TU/LatinModernRoman(0)/m/n/11.5 ción de ven-ta-ja
  []
 
 
-Overfull \hbox (16.98647pt too wide) in paragraph at lines 387--402
+Overfull \hbox (16.98647pt too wide) in paragraph at lines 393--408
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 149.3642pt on input line 402.
+LaTeX Warning: Float too large for page by 149.3642pt on input line 408.
 
 
-
-[119]
 
 [120]
 
 [121]
 
-[122])
+[122]
 
-[123]
+[123])
 
 [124]
 
-[125
+[125]
+
+[126
 
 
 
@@ -1978,7 +1980,7 @@ Package biblatex Warning: No driver for 'masterthesis'.
 
 
 
-[126]
+[127]
 Overfull \hbox (0.36661pt too wide) in paragraph at lines 82--82
 \TU/LatinModernRoman(0)/m/sc/11.5 gues Ba-sed on Glicko- with Mo-di-fi-ca-tio
 ns''. En: \TU/LatinModernRoman(0)/m/it/11.5 ar-Xiv pre-print ar-Xiv:
@@ -1987,7 +1989,7 @@ ns''. En: \TU/LatinModernRoman(0)/m/it/11.5 ar-Xiv pre-print ar-Xiv:
 
 
 
-[127] (./main.aux (./introduccion.aux) (./antecedentes.aux)
+[128] (./main.aux (./introduccion.aux) (./antecedentes.aux)
 (./marco_teorico.aux) (./metodologia.aux) (./resultados.aux)
 (./conclusiones.aux) (./appendix.aux))
  ***********
@@ -2010,7 +2012,7 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 )
 
 Here is how much of LuaTeX's memory you used:
- 26598 strings out of 475664
+ 26599 strings out of 475664
  125165,1648299 words of node,token memory allocated
  2789 words of node memory still in use:
    7 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 2 sub_mlist, 1 glyph, 711 attribute
@@ -2046,9 +2048,9 @@ e1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/ams
 fonts/cm/cmsy6.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8
 .pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb><C:
 /Program Files/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (134 pages, 1550293 bytes).
+Output written on main.pdf (135 pages, 1555233 bytes).
 
-PDF statistics: 2518 PDF objects out of 2984 (max. 8388607)
- 724 named destinations out of 1000 (max. 131072)
+PDF statistics: 2528 PDF objects out of 2984 (max. 8388607)
+ 725 named destinations out of 1000 (max. 131072)
  1049 words of extra memory for PDF output out of 10000 (max. 100000000)
 

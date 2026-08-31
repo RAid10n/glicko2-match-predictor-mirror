@@ -5,16 +5,16 @@
 \chapter{Componente exploratorio: red neuronal recurrente}
 \label{app:gru}
 
-Este ap\'endice documenta el componente exploratorio basado en redes neuronales recurrentes (GRU) que fue implementado, y posteriormente se desestimado, como rama principal del sistema predictivo. Se presenta el formalismo, la arquitectura de datos secuenciales, la implementación en \texttt{PyTorch}, el protocolo de entrenamiento y los resultados emp\'iricos completos, de modo que el lector pueda reconstruir la l\'inea de trabajo y comprender las razones de su exclusión del \textit{pipeline} en cascada.
+En el Cap\'itulo~\ref{ch:metodologia} se desarroll\'o el \textit{pipeline} principal del sistema predictivo, basado en una arquitectura en cascada que combina el bloque de conteo Skellam/LGBM, un sistema de rating din\'amico Glicko-2 modificado y un perceptr\'on multicapa (MLP) que refina las probabilidades base. Como parte del proceso de exploraci\'on metodol\'ogica, se evalu\'o una arquitectura alternativa basada en redes neuronales recurrentes (GRU)  que modela expl\'icitamente la dependencia temporal en la secuencia de partidos de cada equipo. La motivaci\'on de esta exploraci\'on era emular, desde un enfoque puramente secuencial, la l\'ogica de actualizaci\'on del sistema en cascada: la GRU procesa el historial de partidos para construir una representaci\'on latente del estado del equipo, similar a la que el Glicko-2 proporciona a trav\'es de sus par\'ametros \((R, RD, \sigma)\). Este ap\'endice documenta dicho componente exploratorio , su implementaci\'on, sus resultados emp\'iricos y las razones por las que fue desestimado al no lograr extraer se\~nal predictiva adicional ni superar el desempe\~no del MLP en el \textit{pipeline} principal.
 
 % ------------------------------------------------------------
 % A.1. Formalismo
 % ------------------------------------------------------------
 
-\section{Motivación y formalismo}
+\section{Motivaci\'on y formalismo}
 \label{sec:app_gru_formalismo}
 
-Mientras que el perceptr\'on multicapa (MLP) descrito en el cuerpo del trabajo opera sobre un vector de estado fijo $\mathbf{z}_{ij}\in\mathbb{R}^{n}, n\in\{10,13\}$ que condensa la informaci\'on hist\'orica mediante promedios móviles \textit{rolling} y el estado $(R,RD,\sigma)$ del sistema Glicko-2, una red recurrente modela expl\'icitamente la dependencia temporal en la secuencia de partidos de cada equipo. La hip\'otesis exploratoria es que el orden temporal de los resultados contiene patrones dinámicos, rachas de forma, fatiga acumulada, adaptación táctica, entre otras, que no son capturables por agregaciones est\'aticas.
+Mientras que el perceptr\'on multicapa (MLP) descrito en el cuerpo del trabajo opera sobre un vector de estado fijo $\mathbf{z}_{ij}\in\mathbb{R}^{n}$ con $n=10$ o $n=13$ seg\'un el \textit{dataset} (ver Secci\'on~\ref{subsec:covariables_finales}) que condensa la informaci\'on hist\'orica mediante promedios móviles \textit{rolling} y el estado $(R,RD,\sigma)$ del sistema Glicko-2, una red recurrente modela expl\'icitamente la dependencia temporal en la secuencia de partidos de cada equipo. La hip\'otesis exploratoria es que el orden temporal de los resultados contiene patrones dinámicos, rachas de forma, fatiga acumulada, adaptación táctica, entre otras, que no son capturables por agregaciones est\'aticas.
 
 La arquitectura explorada utiliza unidades recurrentes cerradas (GRU, \emph{Gated Recurrent Unit}) \cite{Charu2018}, una variante de la RNN cl\'asica que aborda la problem\'atica del gradiente desvaneciente mediante compuertas de actualizaci\'on y reinicio. El estado oculto $\mathbf{h}_t\in\mathbb{R}^{h}$ en el paso temporal $t$ se actualiza como
 \begin{align}
@@ -39,12 +39,14 @@ Este vector alimenta una cabeza clasificadora densa compuesta por una capa ocult
 \section{Arquitectura de datos e implementaci\'on}
 \label{sec:app_gru_arquitectura}
 
+En esta secci\'on se describe el pipeline de datos que transforma los registros de partidos en secuencias temporales adecuadas para el entrenamiento de la GRU, as\'i como la implementaci\'on de la red en \texttt{PyTorch}. Se detalla la construcci\'on de las secuencias hist\'oricas, el escalado de variables, la estructura de la clase \texttt{RRNN}, y los par\'ametros de entrenamiento. El objetivo es que el lector pueda reconstruir el flujo de datos desde las tablas crudas hasta el tensor de entrada de la red, y comprender las decisiones de dise\~no que motivaron cada etapa del procesamiento.
+
 \subsection{Construcci\'on de secuencias hist\'oricas}
 \label{subsec:app_gru_secuencias}
 
 Para cada partido se construyen dos secuencias de longitud fija $T$ (\emph{seq\_len}), una por equipo, tomando los $T$ enfrentamientos cronol\'ogicamente anteriores. Cada paso temporal $\mathbf{x}_t$ tiene dimensión $d_{\mathrm{hist}} = d_{\mathrm{base}} + d_{\mathrm{extra}}$, donde:
 \begin{itemize}
-	\item $d_{\mathrm{base}}$ corresponde al conjunto de covariables num\'ericas del dataset, con los metadatos excluidos, más la probabilidad de empate del bloque Skellam (\texttt{draw\_prob}). Estas variables se escalan con un \texttt{StandardScaler} ajustado exclusivamente sobre el conjunto de entrenamiento.
+	\item $d_{\mathrm{base}}$ corresponde al conjunto de covariables num\'ericas del dataset, con los metadatos exclu\'idos, más la probabilidad de empate del bloque Skellam (\texttt{draw\_prob}) (ver Secci\'on~\ref{subsec:conteo}). Estas variables se escalan con un \texttt{StandardScaler} ajustado exclusivamente sobre el conjunto de entrenamiento.
 	\item $d_{\mathrm{extra}} = 4$ son metadatos históricos propios del partido: indicadora de localía (\texttt{is\_home}), goles a favor (\texttt{goals\_for}), goles en contra (\texttt{goals\_against}) y resultado codificado como $+1$ (victoria), $0$ (empate), $-1$ (derrota).
 \end{itemize}
 
@@ -57,7 +59,7 @@ El procesamiento se implementa mediante un \texttt{Dataset} \texttt{PyTorch} que
 \mathbf{c}_{ij}^{(i)}\in\mathbb{R}^{d_{\mathrm{cur}}},\;
 y_i\in\{0,1,2\}\bigr),
 \]
-donde $y_i$ es la etiqueta del resultado: local, empate, o visitante, y $d_{\mathrm{cur}}=d_{\mathrm{base}}$ (se excluyen los metadatos deportivos binarios del partido actual, debido a que ya est\'an codificados en la secuencia histórica.
+donde $y_i$ es la etiqueta del resultado: local, empate, o visitante, y $d_{\mathrm{cur}}=d_{\mathrm{base}}$. Se excluyen los metadatos deportivos binarios del partido actual, debido a que ya est\'an codificados en la secuencia histórica.
 
 \subsection{Clase \texttt{RRNN} en \texttt{PyTorch}}
 \label{subsec:app_gru_clase}
@@ -71,7 +73,7 @@ La clase implementada utiliza una \'unica capa GRU unidireccional con \texttt{ba
 	\item $\hat{\mathbf{y}} \leftarrow \mathrm{Softmax}\bigl(\mathrm{MLP}_{\mathrm{head}}(\mathbf{x})\bigr)$.
 \end{enumerate}
 
-El n\'umero total de par\'ametros entrenables es $\mathcal{O}\bigl(h\,(d_{\mathrm{hist}}+d_{\mathrm{cur}})+h^{2}\bigr)$, donde $h$ es el tama\~no del estado oculto. Para la configuración estándar ($T=8$, $h=64$), la complejidad paramétrica es sustancialmente mayor que la del MLP \textit{feedforward}, que act\'ua con dos capas ocultas de $64$ neuronas, aunque la diferencia exacta depende de la dimensionalidad de entrada $d_{\mathrm{hist}}$ que varía entre datasets.
+El n\'umero total de par\'ametros entrenables es $\mathcal{O}\bigl(h\,(d_{\mathrm{hist}}+d_{\mathrm{cur}})+h^{2}\bigr)$, donde $h$ es el tama\~no del estado oculto. Para la configuración estudiada ($T=8$, $h=64$), la complejidad param\'etrica es sustancialmente mayor que la del MLP \textit{feedforward}, que act\'ua con dos capas ocultas de $64$ neuronas, aunque la diferencia exacta depende de la dimensionalidad de entrada $d_{\mathrm{hist}}$ que var\'ia entre datasets.
 
 % ------------------------------------------------------------
 % A.3. Protocolo de entrenamiento
@@ -80,7 +82,7 @@ El n\'umero total de par\'ametros entrenables es $\mathcal{O}\bigl(h\,(d_{\mathr
 \section{Protocolo de entrenamiento}
 \label{sec:app_gru_entrenamiento}
 
-Se definieron tres configuraciones experimentales según la longitud de secuencia $T$ y la profundidad del entrenamiento, controladas por las banderas \texttt{FAST\_MODE} y \texttt{EXHAUSTIVE\_MODE} del \textit{pipeline}. 
+Se definieron tres configuraciones experimentales seg\'un la longitud de secuencia $T$ y la profundidad del entrenamiento, controladas por las banderas \texttt{FAST\_MODE} y \texttt{EXHAUSTIVE\_MODE} del \textit{pipeline}. 
 como se puede apreciar, en la Tabla~\ref{tab:gru_hiperparams} se resumen los hiperpar\'ametros.
 
 \begin{table}[htbp]
@@ -114,10 +116,12 @@ Los resultados reportados en las secciones siguientes corresponden al modo \text
 \section{Resultados emp\'iricos}
 \label{sec:app_gru_resultados}
 
+En esta secci\'on se presentan los resultados obtenidos por la GRU en los tres \textit{datasets} analizados: \textit{dataset Full}, \textit{dataset Lite} y \textit{dataset Lite Recortado}. El an\'alisis se divide en dos partes. Primero, se examina la evoluci\'on del entrenamiento a lo largo de las \'epocas, con especial atenci\'on al diagn\'ostico de sobreajuste y a la divergencia entre las curvas de entrenamiento y validaci\'on. Segundo, se comparan las m\'etricas finales sobre el conjunto de prueba (log-loss categ\'orica, log-loss binaria y accuracy) con las l\'ineas base del \textit{pipeline} principal: el Glicko-2 modificado en aislamiento, el MLP base y el MLP completo. La comparaci\'on permite cuantificar la brecha de desempe\~no entre la arquitectura recurrente y el sistema en cascada, y evaluar si la GRU ofrece alguna ventaja predictiva sobre los modelos ya establecidos.
+
 \subsection{Evoluci\'on por \'epoca y diagn\'ostico de sobreajuste}
 \label{subsec:app_gru_curvas}
 
-La Tabla~\ref{tab:gru_curvas} resu,e la evoluci\'on del entrenamiento para los tres \textit{datasets}. Se reportan tres puntos clave: la primera \'epoca, la \'epoca de mejor p\'erdida de validaci\'on, y la \'epoca final ($30$).
+La Tabla~\ref{tab:gru_curvas} resume la evoluci\'on del entrenamiento para los tres \textit{datasets}. Se reportan tres puntos clave: la primera \'epoca, la \'epoca de mejor p\'erdida de validaci\'on, y la \'epoca final ($30$).
 
 \begin{table}[htbp]
 	\centering
@@ -136,37 +140,39 @@ La Tabla~\ref{tab:gru_curvas} resu,e la evoluci\'on del entrenamiento para los t
 	\end{tabular}
 \end{table}
 
-El patr\'on es consistente en los tres conjuntos: la p\'erdida de validaci\'on alcanza su m\'inimo entre las \'epocas $2$ y $4$, para luego diverger mon\'otonamente mientras la p\'erdida de entrenamiento contin\'ua descendiendo. En el dataset Full, la brecha entrenamiento--validaci\'on se ampl\'ia desde $0.0355$ en la 'epoca 1, hasta $0.4064$ en la \'epoca 30; la \textit{accuracy} de entrenamiento asciende del $47.2\%$ al $64.9\%$, mientras que la de validaci\'on decrece desde $51.1\%$ hasta $44.7\%$. Este comportamiento es evidencia de \textbf{sobreajuste estructural}: la red memoriza los patrones de las secuencias hist\'oricas del entrenamiento pero pierde capacidad de generalizaci\'on sobre el conjunto de validació\'on, situaci\'on que se agrava en el test cronol\'ogicamente posterior.
+El patr\'on es consistente en los tres conjuntos: la p\'erdida de validaci\'on alcanza su m\'inimo entre las \'epocas $2$ y $4$, para luego diverger mon\'otonamente mientras la p\'erdida de entrenamiento contin\'ua descendiendo. En el dataset Full, la brecha entrenamiento--validaci\'on se ampl\'ia desde $0.0355$ en la \'epoca 1, hasta $0.4064$ en la \'epoca 30; la \textit{accuracy} de entrenamiento asciende del $47.2\%$ al $64.9\%$, mientras que la de validaci\'on decrece desde $51.1\%$ hasta $44.7\%$. Este comportamiento es evidencia de \textbf{sobreajuste estructural}: la red memoriza los patrones de las secuencias hist\'oricas del entrenamiento pero pierde capacidad de generalizaci\'on sobre el conjunto de validació\'on, situaci\'on que se agrava en el test cronol\'ogicamente posterior.
 
 \subsection{M\'etricas de evaluaci\'on sobre el conjunto de prueba}
 \label{subsec:app_gru_test}
 
 La Tabla~\ref{tab:gru_test} reporta las m\'etricas finales sobre el $30\%$ cronol\'ogico de prueba, junto con la l\'inea base del Glicko-2 modificado aislado y del MLP base en su configuraci\'on sin covariables ex\'ogenas; valores extra\'idos del Cap\'itulo~\ref{ch:resultados}.
 
+La Tabla~\ref{tab:gru_test} incluye el MLP completo como referencia adicional, dado que la GRU, al igual que el MLP completo, s\'i utiliza las covariables ex\'ogenas en cada paso temporal de la secuencia y en el vector de caracter\'isticas actuales. Sin embargo, la GRU exhibe un rendimiento sistem\'aticamente inferior al del MLP completo en todas las m\'etricas y todos los datasets.
+
 \begin{table}[htbp]
 	\centering
-	\caption{Evaluación del componente GRU sobre test, con líneas base de referencia.}
+	\caption{Evaluac\'on del componente GRU sobre test, con líneas base de referencia.}
 	\label{tab:gru_test}
 	\begin{tabular}{lcccc}
 		\toprule
 		\textbf{Dataset} & \textbf{Modelo} & \textbf{LL Cat.} & \textbf{LL Bin.} & \textbf{Accuracy} \\
 		\midrule
-		\multirow{3}{*}{Full} & Glicko-2 aislado & 1.0443 & 0.6527 & --- \\
-		& MLP base & 1.0279 & 0.6480 & 0.486 \\
+		\multirow{3}{*}{Full} & Glicko-2 aislado & 1.0424 & 0.6499 & --- \\
+		& MLP completa & 1.0261 & 0.6445 & 0.486 \\
 		& GRU exploratorio & 1.2323 & 0.7777 & 0.431 \\
 		\midrule
-		\multirow{3}{*}{Lite} & Glicko-2 aislado & 1.0440 & 0.6506 & --- \\
-		& MLP base & 1.0262 & 0.6441 & 0.486 \\
+		\multirow{3}{*}{Lite} & Glicko-2 aislado & 1.0411 & 0.6478 & --- \\
+		& MLP completa & 1.0224 & 0.6402 & 0.487 \\
 		& GRU exploratorio & 1.1457 & 0.7174 & 0.444 \\
 		\midrule
 		\multirow{3}{*}{Lite Rec.} & Glicko-2 aislado & 1.0443 & 0.6527 & --- \\
-		& MLP base & 1.0279 & 0.6480 & 0.486 \\
+		& MLP completa & 1.0273 & 0.6460 & 0.485 \\
 		& GRU exploratorio & 1.1898 & 0.7551 & 0.429 \\
 		\bottomrule
 	\end{tabular}
 \end{table}
 
-El componente GRU exhibe un desempe\~no sistem\'aticamente inferior al del \textit{pipeline} principal en todas las m\'etricas y todos los \textit{datasets}. Su p\'erdida logar\'itmica (log-loss) binaria  se encuentra alrededor de $0.717$ y $0.778$, lo que supera ampliamente la del Glicko-2 aislado ($0.651$-$0.653$) y la del MLP base ($0.644$-$0.648$). La \textit{accuracy} se ubica en torno a $0.43$-$0.44$, por debajo del $0.486$ del sistema en cascada. Cabe destacar que la comparación es asim\'etrica en dificultad: la GRU parte de \textit{features} crudos y secuencias hist\'oricas, mientras que el MLP recibe probabilidades base ya calibradas por el Glicko-2. Aun as\'i, la magnitud de la degradaci\'on, presentando incrementos del $9.7\%$ en el \textit{Dataset Lite} al $18.0\%$ en el \textit{Dataset Full} en la p\'erdida logar\'itmica (log-loss) categ\'orica respecto al Glicko-2 aislado, indica que la arquitectura recurrente no logra extraer señal predictiva adicional de las secuencias temporales.
+El componente GRU exhibe un desempe\~no sistem\'aticamente inferior al del \textit{pipeline} principal en todas las m\'etricas y todos los \textit{datasets}. Su p\'erdida logar\'itmica (log-loss) binaria  se encuentra alrededor de $0.717$ y $0.778$, lo que supera ampliamente la del Glicko-2 aislado ($0.6478$-$0.6499$) y la del MLP completo ($0.6402$-$0.6460$). La \textit{accuracy} se ubica en torno a $0.43$-$0.44$, por debajo del $0.486$ del sistema en cascada. Cabe destacar que la comparación es asim\'etrica en dificultad: la GRU parte de \textit{features} crudos y secuencias hist\'oricas, mientras que el MLP recibe probabilidades base ya calibradas por el Glicko-2. Aun as\'i, la magnitud de la degradaci\'on, presentando incrementos del $9.7\%$ en el \textit{Dataset Lite} al $18.0\%$ en el \textit{Dataset Full} en la p\'erdida logar\'itmica (log-loss) categ\'orica respecto al Glicko-2 aislado, indica que la arquitectura recurrente no logra extraer se\~nal predictiva adicional de las secuencias temporales.
 
 % ------------------------------------------------------------
 % A.5. Discusión y desestimación
@@ -175,15 +181,15 @@ El componente GRU exhibe un desempe\~no sistem\'aticamente inferior al del \text
 \section{Discusión y desestimación del componente}
 \label{sec:app_gru_discusion}
 
-La GRU se mantuvo como componente exploratorio y se excluyó del sistema predictivo principal por tres razones convergentes:
+La GRU se mantuvo como componente exploratorio y se excluy\'o del sistema predictivo principal por tres razones convergentes:
 
-\paragraph{Sobreajuste estructural.} La divergencia temprana entre la p\'erdida de entrenamiento y la de validaci\'on (Tabla~\ref{tab:gru_curvas}) demuestra que la capacidad de la red excede la s\~nal temporal disponible en el panel. A diferencia del refinador neuronal del \textit{pipeline} principal, que opera sobre un vector de entrada condensado y estable  como las probabilidades Glicko-2, con o sin covariables ex\'ogenas según la configurac\'on, la GRU procesa secuencias de alta dimensionalidad con redundancia entre pasos temporales consecutivos, lo que facilita la memorizaci\'on de trayectorias de equipos individuales.
+\paragraph{Sobreajuste estructural.} La divergencia temprana entre la p\'erdida de entrenamiento y la de validaci\'on (Tabla~\ref{tab:gru_curvas}) demuestra que la capacidad de la red excede la se\~nal temporal disponible en el panel. A diferencia del refinador neuronal del \textit{pipeline} principal, que opera sobre un vector de entrada condensado y estable  como las probabilidades Glicko-2, con o sin covariables ex\'ogenas seg\'un la configurac\'on, la GRU procesa secuencias de alta dimensionalidad con redundancia entre pasos temporales consecutivos, lo que facilita la memorizaci\'on de trayectorias de equipos individuales.
 
-\paragraph{Rendimiento predictivo inferior.} Como se observa en la Tabla~\ref{tab:gru_test}, la GRU no mejora ni siquiera la l\'inea base del Glicko-2 modificado en aislamiento. Esto sugiere que la información temporal relevante, forma reciente, ventaja de localía dinámica, tendencias de anotación, ya está suficientemente condensada en los promedios móviles \textit{rolling}, las ventanas 5 encuentros, 10 encuentros, 20 encuentros, y 30 encuentros, y en el estado latente $(R,RD,\sigma)$ del sistema de rating. Introducir una segunda din\'amica temporal expl\'icita dentro de la red neuronal genera redundancia estructural sin aporte predictivo neto.
+\paragraph{Rendimiento predictivo inferior.} Como se observa en la Tabla~\ref{tab:gru_test}, la GRU no mejora ni siquiera la l\'inea base del Glicko-2 modificado en aislamiento. Esto sugiere que la informaci\'on temporal relevante, forma reciente, ventaja de local\'ia din\'amica, tendencias de anotación, ya está suficientemente condensada en los promedios m\'oviles \textit{rolling}, las ventanas 5 encuentros, 10 encuentros, 20 encuentros, y 30 encuentros, y en el estado latente $(R,RD,\sigma)$ del sistema de rating. Introducir una segunda din\'amica temporal expl\'icita dentro de la red neuronal genera redundancia estructural sin aporte predictivo neto.
 
-\paragraph{Complejidad operativa del pipeline.} El entrenamiento de la GRU requiere un \textit{pipeline} de datos considerablemente más complejo que el del MLP: construcción de ventanas deslizantes por equipo, \textit{padding} condicional, escalado separado de características base y extra, y un \texttt{DataLoader} personalizado. Esta complejidad eleva el costo de mantenimiento y reproducibilidad sin contraparte en precisión.
+\paragraph{Complejidad operativa del pipeline.} El entrenamiento de la GRU requiere un \textit{pipeline} de datos considerablemente más complejo que el del MLP: construcci\'on de ventanas deslizantes por equipo, \textit{padding} condicional, escalado separado de caracter\'isticas base y extra, y un \texttt{DataLoader} personalizado. Esta complejidad eleva el costo de mantenimiento y reproducibilidad sin contraparte en precisi\'on.
 
-En consecuencia, el modelo GRU se reporta como línea de investigación futura, potencialmente explorable con mecanismos de atención temporal, \emph{layer normalization} o regularización más agresiva, pero no forma parte del sistema predictivo principal del presente estudio.
+En consecuencia, la GRU no resulta en una buena ruta para reemplazar el sistema en cascada: la informaci\'on temporal relevante ya est\'a suficientemente condensada en los promedios m\'oviles rolling y en el estado latente \((R,RD,\sigma)\) de modelo Glicko-2 modificado, por lo que introducir una segunda din\'amica temporal expl\'icita dentro de la red neuronal genera redundancia estructural sin aporte predictivo neto. La simplicidad del MLP, que opera sobre un vector de entrada condensado, resulta ser una elecci\'on m\'as adecuada y eficiente para el problema. El modelo GRU se reporta, por tanto, como una l\'inea de investigaci\'on abierta, potencialmente explorable con mecanismos de atención temporal, layer normalization o regularizaci\'on más agresiva, pero no forma parte del sistema predictivo final del presente estudio, pues la arquitectura actual del \textit{pipeline} en cascada ha demostrado ser suficiente para los objetivos planteados.
 
 % ============================================================
 % APENDICE B: Glicko-2 Trinomial vs Glicko-2 con Covariables Ex\'ogenas
