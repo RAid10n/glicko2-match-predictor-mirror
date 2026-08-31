@@ -335,11 +335,38 @@ La Tabla~\ref{tab:test_t} consolida los resultados de los tests $t$ pareados sob
 	\end{tabular}
 \end{table}
 
-La \'unica configuraci\'on en la que el modelo completo mejora de manera un\'ivoca y significativa las m\'etricas probabil\'isticas globales es el conjunto de datos \textbf{Lite}. En este escenario, la ausencia de \'indices compuestos de autor\'ia deja un vac\'io informativo que las covariables ex\'ogenas (econ\'omicas, ambientales y de estadio) compensan efectivamente. Por el contrario, en el conjunto de datos Full, los \'indices compuestos de autor\'ia ya absorben la mayor parte de la se\~nal t\'actica relevante, por lo que la inclusi\'on del bloque ex\'ogeno no produce mejoras netas en la p\'erdida logar\'itmica (log-loss) global, aunque s\'i recupera capacidad de clasificaci\'on de la clase empate, mientras que el conjunto de datos Lite Recortado la ausencia de dichos \'indices sobre la muestra temporal reducida provoca que la inclusi\'on ex\'ogena agregue ruido sin respaldo t\'actico.
+La \'unica configuraci\'on en la que el modelo completo mejora de manera un\'ivoca y significativa las m\'etricas probabil\'isticas globales es el \textbf{dataset Lite}. En este escenario, la ausencia de \'indices compuestos de autor\'ia deja un vac\'io informativo que las covariables ex\'ogenas compensan efectivamente. Por el contrario, en el \textit{dataset Full}, los \'indices compuestos de autor\'ia ya absorben la mayor parte de la se\~nal t\'actica relevante, por lo que la inclusi\'on del bloque ex\'ogeno no produce mejoras netas en la p\'erdida logar\'itmica (log-loss) global, aunque s\'i recupera capacidad de clasificaci\'on de la clase empate, mientras que el conjunto de datos Lite Recortado la ausencia de dichos \'indices sobre la muestra temporal reducida provoca que la inclusi\'on ex\'ogena agregue ruido sin respaldo t\'actico.
 
+\subsection{Estructura de correlaci\'on entre las covariables seleccionadas}
+\label{subsec:correlacion_covariables_resultados}
+
+Para comprender mejor la relaci\'on entre las covariables ex\'ogenas seleccionadas, se analiz\'o su matr\'iz de correlaci\'on de Spearman. La Figura~\ref{fig:correlacion_covariables_outcome} presenta el mapa de calor correspondiente.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{correlacionlite.png}
+		\caption{Dataset Lite}
+		\label{fig:corr_lite}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{correlacionfull.png}
+		\caption{Dataset Full}
+		\label{fig:corr_full}
+	\end{subfigure}
+	\caption{Matriz de correlaci\'on de Spearman entre las covariables ex\'ogenas seleccionadas (incluyendo \texttt{home\_OccRat} como variable descartada).}
+	\label{fig:correlacion_covariables_outcome}
+\end{figure}
+
+Se observa que \texttt{diff\_MarketValue} y \texttt{diff\_xG\_teo\_r5} presentan una correlaci\'on moderada ($0.29$), lo que indica que los equipos con mayor valor de mercado tienden a generar m\'os ocasiones de gol esperadas, sin embargo la relaci\'on no es perfecta. Por otro lado, los \'indices compuestos de autor\'ia \texttt{diff\_xG\_teo\_r5} y \texttt{diff\_xA\_teo\_r5} están pr\'acticamente descorrelacionados ($0.14$), confirmando que la capacidad de generar ocasiones de gol y la capacidad de asistir son habilidades t\'acticas distintas. El \'indice de eficiencia defensiva (\texttt{DDI\_r5}) no presenta correlaci\'on relevante con ninguna otra variable, lo que refuerza su car\'acter de bloque independiente.
+
+Asimismo, la variable \texttt{home\_OccRat}, que fue excluida del conjunto final, exhibe una correlaci\'on pr\'acticamente nula con todas las dem\'as covariables, confirmando su falta de se\~nal debido a la redundancia con \texttt{home\_Assist}. Por el contrario, \texttt{home\_Assist} muestra correlaciones moderadas con \texttt{diff\_MarketValue} ($0.25$) y \texttt{diff\_Foreign} ($0.23$), reflejando la relaci\'on entre el apoyo de la afici\'on y la fortaleza econ\'omica del club. La baja correlaci\'on entre \texttt{diff\_temperature\_2m} y \texttt{diff\_PiO2} ($0.24$) indica que, aunque ambas son variables ambientales, capturan efectos clim\'aticos y fisiol\'ogicos distintos.
+
+En conjunto, estos patrones confirman que las variables seleccionadas no son redundantes entre s\'i y que cada una aporta información sobre aspectos diferentes del rendimiento del equipo.
 
 % ============================================================
-% SECCION 4.5 -- Discusion integrada
+% SECCION 4.4 -- Discusion integrada
 % ============================================================
 
 \section{Discusi\'on integrada}

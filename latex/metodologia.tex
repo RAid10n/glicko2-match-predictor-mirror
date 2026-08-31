@@ -216,7 +216,7 @@ Esta formulaci\'on operativa es coherente con la ley barom\'etrica derivada en l
 	\item \textbf{Competiciones de calendario interanual} (Premier League, LaLiga, etc.): se usa \texttt{Assist\_YYZZ}, donde \texttt{YYZZ} representa la temporada en formato interanual, por ejemplo, \texttt{1819} para 2018--2019. El a\~no de inicio de la temporada se determina por el mes del partido: si el mes es $>7$, la temporada comienza en el a\~no actual; en caso contrario, en el a\~no anterior.
 \end{itemize}
 Se calcula el ratio de ocupaci\'on del equipo local:
-\begin{equation}
+\begin{equation}\label{eq:OccRat}
 	\text{home\_OccRat} = \frac{\text{home\_Assist}}{\text{home\_Capacity}}.
 \end{equation}
 Para equipos con datos de asistencia incompletos en a\~nos espec\'ificos, se realizaron inyecciones manuales de valores faltantes a partir de registros hist\'oricos de Transfermarkt.
@@ -425,6 +425,52 @@ Estas variables s\'olo se encuentran disponibles en el dataset Full (2019--2025)
 \paragraph{Variable de composici\'on de plantilla.} Adicionalmente, se incluy\'o \texttt{diff\_Foreign}: diferencia en n\'umero de jugadores extranjeros, como representante del bloque de diversidad y estructura de plantilla, aun cuando su importancia individual en el Random Forest no ocup\'o los primeros puestos. Su inclusi\'on busca capturar el efecto de la exposici\'on a distintos estilos de juego y condiciones competitivas, factor te\'oricamente relevante seg\'un la literatura de econom\'ia del deporte.
 
 %\paragraph{Variables excluidas por redundancia o parsimonia.} En aras de evitar la sobrepoblaci\'on del bloque ambiental, se descartaron \texttt{diff\_relative\_humidity\_2m} y \texttt{diff\_surface\_pressure}, quedando representado el factor clim\'atico mediante la temperatura y la presi\'on de ox\'igeno. Asimismo, se excluyeron variables intermedias que operan como componentes de \'indices compuestos ya incluidos: \texttt{diff\_TDA} (base del DDI, adem\'as susceptible de \emph{leakage} en su forma desagregada), \texttt{diff\_xGP\_r5} y \texttt{diff\_xGP\_np\_r5} (bases del xOVA). Finalmente, el ratio de ocupaci\'on \texttt{home\_OccRat} fue evaluado pero excluido posteriormente del modelo final por alta colinealidad lineal con \texttt{home\_Assist}, de modo que ambas variables no coexisten en el vector de entrada del perceptr\'on multicapa.
+
+\subsection{An\'alisis de correlaci\'on de covariables}
+\label{subsec:analisis_correlacion}
+
+Para la selecci\'on final de las covariables ex\'ogenas se realiz\'o un an\'alisis de diagn\'ostico sobre el \textit{dataset Lite} y el \textit{dataset Full}. Este an\'alisis utiliz\'o tres criterios complementarios: 
+
+\begin{enumerate}
+	\item La correlaci\'on de Spearman de cada variable con el resultado.
+	\item La importancia de variables mediante un clasificador Random Forest.
+	\item La selecci\'on automática mediante regresi\'on log\'istica con penalizaci\'on L1.
+\end{enumerate}
+
+Los cuales se presentan en la Tabla~\ref{tab:ranking_variables}
+
+\begin{table}[htbp]
+	\centering
+	\caption{Ranking consolidado de importancia de variables para el \textit{dataset Lite} y el \textit{dataset Full}. El score total consolida la correlaci\'on de Spearman con el resultado, la importancia en Random Forest y el coeficiente de regresión L1.}
+	\label{tab:ranking_variables}
+	\begin{tabular}{lcccc|lcccc}
+		\toprule
+		& \multicolumn{4}{c}{\textbf{dataset Lite}} & & \multicolumn{4}{c}{\textbf{dataset Full}} \\
+		\cmidrule(lr){2-5} \cmidrule(lr){7-10}
+		\textbf{Variable} & \textbf{Sp.} & \textbf{RF} & \textbf{L1} & \textbf{Total} & & \textbf{Sp.} & \textbf{RF} & \textbf{L1} & \textbf{Total} \\
+		\midrule
+		diff\_MarketValue & 0.262 & 0.168 & 0.188 & 3.000 & & 0.262 & 0.132 & 0.180 & 3.000 \\
+		diff\_xG\_teo\_r5 & — & — & — & — & & 0.146 & 0.083 & 0.080 & 1.262 \\
+		home\_Assist & 0.106 & 0.113 & 0.062 & 1.066 & & 0.108 & 0.087 & 0.058 & 1.048 \\
+		travel\_km & 0.037 & 0.135 & 0.025 & 0.854 & & 0.040 & 0.099 & 0.026 & 0.793 \\
+		diff\_PiO2 & 0.007 & 0.142 & 0.015 & 0.770 & & 0.029 & 0.102 & — & 0.640 \\
+		diff\_NetSpending & 0.046 & 0.116 & 0.006 & 0.568 & & 0.046 & 0.091 & 0.014 & 0.622 \\
+		diff\_xA\_teo\_r5 & — & — & — & — & & 0.039 & 0.082 & 0.026 & 0.522 \\
+		diff\_temperature\_2m & 0.008 & 0.132 & 0.001 & 0.583 & & 0.006 & 0.095 & 0.003 & 0.471 \\
+		diff\_DDI\_r5 & — & — & — & — & & 0.012 & 0.081 & 0.009 & 0.308 \\
+		diff\_Foreign & 0.055 & 0.084 & 0.002 & 0.193 & & 0.044 & 0.065 & 0.009 & 0.197 \\
+		home\_OccRat & 0.047 & 0.109 & 0.003 & 0.470 & & 0.046 & 0.083 & 0.005 & 0.447 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+Adicionalmente, se evalu\'o el impacto de eliminar cada variable mediante validaci\'on cruzada con 10 particiones (\textit{shuffle}), utilizando Random Forest y comparando los resultados con pruebas $t$ pareadas. Es importante destacar que este an\'alisis tiene un prop\'osito de diagn\'ostico, no de reporte del rendimiento final del sistema; las m\'etricas aqu\'i obtenidas no son comparables con las del \textit{pipeline} principal, que utiliza un split cronol\'ogico estricto.
+
+El an\'alisis permiti\'o confirmar que la variable \texttt{travel\_km} no presenta multicolinealidad con el resto del conjunto como se intuy\'o de la litertura base \cite{Glicko2Mod}. Su eliminaci\'on produce una ca\'ida en la \textit{accuracy} de $0.4498$ a $0.4447$ en el \textit{dataset Lite}, aunque no estad\'isticamente significativa, pues $p = 0.0684$, y su relevancia en el ranking consolidado de importancia es alta, teniendo la tercera posici\'on en el \textit{dataset Lite} con un \textit{score} de $0.854$, y cuarta en el \textit{dataset Full} con $0.793$). Por tanto, se decide mantener \texttt{travel\_km} en el conjunto final.
+
+En cuanto a la variable \texttt{home\_OccRat}, se observa que es una transformación lineal de \texttt{home\_Assist} \ref{eq:OccRat}, lo que genera una redundancia estructural entre ambas. Inicialmente, \texttt{home\_Assist} no formaba parte del conjunto de variables candidatas, habiendo sido descartada en favor de \texttt{home\_OccRat}. Sin embargo, el ranking consolidado muestra que \texttt{home\_Assist} supera consistentemente a \texttt{home\_OccRat} en todos los criterios de importancia: score de $1.066$ vs $0.470$ en el \textit{dataset Lite}, y $1.048$ vs $0.447$ en el \textit{dataset Full}), y que la exclusi\'on de \texttt{home\_OccRat} mejora ligeramente el rendimiento, pues la \textit{accuracy} pasa de $0.4498$ a $0.4529$ en el \textit{dataset Lite}). En consecuencia, se descarta \texttt{home\_OccRat} y se retiene \texttt{home\_Assist} como representante del bloque de estadio.
+
+Con base en este análisis, el conjunto final de covariables ex\'ogenas queda conformado por las variables que se enumeran en la Secci\'on~\ref{subsec:covariables_finales}.
 
 \subsection{Conjunto final de covariables ex\'ogenas}
 \label{subsec:covariables_finales}

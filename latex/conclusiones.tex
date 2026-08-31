@@ -8,7 +8,7 @@ En el presente trabajo se ha dise\~nado, implementado y validado un sistema pred
 \begin{enumerate}
 	\item Un modelo de conteo basado en LightGBM con funci\'on objetivo Poisson que estima las tasas de goles esperados y deriva la probabilidad de empate mediante la distribuci\'on de Skellam
 	\item Una implementaci\'on propia del algoritmo Glicko-2 modificado de Shelopugin y Sirotkin \cite{Glicko2Mod}, que actualiza secuencialmente la fuerza latente de los equipos y cuantifica la incertidumbre a trav\'es de la desviaci\'on de rating.
-	\item n perceptr\'on multicapa que refina las probabilidades base integrando covariables ex\'ogenas estandarizadas.
+	\item Un perceptr\'on multicapa que refina las probabilidades base integrando covariables ex\'ogenas estandarizadas.
 \end{enumerate}
 
 Los principales hallazgos emp\'iricos son los siguientes:
@@ -19,6 +19,8 @@ Los principales hallazgos emp\'iricos son los siguientes:
 	\item El refinador neuronal (MLP) mejora netamente la calibraci\'on en un $1.70\%$ respecto al Glicko-2 aislado, reduciendo la p\'erdida logar\'itmica categ\'orica de $1.0424$ a $1.0247$.
 	\item La inclusi\'on de covariables ex\'ogenas produce un efecto mixto: en el \textit{dataset Lite}, mejora la log-loss binaria y la precisi\'on del empate (Prec\_D pasa de $0$ a $0.278$), pero empeora la log-loss categ\'orica global. Este trade-off evidencia que la se\~nal ex\'ogena se concentra en partidos equilibrados, pero no es suficiente para mejorar la distribuci\'on conjunta de probabilidades.
 	\item Los \'indices compuestos de autor\'ia (xG\_teo, xA\_teo, DDI) constituyen el pilar predictivo central. En el dataset \textit{dataset Full}, la presencia de estos \'indices estabiliza el refinamiento neuronal, mientras que en el \textit{dataset Lite Recortado} (sin ellos) las covariables ex\'ogenas a\~naden ruido y degradan el desempe\~no.
+	\item El an\'alisis de la estructura de correlaci\'on entre las covariables seleccionadas (Secci\'on~\ref{subsec:correlacion_covariables_resultados}) complementa los resultados predictivos. Se observ\'o que \texttt{diff\_MarketValue} y \texttt{diff\_xG\_teo\_r5} presentan una correlaci\'on moderada ($0.29$), lo que indica que el valor de mercadode un equipo y la generaci\'on de ocasiones de gol esperadas est\'an relacionados. Asimismo, la baja correlaci\'on entre \texttt{xG\_teo\_r5} y \texttt{xA\_teo\_r5} ($0.14$) confirma que la capacidad de generar ocasiones y la de asistir son habilidades completamente distintas.
+	\item La variable \texttt{home\_OccRat}, evaluada como candidata pero excluida del conjunto final, exhibi\'o una correlaci\'on pr\'acticamente nula con todas las dem\'as covariables, lo que refuerza su redundancia con \texttt{home\_Assist} y valida la decisi\'on de priorizar la asistencia absoluta como indicador del apoyo de la afici\'on. Estos patrones confirman que las variables seleccionadas no son redundantes entre s\'i y que cada una aporta informaci\'on sobre aspectos diferentes del rendimiento del equipo.
 \end{enumerate}
 
 Estos resultados responden afirmativamente a la pregunta de investigaci\'on planteada: es posible estimar probabil\'isticamente el resultado de un partido integrando informaci\'on deportiva, econ\'omica y ambiental mediante un sistema en cascada actualizable secuencialmente que cuantifica la incertidumbre sobre la fuerza de cada equipo.
@@ -29,8 +31,16 @@ Los resultados exhiben tres limitaciones estructurales que condicionan la interp
 
 \begin{itemize}
 	\item \textbf{Colapso persistente del empate:} aunque el modelo completo recupera parcialmente la clase empate (\(F1_D > 0\)), los valores absolutos permanecen muy por debajo de lo deseable (\(F1_D < 0.01\) bajo la regla de decisi\'on dura \(\arg\max\)). Esto no es un fallo metodol\'ogico, sino una propiedad intr\'inseca del f\'utbol: el empate es un evento puntual en un espacio de conteo discreto, y su predicci\'on \'optima requiere evaluaci\'on distributiva (log-loss) m\'as que etiquetado categ\'orico duro. La literatura especializada reporta hallazgos an\'alogos \cite{gneiting2007}.
+	
 	\item \textbf{Sensibilidad del MLP a la composici\'on de \textit{features}:} la inclusi\'on de covariables ex\'ogenas en el dataset \textit{Full} no produce mejoras netas en la log-loss categ\'orica, lo que sugiere que la arquitectura de refinamiento actual, dos capas ocultas de 64 neuronas con dropout 0.3, puede no ser suficientemente expresiva para modelar las interacciones no lineales entre las m\'etricas deportivas y las variables ex\'ogenas sin incurrir en sobreajuste.
+	
 	\item \textbf{Generalizaci\'on geogr\'afica:} el panel excluye ligas africanas y oce\'anicas, por lo que la validez externa del sistema hacia esas regiones permanece sin verificar. La ventaja de local\'ia calibrada var\'ia significativamente entre competiciones (de 18.5 a 59.9 puntos), lo que indica que el modelo aprende patrones regionales espec\'ificos, pero no se ha evaluado su desempe\~no en contextos geogr\'aficos distintos.
+	
+	\item \textbf{Uso de \'indices compuestos de autor\'ia:} los \'indices \texttt{xG\_teo}, \texttt{xA\_teo} y \texttt{DDI} se construyen como combinaciones lineales de m\'etricas primarias, en lugar de utilizar las m\'etricas reales de goles esperados (xG, xA). Aunque estos \'indices demostraron ser \'utiles, su naturaleza aproximada introduce una limitaci\'on en la granularidad de la informaci\'on deportiva, que podr\'ia superarse con datos m\'as detallados.
+	
+	\item \textbf{Cuello de botella en la recolección de datos:} La construcci\'on del dataset requiri\'o un esfuerzo considerable en la recopilaci\'on manual de las variables micro econ\'omicas. Mientras que las variables clim\'aticas y geogr\'aficas se obtuvieron mediante APIs automatizadas como Open-Meteo o Google Maps, los indicadores microecon\'omicos como el valor de mercado de los clubes, el \textit{net spending} y el n\'umero de jugadores extranjeros proceden de Transfermarkt \cite{Transfermarkt} a trav\'es de la Wayback Machine, en conjunto el \textit{web scraping} hist\'orico es una limitaci\'on importante en la recolecci\'on de las m\'etricas con la granularidad deseada. 
+	
+	\item \textbf{Disponibilidad de  m\'etricas b\'asicas:} La disponibilidad de m\'etricas deportivas b\'asicas en FBRef no es homog\'enea para todas las ligas ni para todas las temporadas. Según el an\'alisis exploratorio realizado, estas estad\'isticas comenzaron a publicarse de manera sistemática a partir de aproximadamente 2014, lo que limita la ventana temporal de los datos y restringe la posibilidad de extender el estudio a temporadas anteriores.
 \end{itemize}
 
 \section{L\'ineas de investigaci\'on futuras}
@@ -41,6 +51,8 @@ A partir de los hallazgos y limitaciones identificadas, se proponen las siguient
 	\item \textbf{Expansi\'on del panel de ligas:} incorporar competiciones adicionales de Am\'erica, Asia y Europa que no fueron incluidas inicialmente, así como explorar la inclus\'on de ligas africanas y oce\'anicas si los datos de FBRef lo permiten, para evaluar la generalizaci\'on del sistema y enriquecer la calibraci\'on de la ventaja de local\'ia en contextos competitivos diversos.
 	
 	\item \textbf{Exploraci\'on de arquitecturas de refinamiento alternativas:} probar perceptrones multicapa con diferente n\'umero de capas ocultas, neuronas por capa o tasas de dropout, as\'i como evaluar el uso de regularización L1/L2 para reducir el sensibilidad observada en el \textit{dataset Full} y mejorar la calibración global.
+	
+	\item \textbf{Uso de m\'etricas reales de goles esperados:} explorar la sustituci\'on de los \'indices compuestos de autor\'ia por m\'etricas reales de goles esperados (xG, xA) de fuentes como FBRef o Understat, con el fin de evaluar si la mayor granularidad mejora la calibraci\'on predictiva del sistema.
 	
 	\item \textbf{Inclusi\'on de nuevas covariables ex\'ogenas:} dado que el pipeline ya est\'a dise\~nado para integrar variables externas, se podr\'ia explorar la incorporaci\'on de datos adicionales, como estad\'isticas de posesión, efectividad en bal\'on parado o indicadores de rendimiento de jugadores clave, siempre que est\'en disponibles previo al partido y no introduzcan \textit{data leakage}.
 	

@@ -43,6 +43,7 @@
 \newlabel{subsec:integracion}{{3.2.3}{55}{Integraci\'on de fuentes auxiliares}{subsection.3.2.3}{}}
 \@writefile{toc}{\contentsline {paragraph}{Datos clim\'aticos.}{55}{paragraph*.53}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Datos de estadios.}{56}{paragraph*.54}\protected@file@percent }
+\newlabel{eq:OccRat}{{3.5}{56}{Datos de estadios}{equation.3.5}{}}
 \@writefile{toc}{\contentsline {paragraph}{Datos econ\'omicos micro.}{56}{paragraph*.55}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Datos macroecon\'omicos.}{56}{paragraph*.56}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Distancia de viaje.}{57}{paragraph*.57}\protected@file@percent }
@@ -84,84 +85,88 @@
 \@writefile{toc}{\contentsline {paragraph}{Variables de mayor importancia relativa.}{64}{paragraph*.73}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{M\'etricas compuestas de autor\'ia.}{65}{paragraph*.74}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Variable de composici\'on de plantilla.}{65}{paragraph*.75}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}Conjunto final de covariables ex\'ogenas}{65}{subsection.3.3.3}\protected@file@percent }
-\newlabel{subsec:covariables_finales}{{3.3.3}{65}{Conjunto final de covariables ex\'ogenas}{subsection.3.3.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.4}Arquitectura del sistema predictivo}{66}{section.3.4}\protected@file@percent }
-\newlabel{sec:arquitectura}{{3.4}{66}{Arquitectura del sistema predictivo}{section.3.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Variable dependiente y codificaci\'on}{66}{subsection.3.4.1}\protected@file@percent }
-\newlabel{subsec:variable_dependiente}{{3.4.1}{66}{Variable dependiente y codificaci\'on}{subsection.3.4.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Bloque de conteo: estimaci\'on de tasas y probabilidad de empate}{66}{subsection.3.4.2}\protected@file@percent }
-\newlabel{subsec:conteo}{{3.4.2}{66}{Bloque de conteo: estimaci\'on de tasas y probabilidad de empate}{subsection.3.4.2}{}}
-\@writefile{toc}{\contentsline {paragraph}{Conjunto de entrenamiento y partici\'on temporal.}{66}{paragraph*.76}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Variables de entrada.}{67}{paragraph*.77}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Hiperpar\'ametros y salida.}{67}{paragraph*.78}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.3}Bloque de rating din\'amico: Glicko-2 modificado}{67}{subsection.3.4.3}\protected@file@percent }
-\newlabel{subsec:rating}{{3.4.3}{67}{Bloque de rating din\'amico: Glicko-2 modificado}{subsection.3.4.3}{}}
-\@writefile{toc}{\contentsline {paragraph}{Estado y actualizaci\'on.}{68}{paragraph*.79}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Ventaja de local\'ia y calibraci\'on del empate.}{68}{paragraph*.80}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Generaci\'on de probabilidades base.}{68}{paragraph*.81}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Observaci\'on sobre la ventaja de local\'ia.}{69}{paragraph*.82}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.4}Bloque de refinamiento: perceptr\'on multicapa}{69}{subsection.3.4.4}\protected@file@percent }
-\newlabel{subsec:mlp}{{3.4.4}{69}{Bloque de refinamiento: perceptr\'on multicapa}{subsection.3.4.4}{}}
-\@writefile{toc}{\contentsline {paragraph}{Vector de entrada.}{69}{paragraph*.83}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Arquitectura e hiperpar\'ametros.}{70}{paragraph*.84}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Entrenamiento.}{70}{paragraph*.85}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Protocolo de evaluaci\'on: corridas pareadas.}{70}{paragraph*.86}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.5}Flujo de inferencia en cascada}{70}{subsection.3.4.5}\protected@file@percent }
-\newlabel{subsec:cascada}{{3.4.5}{70}{Flujo de inferencia en cascada}{subsection.3.4.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.5}Entrenamiento y calibraci\'on}{71}{section.3.5}\protected@file@percent }
-\newlabel{sec:entrenamiento}{{3.5}{71}{Entrenamiento y calibraci\'on}{section.3.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.1}Calibraci\'on del bloque de conteo}{71}{subsection.3.5.1}\protected@file@percent }
-\newlabel{subsec:train_conteo}{{3.5.1}{71}{Calibraci\'on del bloque de conteo}{subsection.3.5.1}{}}
-\@writefile{toc}{\contentsline {paragraph}{Partici\'on temporal.}{71}{paragraph*.87}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Conjunto de caracter\'isticas.}{71}{paragraph*.88}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Hiperpar\'ametros y criterio de parada.}{71}{paragraph*.89}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Derivaci\'on de la probabilidad de empate.}{72}{paragraph*.90}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.2}Calibraci\'on del bloque de rating}{72}{subsection.3.5.2}\protected@file@percent }
-\newlabel{subsec:train_rating}{{3.5.2}{72}{Calibraci\'on del bloque de rating}{subsection.3.5.2}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Mejoras de la implementaci\'on propia sobre el motor de referencia}{72}{subsubsection*.91}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Correcci\'on algebraica del denominador trinomial.}{73}{paragraph*.92}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Reparametrizaci\'on logit del par\'ametro de empate.}{73}{paragraph*.93}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Heur\'istica de escala $g$.}{73}{paragraph*.94}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Sistema de ventaja parametrizada.}{73}{paragraph*.95}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Mecanismos de estabilidad num\'erica.}{73}{paragraph*.96}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Manejo de contextos excepcionales.}{74}{paragraph*.97}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Estado y actualizaci\'on.}{74}{paragraph*.98}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Funci\'on objetivo.}{74}{paragraph*.99}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Espacio de par\'ametros y cotas.}{75}{paragraph*.100}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Convergencia y par\'ametros calibrados.}{75}{paragraph*.101}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Evaluaci\'on aislada del bloque de rating.}{75}{paragraph*.102}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.3}Entrenamiento del bloque de refinamiento}{75}{subsection.3.5.3}\protected@file@percent }
-\newlabel{subsec:train_mlp}{{3.5.3}{75}{Entrenamiento del bloque de refinamiento}{subsection.3.5.3}{}}
-\@writefile{toc}{\contentsline {paragraph}{Vector de entrada y estandarizaci\'on.}{76}{paragraph*.103}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Arquitectura e hiperpar\'ametros de entrenamiento.}{76}{paragraph*.104}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Protocolo de evaluaci\'on: corridas pareadas.}{76}{paragraph*.105}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{M\'etricas de evaluaci\'on del protocolo.}{76}{paragraph*.106}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Observaci\'on sobre el colapso de la clase empate.}{77}{paragraph*.107}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.6}M\'etricas de evaluaci\'on}{77}{section.3.6}\protected@file@percent }
-\newlabel{sec:metricas_eval}{{3.6}{77}{M\'etricas de evaluaci\'on}{section.3.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.1}M\'etricas probabil\'isticas}{77}{subsection.3.6.1}\protected@file@percent }
-\newlabel{subsec:metricas_prob}{{3.6.1}{77}{M\'etricas probabil\'isticas}{subsection.3.6.1}{}}
-\@writefile{toc}{\contentsline {paragraph}{Log-loss categ\'orica.}{78}{paragraph*.108}\protected@file@percent }
-\newlabel{eq:logloss_impl}{{3.19}{78}{Log-loss categ\'orica}{equation.3.19}{}}
-\@writefile{toc}{\contentsline {paragraph}{Log-loss binaria.}{78}{paragraph*.109}\protected@file@percent }
-\newlabel{eq:logloss_bin_impl}{{3.20}{78}{Log-loss binaria}{equation.3.20}{}}
-\@writefile{toc}{\contentsline {paragraph}{Divergencia de Kullback-Leibler y calibraci\'on.}{78}{paragraph*.110}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.2}M\'etricas de clasificaci\'on}{79}{subsection.3.6.2}\protected@file@percent }
-\newlabel{subsec:metricas_clas}{{3.6.2}{79}{M\'etricas de clasificaci\'on}{subsection.3.6.2}{}}
-\newlabel{eq:argmax_impl}{{3.22}{79}{M\'etricas de clasificaci\'on}{equation.3.22}{}}
-\newlabel{eq:metricas_clase_impl}{{3.23}{79}{M\'etricas de clasificaci\'on}{equation.3.23}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.3}Protocolo de inferencia estad\'istica}{79}{subsection.3.6.3}\protected@file@percent }
-\newlabel{subsec:test_t}{{3.6.3}{79}{Protocolo de inferencia estad\'istica}{subsection.3.6.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.4}Evaluaci\'on por bloque funcional}{80}{subsection.3.6.4}\protected@file@percent }
-\newlabel{subsec:eval_bloques}{{3.6.4}{80}{Evaluaci\'on por bloque funcional}{subsection.3.6.4}{}}
-\@writefile{toc}{\contentsline {paragraph}{Bloque de conteo (Skellam/LightGBM).}{80}{paragraph*.111}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Bloque de rating (Glicko-2 modificado).}{80}{paragraph*.112}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Bloque de refinamiento (MLP).}{81}{paragraph*.113}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.5}Discusi\'on metodol\'ogica sobre el empate}{81}{subsection.3.6.5}\protected@file@percent }
-\newlabel{subsec:empate_metodologia}{{3.6.5}{81}{Discusi\'on metodol\'ogica sobre el empate}{subsection.3.6.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}An\'alisis de correlaci\'on de covariables}{65}{subsection.3.3.3}\protected@file@percent }
+\newlabel{subsec:analisis_correlacion}{{3.3.3}{65}{An\'alisis de correlaci\'on de covariables}{subsection.3.3.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces Ranking consolidado de importancia de variables para el \textit  {dataset Lite} y el \textit  {dataset Full}. El score total consolida la correlaci\'on de Spearman con el resultado, la importancia en Random Forest y el coeficiente de regresión L1.}}{66}{table.caption.76}\protected@file@percent }
+\newlabel{tab:ranking_variables}{{3.1}{66}{Ranking consolidado de importancia de variables para el \textit {dataset Lite} y el \textit {dataset Full}. El score total consolida la correlaci\'on de Spearman con el resultado, la importancia en Random Forest y el coeficiente de regresión L1}{table.caption.76}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.4}Conjunto final de covariables ex\'ogenas}{67}{subsection.3.3.4}\protected@file@percent }
+\newlabel{subsec:covariables_finales}{{3.3.4}{67}{Conjunto final de covariables ex\'ogenas}{subsection.3.3.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}Arquitectura del sistema predictivo}{67}{section.3.4}\protected@file@percent }
+\newlabel{sec:arquitectura}{{3.4}{67}{Arquitectura del sistema predictivo}{section.3.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Variable dependiente y codificaci\'on}{68}{subsection.3.4.1}\protected@file@percent }
+\newlabel{subsec:variable_dependiente}{{3.4.1}{68}{Variable dependiente y codificaci\'on}{subsection.3.4.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Bloque de conteo: estimaci\'on de tasas y probabilidad de empate}{68}{subsection.3.4.2}\protected@file@percent }
+\newlabel{subsec:conteo}{{3.4.2}{68}{Bloque de conteo: estimaci\'on de tasas y probabilidad de empate}{subsection.3.4.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Conjunto de entrenamiento y partici\'on temporal.}{68}{paragraph*.77}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Variables de entrada.}{68}{paragraph*.78}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Hiperpar\'ametros y salida.}{69}{paragraph*.79}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.3}Bloque de rating din\'amico: Glicko-2 modificado}{69}{subsection.3.4.3}\protected@file@percent }
+\newlabel{subsec:rating}{{3.4.3}{69}{Bloque de rating din\'amico: Glicko-2 modificado}{subsection.3.4.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{Estado y actualizaci\'on.}{69}{paragraph*.80}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Ventaja de local\'ia y calibraci\'on del empate.}{69}{paragraph*.81}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Generaci\'on de probabilidades base.}{70}{paragraph*.82}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Observaci\'on sobre la ventaja de local\'ia.}{70}{paragraph*.83}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.4}Bloque de refinamiento: perceptr\'on multicapa}{70}{subsection.3.4.4}\protected@file@percent }
+\newlabel{subsec:mlp}{{3.4.4}{70}{Bloque de refinamiento: perceptr\'on multicapa}{subsection.3.4.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Vector de entrada.}{71}{paragraph*.84}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Arquitectura e hiperpar\'ametros.}{71}{paragraph*.85}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Entrenamiento.}{71}{paragraph*.86}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Protocolo de evaluaci\'on: corridas pareadas.}{71}{paragraph*.87}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.5}Flujo de inferencia en cascada}{72}{subsection.3.4.5}\protected@file@percent }
+\newlabel{subsec:cascada}{{3.4.5}{72}{Flujo de inferencia en cascada}{subsection.3.4.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.5}Entrenamiento y calibraci\'on}{72}{section.3.5}\protected@file@percent }
+\newlabel{sec:entrenamiento}{{3.5}{72}{Entrenamiento y calibraci\'on}{section.3.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.1}Calibraci\'on del bloque de conteo}{72}{subsection.3.5.1}\protected@file@percent }
+\newlabel{subsec:train_conteo}{{3.5.1}{72}{Calibraci\'on del bloque de conteo}{subsection.3.5.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Partici\'on temporal.}{72}{paragraph*.88}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Conjunto de caracter\'isticas.}{73}{paragraph*.89}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Hiperpar\'ametros y criterio de parada.}{73}{paragraph*.90}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Derivaci\'on de la probabilidad de empate.}{73}{paragraph*.91}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.2}Calibraci\'on del bloque de rating}{73}{subsection.3.5.2}\protected@file@percent }
+\newlabel{subsec:train_rating}{{3.5.2}{73}{Calibraci\'on del bloque de rating}{subsection.3.5.2}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Mejoras de la implementaci\'on propia sobre el motor de referencia}{74}{subsubsection*.92}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Correcci\'on algebraica del denominador trinomial.}{74}{paragraph*.93}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Reparametrizaci\'on logit del par\'ametro de empate.}{74}{paragraph*.94}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Heur\'istica de escala $g$.}{74}{paragraph*.95}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Sistema de ventaja parametrizada.}{74}{paragraph*.96}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Mecanismos de estabilidad num\'erica.}{75}{paragraph*.97}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Manejo de contextos excepcionales.}{75}{paragraph*.98}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Estado y actualizaci\'on.}{76}{paragraph*.99}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Funci\'on objetivo.}{76}{paragraph*.100}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Espacio de par\'ametros y cotas.}{76}{paragraph*.101}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Convergencia y par\'ametros calibrados.}{76}{paragraph*.102}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Evaluaci\'on aislada del bloque de rating.}{77}{paragraph*.103}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.3}Entrenamiento del bloque de refinamiento}{77}{subsection.3.5.3}\protected@file@percent }
+\newlabel{subsec:train_mlp}{{3.5.3}{77}{Entrenamiento del bloque de refinamiento}{subsection.3.5.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{Vector de entrada y estandarizaci\'on.}{77}{paragraph*.104}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Arquitectura e hiperpar\'ametros de entrenamiento.}{77}{paragraph*.105}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Protocolo de evaluaci\'on: corridas pareadas.}{77}{paragraph*.106}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{M\'etricas de evaluaci\'on del protocolo.}{78}{paragraph*.107}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Observaci\'on sobre el colapso de la clase empate.}{78}{paragraph*.108}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.6}M\'etricas de evaluaci\'on}{78}{section.3.6}\protected@file@percent }
+\newlabel{sec:metricas_eval}{{3.6}{78}{M\'etricas de evaluaci\'on}{section.3.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.1}M\'etricas probabil\'isticas}{79}{subsection.3.6.1}\protected@file@percent }
+\newlabel{subsec:metricas_prob}{{3.6.1}{79}{M\'etricas probabil\'isticas}{subsection.3.6.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Log-loss categ\'orica.}{79}{paragraph*.109}\protected@file@percent }
+\newlabel{eq:logloss_impl}{{3.19}{79}{Log-loss categ\'orica}{equation.3.19}{}}
+\@writefile{toc}{\contentsline {paragraph}{Log-loss binaria.}{79}{paragraph*.110}\protected@file@percent }
+\newlabel{eq:logloss_bin_impl}{{3.20}{79}{Log-loss binaria}{equation.3.20}{}}
+\@writefile{toc}{\contentsline {paragraph}{Divergencia de Kullback-Leibler y calibraci\'on.}{80}{paragraph*.111}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.2}M\'etricas de clasificaci\'on}{80}{subsection.3.6.2}\protected@file@percent }
+\newlabel{subsec:metricas_clas}{{3.6.2}{80}{M\'etricas de clasificaci\'on}{subsection.3.6.2}{}}
+\newlabel{eq:argmax_impl}{{3.22}{80}{M\'etricas de clasificaci\'on}{equation.3.22}{}}
+\newlabel{eq:metricas_clase_impl}{{3.23}{80}{M\'etricas de clasificaci\'on}{equation.3.23}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.3}Protocolo de inferencia estad\'istica}{81}{subsection.3.6.3}\protected@file@percent }
+\newlabel{subsec:test_t}{{3.6.3}{81}{Protocolo de inferencia estad\'istica}{subsection.3.6.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.4}Evaluaci\'on por bloque funcional}{81}{subsection.3.6.4}\protected@file@percent }
+\newlabel{subsec:eval_bloques}{{3.6.4}{81}{Evaluaci\'on por bloque funcional}{subsection.3.6.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Bloque de conteo (Skellam/LightGBM).}{81}{paragraph*.112}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Bloque de rating (Glicko-2 modificado).}{82}{paragraph*.113}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Bloque de refinamiento (MLP).}{82}{paragraph*.114}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.5}Discusi\'on metodol\'ogica sobre el empate}{82}{subsection.3.6.5}\protected@file@percent }
+\newlabel{subsec:empate_metodologia}{{3.6.5}{82}{Discusi\'on metodol\'ogica sobre el empate}{subsection.3.6.5}{}}
 \@setckpt{metodologia}{
-\setcounter{page}{82}
+\setcounter{page}{84}
 \setcounter{equation}{27}
 \setcounter{enumi}{4}
 \setcounter{enumii}{0}
@@ -177,16 +182,16 @@
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
 \setcounter{figure}{3}
-\setcounter{table}{0}
+\setcounter{table}{1}
 \setcounter{caption@flags}{2}
 \setcounter{continuedfloat}{0}
 \setcounter{subfigure}{0}
 \setcounter{subtable}{0}
 \setcounter{parentequation}{0}
 \setcounter{section@level}{0}
-\setcounter{Item}{60}
+\setcounter{Item}{63}
 \setcounter{Hfootnote}{0}
-\setcounter{bookmark@seq@number}{82}
+\setcounter{bookmark@seq@number}{83}
 \setcounter{tabx@nest}{0}
 \setcounter{listtotal}{0}
 \setcounter{listcount}{0}
@@ -196,7 +201,7 @@
 \setcounter{citetotal}{0}
 \setcounter{multicitecount}{0}
 \setcounter{multicitetotal}{0}
-\setcounter{instcount}{110}
+\setcounter{instcount}{111}
 \setcounter{maxnames}{3}
 \setcounter{minnames}{1}
 \setcounter{maxitems}{3}
