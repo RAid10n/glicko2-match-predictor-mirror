@@ -660,6 +660,7 @@ El n\'ucleo inferencial del sistema es la implementaci\'on propia del Glicko-2 m
 El motor can\'onico de Shelopugin y Sirotkin (\texttt{glicko2.py}) recibe la probabilidad de empate cruda y la incorpora directamente al exponente del t\'ermino de empate. El motor propio (\texttt{G2Av1513.py}) introduce una reparametrizaci\'on logit interna, $s_{\text{logit}} = \operatorname{logit}(\hat{P}_D^{\text{Skellam}})$, que mapea el par\'ametro de empate al espacio real $\mathbb{R}$ antes de su ingreso al exponente. Esta transformaci\'on, junto con otras mejoras de estabilidad num\'erica, se detallan a continuaci\'on; desde el punto de vista del Cap\'itulo~\ref{ch:marco}, la estructura probabil\'istica del modelo trinomial (Ecuaciones~\ref{eq:prob_victoria_local}--\ref{eq:prob_victoria_visitante}) permanece inalterada, dado que la reparametrizaci\'on es un cambio de variable biyectivo sobre el dominio $(0,1)$.
 
 \subsubsection{Mejoras de la implementaci\'on propia sobre el motor de referencia}
+\label{subsubsec:mejoras_g2av1513}
 
 El motor \texttt{G2Av1513.py} no es una traducci\'on directa del c\'odigo de Shelopugin y Sirotkin, sino una reimplementaci\'on que corrige inconsistencias algebraicas e introduce mecanismos de estabilidad num\'erica necesarios para la calibraci\'on por L-BFGS-B sobre un panel multiliga. A continuaci\'on se sistematizan las diferencias funcionales respecto al motor can\'onico \texttt{glicko2.py}.
 
@@ -722,23 +723,6 @@ El algoritmo L-BFGS-B se ejecuta hasta alcanzar la tolerancia predefinida, regis
 
 \paragraph{Evaluaci\'on aislada del bloque de rating.}
 Para cuantificar el aporte incremental del perceptr\'on multicapa, se eval\'ua el sistema Glicko-2 modificado en aislamiento sobre el conjunto de prueba. Las m\'etricas utilizadas son la p\'erdida logar\'itmica (log-loss) categ\'orica y la p\'erdida logar\'itmica (log-loss) binaria, cuyas definiciones se presentan en la Secci\'on~\ref{sec:metricas_eval}. Los valores obtenidos constituyen la l\'inea base contra la cual se mide el desempe\~no del refinador neuronal y se reportan en el Cap\'itulo~\ref{ch:resultados}, junto con las comparaciones estad\'isticas correspondientes.
-
-%\paragraph{Convergencia y par\'ametros calibrados.} El algoritmo L-BFGS-B converge tras aproximadamente $660$ evaluaciones de la funci\'on objetivo para los datasets Full y Lite Recortado, y $1440$ evaluaciones para el dataset Lite, lo que sugiere una superficie de p\'erdida m\'as compleja en el universo ampliado de competiciones. Los valores \'optimos del par\'ametro de calibraci\'on del empate resultan:
-%\begin{align}
-	%d_{\text{Full}} &= 0{.}9113, \\
-	%d_{\text{Lite}} &= 0{.}9351, \\
-	%d_{\text{Lite Recortado}} &= 0{.}9113.
-%\end{align}
-%La coincidencia entre Full y Lite Recortado (misma ventana temporal) valida la estabilidad del estimador, mientras que el valor ligeramente superior en Lite ($0{.}9351$) refleja la mayor heterogeneidad competitiva al incluir ligas con datos deportivos incompletos (Ir\'an y Venezuela).
-
-% [PLACEHOLDER: Insertar Cuadro con valores calibrados de h_ℓ y μ_init,ℓ por liga.
-% Los archivos JSON originales (glicko_params_*.json) se perdieron y deben regenerarse.
-% Formato sugerido: Liga | μ_init,ℓ | h_ℓ | h_ℓ escala nominal.
-% Nota al estudiante: re-entrenar G2Av1513 o recuperar los JSON de Colab.]
-
-%El rango final de los ratings tras la actualizaci\'on secuencial sobre el conjunto completo es $[1205{.}3,\, 1821{.}2]$ para Full, con un rango de $616$ puntos, y $[1201{.}7,\, 1850{.}4]$ para Lite, con un rango de $648{.}7$ puntos. Estos rangos son coherentes con la escala Glicko-2 y reflejan la dispersi\'on competitiva real del panel.
-
-%\paragraph{Evaluaci\'on aislada del bloque de rating.} Sobre el conjunto de prueba, el sistema Glicko-2 calibrado en aislamiento (sin refinamiento neuronal) alcanza una log-loss de $1{.}0443$ (Full), $1{.}0440$ (Lite) y $1{.}0443$ (Lite Recortado), con log-loss binaria (victoria local vs.\ no victoria local) de $0{.}6527$, $0{.}6506$ y $0{.}6527$, respectivamente. Estos valores constituyen la l\'inea base contra la cual se mide el aporte del perceptr\'on multicapa.
 
 \subsection{Entrenamiento del bloque de refinamiento}
 \label{subsec:train_mlp}

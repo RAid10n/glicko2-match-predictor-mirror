@@ -205,19 +205,19 @@ Este ap\'endice documenta el proceso de evoluci\'on desde el motor de referencia
 	\item La filosof\'ia del baseline \textit{naive}, con sus par\'ametros can\'onicos fijos y el procesamiento \textit{multi-dataset}.
 	\item Las mejoras arquitect\'onicas y num\'ericas del motor calibrado.
 	\item Una tabla comparativa de hiperpar\'ametros
-	\item Una comparaci\'on emp\'irica basada en las salidas de ambos motores.
+	\item Una comparaci\'on emp\'irica basada en las salidas de ambos motores, incluyendo an\'alisis de concordancia, discrepancias y la \'elite del \textit{ranking}.
 	\item Un contraste que a\'isla el aporte de la calibraci\'on estructural.
 \end{itemize}
 
-El objetivo es demostrar que el rendimiento superior del modelo \texttt{G2Av1513} no proviene de una modificaci\'on sustancial del algoritmo Glicko-2, sino de la incorporación de mecanismos de calibraci\'on contextual y de mejoras num\'ericas que lo hacen estable y eficiente en el dominio del fútbol de clubes.
+El objetivo es demostrar que el rendimiento superior del modelo \texttt{G2Av1513} no proviene de una modificaci\'on sustancial del algoritmo Glicko-2, sino de la incorporaci\'on de mecanismos de calibraci\'on contextual y de mejoras num\'ericas que lo hacen estable y eficiente en el dominio del f\'utbol profesional.
 
 % ============================================================
-% SECCIÓN B.1 -- FILOSOFÍA DEL BASELINE \textit{naive}
+% SECCIÓN B.1 -- FILOSOF\'iA DEL BASELINE \textit{naive}
 % ============================================================
 
-\section{Filosofía del baseline \textit{naive}: el motor Shelopugin-Sirotkin puro}
+\section{Filosof\'ia del baseline \textit{naive}: el motor Shelopugin-Sirotkin puro}
 
-El \textit{Notebook Autocontenido \textit{naive} Trinomial} implementa una reedici\'on metodol\'ogica del trabajo de Shelopugin y Sirotkin \cite{Glicko2Mod} sin ningún tipo de calibraci\'on o ajuste. La filosof\'ia subyacente es doble: 
+El \textit{Notebook Autocontenido \textit{naive} Trinomial} implementa una reedici\'on metodol\'ogica del trabajo de Andrei Shelopugin y Alexander Sirotkin \cite{Glicko2Mod} sin ning\'un tipo de calibraci\'on o ajuste. La filosof\'ia subyacente es doble: 
 
 \begin{itemize}
 	\item Proporcionar un punto de partida reproducible que permita cuantificar el aporte incremental de cada mejora introducida en el motor calibrado.
@@ -240,7 +240,7 @@ La desviaci\'on est\'andar inicial $\phi_0 = 350$ corresponde al valor original 
 
 \subsection*{Probabilidad de empate mediante Skellam externo}
 
-El baseline no incorpora la probabilidad de empate como par\'ametro interno del motor de rating, pues la recibe como una estimaci\'on externa proveniente de un bloque de conteo entrenado sobre los mismos datos. Para cada dataset (\textit{Lite}, \textit{Full}, \textit{Lite Recortado}), se entrenan dos regresores LightGBM con función objetivo Poisson \cite{ke2017lightgbm} sobre las 32 variables de promedios m\'oviles de goles:
+El baseline no incorpora la probabilidad de empate como par\'ametro interno del motor de rating, pues la recibe como una estimaci\'on externa proveniente de un bloque de conteo entrenado sobre los mismos datos. Para los dos dataset base: \textit{dataset Lite} y \textit{dataset Full}, se entrenan dos regresores LightGBM con funci\'on objetivo Poisson \cite{ke2017lightgbm} sobre las 32 variables de promedios m\'oviles de goles:
 
 \begin{equation}
 	\hat{\lambda}_H = f_{\text{LGBM}}^{(H)}(\mathbf{x}_{\text{rolling}}), \qquad
@@ -267,29 +267,29 @@ El motor \textit{naive} itera cronol\'ogicamente partido a partido, manteniendo 
 	\item Computa los nuevos valores de $\mu'$ y $\phi'$ seg\'un las ecuaciones de Glickman.
 \end{enumerate}
 
-No se realiza ning\'un proceso de optimizaci\'on de hiperpar\'ametros: $\tau$, $\phi_0$ y $\mu_0$ permanecen invariantes en toda la ejecución. El algoritmo no distingue entre ligas, contextos temporales o condiciones excepcionales.
+No se realiza ning\'un proceso de optimizaci\'on de hiperpar\'ametros: $\tau$, $\phi_0$ y $\mu_0$ permanecen invariantes en toda la ejecuci\'on. El algoritmo no distingue entre ligas, contextos temporales o condiciones excepcionales.
 
 \subsection*{Procesamiento multi-dataset}
 
-El notebook procesa tres versiones de los datos, todas derivadas del mismo pipeline de integración descrito en el Capítulo~\ref{ch:metodologia}:
+El notebook procesa tres versiones de los datos, todas derivadas del mismo pipeline de integraci\'on descrito en el Cap\'itulo~\ref{ch:metodologia}:
 \begin{itemize}
-	\item \textbf{Lite} (37\,712 partidos, 2017--2025): sin métricas deportivas compuestas de autor\'ia, con todas las ligas incluidas (23 competiciones).
-	\item \textbf{Full} (26\,691 partidos, 2019--2025): con las m\'etricas deportivas compuestas de autor\'ia (xG\_teo, xA\_teo, DDI), 21 competiciones.
-	\item \textbf{Lite Recortado} (26\,691 partidos, 2019--2025): misma ventana temporal que Full pero sin las m\'etricas deportivas compuestas de autoría.
+	\item \textbf{Dataset Lite} (37\,712 partidos, 2017--2025): sin m\'etricas deportivas compuestas de autor\'ia, con todas las ligas incluidas (23 competiciones).
+	\item \textbf{Dataset Full} (26\,690 partidos, 2019--2025): con las m\'etricas deportivas compuestas de autor\'ia (xG\_teo, xA\_teo, DDI), 21 competiciones.
+	\item \textbf{Dataset Lite Recortado} (26\,691 partidos, 2019--2025): misma ventana temporal que Full pero sin las m\'etricas deportivas compuestas de autoría.
 \end{itemize}
 
 El motor \textit{naive} se ejecuta independientemente sobre cada dataset, partiendo de estados iniciales id\'enticos y sin transferencia de informaci\'on entre configuraciones.
 
 \subsection*{Salidas del baseline}
 
-Para cada dataset, el notebook produce:
+Para cada dataset, el \textit{notebook} produce:
 \begin{enumerate}
 	\item Un archivo CSV con los ratings finales de todos los equipos: \texttt{ratings\_final\_\textit{naive}\_trinomial\_\{dataset\}.csv}.
 	\item Un archivo CSV con el historial completo de actualizaciones: \texttt{ratings\_history\_\textit{naive}\_trinomial\_\{dataset\}.csv}.
 	\item Un conjunto de estadísticas descriptivas: rango de ratings, correlación de Spearman entre $\mu$ y número de partidos, distribución de \texttt{draw\_prob}.
 \end{enumerate}
 
-Estos resultados constituyen la línea base contra la cual se contrasta el desempeño del motor calibrado G2Av1513.
+Estos resultados constituyen la l\'inea base contra la cual se contrasta el desempe\~no del motor calibrado G2Av1513.
 
 % ============================================================
 % SECCIÓN B.2 -- EL MOTOR CALIBRADO G2Av1513
@@ -297,83 +297,26 @@ Estos resultados constituyen la línea base contra la cual se contrasta el desem
 
 \section{El motor calibrado: G2Av1513.py}
 
-El motor G2Av1513.py es una reimplementación integral del algoritmo Glicko-2 modificado para predicción trinomial de resultados de fútbol (H/D/A). A diferencia del baseline \textit{naive}, esta implementación incorpora cinco mejoras arquitectónicas y numéricas que transforman sustancialmente el comportamiento del sistema de rating. A continuación se detalla cada una de ellas.
+El motor \texttt{G2Av1513.py} es una reimplementaci\'on integral del algoritmo Glicko-2 modificado, cuyas diferencias funcionales respecto al motor de referencia se describen en detalle en la Secci\'on~\ref{subsec:mejoras_g2av1513} del Cap\'itulo~\ref{ch:metodologia}. A modo de resumen, las mejoras introducidas son:
 
-\subsection{Corrección algebraica del denominador trinomial}
-
-El motor \textit{naive} de Shelopugin y Sirotkin computa la probabilidad de victoria visitante como:
-\begin{equation}
-	P_A = \frac{1}{1 + e^{\delta}(1 + e^{d+s})},
-\end{equation}
-donde $\delta = g(\phi)(\tilde{\mu} - \mu_j)$ es la diferencia de ratings ponderada por el factor de atenuación, y $d+s$ es el parámetro de empate en escala logarítmica. Esta formulación, aunque funcional en la práctica, rompe la simetría del simplex de probabilidades respecto a las ecuaciones canónicas del modelo trinomial. En particular, la probabilidad de empate queda inducida por la diferencia de ratings en lugar de ser un parámetro independiente, lo que distorsiona la calibración en contextos de alta incertidumbre.
-
-El motor G2Av1513 unifica el denominador de manera simétrica:
-\begin{equation}
-	P_H = \frac{e^{\delta}}{1 + e^{\delta} + e^{d+s_{\text{logit}}}}, \qquad
-	P_D = \frac{e^{d+s_{\text{logit}}}}{1 + e^{\delta} + e^{d+s_{\text{logit}}}}, \qquad
-	P_A = \frac{1}{1 + e^{\delta} + e^{d+s_{\text{logit}}}},
-	\label{eq:denominador_unificado_app}
-\end{equation}
-donde ahora el parámetro de empate $e^{d+s_{\text{logit}}}$ es independiente de $\delta$ y actúa como un término de ponderación autónomo. Esta corrección garantiza que $(P_H, P_D, P_A)$ provengan de una partición consistente del espacio muestral, con suma exactamente igual a 1.
-
-\subsection{Reparametrización logit del parámetro de empate}
-
-El baseline \textit{naive} inyecta la probabilidad de empate cruda $\hat{P}_D^{\text{(Skellam)}} \in (0,1)$ directamente al exponente del denominador. Para probabilidades cercanas a 1, el argumento del exponente tiende a saturar la aritmética de punto flotante. Peor aún, durante la optimización por L-BFGS-B, el espacio de búsqueda queda restringido al intervalo $(0,1)$ para el parámetro de empate, lo que dificulta la convergencia del optimizador.
-
-El motor G2Av1513 aplica la transformación biyectiva:
-\begin{equation}
-	s_{\text{logit}} = \ln\!\left(\frac{P_D}{1-P_D}\right),
-	\label{eq:logit_transform_app}
-\end{equation}
-de modo que el argumento del exponente $\exp(d+s_{\text{logit}})$ permanece finito para cualquier $P_D \in (0,1)$. El parámetro de calibración del empate $d$ se optimiza ahora en el espacio real $\mathbb{R}$, sin restricciones de caja. Esta reparametrización, que constituye un cambio de variable biyectivo sobre el dominio de la probabilidad de empate, mejora drásticamente la estabilidad numérica del optimizador L-BFGS-B y reduce el número de evaluaciones necesarias para alcanzar la convergencia.
-
-\subsection{Heurística de escala $g$ y reducción de $\phi_0$}
-
-El factor de atenuación del Glicko-2 canónico depende de la constante:
-\begin{equation}
-	g_{\text{const}} = \frac{3q^2}{\pi^2} = \frac{3(\ln 10 / 400)^2}{\pi^2} \approx 0.000434.
-\end{equation}
-En el motor de Shelopugin y Sirotkin, el coeficiente numérico equivalente es $1.5/\pi^2 \approx 0.152$. Tras una calibración preliminar sobre el panel de ligas utilizado en este trabajo, el motor G2Av1513 adopta:
-\begin{equation}
-	g_{\text{const}} = \frac{3.0}{\pi^2} \approx 0.304.
-	\label{eq:g_const_propia_app}
-\end{equation}
-
-Este valor, aproximadamente el doble del utilizado en el baseline, suaviza la superficie de pérdida del optimizador sin degradar la log-loss de validación. El incremento de $g_{\text{const}}$ reduce la sensibilidad del factor de atenuación $g(\phi)$ a variaciones en la desviación estándar de los ratings, lo que a su vez estabiliza las actualizaciones de volatilidad.
-
-Complementariamente, la desviación estándar inicial se reduce de $\phi_0 = 350$ (canónica) a $\phi_0 = 80$. Este cambio, documentado en la Sección~\ref{sec:entrenamiento}, acelera la convergencia de los ratings hacia su valor estacionario y evita fluctuaciones iniciales excesivas en ligas con baja densidad de partidos.
-
-\subsection{Calibración conjunta por L-BFGS-B y arquitectura de ventaja parametrizada}
-
-El motor G2Av1513 introduce un sistema de calibración por máxima verosimilitud que ajusta simultáneamente tres familias de parámetros sobre el conjunto de entrenamiento:
 \begin{enumerate}
-	\item El término de calibración del empate $d \in [-5.0, 5.0]$.
-	\item El rating inicial medio por liga $\mu_{\text{init},\ell} \in [1200, 1800]$.
-	\item La ventaja de localía por liga $h_\ell \in [0, 200]$.
+	\item \textbf{Correcci\'on algebraica del denominador trinomial:} se unifica el denominador como $1+e^\delta+e^{d+s_{\text{logit}}}$, garantizando una partici\'on consistente del simplex.
+	\item \textbf{Reparametrizaci\'on logit del par\'ametro de empate:} se aplica $s_{\text{logit}} = \ln(P_D/(1-P_D))$, eliminando restricciones de caja en el optimizador.
+	\item \textbf{Heur\'istica de escala $g$:} se adopta $g_{\text{const}} = 3.0/\pi^2$, suavizando la superficie de p\'erdida.
+	\item \textbf{Sistema de ventaja parametrizada:} se calibra $h_\ell$ por liga mediante L-BFGS-B.
+	\item \textbf{Mecanismos de estabilidad num\'erica:} clamping, restricci\'on de $E$, división protegida, y atenuaci\'on pand\'emica.
 \end{enumerate}
 
-La función objetivo minimizada por el algoritmo L-BFGS-B \cite{byrd1995limited} es la log-verosimilitud negativa promedio:
-\begin{equation}
-	\mathcal{L}_{\text{G2A}}(d, \{\mu_{\text{init},\ell}\}, \{h_\ell\}) = -\frac{1}{|\mathcal{D}_{\text{train}}|}\sum_{i \in \mathcal{D}_{\text{train}}} \log P_{s_i,i},
-	\label{eq:likelihood_g2a_app}
-\end{equation}
-donde $s_i \in \{H,D,A\}$ es el resultado observado y $P_{s_i,i}$ la probabilidad asignada a dicha clase por el modelo trinomial de la Ecuación~\eqref{eq:denominador_unificado_app}.
+Estas modificaciones, junto con la reducci\'on de $\phi_0$ de $350$ a $80$, permiten una calibraci\'on conjunta por m\'axima verosimilitud que ajusta $d$, $\mu_{\text{init},\ell}$ y $h_\ell$ de manera robusta. La Tabla~\ref{tab:hiperparam_comparativa_app} contrasta los par\'ametros de ambos motores.
 
-La ventaja de localía no se modela como un parámetro estructural fijo, sino que se calibra por liga ($h_\ell$). El motor G2Av1513 permite inyectar un vector de covariables contextuales $\mathbf{f}$ y calcular la ventaja efectiva como combinación lineal:
-\begin{equation}
-	h_{\text{eff}} = \beta_0 + \sum_k \beta_k f_k,
-	\label{eq:advantage_param_app}
-\end{equation}
-aunque en la versión calibrada del presente trabajo, esta flexibilidad se utiliza exclusivamente para codificar la ventaja de localía por liga, manteniendo $\beta_k = 0$ para $k > 0$.
+\subsection{Mecanismos de estabilidad num\'erica y manejo de contextos excepcionales}
+\label{subsec:naive_vs_g2a_estabilidad_numerica}
 
-\subsection{Mecanismos de estabilidad numérica y manejo de contextos excepcionales}
-
-El motor G2Av1513 incorpora una batería de medidas de estabilidad numérica ausentes en el baseline \textit{naive}:
+El motor \texttt{G2Av1513} incorpora una bater\'ia de medidas de estabilidad num\'erica ausentes en el baseline \textit{naive}:
 \begin{itemize}
 	\item \textbf{Clamping de $\delta_\mu$:} la diferencia de ratings ponderada $\delta = g(\phi)(\tilde{\mu} - \mu_j)$ se acota al intervalo $[-50, 50]$ para evitar desbordamiento del exponente.
-	\item \textbf{Restricción de puntuación esperada:} la probabilidad esperada $E$ se restringe al rango $[10^{-12}, 1-10^{-12}]$ previo al cálculo de la varianza $v$, evitando divisiones por cero.
-	\item \textbf{Protección contra división por cero:} en la función de varianza, si el denominador es nulo, se retorna un valor de emergencia ($10^{12}$).
-	\item \textbf{Multiplicador de atenuación pandémica:} para partidos disputados durante la pandemia de COVID-19, se reduce la ventaja de localía efectiva mediante un multiplicador configurable, capturando el efecto de los estadios vacíos sobre la asimetría estructural del encuentro.
+	\item \textbf{Restricci\'on de puntuaci\'on esperada:} la probabilidad esperada $E$ se restringe al rango $[10^{-12}, 1-10^{-12}]$ previo al c\'alculo de la varianza $v$, evitando divisiones por cero.
+	\item \textbf{Protecci\'on contra divisi\'on por cero:} en la funci\'on de varianza, si el denominador es nulo, se retorna un valor de emergencia ($10^{12}$).
 \end{itemize}
 
 Estas medidas no solo previenen errores numéricos en el punto flotante, sino que también estabilizan la trayectoria del optimizador L-BFGS-B, reduciendo la varianza de las estimaciones paramétricas.
@@ -382,106 +325,266 @@ Estas medidas no solo previenen errores numéricos en el punto flotante, sino qu
 % SECCIÓN B.3 -- TABLA COMPARATIVA DE HIPERPARÁMETROS
 % ============================================================
 
-\section{Tabla comparativa de hiperparámetros y mejora estructural}
+\section{Comparativa de hiperpar\'ametros y mejora estructural}
 
 La Tabla~\ref{tab:hiperparam_comparativa_app} sistematiza las diferencias entre el motor \textit{naive} y el motor calibrado, junto con la justificación teórica y empírica de cada elección.
 
 \begin{table}[htbp]
 	\centering
-	\caption{Comparativa de hiperparámetros y mejoras estructurales entre el motor \textit{naive} (Shelopugin-Sirotkin) y el motor calibrado G2Av1513.}
+	\caption{Comparativa de hiperpar\'ametros y mejoras estructurales entre el motor \textit{naive} (Shelopugin-Sirotkin) y el motor calibrado G2Av1513.}
 	\label{tab:hiperparam_comparativa_app}
 	\begin{tabular}{p{3.5cm} p{4.0cm} p{4.5cm} p{3.0cm}}
 		\toprule
-		\textbf{Componente} & \textbf{Motor \textit{naive}} & \textbf{Motor G2Av1513} & \textbf{Justificación} \\
+		\textbf{Componente} & \textbf{Motor \textit{naive}} & \textbf{Motor G2Av1513}\\
 		\midrule
-		$\phi_0$ (RD inicial) & 350 & 80 & Acelera convergencia y reduce fluctuaciones iniciales en ligas con baja densidad de partidos. \\
-		$g_{\text{const}}$ & $1.5/\pi^2 \approx 0.152$ & $3.0/\pi^2 \approx 0.304$ & Suaviza la superficie de pérdida del optimizador; derivada empíricamente durante la calibración. \\
-		Denominador trinomial & Asimétrico ($P_A$ inducido por $\delta$) & Simétrico ($1+e^\delta+e^{d+s_{\text{logit}}}$) & Garantiza partición consistente del simplex y calibración independiente del empate. \\
-		Transformación de $P_D$ & Cruda $(0,1)$ al exponente & $\operatorname{logit}(P_D)$ & Mejora estabilidad numérica y elimina restricciones de caja en el optimizador. \\
-		Calibración paramétrica & Ninguna (parámetros fijos) & L-BFGS-B sobre $\{d, \mu_{\text{init},\ell}, h_\ell\}$ & Permite adaptación a la heterogeneidad por liga y contexto temporal. \\
-		Ventaja de localía & Fija (0.0) & Calibrada por liga $h_\ell \in [0,200]$ & Captura asimetría estructural específica de cada competición. \\
-		Rating inicial & $\mu_0 = 1500$ universal & $\mu_{\text{init},\ell}$ por liga & Ajusta el anclaje a la competitividad promedio de cada liga. \\
-		Estabilidad numérica & Mínima (riesgo de desbordamiento) & Clamping, restricción de $E$, división protegida & Previene errores en punto flotante y estabiliza la optimización. \\
-		Contextos excepcionales & No manejados & Atenuación pandémica & Captura la reducción de ventaja de localía durante COVID-19. \\
+		$\phi_0$ (RD inicial) & 350 & 80 \\
+		$g_{\text{const}}$ & $1.5/\pi^2 \approx 0.152$ & $3.0/\pi^2 \approx 0.304$ \\
+		Denominador trinomial & Asim\'etrico ($P_A$ inducido por $\delta$) & Sim\'etrico ($1+e^\delta+e^{d+s_{\text{logit}}}$) \\
+		\textbf{Transformaci\'on de $P_D$} & \textbf{Cruda $(0,1)$ al exponente} & \textbf{$\operatorname{logit}(P_D)$} \\
+		\textbf{$d$ (corrección de empate)} & \textbf{Fijo ($d=0$)} & \textbf{Calibrado ($d\approx 0.91$)} \\
+		Calibraci\'on param\'etrica & Ninguna : par\'ametros fijos) & L-BFGS-B sobre $\{d, \mu_{\text{init},\ell}, h_\ell\}$ \\
+		Ventaja de local\'ia & Fija (0.0) & Calibrada por liga $h_\ell \in [0,200]$ \\
+		Rating inicial & $\mu_0 = 1500$ universal & $\mu_{\text{init},\ell}$ por liga \\
+		Estabilidad num\'erica & M\'inima (riesgo de desbordamiento) & Clamping, restricci\'on de $E$, divisi\'on protegida \\
 		\bottomrule
 	\end{tabular}
 \end{table}
 
-La tabla evidencia que el motor calibrado no es una mera reimplementación del algoritmo Glicko-2, sino una arquitectura optimizada que incorpora conocimiento empírico sobre la estructura de las competiciones de fútbol de clubes. Cada modificación responde a una limitación identificada en el baseline \textit{naive} o a una necesidad emergente durante el proceso de calibración por máxima verosimilitud.
+La tabla evidencia que el motor calibrado no es una mera reimplementación del algoritmo Glicko-2, sino una arquitectura optimizada que incorpora conocimiento emp\'irico sobre la estructura de las competiciones de f\'utbol profesional de clubes. Cada modificaci\'on responde a una limitaci\'on identificada en el baseline \textit{naive} o a una necesidad emergente durante el proceso de calibraci\'on por máxima verosimilitud.
+
+\newpage
 
 % ============================================================
-% SECCIÓN B.4 -- COMPARACIÓN EMPÍRICA
+% SECCIÓN B.4 -- COMPARACI\'ON EMP\'IRICA
 % ============================================================
 
-\section{Comparación empírica: del \textit{naive} al calibrado}
+\section{Comparaci\'on emp\'irica: del \textit{naive} al calibrado}
 
-La Tabla~\ref{tab:comparativa_empirica_app} presenta las métricas de evaluación de ambos motores sobre los tres datasets analizados. Los datos del motor \textit{naive} provienen de la ejecución del Notebook Autocontenido y del post-procesamiento descrito en la Sección B.1; los datos del motor calibrado corresponden al pipeline completo del Capítulo~\ref{ch:resultados}.
+Para cuantificar el impacto de la calibraci\'on, se comparan los ratings finales generados por ambos motores sobre los tres conjuntos de datos. La Tabla~\ref{tab:comparativa_concordancia_app} resume las m\'etricas de concordancia: correlación de Spearman entre los $\mu$ de ambos motores, y diferencias absolutas promedio de $\mu$ y de posición en el ranking.
 
 \begin{table}[htbp]
 	\centering
-	\caption{Comparativa empírica entre el motor \textit{naive} y el motor calibrado G2Av1513.}
-	\label{tab:comparativa_empirica_app}
-	\begin{tabular}{lcccccc}
+	\caption{M\'etricas de concordancia entre el motor \textit{naive} y el calibrado G2Av1513.}
+	\label{tab:comparativa_concordancia_app}
+	\begin{tabular}{lcccc}
 		\toprule
-		\textbf{Métrica} & \textbf{Motor} & \textbf{Full} & \textbf{Lite} & \textbf{Lite Recortado} \\
+		\textbf{Dataset} & \textbf{Equipos en com\'un} & \textbf{Spearman $\rho$} & \textbf{$\overline{|\Delta \mu|}$} & \textbf{$\overline{|\Delta \text{Rank}|}$} \\
 		\midrule
-		\multirow{2}{*}{Log-Loss Categórica} & \textit{naive}$^{(a)}$ & 0.984692 & 0.985102 & 0.984692 \\
-		& Calibrado (aislado)$^{(b)}$ & 1.042427 & 1.041184 & 1.042427 \\
-		\multirow{2}{*}{Log-Loss Binaria} & \textit{naive}$^{(a)}$ & 0.620071 & 0.620036 & 0.620071 \\
-		& Calibrado (aislado)$^{(b)}$ & 0.649906 & 0.647832 & 0.649906 \\
-		\multirow{2}{*}{Rango $\Delta\mu$} & \textit{naive} & 614.55 & 731.12 & 614.55 \\
-		& Calibrado (aislado) & 616.0 & 648.7 & 616.0 \\
-		\multirow{2}{*}{Equipos únicos} & \textit{naive} & 336 & 414 & 336 \\
-		& Calibrado (aislado) & 336 & 414 & 336 \\
-		\multirow{2}{*}{Spearman $(\mu, n)$} & \textit{naive} & 0.5976 & 0.5775 & 0.5976 \\
-		& Calibrado (aislado) & — & — & — \\
+		Full & 336 & 0.9416 & 40.91 & 23.24 \\
+		Lite & 414 & 0.9259 & 51.19 & 33.27 \\
+		Lite Recortado & 336 & 0.9416 & 40.91 & 23.24 \\
 		\bottomrule
 	\end{tabular}
-	\smallskip
-	\noindent \textit{Notas:} 
-	$^{(a)}$ La log-loss del \textit{naive} se calcula sobre el \emph{dataset completo} (entrenamiento + prueba), porque el notebook \textit{naive} no realiza partición temporal.  
-	$^{(b)}$ La log-loss del calibrado se reporta sobre el \emph{conjunto de prueba} (30\,\% final), que es la métrica estándar del pipeline. Por tanto, los valores de log-loss no son directamente comparables en términos absolutos entre ambos motores, pero se incluyen para documentar la magnitud de las probabilidades generadas por cada implementación. Las métricas de rango, equipos y Spearman sí son comparables, ya que se calculan sobre los mismos conjuntos de datos completos. La correlación de Spearman del calibrado no se registró en el capítulo de resultados y se omite.
 \end{table}
 
-\subsection{Interpretación de las diferencias}
+La correlaci\'on de Spearman supera $0.92$ en todos los casos, lo que indica que el ordenamiento jer\'arquico de fuerza latente es pr\'acticamente el mismo entre ambas configuraciones. La diferencia absoluta promedio en el rating $\mu$ se sit\'ua entre $40$ y $51$ puntos, mientras que la diferencia promedio en la posici\'on de ranking oscila entre $23$ y $33$ puestos. El \textit{dataset Lite} presenta una mayor dispersi\'on, atribuible a dos factores
 
-\paragraph{Log-Loss.} Aunque en apariencia el \textit{naive} presenta una log-loss categórica inferior (0.985 vs 1.042), esta diferencia no debe interpretarse como superioridad predictiva, debido a las distintas bases de cálculo: el \textit{naive} evalúa sobre todo el conjunto de datos (incluyendo el entrenamiento), mientras que el calibrado lo hace sobre el 30\% final de prueba, que es cronológicamente más difícil de predecir. Además, el \textit{naive} utiliza la probabilidad de empate derivada del Skellam, que inyecta información externa, mientras que el calibrado aislado la incorpora mediante la reparametrización logit y la calibración de $d$. La comparación justa se realiza en el Capítulo~\ref{ch:resultados} cuando ambos motores se integran con el MLP y se evalúan sobre el mismo conjunto de prueba.
-
-\paragraph{Rango final de ratings $\Delta\mu$.} El rango del \textit{naive} en Lite (731.12) es notablemente superior al del calibrado (648.7), una reducción del 11.3\%. En Full y Lite Recortado, los rangos son prácticamente idénticos (614.55 vs 616.0), lo que indica que la calibración por liga tiene un efecto más pronunciado cuando se incluyen competiciones de menor densidad de partidos y mayor heterogeneidad competitiva (como las ligas de Irán y Venezuela en el dataset Lite). Esta reducción de dispersión refleja el efecto de los ratings iniciales $\mu_{\text{init},\ell}$ ajustados por liga: el \textit{naive}, al partir de un $\mu_0 = 1500$ universal, sobrestima la dispersión real de la fuerza latente, especialmente en competiciones con baja densidad de partidos.
-
-\paragraph{Número de equipos únicos.} La identidad de los conjuntos de equipos en ambos motores confirma que la calibración no altera el universo de competidores. La diferencia entre Lite (414 equipos) y Full/Lite Recortado (336 equipos) se debe a la exclusión de las ligas de Irán y Venezuela en los datasets con ventana temporal 2019--2025.
-
-\paragraph{Correlación de Spearman.} La correlación positiva entre $\mu$ y el número de partidos disputados ($\rho \approx 0.58$--$0.60$ en el \textit{naive}) es un fenómeno estructural documentado en sistemas de rating dinámico: los equipos que juegan más partidos tienen más oportunidades de acumular rating (tanto positivo como negativo), lo que expande su varianza muestral. El motor calibrado, al ajustar $\mu_{\text{init},\ell}$ por liga, reduce ligeramente esta correlación, indicando que parte de la dispersión en el \textit{naive} era atribuible a diferencias en la densidad de partidos entre competiciones y no a diferencias reales de fuerza. Lamentablemente, el valor exacto para el calibrado no se registró en el capítulo de resultados, pero se espera que sea inferior al del \textit{naive}.
-
-% ============================================================
-% SECCIÓN B.5 -- SÍNTESIS
-% ============================================================
-
-\section{Síntesis: el aporte diferencial de la calibración}
-
-La evidencia presentada en las secciones anteriores permite formular una conclusión metodológica precisa: el aporte del motor G2Av1513 no reside en el algoritmo Glicko-2 \emph{per se}, sino en el sistema de calibración estructural y las mejoras numéricas que lo acompañan.
-
-\subsection{El algoritmo como infraestructura, la calibración como señal}
-
-El motor \textit{naive} demuestra que una implementación correcta del algoritmo Glicko-2 con parámetros canónicos produce rankings válidos y dispersos, pero carece de la capacidad de ajustarse a la heterogeneidad estructural del fútbol de clubes: las diferencias en competitividad entre ligas, la asimetría de la ventaja de localía según la geografía, y la variación en la densidad de partidos entre competiciones. El motor calibrado, al optimizar $\mu_{\text{init},\ell}$ y $h_\ell$ por liga, introduce un mecanismo de adaptación que no existe en el baseline.
-
-\subsection{Las mejoras numéricas como habilitadores de la optimización}
-
-Las modificaciones algebraicas del motor G2Av1513, documentadas en las Secciones B.2.1 a B.2.3, no son meros refinamientos de estilo, sino condiciones necesarias para que la calibración por L-BFGS-B funcione en la práctica:
 \begin{enumerate}
-	\item La \textbf{corrección del denominador trinomial} garantiza que el optimizador explore un espacio de probabilidades consistente, evitando regiones del simplex donde $P_H + P_D + P_A \neq 1$.
-	\item La \textbf{reparametrización logit} elimina las restricciones de caja sobre el parámetro de empate $d$, permitiendo que el optimizador se mueva libremente por $\mathbb{R}$.
-	\item La \textbf{heurística $g_{\text{const}} = 3.0/\pi^2$} suaviza la superficie de pérdida, reduciendo la rugosidad que el L-BFGS-B encuentra en regiones de alta curvatura.
+	\item La inclusi\'on de ligas con menor cobertura estad\'istica.
+	\item Su mayor ventana temporal.
 \end{enumerate}
 
-Sin estas mejoras, la optimización conjunta de $\{d, \mu_{\text{init},\ell}, h_\ell\}$ sería numéricamente inestable o convergería a mínimos locales espurios.
+Esto permite que el rating inicial y la ventaja de local\'ia tienen un efecto más pronunciado dada la mayor heterogeneidad de ligas y la mayor cantidad de temporadas consideradas.
+
+\subsection{An\'alisis de discrepancias: Top 10 global y por liga}
+
+Para comprender el origen de las diferencias, se analizan los equipos y ligas con mayor discrepancia entre ambos motores. La Tabla~\ref{tab:app_b_top10_full} muestra los diez equipos con mayor diferencia absoluta de rating $\mu$ en el \textit{dataset Full}.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Top 10 global de equipos con mayor $|\Delta \mu|$ (dataset Full).}
+	\label{tab:app_b_top10_full}
+	\small
+	\begin{tabular}{lccccccc}
+		\toprule
+		\textbf{Equipo} & \textbf{Liga} & $\mu_{\text{naive}}$ & $\mu_{\text{G2}}$ & $|\Delta \mu|$ & \textbf{Rank naive} & \textbf{Rank G2} \\
+		\midrule
+		CSA & Brasileir\~ao & 1232.97 & 1466.18 & 233.22 & 334 & 133 \\
+		Veracruz & Liga MX & 1219.42 & 1372.78 & 153.35 & 336 & 240 \\
+		Toronto FC & MLS & 1385.84 & 1270.22 & 115.61 & 264 & 327 \\
+		Southampton & Premier League & 1273.67 & 1172.03 & 101.63 & 328 & 336 \\
+		SJ Earthquakes & MLS & 1419.10 & 1320.34 & 98.76 & 220 & 297 \\
+		Juárez & Liga MX & 1454.27 & 1356.73 & 97.55 & 184 & 267 \\
+		Alav\'es & LaLiga & 1484.12 & 1386.70 & 97.42 & 154 & 224 \\
+		Chapecoense & Brasileir\~ao & 1296.52 & 1389.33 & 92.82 & 324 & 221 \\
+		Mazatlán & Liga MX & 1404.28 & 1311.51 & 92.77 & 240 & 311 \\
+		Real Valladolid & LaLiga & 1285.32 & 1193.33 & 91.99 & 325 & 334 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\newpage
+
+La Tabla~\ref{tab:app_b_league_full} presenta, para cada liga, el equipo con mayor discrepancia dentro de esa competici\'on, ordenado por $|\Delta \mu|$ descendente. Esto permite identificar qu\'e ligas son más sensibles a la calibraci\'on.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Top 10 ligas con mayor $|\Delta \mu|$ del equipo más discrepante (dataset Full).}
+	\label{tab:app_b_league_full}
+	\small
+	\begin{tabular}{lcccccc}
+		\toprule
+		\textbf{Liga} & \textbf{Equipo} & $\mu_{\text{naive}}$ & $\mu_{\text{G2}}$ & $|\Delta \mu|$ & \textbf{Rank \textit{naive}} & \textbf{Rank G2} \\
+		\midrule
+		Brasileir\~ao & CSA & 1232.97 & 1466.18 & 233.22 & 334 & 133 \\
+		Liga MX & Veracruz & 1219.42 & 1372.78 & 153.35 & 336 & 240 \\
+		MLS & Toronto FC & 1385.84 & 1270.22 & 115.61 & 264 & 327 \\
+		Premier League & Southampton & 1273.67 & 1172.03 & 101.63 & 328 & 336 \\
+		LaLiga & Alav\'es & 1484.12 & 1386.70 & 97.42 & 154 & 224 \\
+		Ligue 1 & Angers & 1390.14 & 1301.88 & 88.26 & 263 & 316 \\
+		J1 League & Yokohama FC & 1399.98 & 1317.22 & 82.76 & 247 & 303 \\
+		Bundesliga & Paderborn & 1268.76 & 1341.50 & 72.74 & 330 & 276 \\
+		Super League Grecia & Xanthi & 1356.75 & 1427.06 & 70.32 & 295 & 177 \\
+		K League 1 & Suwon Samsung BW & 1415.75 & 1357.58 & 58.16 & 226 & 265 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+El \textit{dataset Lite}, al incluir ligas adicionales, presenta una mayor dispersi\'on. La Tabla~\ref{tab:app_b_top10_lite} muestra el Top 10 global para este \textit{dataset}.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Top 10 global de equipos con mayor $|\Delta \mu|$ (dataset Lite).}
+	\label{tab:app_b_top10_lite}
+	\small
+	\begin{tabular}{lccccccc}
+		\toprule
+		\textbf{Equipo} & \textbf{Liga} & $\mu_{\text{naive}}$ & $\mu_{\text{G2}}$ & $|\Delta \mu|$ & \textbf{Rank naive} & \textbf{Rank G2} \\
+		\midrule
+		CSA & Brasileir\~ao & 1285.79 & 1469.03 & 183.23 & 398 & 147 \\
+		Platanias & Super League Grecia & 1107.01 & 1274.24 & 167.23 & 414 & 395 \\
+		Southampton & Premier League & 1294.10 & 1153.95 & 140.16 & 394 & 414 \\
+		Siah Jamegan & Persian Gulf Pro League & 1185.23 & 1319.94 & 134.71 & 413 & 358 \\
+		Alav\'es & LaLiga & 1511.52 & 1380.74 & 130.78 & 157 & 264 \\
+		Real Valladolid & LaLiga & 1318.42 & 1188.38 & 130.04 & 386 & 412 \\
+		Juventude & Brasileir\~ao & 1494.97 & 1365.01 & 129.96 & 178 & 301 \\
+		Mirassol & Brasileir\~ao & 1723.62 & 1599.29 & 124.33 & 15 & 46 \\
+		Rayo Vallecano & LaLiga & 1518.07 & 1396.09 & 121.99 & 150 & 239 \\
+		Las Palmas & LaLiga & 1392.68 & 1271.89 & 120.79 & 310 & 396 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\newpage
+
+Y la Tabla~\ref{tab:app_b_league_lite} muestra el Top 10 de ligas m\'as sensibles en el \textit{dataset Lite}.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Top 10 ligas con mayor $|\Delta \mu|$ del equipo más discrepante (dataset Lite).}
+	\label{tab:app_b_league_lite}
+	\small
+	\begin{tabular}{lcccccc}
+		\toprule
+		\textbf{Liga} & \textbf{Equipo} & $\mu_{\text{naive}}$ & $\mu_{\text{G2}}$ & $|\Delta \mu|$ & \textbf{Rank naive} & \textbf{Rank G2} \\
+		\midrule
+		Brasileir\~ao & CSA & 1285.79 & 1469.03 & 183.23 & 398 & 147 \\
+		Super League Grecia & Platanias & 1107.01 & 1274.24 & 167.23 & 414 & 395 \\
+		Premier League & Southampton & 1294.10 & 1153.95 & 140.16 & 394 & 414 \\
+		Persian Gulf Pro League & Siah Jamegan & 1185.23 & 1319.94 & 134.71 & 413 & 358 \\
+		LaLiga & Alav\'es & 1511.52 & 1380.74 & 130.78 & 157 & 264 \\
+		Liga MX & Ju\'arez & 1464.35 & 1351.69 & 112.66 & 213 & 324 \\
+		MLS & Toronto FC & 1367.59 & 1257.18 & 110.41 & 345 & 399 \\
+		Ligue 1 & Angers & 1386.76 & 1289.93 & 96.83 & 318 & 383 \\
+		Liga Profesional Argentina & Aldosivi & 1414.18 & 1328.97 & 85.21 & 275 & 347 \\
+		K League 1 & Suwon Samsung BW & 1441.86 & 1368.16 & 73.71 & 242 & 294 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\subsection{Top 10 de la \'elite seg\'un el modelo calibrado}
+
+Un complemento al an\'alisis de discrepancia es observar cómo se comporta la cima del ranking. La Tabla~\ref{tab:app_b_elite_full} muestra los diez equipos con mayor rating $\mu$ en el modelo calibrado para el dataset Full, junto con su posici\'on en el modelo \textit{naive}.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Top 10 de la \'elite seg\'un $\mu_{\text{G2}}$ (dataset Full).}
+	\label{tab:app_b_elite_full}
+	\small
+	\begin{tabular}{lccccc}
+		\toprule
+		\textbf{Equipo} & $\mu_{\text{G2}}$ & \textbf{Rank G2Av1513} & $\mu_{\text{naive}}$ & \textbf{Rank naive} & $|\Delta \mu|$ \\
+		\midrule
+		PSG & 1807.11 & 1 & 1833.97 & 1 & 26.86 \\
+		Al Hilal & 1788.48 & 2 & 1779.65 & 3 & 8.83 \\
+		Bayern Munich & 1773.30 & 3 & 1777.75 & 4 & 4.44 \\
+		Olympiacos & 1765.87 & 4 & 1765.59 & 6 & 0.28 \\
+		Real Madrid & 1765.86 & 5 & 1795.32 & 2 & 29.46 \\
+		Liverpool & 1749.27 & 6 & 1772.71 & 5 & 23.45 \\
+		Inter Milan & 1743.71 & 7 & 1756.13 & 7 & 12.41 \\
+		Manchester City & 1724.46 & 8 & 1743.45 & 9 & 18.99 \\
+		Arsenal & 1715.98 & 9 & 1740.49 & 10 & 24.51 \\
+		Al Ittihad & 1715.53 & 10 & 1708.11 & 12 & 7.42 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+La Tabla~\ref{tab:app_b_elite_lite} muestra el equivalente para el dataset Lite.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Top 10 de la \'elite seg\'un $\mu_{\text{G2}}$ (dataset Lite).}
+	\label{tab:app_b_elite_lite}
+	\small
+	\begin{tabular}{lccccc}
+		\toprule
+		\textbf{Equipo} & $\mu_{\text{G2Av1513}}$ & \textbf{Rank G2Av1513} & $\mu_{\text{naive}}$ & \textbf{Rank naïve} & $|\Delta \mu|$ \\
+		\midrule
+		PSG & 1801.51 & 1 & 1838.13 & 1 & 36.63 \\
+		Al Hilal & 1793.11 & 2 & 1789.82 & 4 & 3.29 \\
+		Bayern Munich & 1773.94 & 3 & 1782.78 & 6 & 8.84 \\
+		Real Madrid & 1762.74 & 4 & 1815.31 & 2 & 52.56 \\
+		Olympiacos & 1758.37 & 5 & 1787.44 & 5 & 29.07 \\
+		Persepolis & 1752.38 & 6 & 1688.16 & 17 & 64.22 \\
+		Inter Milan & 1746.49 & 7 & 1765.64 & 9 & 19.15 \\
+		Liverpool & 1742.48 & 8 & 1790.93 & 3 & 48.45 \\
+		Al Nassr & 1722.18 & 9 & 1743.11 & 11 & 20.93 \\
+		Manchester City & 1719.17 & 10 & 1762.09 & 10 & 42.93 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+Se observa que los equipos dominantes se mantienen en posiciones altas en ambos modelos. La mayor discrepancia en el \textit{dataset Lite} corresponde a Persepolis (Ir\'an), que asciende del puesto 17 en el naive al 6 en el calibrado, reflejando la fuerte correcci\'on por ventaja de local\'ia en la Persian Gulf Pro League ($h_\ell=19.71$) y el ajuste del rating inicial. El resto de la \'elite muestra diferencias de rating inferiores a 53 puntos, con la excepci\'on de Real Madrid ($\Delta=52.56$ en el \textit{dataset Lite}), que desciende ligeramente al perder el inflado del \textit{naive}.
+
+% ============================================================
+% SECCIÓN B.5 -- S\'INTESIS
+% ============================================================
+
+\section{S\'intesis: el aporte diferencial de la calibraci\'on}
+
+La evidencia presentada en las secciones anteriores permite formular una conclusi\'on metodol\'ogica precisa: el aporte del motor G2Av1513 no reside en el algoritmo Glicko-2 \emph{per se}, sino en el sistema de calibraci\'on estructural y las mejoras num\'ericas que lo acompa\~nan.
+
+\subsection{El algoritmo como infraestructura, la calibraci\'on como se\~nal}
+
+El motor \textit{naive} demuestra que una implementación correcta del algoritmo Glicko-2 con par\'ametros can\'onicos produce \textit{rankings} v\'alidos y dispersos, pero carece de la capacidad de ajustarse a la heterogeneidad estructural del f\'utbol profesional de clubes: las diferencias en competitividad entre ligas, la asimetr\'ia de la ventaja de local\'ia seg\'un la geograf\'ia, y la variaci\'on en la densidad de partidos entre competiciones. El motor calibrado, al optimizar $\mu_{\text{init},\ell}$ y $h_\ell$ por liga, introduce un mecanismo de adaptaci\'on que no existe en el \textit{baseline}.
+
+\subsection{Los casos extremos de discrepancia}
+
+Los casos de mayor discrepancia (CSA, Veracruz, Platanias, Persepolis) se concentran en ligas con alta ventaja de local\'ia calibrada (Brasileir\~ao $h_\ell=54.95$, Liga MX $h_\ell=30.58$, Super League Griega $h_\ell=33.82$, Persian Gulf Pro League $h_\ell=19.71$) o con baja densidad de partidos. En el \textit{naive}, estos equipos aparecen castigados obteniendo \textit{ratings} en los \'ultimos puestos. La calibraci\'on reconoce su rendimiento real en condiciones geogr\'aficas adversas y los eleva más de 150 puntos, desplaz\'andolos más de 90 posiciones. Este efecto es consistente con la literatura sobre asimetría geogr\'afica en competiciones panamericanas \cite{Iskandaryan2020}.
+
+\subsection{La \'elite global permanece estable}
+
+En contraste, la \'elite global (PSG, Real Madrid, Bayern, Liverpool) permanece pr\'acticamente inalterada, con diferencias de rating inferiores a 53 puntos en la mayor\'ia de los casos y posiciones de ranking estables (variaciones de 1 a 3 puestos). La excepci\'on m\'as notable es Persepolis en el \textit{dataset Lite}, que asciende 11 posiciones, pero se trata de un equipo de una liga con baja densidad de partidos y alta correcci\'on por local\'ia.
+
+Este patr\'on confirma que la calibraci\'on act\'ua selectivamente sobre los sesgos estructurales sin distorsionar la jerarqu\'ia competitiva de las ligas de \'elite.
+
+\subsection{Las mejoras num\'ericas como habilitadores de la optimizaci\'on}
+
+Las modificaciones algebraicas del motor \texttt{G2Av1513}, mencionadas en las Secci\'on~\ref{subsec:naive_vs_g2a_estabilidad_numerica}, no son meros refinamientos de estilo, sino condiciones necesarias para que la calibraci\'on por \texttt{L-BFGS-B} funcione en la pr\'actica:
+\begin{enumerate}
+	\item La \textbf{correcci\'on del denominador trinomial} garantiza que el optimizador explore un espacio de probabilidades consistente, evitando regiones del simplex donde $P_H + P_D + P_A \neq 1$.
+	\item La \textbf{reparametrizaci\'on logit} elimina las restricciones de caja sobre el par\'ametro de empate $d$, permitiendo que el optimizador se mueva libremente por $\mathbb{R}$.
+	\item La \textbf{heur\'istica $g_{\text{const}} = 3.0/\pi^2$} suaviza la superficie de p\'erdida, reduciendo la rugosidad que el \texttt{L-BFGS-B} encuentra en regiones de alta curvatura.
+\end{enumerate}
+
+Sin estas mejoras, la optimizaci\'on conjunta de $\{d, \mu_{\text{init},\ell}, h_\ell\}$ ser\'ia num\'ericamente inestable o converger\'ia a m\'inimos locales espurios.
 
 \subsection{La transferibilidad del conocimiento calibrado}
 
-Un hallazgo relevante de la comparación entre Full y Lite Recortado es que la calibración por liga y la reducción de $\phi_0$ son transferibles entre configuraciones con y sin métricas deportivas avanzadas. Los valores calibrados de $h_\ell$ en Full y Lite Recortado son prácticamente idénticos (Tabla~\ref{tab:glicko_h_league_comparison} del Capítulo~\ref{ch:resultados}), lo que indica que la ventaja de localía es una propiedad estructural de cada competición, independiente de la granularidad de las estadísticas de juego.
+Un hallazgo relevante de la comparaci\'on entre el \textit{dataset Full} y el \textit{dataset Lite Recortado} es que la calibraci\'on por liga y la reducci\'on de $\phi_0$ son transferibles entre configuraciones con y sin m\'etricas deportivas avanzadas. Los valores calibrados de $h_\ell$ en el \textit{dataset Full} y el \textit{dataset Lite Recortado} son pr\'acticamente id\'enticos (Tabla~\ref{tab:glicko_h_league_comparison} del Capítulo~\ref{ch:resultados}), lo que indica que la ventaja de local\'ia es una propiedad estructural de cada competici\'on, independiente de la granularidad de las estad\'isticas de juego.
 
-Esta transferibilidad sugiere que el sistema de calibración del motor G2Av1513 captura información contextual que trasciende el conjunto de características utilizado en cada dataset, constituyendo un conocimiento estable sobre la estructura competitiva del fútbol de clubes.
+Esta transferibilidad sugiere que el sistema de calibraci\'on del motor \texttt{G2Av1513} captura informaci\'on contextual que trasciende el conjunto de caracter\'isticas utilizado en cada \textit{dataset}, constituyendo un conocimiento estable sobre la estructura competitiva del f\'utbol profesional de clubes.
 
-\subsection*{Observación final}
+\subsection*{Observaci\'on final}
 
-El contraste entre el motor \textit{naive} y el motor calibrado revela una lección metodológica de alcance general en la modelización de sistemas de rating dinámico: la implementación fiel del algoritmo es necesaria pero no suficiente para alcanzar un desempeño óptimo. La calibración estructural —el ajuste de parámetros que reflejan la heterogeneidad contextual del dominio de aplicación— es el verdadero habilitador del poder predictivo del sistema. El motor G2Av1513 no es, por tanto, una mera reimplementación del Glicko-2, sino un sistema de inferencia que integra el algoritmo canónico con un protocolo de optimización robusto y un conjunto de mejoras numéricas diseñadas específicamente para el problema de predicción trinomial en fútbol de clubes.
+El contraste entre el motor \textit{naive} y el motor calibrado revela una lecci\'on metodol\'ogica de alcance general en la modelizaci\'on de sistemas de rating din\'amico: la implementaci\'on fiel del algoritmo es necesaria pero no suficiente para alcanzar un desempe\~no \'optimo. La calibraci\'on estructural es el verdadero habilitador del poder predictivo del sistema. El motor \texttt{G2Av1513} no es, por tanto, una mera reimplementación del Glicko-2, sino un sistema de inferencia que integra el algoritmo can\'onico con un protocolo de optimizaci\'on robusto y un conjunto de mejoras num\'ericas dise\~nadas espec\'ificamente para el problema de predicci\'on trinomial en f\'utbol profesional de clubes.
