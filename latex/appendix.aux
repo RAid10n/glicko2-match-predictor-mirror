@@ -29,13 +29,14 @@
 \newlabel{tab:gru_curvas}{{A.2}{111}{Evoluci\'on del entrenamiento GRU (modo \textit {Deep}, $T=8$). Pérdida de entrop\'ia cruzada y \emph {accuracy}}{table.caption.132}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {A.4.2}M\'etricas de evaluaci\'on sobre el conjunto de prueba}{111}{subsection.A.4.2}\protected@file@percent }
 \newlabel{subsec:app_gru_test}{{A.4.2}{111}{M\'etricas de evaluaci\'on sobre el conjunto de prueba}{subsection.A.4.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.3}{\ignorespaces Evaluac\'on del componente GRU sobre test, con líneas base de referencia.}}{112}{table.caption.133}\protected@file@percent }
-\newlabel{tab:gru_test}{{A.3}{112}{Evaluac\'on del componente GRU sobre test, con líneas base de referencia}{table.caption.133}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {A.5}Discusión y desestimación del componente}{112}{section.A.5}\protected@file@percent }
-\newlabel{sec:app_gru_discusion}{{A.5}{112}{Discusión y desestimación del componente}{section.A.5}{}}
-\@writefile{toc}{\contentsline {paragraph}{Sobreajuste estructural.}{113}{paragraph*.134}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {A.3}{\ignorespaces Evaluaci\'on del componente GRU sobre test, con líneas base de referencia (Glicko-2 aislado y MLP completo).}}{112}{table.caption.133}\protected@file@percent }
+\newlabel{tab:gru_test}{{A.3}{112}{Evaluaci\'on del componente GRU sobre test, con líneas base de referencia (Glicko-2 aislado y MLP completo)}{table.caption.133}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A.5}Discusi\'on del componente}{112}{section.A.5}\protected@file@percent }
+\newlabel{sec:app_gru_discusion}{{A.5}{112}{Discusi\'on del componente}{section.A.5}{}}
+\@writefile{toc}{\contentsline {paragraph}{Sobreajuste estructural.}{112}{paragraph*.134}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Rendimiento predictivo inferior.}{113}{paragraph*.135}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Complejidad operativa del pipeline.}{113}{paragraph*.136}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Observación sobre la eficiencia computacional.}{113}{paragraph*.137}\protected@file@percent }
 \@writefile{toc}{\contentsline {chapter}{\numberline {B}Componente validatorio: Glicko-2 Trinomial vs Glicko-2 con Covariables Ex\'ogenas}{114}{appendix.B}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
@@ -46,33 +47,33 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {B.2.1}Mecanismos de estabilidad num\'erica y manejo de contextos excepcionales}{117}{subsection.B.2.1}\protected@file@percent }
 \newlabel{subsec:naive_vs_g2a_estabilidad_numerica}{{B.2.1}{117}{Mecanismos de estabilidad num\'erica y manejo de contextos excepcionales}{subsection.B.2.1}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {B.3}Comparativa de hiperpar\'ametros y mejora estructural}{118}{section.B.3}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {B.1}{\ignorespaces Comparativa de hiperpar\'ametros y mejoras estructurales entre el motor \textit  {naive} (Shelopugin-Sirotkin) y el motor calibrado G2Av1513.}}{118}{table.caption.137}\protected@file@percent }
-\newlabel{tab:hiperparam_comparativa_app}{{B.1}{118}{Comparativa de hiperpar\'ametros y mejoras estructurales entre el motor \textit {naive} (Shelopugin-Sirotkin) y el motor calibrado G2Av1513}{table.caption.137}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {B.4}Comparaci\'on emp\'irica: del \textit  {naive} al calibrado}{120}{section.B.4}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {B.2}{\ignorespaces M\'etricas de concordancia entre el motor \textit  {naive} y el calibrado G2Av1513.}}{120}{table.caption.138}\protected@file@percent }
-\newlabel{tab:comparativa_concordancia_app}{{B.2}{120}{M\'etricas de concordancia entre el motor \textit {naive} y el calibrado G2Av1513}{table.caption.138}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.4.1}An\'alisis de discrepancias: Top 10 global y por liga}{120}{subsection.B.4.1}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {B.3}{\ignorespaces Top 10 global de equipos con mayor $|\Delta \mu |$ (dataset Full).}}{121}{table.caption.139}\protected@file@percent }
-\newlabel{tab:app_b_top10_full}{{B.3}{121}{Top 10 global de equipos con mayor $|\Delta \mu |$ (dataset Full)}{table.caption.139}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {B.4}{\ignorespaces Top 10 ligas con mayor $|\Delta \mu |$ del equipo más discrepante (dataset Full).}}{121}{table.caption.140}\protected@file@percent }
-\newlabel{tab:app_b_league_full}{{B.4}{121}{Top 10 ligas con mayor $|\Delta \mu |$ del equipo más discrepante (dataset Full)}{table.caption.140}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {B.5}{\ignorespaces Top 10 global de equipos con mayor $|\Delta \mu |$ (dataset Lite).}}{122}{table.caption.141}\protected@file@percent }
-\newlabel{tab:app_b_top10_lite}{{B.5}{122}{Top 10 global de equipos con mayor $|\Delta \mu |$ (dataset Lite)}{table.caption.141}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {B.6}{\ignorespaces Top 10 ligas con mayor $|\Delta \mu |$ del equipo más discrepante (dataset Lite).}}{122}{table.caption.142}\protected@file@percent }
-\newlabel{tab:app_b_league_lite}{{B.6}{122}{Top 10 ligas con mayor $|\Delta \mu |$ del equipo más discrepante (dataset Lite)}{table.caption.142}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.4.2}Top 10 de la \'elite seg\'un el modelo calibrado}{122}{subsection.B.4.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {B.7}{\ignorespaces Top 10 de la \'elite seg\'un $\mu _{\text  {G2}}$ (dataset Full).}}{123}{table.caption.143}\protected@file@percent }
-\newlabel{tab:app_b_elite_full}{{B.7}{123}{Top 10 de la \'elite seg\'un $\mu _{\text {G2}}$ (dataset Full)}{table.caption.143}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {B.8}{\ignorespaces Top 10 de la \'elite seg\'un $\mu _{\text  {G2}}$ (dataset Lite).}}{123}{table.caption.144}\protected@file@percent }
-\newlabel{tab:app_b_elite_lite}{{B.8}{123}{Top 10 de la \'elite seg\'un $\mu _{\text {G2}}$ (dataset Lite)}{table.caption.144}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {B.5}S\'intesis: el aporte diferencial de la calibraci\'on}{124}{section.B.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.5.1}El algoritmo como infraestructura, la calibraci\'on como se\~nal}{124}{subsection.B.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.5.2}Los casos extremos de discrepancia}{124}{subsection.B.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.5.3}La \'elite global permanece estable}{124}{subsection.B.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.5.4}Las mejoras num\'ericas como habilitadores de la optimizaci\'on}{125}{subsection.B.5.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.5.5}La transferibilidad del conocimiento calibrado}{125}{subsection.B.5.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {B.1}{\ignorespaces Comparativa de hiperpar\'ametros y mejoras estructurales entre el motor \textit  {naive} (Shelopugin-Sirotkin) y el motor calibrado G2Av1513.}}{118}{table.caption.138}\protected@file@percent }
+\newlabel{tab:hiperparam_comparativa_app}{{B.1}{118}{Comparativa de hiperpar\'ametros y mejoras estructurales entre el motor \textit {naive} (Shelopugin-Sirotkin) y el motor calibrado G2Av1513}{table.caption.138}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B.4}Comparaci\'on emp\'irica: del \textit  {naive} al calibrado}{119}{section.B.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {B.2}{\ignorespaces M\'etricas de concordancia entre el motor \textit  {naive} y el calibrado G2Av1513.}}{119}{table.caption.139}\protected@file@percent }
+\newlabel{tab:comparativa_concordancia_app}{{B.2}{119}{M\'etricas de concordancia entre el motor \textit {naive} y el calibrado G2Av1513}{table.caption.139}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.4.1}An\'alisis de discrepancias: Top 10 global y por liga}{119}{subsection.B.4.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {B.3}{\ignorespaces Top 10 global de equipos con mayor $|\Delta \mu |$ (dataset Full).}}{120}{table.caption.140}\protected@file@percent }
+\newlabel{tab:app_b_top10_full}{{B.3}{120}{Top 10 global de equipos con mayor $|\Delta \mu |$ (dataset Full)}{table.caption.140}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {B.4}{\ignorespaces Top 10 ligas con mayor $|\Delta \mu |$ del equipo más discrepante (dataset Full).}}{120}{table.caption.141}\protected@file@percent }
+\newlabel{tab:app_b_league_full}{{B.4}{120}{Top 10 ligas con mayor $|\Delta \mu |$ del equipo más discrepante (dataset Full)}{table.caption.141}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {B.5}{\ignorespaces Top 10 global de equipos con mayor $|\Delta \mu |$ (dataset Lite).}}{121}{table.caption.142}\protected@file@percent }
+\newlabel{tab:app_b_top10_lite}{{B.5}{121}{Top 10 global de equipos con mayor $|\Delta \mu |$ (dataset Lite)}{table.caption.142}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {B.6}{\ignorespaces Top 10 ligas con mayor $|\Delta \mu |$ del equipo más discrepante (dataset Lite).}}{121}{table.caption.143}\protected@file@percent }
+\newlabel{tab:app_b_league_lite}{{B.6}{121}{Top 10 ligas con mayor $|\Delta \mu |$ del equipo más discrepante (dataset Lite)}{table.caption.143}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.4.2}Top 10 de la \'elite seg\'un el modelo calibrado}{121}{subsection.B.4.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {B.7}{\ignorespaces Top 10 de la \'elite seg\'un $\mu _{\text  {G2}}$ (dataset Full).}}{122}{table.caption.144}\protected@file@percent }
+\newlabel{tab:app_b_elite_full}{{B.7}{122}{Top 10 de la \'elite seg\'un $\mu _{\text {G2}}$ (dataset Full)}{table.caption.144}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {B.8}{\ignorespaces Top 10 de la \'elite seg\'un $\mu _{\text  {G2}}$ (dataset Lite).}}{122}{table.caption.145}\protected@file@percent }
+\newlabel{tab:app_b_elite_lite}{{B.8}{122}{Top 10 de la \'elite seg\'un $\mu _{\text {G2}}$ (dataset Lite)}{table.caption.145}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B.5}S\'intesis: el aporte diferencial de la calibraci\'on}{123}{section.B.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.5.1}El algoritmo como infraestructura, la calibraci\'on como se\~nal}{123}{subsection.B.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.5.2}Los casos extremos de discrepancia}{123}{subsection.B.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.5.3}La \'elite global permanece estable}{123}{subsection.B.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.5.4}Las mejoras num\'ericas como habilitadores de la optimizaci\'on}{124}{subsection.B.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.5.5}La transferibilidad del conocimiento calibrado}{124}{subsection.B.5.5}\protected@file@percent }
 \@setckpt{appendix}{
-\setcounter{page}{127}
+\setcounter{page}{125}
 \setcounter{equation}{3}
 \setcounter{enumi}{3}
 \setcounter{enumii}{0}

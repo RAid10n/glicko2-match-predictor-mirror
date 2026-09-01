@@ -223,24 +223,25 @@
 \contentsline {section}{\numberline {A.4}Resultados emp\'iricos}{111}{section.A.4}%
 \contentsline {subsection}{\numberline {A.4.1}Evoluci\'on por \'epoca y diagn\'ostico de sobreajuste}{111}{subsection.A.4.1}%
 \contentsline {subsection}{\numberline {A.4.2}M\'etricas de evaluaci\'on sobre el conjunto de prueba}{111}{subsection.A.4.2}%
-\contentsline {section}{\numberline {A.5}Discusión y desestimación del componente}{112}{section.A.5}%
-\contentsline {paragraph}{Sobreajuste estructural.}{113}{paragraph*.134}%
+\contentsline {section}{\numberline {A.5}Discusi\'on del componente}{112}{section.A.5}%
+\contentsline {paragraph}{Sobreajuste estructural.}{112}{paragraph*.134}%
 \contentsline {paragraph}{Rendimiento predictivo inferior.}{113}{paragraph*.135}%
 \contentsline {paragraph}{Complejidad operativa del pipeline.}{113}{paragraph*.136}%
+\contentsline {paragraph}{Observación sobre la eficiencia computacional.}{113}{paragraph*.137}%
 \contentsline {chapter}{\numberline {B}Componente validatorio: Glicko-2 Trinomial vs Glicko-2 con Covariables Ex\'ogenas}{114}{appendix.B}%
 \contentsline {section}{\numberline {B.1}Filosof\'ia del baseline \textit {naive}: el motor Shelopugin-Sirotkin puro}{115}{section.B.1}%
 \contentsline {subsection}{\numberline {B.1.1}Par\'ametros can\'onicos fijos}{115}{subsection.B.1.1}%
 \contentsline {section}{\numberline {B.2}El motor calibrado: G2Av1513.py}{117}{section.B.2}%
 \contentsline {subsection}{\numberline {B.2.1}Mecanismos de estabilidad num\'erica y manejo de contextos excepcionales}{117}{subsection.B.2.1}%
 \contentsline {section}{\numberline {B.3}Comparativa de hiperpar\'ametros y mejora estructural}{118}{section.B.3}%
-\contentsline {section}{\numberline {B.4}Comparaci\'on emp\'irica: del \textit {naive} al calibrado}{120}{section.B.4}%
-\contentsline {subsection}{\numberline {B.4.1}An\'alisis de discrepancias: Top 10 global y por liga}{120}{subsection.B.4.1}%
-\contentsline {subsection}{\numberline {B.4.2}Top 10 de la \'elite seg\'un el modelo calibrado}{122}{subsection.B.4.2}%
-\contentsline {section}{\numberline {B.5}S\'intesis: el aporte diferencial de la calibraci\'on}{124}{section.B.5}%
-\contentsline {subsection}{\numberline {B.5.1}El algoritmo como infraestructura, la calibraci\'on como se\~nal}{124}{subsection.B.5.1}%
-\contentsline {subsection}{\numberline {B.5.2}Los casos extremos de discrepancia}{124}{subsection.B.5.2}%
-\contentsline {subsection}{\numberline {B.5.3}La \'elite global permanece estable}{124}{subsection.B.5.3}%
-\contentsline {subsection}{\numberline {B.5.4}Las mejoras num\'ericas como habilitadores de la optimizaci\'on}{125}{subsection.B.5.4}%
-\contentsline {subsection}{\numberline {B.5.5}La transferibilidad del conocimiento calibrado}{125}{subsection.B.5.5}%
-\contentsline {chapter}{Bibliograf\'ia}{127}{appendix*.145}%
+\contentsline {section}{\numberline {B.4}Comparaci\'on emp\'irica: del \textit {naive} al calibrado}{119}{section.B.4}%
+\contentsline {subsection}{\numberline {B.4.1}An\'alisis de discrepancias: Top 10 global y por liga}{119}{subsection.B.4.1}%
+\contentsline {subsection}{\numberline {B.4.2}Top 10 de la \'elite seg\'un el modelo calibrado}{121}{subsection.B.4.2}%
+\contentsline {section}{\numberline {B.5}S\'intesis: el aporte diferencial de la calibraci\'on}{123}{section.B.5}%
+\contentsline {subsection}{\numberline {B.5.1}El algoritmo como infraestructura, la calibraci\'on como se\~nal}{123}{subsection.B.5.1}%
+\contentsline {subsection}{\numberline {B.5.2}Los casos extremos de discrepancia}{123}{subsection.B.5.2}%
+\contentsline {subsection}{\numberline {B.5.3}La \'elite global permanece estable}{123}{subsection.B.5.3}%
+\contentsline {subsection}{\numberline {B.5.4}Las mejoras num\'ericas como habilitadores de la optimizaci\'on}{124}{subsection.B.5.4}%
+\contentsline {subsection}{\numberline {B.5.5}La transferibilidad del conocimiento calibrado}{124}{subsection.B.5.5}%
+\contentsline {chapter}{Bibliograf\'ia}{125}{appendix*.146}%
 \contentsfinish 
