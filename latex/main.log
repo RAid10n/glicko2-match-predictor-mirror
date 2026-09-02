@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.18.1 (MiKTeX 24.4) (format=lualatex 2026.8.10)  1 SEP 2026 12:29
+This is LuaHBTeX, Version 1.18.1 (MiKTeX 24.4) (format=lualatex 2026.8.10)  1 SEP 2026 22:23
  restricted system commands enabled.
 **main.tex
 (./main.tex
@@ -1180,12 +1180,19 @@ Package biblatex Info: Automatic encoding selection.
 \openout3 = main.bcf
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main.bbl' found.
- (./main.bbl)
+ (./main.bbl
+
+Package biblatex Warning: The following entry could not be found
+(biblatex)                in the database:
+(biblatex)                shumway2002
+(biblatex)                Please verify the spelling and rerun
+(biblatex)                LaTeX afterwards.
+
+)
 Package biblatex Info: Reference section=0 on input line 52.
 Package biblatex Info: Reference segment=0 on input line 52.
-
-(./portada.tex
-<logo_UCV.jpg, id=523, 224.84pt x 225.84375pt>
+ (./portada.tex
+<logo_UCV.jpg, id=583, 224.84pt x 225.84375pt>
 File: logo_UCV.jpg Graphic file (type jpg)
 <use logo_UCV.jpg>
 Package luatex.def Info: logo_UCV.jpg  used on input line 16.
@@ -1273,13 +1280,20 @@ Overfull \hbox (1.12245pt too wide) detected at line 246
  \TU/LatinModernRoman(0)/b/n/11.5 
  []
 
+
+
+[7]
+Overfull \hbox (0.74295pt too wide) detected at line 270
+ \TU/LatinModernRoman(0)/b/n/11.5 
+ []
+
 )
 \tf@toc=\write5
 
 \openout5 = main.toc
 
 
-[7]
+[8]
 \openout2 = introduccion.aux
  (./introduccion.tex
 Overfull \hbox (0.38982pt too wide) in paragraph at lines 16--17
@@ -1332,7 +1346,7 @@ s pro-ba-bi-li-da-des ba-se in-te-gran-do co-va-ria-bles exóge-
 [10]
 
 [11]
-Overfull \hbox (7.38245pt too wide) in paragraph at lines 339--340
+Overfull \hbox (7.38245pt too wide) in paragraph at lines 335--336
 [][]\TU/LatinModernRoman(0)/b/n/11.5 De-fi-ni-ción . \TU/LatinModernRoma
 n(0)/m/n/11.5 (Mo-de-lo de Bradley-Terry)\TU/LatinModernRoman(0)/b/n/11.5 . []\
 TU/LatinModernRoman(0)/m/it/11.5 Sean $\OML/cmm/m/it/11.5 n$ \TU/LatinModernRom
@@ -1353,12 +1367,12 @@ an(0)/m/it/11.5 equi-pos con fuer-zas la-ten-tes $\OML/cmm/m/it/11.5 []; [];
 [16]
 
 [17]
-Overfull \hbox (19.43402pt too wide) detected at line 587
+Overfull \hbox (19.43402pt too wide) detected at line 583
 []
  []
 
 LaTeX Font Info:    Font shape `TU/LatinModernMono(0)/m/it' will be
-(Font)              scaled to size 11.5pt on input line 592.
+(Font)              scaled to size 11.5pt on input line 588.
 
 
 [18]
@@ -1370,7 +1384,7 @@ LaTeX Font Info:    Font shape `TU/LatinModernMono(0)/m/it' will be
 [21]
 
 [22]
-Overfull \hbox (6.18578pt too wide) in paragraph at lines 746--747
+Overfull \hbox (6.18578pt too wide) in paragraph at lines 736--737
 [][]\TU/LatinModernRoman(0)/b/n/11.5 Pro-po-si-ción . \TU/LatinModernRom
 an(0)/m/n/11.5 (Pro-ba-bi-li-da-des de re-sul-ta-do)\TU/LatinModernRoman(0)/b/n
 /11.5 . []\TU/LatinModernRoman(0)/m/it/11.5 Sean $\OML/cmm/m/it/11.5 G[] \OMS/c
@@ -1394,15 +1408,15 @@ U/LatinModernRoman(0)/m/it/11.5 y $\OML/cmm/m/it/11.5 G[] \OMS/cmsy/m/n/12  []
 [28]
 
 LaTeX Font Warning: Font shape `OML/cmm/b/it' in size <11.5> not available
-(Font)              size <12> substituted on input line 943.
+(Font)              size <12> substituted on input line 928.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/b/n' in size <11.5> not available
-(Font)              size <12> substituted on input line 943.
+(Font)              size <12> substituted on input line 928.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <11.5> not available
-(Font)              size <12> substituted on input line 943.
+(Font)              size <12> substituted on input line 928.
 
 
 
@@ -1435,7 +1449,7 @@ LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <11.5> not available
 [42]
 
 [43]
-Overfull \hbox (6.44246pt too wide) in paragraph at lines 1383--1385
+Overfull \hbox (6.44246pt too wide) in paragraph at lines 1368--1369
 \TU/LatinModernRoman(0)/m/n/11.5 ru-ti-na \TU/LatinModernMono(0)/m/n/11.5 precis
 ion_recall_fscore_support \TU/LatinModernRoman(0)/m/n/11.5 de scikit-learn, con el pa-r
 á-me-tro \TU/LatinModernMono(0)/m/n/11.5 zero_division=0
@@ -1505,17 +1519,11 @@ Overfull \hbox (8.2011pt too wide) in paragraph at lines 286--287
 [58]
 
 [59]
-Overfull \hbox (53.56987pt too wide) in paragraph at lines 342--343
-\TU/LatinModernMono(0)/m/n/11.5 travel_km\TU/LatinModernRoman(0)/m/n/11.5 , \TU
-/LatinModernMono(0)/m/n/11.5 diff_NetSpending\TU/LatinModernRoman(0)/m/n/11.5 , \TU/LatinModernMono(0)/m/n/11.5 diff_temperature_2m\TU/LatinModernRoman(0)/m/n/11.5 , \TU/LatinModernMono(0)/m/n/11.5 diff_PiO2\TU/LatinModernRoman(0)/m/n/11.5 , \TU/LatinModernMono(0)/m/n/11.5 home_Assist\TU/LatinModernRoman(0)/m/n/11.5 , \TU/LatinModernMono(0)/m/n/11.5 diff_Foreign\TU/LatinModernRoman(0)/m/n/11.5 ,
- []
-
-
 
 [60]
 
 [61]
-<figures/primerforest.png, id=1654, 823.1553pt x 491.436pt>
+<figures/primerforest.png, id=1749, 823.1553pt x 491.436pt>
 File: figures/primerforest.png Graphic file (type png)
 <use figures/primerforest.png>
 Package luatex.def Info: figures/primerforest.png  used on input line 369.
@@ -1530,12 +1538,12 @@ s de los mar-ca-do-res fi-na-les (\TU/LatinModernMono(0)/m/n/11.5 home_Goals\TU
 
 
 [62<./figures/primerforest.png>]
-<figures/matrizconfusion2.png, id=1667, 396.0396pt x 327.3831pt>
+<figures/matrizconfusion2.png, id=1762, 396.0396pt x 327.3831pt>
 File: figures/matrizconfusion2.png Graphic file (type png)
 <use figures/matrizconfusion2.png>
 Package luatex.def Info: figures/matrizconfusion2.png  used on input line 389.
 (luatex.def)             Requested size: 412.02156pt x 340.60027pt.
-<figures/segundoforest.png, id=1669, 823.1553pt x 491.436pt>
+<figures/segundoforest.png, id=1764, 823.1553pt x 491.436pt>
 File: figures/segundoforest.png Graphic file (type png)
 <use figures/segundoforest.png>
 Package luatex.def Info: figures/segundoforest.png  used on input line 398.
@@ -1631,17 +1639,17 @@ n(0)/m/n/11.5 en-tro-pía cru-za-da ca-te-gó-ri-ca (\TU/LatinModernMono(0)/m/n
 ]
 
 [85]
-<figures/drawfullratio.png, id=1961, 387.3672pt x 339.669pt>
+<figures/drawfullratio.png, id=2056, 387.3672pt x 339.669pt>
 File: figures/drawfullratio.png Graphic file (type png)
 <use figures/drawfullratio.png>
 Package luatex.def Info: figures/drawfullratio.png  used on input line 67.
 (luatex.def)             Requested size: 183.11914pt x 160.57219pt.
-<figures/drawliteratio.png, id=1962, 387.3672pt x 339.669pt>
+<figures/drawliteratio.png, id=2057, 387.3672pt x 339.669pt>
 File: figures/drawliteratio.png Graphic file (type png)
 <use figures/drawliteratio.png>
 Package luatex.def Info: figures/drawliteratio.png  used on input line 72.
 (luatex.def)             Requested size: 183.11914pt x 160.57219pt.
-<figures/drawliterecortado.png, id=1963, 387.3672pt x 339.669pt>
+<figures/drawliterecortado.png, id=2058, 387.3672pt x 339.669pt>
 File: figures/drawliterecortado.png Graphic file (type png)
 <use figures/drawliterecortado.png>
 Package luatex.def Info: figures/drawliterecortado.png  used on input line 77.
@@ -1650,17 +1658,17 @@ Package luatex.def Info: figures/drawliterecortado.png  used on input line 77.
 
 [86<./figures/drawfullratio.png><./figures/drawliteratio.png><./figures/drawlite
 recortado.png>]
-<figures/residuosfull.png, id=1976, 859.2903pt x 281.853pt>
+<figures/residuosfull.png, id=2071, 859.2903pt x 281.853pt>
 File: figures/residuosfull.png Graphic file (type png)
 <use figures/residuosfull.png>
 Package luatex.def Info: figures/residuosfull.png  used on input line 110.
 (luatex.def)             Requested size: 412.02156pt x 135.14597pt.
-<figures/residuoslite.png, id=1977, 859.2903pt x 281.853pt>
+<figures/residuoslite.png, id=2072, 859.2903pt x 281.853pt>
 File: figures/residuoslite.png Graphic file (type png)
 <use figures/residuoslite.png>
 Package luatex.def Info: figures/residuoslite.png  used on input line 116.
 (luatex.def)             Requested size: 412.02156pt x 135.14597pt.
-<figures/residuosliterecortado.png, id=1978, 859.2903pt x 281.853pt>
+<figures/residuosliterecortado.png, id=2073, 859.2903pt x 281.853pt>
 File: figures/residuosliterecortado.png Graphic file (type png)
 <use figures/residuosliterecortado.png>
 Package luatex.def Info: figures/residuosliterecortado.png  used on input line 
@@ -1702,12 +1710,12 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 
 [96]
-<figures/correlacionlite.png, id=2050, 1051.93pt x 970.62625pt>
+<figures/correlacionlite.png, id=2145, 1051.93pt x 970.62625pt>
 File: figures/correlacionlite.png Graphic file (type png)
 <use figures/correlacionlite.png>
 Package luatex.def Info: figures/correlacionlite.png  used on input line 348.
 (luatex.def)             Requested size: 206.01077pt x 190.07852pt.
-<figures/correlacionfull.png, id=2051, 1051.93pt x 970.62625pt>
+<figures/correlacionfull.png, id=2146, 1051.93pt x 970.62625pt>
 File: figures/correlacionfull.png Graphic file (type png)
 <use figures/correlacionfull.png>
 Package luatex.def Info: figures/correlacionfull.png  used on input line 354.
@@ -1850,11 +1858,165 @@ Overfull \hbox (56.4538pt too wide) in paragraph at lines 475--491
 
 [122]
 
-[123])
+[123]
 
 [124]
+\bbl@ensure@spanish {Apéndice} C.
+
+LaTeX Warning: Reference `ap:forecasting' on page 125 undefined on input line 6
+06.
+
+
 
 [125
+
+]
+
+LaTeX Warning: Citation 'shumway2002' on page 126 undefined on input line 628.
+
+
+LaTeX Warning: Citation 'shumway2006' on page 126 undefined on input line 634.
+
+
+LaTeX Warning: Citation 'shumway2006' on page 126 undefined on input line 636.
+
+
+
+[126]
+
+LaTeX Warning: Reference `evaluacion_comparativa' on page 127 undefined on inpu
+t line 654.
+
+
+LaTeX Warning: Citation 'shumway2006' on page 127 undefined on input line 654.
+
+
+
+[127]
+Overfull \hbox (2.08765pt too wide) in paragraph at lines 664--665
+\TU/LatinModernRoman(0)/m/sc/11.5 El pun-to de par-ti-da son los ar-chi-vos his-
+tó-ri-cos de ra-tings ge-ne-ra-dos por el mó-du-lo \TU/LatinModernMono(0)/m/n
+/11.5 G2Av1513.py\TU/LatinModernRoman(0)/m/sc/11.5 .
+ []
+
+
+
+[128]
+
+[129]
+
+[130]
+
+[131]
+
+[132]
+
+LaTeX Warning: Reference `fig:scatters_datasets' on page 133 undefined on input
+ line 833.
+
+
+LaTeX Warning: Reference `fig:hist_ARIMALSTM' on page 133 undefined on input li
+ne 833.
+
+<figures/ARIMAvsLSTMfull.png, id=2493, 1146.9249pt x 964.0818pt>
+File: figures/ARIMAvsLSTMfull.png Graphic file (type png)
+<use figures/ARIMAvsLSTMfull.png>
+Package luatex.def Info: figures/ARIMAvsLSTMfull.png  used on input line 837.
+(luatex.def)             Requested size: 389.13692pt x 327.09207pt.
+<figures/ARIMAvsLSTMlite.png, id=2494, 1146.2022pt x 964.0818pt>
+File: figures/ARIMAvsLSTMlite.png Graphic file (type png)
+<use figures/ARIMAvsLSTMlite.png>
+Package luatex.def Info: figures/ARIMAvsLSTMlite.png  used on input line 843.
+(luatex.def)             Requested size: 389.13692pt x 327.29802pt.
+<figures/ARIMAvsLSTMliterec.png, id=2495, 1146.9249pt x 964.8045pt>
+File: figures/ARIMAvsLSTMliterec.png Graphic file (type png)
+<use figures/ARIMAvsLSTMliterec.png>
+Package luatex.def Info: figures/ARIMAvsLSTMliterec.png  used on input line 849
+.
+(luatex.def)             Requested size: 389.13692pt x 327.33727pt.
+<figures/ScatterARIMALSTMfull.png, id=2496, 1003.8303pt x 354.123pt>
+File: figures/ScatterARIMALSTMfull.png Graphic file (type png)
+<use figures/ScatterARIMALSTMfull.png>
+Package luatex.def Info: figures/ScatterARIMALSTMfull.png  used on input line 8
+57.
+(luatex.def)             Requested size: 274.6857pt x 96.9005pt.
+<figures/ScatterARIMALSTMlite.png, id=2497, 1003.8303pt x 354.123pt>
+File: figures/ScatterARIMALSTMlite.png Graphic file (type png)
+<use figures/ScatterARIMALSTMlite.png>
+Package luatex.def Info: figures/ScatterARIMALSTMlite.png  used on input line 8
+63.
+(luatex.def)             Requested size: 274.6857pt x 96.9005pt.
+<figures/ScatterARIMALSTMliterec.png, id=2498, 1003.8303pt x 354.123pt>
+File: figures/ScatterARIMALSTMliterec.png Graphic file (type png)
+<use figures/ScatterARIMALSTMliterec.png>
+Package luatex.def Info: figures/ScatterARIMALSTMliterec.png  used on input lin
+e 869.
+(luatex.def)             Requested size: 274.6857pt x 96.9005pt.
+<figures/ErrorARIMALSTMfull.png, id=2499, 1003.8303pt x 281.853pt>
+File: figures/ErrorARIMALSTMfull.png Graphic file (type png)
+<use figures/ErrorARIMALSTMfull.png>
+Package luatex.def Info: figures/ErrorARIMALSTMfull.png  used on input line 880
+.
+(luatex.def)             Requested size: 274.6857pt x 77.1249pt.
+<figures/ErrorARIMALSTMlite.png, id=2500, 1003.8303pt x 281.853pt>
+File: figures/ErrorARIMALSTMlite.png Graphic file (type png)
+<use figures/ErrorARIMALSTMlite.png>
+Package luatex.def Info: figures/ErrorARIMALSTMlite.png  used on input line 886
+.
+(luatex.def)             Requested size: 274.6857pt x 77.1249pt.
+<figures/ErrorARIMALSTMliterec.png, id=2501, 1003.8303pt x 281.853pt>
+File: figures/ErrorARIMALSTMliterec.png Graphic file (type png)
+<use figures/ErrorARIMALSTMliterec.png>
+Package luatex.def Info: figures/ErrorARIMALSTMliterec.png  used on input line 
+892.
+(luatex.def)             Requested size: 274.6857pt x 77.1249pt.
+
+LaTeX Warning: Reference `fig:full_completa' on page 133 undefined on input lin
+e 906.
+
+
+
+[133]
+
+[134<./figures/ARIMAvsLSTMfull.png>]
+
+[135<./figures/ARIMAvsLSTMlite.png>]
+
+[136<./figures/ARIMAvsLSTMliterec.png>]
+
+[137<./figures/ScatterARIMALSTMfull.png><./figures/ScatterARIMALSTMlite.png><./f
+igures/ScatterARIMALSTMliterec.png>]
+
+LaTeX Warning: Reference `fig:lite_completa' on page 138 undefined on input lin
+e 908.
+
+
+
+[138<./figures/ErrorARIMALSTMfull.png><./figures/ErrorARIMALSTMlite.png><./figur
+es/ErrorARIMALSTMliterec.png>]
+Overfull \hbox (10.09213pt too wide) in paragraph at lines 915--916
+[]\TU/LatinModernRoman(0)/b/n/11.5 Da-ta-set Li-te Re-cor-ta-do: \TU/LatinModer
+nRoman(0)/m/sc/11.5 Al com-par-tir la mis-ma ven-ta-na tem-po-ral que Full (
+--)
+ []
+
+
+
+[139]
+
+[140]
+LaTeX Font Info:    Font shape `TU/LatinModernMono(0)/b/n' will be
+(Font)              scaled to size 11.5pt on input line 980.
+
+
+LaTeX Warning: Reference `ap:forecasting' on page 141 undefined on input line 9
+83.
+
+)
+
+[141]
+
+[142
 
 
 
@@ -1865,7 +2027,7 @@ Package biblatex Warning: No driver for 'masterthesis'.
 
 
 
-[126]
+[143]
 Overfull \hbox (0.36661pt too wide) in paragraph at lines 82--82
 \TU/LatinModernRoman(0)/m/sc/11.5 gues Ba-sed on Glicko- with Mo-di-fi-ca-tio
 ns''. En: \TU/LatinModernRoman(0)/m/it/11.5 ar-Xiv pre-print ar-Xiv:
@@ -1874,7 +2036,7 @@ ns''. En: \TU/LatinModernRoman(0)/m/it/11.5 ar-Xiv pre-print ar-Xiv:
 
 
 
-[127] (./main.aux (./introduccion.aux) (./antecedentes.aux)
+[144] (./main.aux (./introduccion.aux) (./antecedentes.aux)
 (./marco_teorico.aux) (./metodologia.aux) (./resultados.aux)
 (./conclusiones.aux) (./appendix.aux))
  ***********
@@ -1889,23 +2051,31 @@ LaTeX Font Warning: Size substitutions with differences
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
+
+LaTeX Warning: There were undefined references.
+
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: E9730B1409A12A00387F65E629B95806;35098.
+(rerunfilecheck)             Checksum: BE83B68B97E0DF736D4E5DFFFEE8BDF6;38933.
+
+Package biblatex Warning: Please (re)run Biber on the file:
+(biblatex)                main
+(biblatex)                and rerun LaTeX afterwards.
+
 Package logreq Info: Writing requests to 'main.run.xml'.
 
 \openout1 = main.run.xml
 )
 
 Here is how much of LuaTeX's memory you used:
- 26606 strings out of 475664
+ 26874 strings out of 475664
  125165,1648299 words of node,token memory allocated
- 2705 words of node memory still in use:
-   7 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 2 sub_mlist, 1 glyph, 683 attribute
-, 72 glue_spec, 343 attribute_list, 1 write, 13 pdf_action nodes
-   avail lists: 1:2,2:2691,3:456,4:589,5:507,6:99,7:8644,8:94,9:863,10:33,11:117
+ 2747 words of node memory still in use:
+   7 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 2 sub_mlist, 1 glyph, 695 attribute
+, 72 glue_spec, 349 attribute_list, 1 write, 14 pdf_action nodes
+   avail lists: 1:2,2:2676,3:456,4:594,5:522,6:98,7:8818,8:94,9:863,10:35,11:117
 7
- 48176 multiletter control sequences out of 65536+600000
- 157 fonts using 14140663 bytes
+ 48344 multiletter control sequences out of 65536+600000
+ 157 fonts using 14141303 bytes
  94i,16n,135p,2032b,2361s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Program Files/MiKTeX/fonts/opentype/public/lm/lmroman7-regular.otf><C:/Progr
 am Files/MiKTeX/fonts/opentype/public/lm/lmroman10-bold.otf><C:/Program Files/Mi
@@ -1935,9 +2105,9 @@ cm/cmsy10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb>
 <C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Fi
 les/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb><C:/Program Files/MiKT
 eX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (134 pages, 1560222 bytes).
+Output written on main.pdf (152 pages, 2677455 bytes).
 
-PDF statistics: 2539 PDF objects out of 2984 (max. 8388607)
- 723 named destinations out of 1000 (max. 131072)
- 1041 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 2794 PDF objects out of 2984 (max. 8388607)
+ 796 named destinations out of 1000 (max. 131072)
+ 1161 words of extra memory for PDF output out of 10000 (max. 100000000)
 

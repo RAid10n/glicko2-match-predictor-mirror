@@ -243,5 +243,29 @@
 \contentsline {subsection}{\numberline {B.5.3}La \'elite global permanece estable}{123}{subsection.B.5.3}%
 \contentsline {subsection}{\numberline {B.5.4}Las mejoras num\'ericas como habilitadores de la optimizaci\'on}{124}{subsection.B.5.4}%
 \contentsline {subsection}{\numberline {B.5.5}La transferibilidad del conocimiento calibrado}{124}{subsection.B.5.5}%
-\contentsline {chapter}{Bibliograf\'ia}{125}{appendix*.146}%
+\contentsline {chapter}{\numberline {C}Proyecci\'on temporal de ratings: modelos ARIMA y LSTM}{125}{appendix.C}%
+\contentsline {section}{\numberline {C.1}Justificaci\'on de la agregaci\'on semanal}{125}{section.C.1}%
+\contentsline {section}{\numberline {C.2}Fundamentos te\'oricos de los modelos de proyecci\'on}{126}{section.C.2}%
+\contentsline {subsection}{\numberline {C.2.1}Modelos ARIMA: fundamentos y aplicaci\'on univariada}{126}{subsection.C.2.1}%
+\contentsline {subsection}{\numberline {C.2.2}Redes LSTM: modelado de dependencias secuenciales a largo plazo}{127}{subsection.C.2.2}%
+\contentsline {subsection}{\numberline {C.2.3}Complementariedad y justificaci\'on de la comparaci\'on}{128}{subsection.C.2.3}%
+\contentsline {section}{\numberline {C.3}Construcci\'on del panel semanal}{128}{section.C.3}%
+\contentsline {section}{\numberline {C.4}Modelo ARIMA univariado por equipo}{129}{section.C.4}%
+\contentsline {paragraph}{Control de tiempo de ejecuci\'on.}{129}{paragraph*.147}%
+\contentsline {paragraph}{Predicci\'on recursiva con actualizaci\'on.}{130}{paragraph*.148}%
+\contentsline {section}{\numberline {C.5}Modelo LSTM global}{130}{section.C.5}%
+\contentsline {paragraph}{Arquitectura.}{130}{paragraph*.150}%
+\contentsline {paragraph}{Escalado por equipo.}{131}{paragraph*.151}%
+\contentsline {paragraph}{Generaci\'on de secuencias y entrenamiento.}{131}{paragraph*.152}%
+\contentsline {paragraph}{Desescalado de predicciones.}{131}{paragraph*.153}%
+\contentsline {section}{\numberline {C.6}Evaluaci\'on comparativa}{132}{section.C.6}%
+\contentsline {subsection}{\numberline {C.6.1}M\'etricas globales}{132}{subsection.C.6.1}%
+\contentsline {paragraph}{Spearman \(\rho \): preservaci\'on del ranking.}{132}{paragraph*.156}%
+\contentsline {subsection}{\numberline {C.6.2}Desempe\~no por equipo}{133}{subsection.C.6.2}%
+\contentsline {subsection}{\numberline {C.6.3}Visualizaciones descriptivas}{133}{subsection.C.6.3}%
+\contentsline {paragraph}{An\'alisis general.}{133}{paragraph*.162}%
+\contentsline {paragraph}{An\'alisis diferenciado por dataset.}{133}{paragraph*.163}%
+\contentsline {section}{\numberline {C.7}Ranking proyectado: \'ultima semana de test}{139}{section.C.7}%
+\contentsline {section}{\numberline {C.8}Limitaciones y observaciones finales}{140}{section.C.8}%
+\contentsline {chapter}{Bibliograf\'ia}{142}{appendix*.165}%
 \contentsfinish 

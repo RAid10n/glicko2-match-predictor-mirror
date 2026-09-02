@@ -169,8 +169,7 @@ a priori de victoria en favor del equipo anfitri\'on
 de local\'ia se modela inicialmente como un par\'ametro 
 estructural $h_\ell$ espec\'ifico por liga, calibrado 
 conjuntamente con los dem\'as hiperpar\'ametros del sistema de 
-rating
-%; no obstante, dado que la asimetr\'ia fisiol\'ogica y geogr\'afica ya se captura mediante las covariables ambientales diferenciadas, el efecto base se anula en la versi\'on final del modelo ($\delta \equiv 0$), delegando la no linealidad residual al perceptr\'on multicapa complementario (v\'ease Secci\'on \ref{sec:mlp}).
+rating.
 
 \subsubsection{Factores econ\'omicos}
 
@@ -197,7 +196,6 @@ gastos en adquisiciones y el \textit{net spending} (balance
 neto de la operaci\'on), parametriza la ambici\'on 
 institucional y la capacidad de reposici\'on de talento a 
 corto plazo \cite{SZYMAN2}. 
-%Estas variables se operacionalizan como diferencias entre el equipo local y el visitante, de modo que $\mathit{diff\_MarketValue}$ y $\mathit{diff\_NetSpending}$ cuantifican la asimetr\'ia econ\'omica del enfrentamiento.
 
 \paragraph{M\'etricas de composici\'on de plantilla} 
 
@@ -207,9 +205,7 @@ ofrece informaci\'on sobre la diversidad y profundidad del
 plantilla. La proporci\'on de jugadores extranjeros, la 
 cantidad total de efectivos registrados y la distribuci\'on de 
 minutos jugados sirven como proxies de diversidad t\'actica y 
-rotaci\'on. En particular, la cantidad de extranjeros 
-%($\mathit{diff\_Foreign}$)
-se vincula con la exposici\'on a 
+rotaci\'on. En particular, la cantidad de extranjeros se vincula con la exposici\'on a 
 diferentes estilos de juego y condiciones clim\'aticas, 
 mientras que variables como asistencia al estadio del equipo local 
 ($\mathit{home\_Assist}$) y ratio de ocupaci\'on 
@@ -619,13 +615,7 @@ La actualización del equipo visitante es análoga, utilizando su resultado $s_j
 \begin{obs}
 	\label{obs:lightgbm_vs_loglineal}
 	El modelo original de Shelopugin y Sirotkin emplea una arquitectura de Gradient Boosting (LightGBM) con funci\'on objetivo Poisson para estimar las medias de anotaci\'on $\lambda_H$ y $\lambda_A$, asumiendo goles independientes. Esta asunci\'on permite el uso de la distribuci\'on de Skellam para modelar la diferencia de goles, donde el valor en $k=0$ proporciona la probabilidad de empate $s$ requerida por el actualizador Glicko-2 modificado \cite{Glicko2Mod}. El par\'ametro $d$ se introduce adicionalmente para compensar la tendencia del modelo Poisson a subestimar la frecuencia de partidos de baja anotaci\'on, sesgo frecuentemente observado en datos deportivos reales.
-	
-	% En el presente trabajo, se adopta el marco trinomial de Shelopugin y Sirotkin pero se introduce una modificaci\'on cr\'itica: el modelo LightGBM se sustituye por una ecuaci\'on de regresi\'on param\'etrica log-lineal que integra expl\'icitamente las m\'etricas deportivas y los factores ex\'ogenos descritos en la Secci\'on \ref{sec:contexto}. La tasa de goles esperados del equipo local $i$ frente al visitante $j$ se modela como
-	%\begin{equation}
-		%\label{eq:lambda_mod}
-		%\lambda_{ij} = \exp\!\left(\beta_0 + \boldsymbol{\beta}^\top \mathbf{x}_{ij} + \delta \cdot I_{\mathrm{local}}\right),
-	%\end{equation}
-	%donde $\mathbf{x}_{ij} \in \mathbb{R}^p$ es el vector de covariables diferenciadas (deportivas, econ\'omicas y ambientales), $\boldsymbol{\beta}$ es el vector de coeficientes asociados, $\delta$ captura el efecto base de la ventaja de local\'ia e $I_{\mathrm{local}}$ es la indicadora de condici\'on de local. Los coeficientes se estiman por m\'axima verosimilitud, proporcionando un v\'inculo directo entre la solvencia financiera de los clubes, las condiciones ambientales y su desempe\~no deportivo. La formulaci\'on exacta del vector $\mathbf{x}_{ij}$ y el protocolo de estimaci\'on se detallan en la Secci\'on \ref{sec:regresion}.
+
 \end{obs}
 
 % ============================================================
@@ -778,9 +768,7 @@ La equivalencia entre \eqref{eq:prob_D} y \eqref{eq:prob_D_bessel} no es meramen
 	La estructura trinomial del modelo modificado de Shelopugin y Sirotkin, definida por las ecuaciones \eqref{eq:prob_victoria_local}--\eqref{eq:prob_victoria_visitante} de la Secci\'on~\ref{subsec:shelopugin}, recobra una justificaci\'on probabil\'istica desde el presente formalismo: el par\'ametro $s$ de probabilidad de empate, necesario para el algoritmo de actualizacion del Glicko-2 modificado no es un hiperpar\'ametro ex\'ogeno, sino que emerge end\'ogenamente de la distribuci\'on de Skellam evaluada en $d=0$ \eqref{eq:prob_D_bessel}. El par\'ametro adicional $d \in \mathbb{R}$ introducido en la Definici\'on~\ref{def:expectativa_mod} act\'ua entonces como un t\'ermino de calibraci\'on que compensa posibles desviaciones sistem\'aticas del modelo Poisson puro (por ejemplo, la tendencia a subestimar la frecuencia de partidos de baja anotaci\'on documentada en la literatura deportiva), sin romper la coherencia probabil\'istica del marco.
 \end{obs}
 
-La conexi\'on formal se establece as\'i: una vez estimadas las tasas $\lambda_H$ y $\lambda_A$ 
-%mediante la regresi\'on log-lineal \eqref{eq:lambda_mod}, 
-las probabilidades $(P_H, P_D, P_A)$ se inyectan en el sistema de rating como el vector de expectativas trinomiales. De este modo, el bloque deportivo, el bloque de conteo y el bloque de rating din\'amico quedan acoplados en un \'unico grafo de inferencia.
+La conexi\'on formal se establece as\'i: una vez estimadas las tasas $\lambda_H$ y $\lambda_A$ las probabilidades $(P_H, P_D, P_A)$ se inyectan en el sistema de rating como el vector de expectativas trinomiales. De este modo, el bloque deportivo, el bloque de conteo y el bloque de rating din\'amico quedan acoplados en un \'unico grafo de inferencia.
 
 \subsubsection{Simetr\'ia y comportamiento l\'imite}
 
@@ -800,8 +788,6 @@ las probabilidades $(P_H, P_D, P_A)$ se inyectan en el sistema de rating como el
 	P_H(\lambda_A,\lambda_H) = \sum_{k=1}^{\infty}\sum_{j=0}^{k-1} \frac{e^{-\lambda_A}\lambda_A^k}{k!}\cdot\frac{e^{-\lambda_H}\lambda_H^j}{j!} = P(G_A > G_H \mid \lambda_H,\lambda_A) = P_A(\lambda_H,\lambda_A). \qedhere
 	\]
 \end{proof}
-
-%La simetr\'ia refleja el hecho de que el modelo de conteo no privilegia a priori ninguno de los dos equipos: la asimetr\'ia estructural (ventaja de local\'ia, diferencias econ\'omicas, etc.) se introduce \'unicamente a trav\'es de la parametrizaci\'on log-lineal \eqref{eq:lambda_mod} que distingue $\lambda_H$ de $\lambda_A$.
 
 \begin{prop}[Comportamiento l\'imite]\label{prop:limites}
 	El vector de probabilidades $\mathcal{P}(\lambda_H,\lambda_A)$ satisface los siguientes l\'imites:
@@ -859,7 +845,6 @@ Es necesario verificar que las probabilidades asignadas por el modelo de conteo 
 
 \begin{obs}[Dominio de los par\'ametros]
 	La buena definici\'on exige \'unicamente que $\lambda_H, \lambda_A > 0$. Si alguna tasa fuera nula, el modelo degenera (por ejemplo, si $\lambda_H = 0$, entonces $P(G_H=0)=1$ y $P_H=0$), pero la distribuci\'on sobre $\{H,D,A\}$ sigue siendo v\'alida. 
-	%En la pr\'actica, la parametrizaci\'on log-lineal \eqref{eq:lambda_mod} garantiza $\lambda_{ij} > 0$ para todo vector de covariables finito.
 \end{obs}
 
 \subsubsection{Estabilidad num\'erica y truncamiento}
@@ -1353,7 +1338,7 @@ El corolario inmediato es que un modelo que minimice la log-loss est\'a incentiv
 
 \begin{obs}[Log-loss binaria como scoring rule restringida]
 La log-loss binaria \eqref{eq:logloss_binaria} es, asimismo, una strictly proper scoring rule sobre el simplex de dimensi\'on 1 (la probabilidad de victoria local). Su uso en la literatura base \cite{Glicko2Mod}.
-% y en el m\'odulo exploratorio GRU se justifica porque preserva la propiedad de incentivar la calibraci\'on honesta de $P_H$, aunque no eval\'ue la coherencia conjunta de $(P_H,P_D,P_A)$.
+
 \end{obs}
 
 \subsection{M\'etricas de clasificaci\'on}
@@ -1380,8 +1365,7 @@ La \emph{accuracy} global mide la fracci\'on de aciertos:
 \mathrm{Acc} = \frac{\sum_{c} M_{cc}}{\sum_{r,c} M_{rc}} = \frac{1}{N}\sum_{i=1}^{N} \mathbb{I}(\hat{y}_i = y_i).
 \end{equation}
 
-En la implementaci\'on computacional, las m\'etricas \eqref{eq:precision}--\eqref{eq:f1} se obtienen mediante la rutina \texttt{precision\_recall\_fscore\_support} de scikit-learn, con el par\'ametro \texttt{zero\_division=0} para garantizar estabilidad num\'erica cuando una clase no es predicha en absoluto 
-%(situaci\'on que, como se ver\'a, ocurre de hecho con el empate en el modelo base).
+En la implementaci\'on computacional, las m\'etricas \eqref{eq:precision}--\eqref{eq:f1} se obtienen mediante la rutina \texttt{precision\_recall\_fscore\_support} de scikit-learn, con el par\'ametro \texttt{zero\_division=0} para garantizar estabilidad num\'erica cuando una clase no es predicha en absoluto.
 
 Dado que las tres clases no son equiprobables en el f\'utbol real (la frecuencia de empateses se ubica alrededor del 26\%), el $F1$ agregado se define bajo dos esquemas est\'andar:
 
@@ -1394,8 +1378,6 @@ Sea $n_c=\sum_{c'}M_{cc'}$ el soporte (n\'umero de observaciones reales) de la c
 \end{definition}
 
 El F1-macro trata por igual a las tres clases, por lo que es sensible al desempe\~no en la clase minoritaria (el empate). El F1-weighted, en cambio, pondera seg\'un la frecuencia emp\'irica de cada resultado. 
-%En el presente trabajo, dado el inter\'es particular en el comportamiento del modelo respecto al empate, se reportan las m\'etricas \emph{desagregadas por clase} (particularmente $\text{Precision}_D$, $\text{Recall}_D$ y $F1_D$), adem\'as de las agregaciones \eqref{eq:f1_macro}--\eqref{eq:f1_weighted} cuando resulten informativas.
-
 
 
 \subsection{Discusi\'on del empate: un hallazgo estructural}

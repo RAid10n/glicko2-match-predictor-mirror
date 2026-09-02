@@ -2500,6 +2500,17 @@
     <bcf:citekey order="121" intorder="1">ke2017lightgbm</bcf:citekey>
     <bcf:citekey order="122" intorder="1">Glickman2022</bcf:citekey>
     <bcf:citekey order="123" intorder="1">Iskandaryan2020</bcf:citekey>
+    <bcf:citekey order="124" intorder="1">brockwell2002</bcf:citekey>
+    <bcf:citekey order="124" intorder="2">shumway2002</bcf:citekey>
+    <bcf:citekey order="125" intorder="1">shumway2006</bcf:citekey>
+    <bcf:citekey order="126" intorder="1">HernandezColina</bcf:citekey>
+    <bcf:citekey order="127" intorder="1">pmdarima2021</bcf:citekey>
+    <bcf:citekey order="128" intorder="1">brockwell2002</bcf:citekey>
+    <bcf:citekey order="129" intorder="1">shumway2006</bcf:citekey>
+    <bcf:citekey order="130" intorder="1">hochreiter1997</bcf:citekey>
+    <bcf:citekey order="131" intorder="1">brockwell2002</bcf:citekey>
+    <bcf:citekey order="132" intorder="1">shumway2006</bcf:citekey>
+    <bcf:citekey order="133" intorder="1">hochreiter1997</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nyt">

@@ -138,6 +138,41 @@
       \verb https://www.tussendelinies.nl/doelpuntenfestijn-bij-zonneschijn/
       \endverb
     \endentry
+    \entry{brockwell2002}{book}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=ccd437004a1bad6b5765247284499802}{%
+           family={Brockwell},
+           familyi={B\bibinitperiod},
+           given={P.\bibnamedelimi J.},
+           giveni={P\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8a8be4a5452758cf144e41e5e256b697}{%
+           family={Davis},
+           familyi={D\bibinitperiod},
+           given={R.\bibnamedelimi A.},
+           giveni={R\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{83dd0f06560a9ff9e654d889a98e7eed}
+      \strng{fullhash}{83dd0f06560a9ff9e654d889a98e7eed}
+      \strng{fullhashraw}{83dd0f06560a9ff9e654d889a98e7eed}
+      \strng{bibnamehash}{83dd0f06560a9ff9e654d889a98e7eed}
+      \strng{authorbibnamehash}{83dd0f06560a9ff9e654d889a98e7eed}
+      \strng{authornamehash}{83dd0f06560a9ff9e654d889a98e7eed}
+      \strng{authorfullhash}{83dd0f06560a9ff9e654d889a98e7eed}
+      \strng{authorfullhashraw}{83dd0f06560a9ff9e654d889a98e7eed}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{2nd}
+      \field{series}{Springer Texts in Statistics}
+      \field{title}{Introduction to Time Series and Forecasting}
+      \field{year}{2002}
+    \endentry
     \entry{byrd1995limited}{article}{}{}
       \name{author}{4}{}{%
         {{un=0,uniquepart=base,hash=5a28551b79116d5aa47933899f1dfee0}{%
@@ -571,6 +606,74 @@
       \verb{doi}
       \verb 10.1198/016214506000001437
       \endverb
+    \endentry
+    \entry{HernandezColina}{unpublished}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=09e3fad11e3098a2533ab26c48257f7d}{%
+           family={Hernández},
+           familyi={H\bibinitperiod},
+           given={J.\bibnamedelimi B.},
+           giveni={J\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0649ea19ec9d55a13cc48ed4887fb62c}{%
+           family={Colina},
+           familyi={C\bibinitperiod},
+           given={M.\bibnamedelimi Y.},
+           giveni={M\bibinitperiod\bibinitdelim Y\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{institution}{1}{%
+        {Universidad Central de Venezuela, Escuela de Matemáticas}%
+      }
+      \strng{namehash}{2782fc78f36896f6ce5d66931f95ea03}
+      \strng{fullhash}{2782fc78f36896f6ce5d66931f95ea03}
+      \strng{fullhashraw}{2782fc78f36896f6ce5d66931f95ea03}
+      \strng{bibnamehash}{2782fc78f36896f6ce5d66931f95ea03}
+      \strng{authorbibnamehash}{2782fc78f36896f6ce5d66931f95ea03}
+      \strng{authornamehash}{2782fc78f36896f6ce5d66931f95ea03}
+      \strng{authorfullhash}{2782fc78f36896f6ce5d66931f95ea03}
+      \strng{authorfullhashraw}{2782fc78f36896f6ce5d66931f95ea03}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Material de clase}
+      \field{title}{Series de Tiempo. Temas 2, 3, 4 y 5}
+    \endentry
+    \entry{hochreiter1997}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=67eed9a763828f8510ead534591a2d63}{%
+           family={Hochreiter},
+           familyi={H\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=07e9fb186fd9976e6be82e64365dc308}{%
+           family={Schmidhuber},
+           familyi={S\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{c955bbc46524c46b7bd1441b444cef54}
+      \strng{fullhash}{c955bbc46524c46b7bd1441b444cef54}
+      \strng{fullhashraw}{c955bbc46524c46b7bd1441b444cef54}
+      \strng{bibnamehash}{c955bbc46524c46b7bd1441b444cef54}
+      \strng{authorbibnamehash}{c955bbc46524c46b7bd1441b444cef54}
+      \strng{authornamehash}{c955bbc46524c46b7bd1441b444cef54}
+      \strng{authorfullhash}{c955bbc46524c46b7bd1441b444cef54}
+      \strng{authorfullhashraw}{c955bbc46524c46b7bd1441b444cef54}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Neural Computation}
+      \field{number}{8}
+      \field{title}{Long Short-Term Memory}
+      \field{volume}{9}
+      \field{year}{1997}
+      \field{pages}{1735\bibrangedash 1780}
+      \range{pages}{46}
     \endentry
     \entry{Hornik1989}{article}{}{}
       \name{author}{3}{}{%
@@ -1012,6 +1115,37 @@
       \field{title}{The frequency distribution of the difference between two {Poisson} variates belonging to different populations}
       \field{year}{1946}
     \endentry
+    \entry{pmdarima2021}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=1af8ae812e7d83f12d5014dc48b9cc78}{%
+           family={Smith},
+           familyi={S\bibinitperiod},
+           given={T.\bibnamedelimi G.},
+           giveni={T\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{1af8ae812e7d83f12d5014dc48b9cc78}
+      \strng{fullhash}{1af8ae812e7d83f12d5014dc48b9cc78}
+      \strng{fullhashraw}{1af8ae812e7d83f12d5014dc48b9cc78}
+      \strng{bibnamehash}{1af8ae812e7d83f12d5014dc48b9cc78}
+      \strng{authorbibnamehash}{1af8ae812e7d83f12d5014dc48b9cc78}
+      \strng{authornamehash}{1af8ae812e7d83f12d5014dc48b9cc78}
+      \strng{authorfullhash}{1af8ae812e7d83f12d5014dc48b9cc78}
+      \strng{authorfullhashraw}{1af8ae812e7d83f12d5014dc48b9cc78}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Versión 1.8.5}
+      \field{title}{pmdarima: ARIMA estimators for Python}
+      \field{year}{2021}
+      \verb{urlraw}
+      \verb https://www.alkaline-ml.com/pmdarima/
+      \endverb
+      \verb{url}
+      \verb https://www.alkaline-ml.com/pmdarima/
+      \endverb
+    \endentry
     \entry{FBRef}{online}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=e10dfe18f6742fa95e30b076ba00c198}{%
@@ -1226,6 +1360,7 @@
       \field{year}{2023}
     \endentry
   \enddatalist
+  \missing{shumway2002}
 \endrefsection
 \endinput
 

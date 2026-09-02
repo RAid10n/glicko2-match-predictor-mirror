@@ -72,33 +72,109 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {B.5.3}La \'elite global permanece estable}{123}{subsection.B.5.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {B.5.4}Las mejoras num\'ericas como habilitadores de la optimizaci\'on}{124}{subsection.B.5.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {B.5.5}La transferibilidad del conocimiento calibrado}{124}{subsection.B.5.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {C}Proyecci\'on temporal de ratings: modelos ARIMA y LSTM}{125}{appendix.C}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ap:proyeccion_temporal}{{C}{125}{Proyecci\'on temporal de ratings: modelos ARIMA y LSTM}{appendix.C}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {C.1}Justificaci\'on de la agregaci\'on semanal}{125}{section.C.1}\protected@file@percent }
+\newlabel{ap:justificacion_semanal}{{C.1}{125}{Justificaci\'on de la agregaci\'on semanal}{section.C.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {C.2}Fundamentos te\'oricos de los modelos de proyecci\'on}{126}{section.C.2}\protected@file@percent }
+\newlabel{ap:fundamento_teorico}{{C.2}{126}{Fundamentos te\'oricos de los modelos de proyecci\'on}{section.C.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.2.1}Modelos ARIMA: fundamentos y aplicaci\'on univariada}{126}{subsection.C.2.1}\protected@file@percent }
+\newlabel{ap:arima_teoria}{{C.2.1}{126}{Modelos ARIMA: fundamentos y aplicaci\'on univariada}{subsection.C.2.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.2.2}Redes LSTM: modelado de dependencias secuenciales a largo plazo}{127}{subsection.C.2.2}\protected@file@percent }
+\newlabel{ap:lstm_teoria}{{C.2.2}{127}{Redes LSTM: modelado de dependencias secuenciales a largo plazo}{subsection.C.2.2}{}}
+\newlabel{eq:lstm_input}{{C.2}{127}{Redes LSTM: modelado de dependencias secuenciales a largo plazo}{equation.C.2}{}}
+\newlabel{eq:lstm_forget}{{C.3}{127}{Redes LSTM: modelado de dependencias secuenciales a largo plazo}{equation.C.3}{}}
+\newlabel{eq:lstm_output}{{C.4}{127}{Redes LSTM: modelado de dependencias secuenciales a largo plazo}{equation.C.4}{}}
+\newlabel{eq:lstm_candidate}{{C.5}{127}{Redes LSTM: modelado de dependencias secuenciales a largo plazo}{equation.C.5}{}}
+\newlabel{eq:lstm_cell}{{C.6}{127}{Redes LSTM: modelado de dependencias secuenciales a largo plazo}{equation.C.6}{}}
+\newlabel{eq:lstm_hidden}{{C.7}{127}{Redes LSTM: modelado de dependencias secuenciales a largo plazo}{equation.C.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.2.3}Complementariedad y justificaci\'on de la comparaci\'on}{128}{subsection.C.2.3}\protected@file@percent }
+\newlabel{ap:comparacion_teorica}{{C.2.3}{128}{Complementariedad y justificaci\'on de la comparaci\'on}{subsection.C.2.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {C.3}Construcci\'on del panel semanal}{128}{section.C.3}\protected@file@percent }
+\newlabel{ap:panel_semanal}{{C.3}{128}{Construcci\'on del panel semanal}{section.C.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {C.1}{\ignorespaces Dimensiones del panel semanal por dataset.}}{129}{table.caption.146}\protected@file@percent }
+\newlabel{tab:panel_dimensiones}{{C.1}{129}{Dimensiones del panel semanal por dataset}{table.caption.146}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {C.4}Modelo ARIMA univariado por equipo}{129}{section.C.4}\protected@file@percent }
+\newlabel{ap:arima_univariado}{{C.4}{129}{Modelo ARIMA univariado por equipo}{section.C.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Control de tiempo de ejecuci\'on.}{129}{paragraph*.147}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Predicci\'on recursiva con actualizaci\'on.}{130}{paragraph*.148}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {C.2}{\ignorespaces Estad\'isticas de ejecuci\'on del modelo ARIMA por dataset.}}{130}{table.caption.149}\protected@file@percent }
+\newlabel{tab:arima_ejecucion}{{C.2}{130}{Estad\'isticas de ejecuci\'on del modelo ARIMA por dataset}{table.caption.149}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {C.5}Modelo LSTM global}{130}{section.C.5}\protected@file@percent }
+\newlabel{ap:lstm_global}{{C.5}{130}{Modelo LSTM global}{section.C.5}{}}
+\@writefile{toc}{\contentsline {paragraph}{Arquitectura.}{130}{paragraph*.150}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Escalado por equipo.}{131}{paragraph*.151}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Generaci\'on de secuencias y entrenamiento.}{131}{paragraph*.152}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Desescalado de predicciones.}{131}{paragraph*.153}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {C.3}{\ignorespaces Dimensiones del conjunto de secuencias para la LSTM.}}{131}{table.caption.154}\protected@file@percent }
+\newlabel{tab:lstm_dimensiones}{{C.3}{131}{Dimensiones del conjunto de secuencias para la LSTM}{table.caption.154}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {C.6}Evaluaci\'on comparativa}{132}{section.C.6}\protected@file@percent }
+\newlabel{ap:evaluacion_comparativa}{{C.6}{132}{Evaluaci\'on comparativa}{section.C.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.6.1}M\'etricas globales}{132}{subsection.C.6.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {C.4}{\ignorespaces M\'etricas globales de error y preservación de ranking.}}{132}{table.caption.155}\protected@file@percent }
+\newlabel{tab:metricas_globales}{{C.4}{132}{M\'etricas globales de error y preservación de ranking}{table.caption.155}{}}
+\@writefile{toc}{\contentsline {paragraph}{Spearman \(\rho \): preservaci\'on del ranking.}{132}{paragraph*.156}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.6.2}Desempe\~no por equipo}{133}{subsection.C.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.6.3}Visualizaciones descriptivas}{133}{subsection.C.6.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{An\'alisis general.}{133}{paragraph*.162}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{An\'alisis diferenciado por dataset.}{133}{paragraph*.163}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {C.1}{\ignorespaces Comparativa de predicciones ARIMA y LSTM frente al rating real (G2Av1513) - Dataset Full}}{134}{figure.caption.157}\protected@file@percent }
+\newlabel{fig:ARIMAvsLSTMfull}{{C.1}{134}{Comparativa de predicciones ARIMA y LSTM frente al rating real (G2Av1513) - Dataset Full}{figure.caption.157}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {C.2}{\ignorespaces Comparativa de predicciones ARIMA y LSTM frente al rating real (G2Av1513) - Dataset Lite}}{135}{figure.caption.158}\protected@file@percent }
+\newlabel{fig:ARIMAvsLSTMlite}{{C.2}{135}{Comparativa de predicciones ARIMA y LSTM frente al rating real (G2Av1513) - Dataset Lite}{figure.caption.158}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {C.3}{\ignorespaces Comparativa de predicciones ARIMA y LSTM frente al rating real (G2Av1513) - Dataset Lite Recortado}}{136}{figure.caption.159}\protected@file@percent }
+\newlabel{fig:ARIMAvsLSTMliterec}{{C.3}{136}{Comparativa de predicciones ARIMA y LSTM frente al rating real (G2Av1513) - Dataset Lite Recortado}{figure.caption.159}{}}
+\newlabel{fig:Scatterfull}{{C.4a}{137}{Dataset Full}{figure.caption.160}{}}
+\newlabel{sub@fig:Scatterfull}{{a}{137}{Dataset Full}{figure.caption.160}{}}
+\newlabel{fig:Scatterlite}{{C.4b}{137}{Dataset Lite}{figure.caption.160}{}}
+\newlabel{sub@fig:Scatterlite}{{b}{137}{Dataset Lite}{figure.caption.160}{}}
+\newlabel{fig:Scatterliterec}{{C.4c}{137}{Dataset Lite Recortado}{figure.caption.160}{}}
+\newlabel{sub@fig:Scatterliterec}{{c}{137}{Dataset Lite Recortado}{figure.caption.160}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {C.4}{\ignorespaces Comparativa de diagramas de Dispersion ARIMA y LSTM.}}{137}{figure.caption.160}\protected@file@percent }
+\newlabel{fig:comparativa_scatters}{{C.4}{137}{Comparativa de diagramas de Dispersion ARIMA y LSTM}{figure.caption.160}{}}
+\newlabel{fig:error_full}{{C.5a}{138}{Dataset Full}{figure.caption.161}{}}
+\newlabel{sub@fig:error_full}{{a}{138}{Dataset Full}{figure.caption.161}{}}
+\newlabel{fig:error_lite}{{C.5b}{138}{Dataset Lite}{figure.caption.161}{}}
+\newlabel{sub@fig:error_lite}{{b}{138}{Dataset Lite}{figure.caption.161}{}}
+\newlabel{fig:error_lite_rec}{{C.5c}{138}{Dataset Lite Recortado}{figure.caption.161}{}}
+\newlabel{sub@fig:error_lite_rec}{{c}{138}{Dataset Lite Recortado}{figure.caption.161}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {C.5}{\ignorespaces Comparativa de histogramas de errores ARIMA y LSTM.}}{138}{figure.caption.161}\protected@file@percent }
+\newlabel{fig:comparativa_histogramas}{{C.5}{138}{Comparativa de histogramas de errores ARIMA y LSTM}{figure.caption.161}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {C.7}Ranking proyectado: \'ultima semana de test}{139}{section.C.7}\protected@file@percent }
+\newlabel{ap:ranking_proyectado}{{C.7}{139}{Ranking proyectado: \'ultima semana de test}{section.C.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {C.5}{\ignorespaces Top 20 del ranking proyectado para el \textsc  {dataset Full} (semana del 2025-12-09).}}{140}{table.caption.164}\protected@file@percent }
+\newlabel{tab:top20_full}{{C.5}{140}{Top 20 del ranking proyectado para el \textsc {dataset Full} (semana del 2025-12-09)}{table.caption.164}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {C.8}Limitaciones y observaciones finales}{140}{section.C.8}\protected@file@percent }
+\newlabel{ap:limitaciones}{{C.8}{140}{Limitaciones y observaciones finales}{section.C.8}{}}
 \@setckpt{appendix}{
-\setcounter{page}{125}
-\setcounter{equation}{3}
-\setcounter{enumi}{3}
+\setcounter{page}{142}
+\setcounter{equation}{7}
+\setcounter{enumi}{6}
 \setcounter{enumii}{0}
 \setcounter{enumiii}{0}
 \setcounter{enumiv}{0}
 \setcounter{footnote}{0}
 \setcounter{mpfootnote}{0}
 \setcounter{part}{0}
-\setcounter{chapter}{2}
-\setcounter{section}{5}
-\setcounter{subsection}{5}
+\setcounter{chapter}{3}
+\setcounter{section}{8}
+\setcounter{subsection}{0}
 \setcounter{subsubsection}{0}
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
-\setcounter{figure}{0}
-\setcounter{table}{8}
+\setcounter{figure}{5}
+\setcounter{table}{5}
 \setcounter{caption@flags}{2}
 \setcounter{continuedfloat}{0}
-\setcounter{subfigure}{0}
+\setcounter{subfigure}{3}
 \setcounter{subtable}{0}
 \setcounter{parentequation}{0}
 \setcounter{section@level}{0}
-\setcounter{Item}{107}
+\setcounter{Item}{117}
 \setcounter{Hfootnote}{0}
-\setcounter{bookmark@seq@number}{129}
+\setcounter{bookmark@seq@number}{144}
 \setcounter{tabx@nest}{0}
 \setcounter{listtotal}{0}
 \setcounter{listcount}{0}
@@ -108,7 +184,7 @@
 \setcounter{citetotal}{0}
 \setcounter{multicitecount}{0}
 \setcounter{multicitetotal}{0}
-\setcounter{instcount}{128}
+\setcounter{instcount}{135}
 \setcounter{maxnames}{3}
 \setcounter{minnames}{1}
 \setcounter{maxitems}{3}

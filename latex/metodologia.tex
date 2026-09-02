@@ -258,7 +258,7 @@ Estas fueron obtenidas de Datosmacro \cite{Datosmacro}, las mismas presentaban v
 	\item Imputaci\'on m\'ultiple por ecuaciones encadenadas (MICE), empleando como predictores el PIB, la IED y la poblaci\'on, para paneles con m\'ultiples variables faltantes simult\'aneamente.
 \end{enumerate}
 
-El procedimiento se implement\'o en Python utilizando \texttt{statsmodels}, \texttt{pmdarima}, \\ \texttt{sklearn.impute.IterativeImputer} y se valid\'o comparando las trayectorias ARIMA versus \emph{autoARIMA} por pa\'is y variable. No obstante, como se detalla en la Secci\'on~\ref{sec:seleccion_covariables}, estas variables fueron excluidas del modelo final por baja se\~nal predictiva, por lo que su imputaci\'on se reporta \'unicamente por completitud metodol\'ogica y reproducibilidad del dataset maestro.
+El procedimiento se implement\'o en Python utilizando \texttt{statsmodels}, \texttt{pmdarima}, \\ \texttt{sklearn.impute.IterativeImputer} y se valid\'o comparando las trayectorias ARIMA versus \emph{autoARIMA} por pa\'is y variable. No obstante, como se detalla en la Secci\'on~\ref{sec:seleccion_covariables}, estas variables fueron excluidas del modelo final por baja se\~nal predictiva, por lo que su imputaci\'on se reporta \'unicamente por completitud metodol\'ogica y reproducibilidad del \textit{dataset}.
 
 \paragraph{Distancia de viaje.} Utilizando las coordenadas geogr\'aficas de los estadios local y visitante, se calcula la distancia geod\'esica en kil\'ometros mediante la f\'ormula de Haversine:
 \begin{equation}
@@ -339,7 +339,7 @@ A pesar de la integraci\'on sistem\'atica, persisten valores faltantes por arran
 Al t\'ermino del pipeline se exportan dos archivos CSV que constituyen la base emp\'irica del trabajo:
 
 \begin{itemize}
-	\item \textbf{Dataset Lite} (\texttt{matches\_final\_model\_clean2.csv}): contiene todos los datos con todas las covariables exogenas preseleccionadas: metadatos, goles, \texttt{diff\_MarketValue}, \texttt{travel\_km}, \texttt{diff\_NetSpending}, \texttt{diff\_temperature\_2m}, \texttt{diff\_PiO2}, \texttt{home\_Assist}, \texttt{diff\_Foreign}, \texttt{home\_OccRat}, y las ventanas de goles condicionadas.
+	\item \textbf{Dataset Lite} (\texttt{matches\_final\_model\_clean2.csv}): contiene todos los datos con todas las covariables exogenas preseleccionadas: metadatos, goles, \texttt{diff\_MarketValue}, \texttt{travel\_km}, \texttt{diff\_NetSpending}, \texttt{diff\_temperature\_2m}, \texttt{diff\_PiO2}, \texttt{home\_Assist}, \\ \texttt{diff\_Foreign}, \texttt{home\_OccRat}, y las ventanas de goles condicionadas.
 	
 	\item \textbf{Dataset Full} (\texttt{matches\_definitive\_model\_full2.csv}): recorte del Lite a la ventana 2019--2025 con las 21 competiciones v\'alidas. Incluye las mismas variables de conteo y las covariables ex\'ogenas del Dataset anterior, y se le agregan: \texttt{diff\_xG\_teo\_r5}, \texttt{diff\_xA\_teo\_r5}, \texttt{diff\_DDI\_r5}.
 \end{itemize}

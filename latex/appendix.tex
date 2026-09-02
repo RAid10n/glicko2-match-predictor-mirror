@@ -289,7 +289,7 @@ Para cada dataset, el \textit{notebook} produce:
 	\item Un conjunto de estadísticas descriptivas: rango de ratings, correlación de Spearman entre $\mu$ y número de partidos, distribución de \texttt{draw\_prob}.
 \end{enumerate}
 
-Estos resultados constituyen la l\'inea base contra la cual se contrasta el desempe\~no del motor calibrado G2Av1513.
+Estos resultados constituyen la l\'inea base contra la cual se contrasta el desempe\~no del motor calibrado \texttt{G2Av1513}.
 
 % ============================================================
 % SECCIÓN B.2 -- EL MOTOR CALIBRADO G2Av1513
@@ -586,3 +586,398 @@ Esto sugiere que el sistema de calibraci\'on del motor \texttt{G2Av1513} captura
 \subsection*{Observaci\'on final}
 
 El contraste entre el motor \textit{naive} y el motor calibrado revela una lecci\'on metodol\'ogica de alcance general en la modelizaci\'on de sistemas de rating din\'amico: la implementaci\'on fiel del algoritmo es necesaria pero no suficiente para alcanzar un desempe\~no \'optimo. La calibraci\'on estructural es el verdadero habilitador del poder predictivo del sistema. El motor \texttt{G2Av1513} no es, por tanto, una mera reimplementación del Glicko-2, sino un sistema de inferencia que integra el algoritmo can\'onico con un protocolo de optimizaci\'on robusto y un conjunto de mejoras num\'ericas dise\~nadas espec\'ificamente para el problema de predicci\'on trinomial en f\'utbol profesional de clubes.
+
+% ============================================================
+% APENDICE C: Poyecci\'on temporal de ratings: ARIMA vs LSTM
+% ============================================================
+
+\chapter{Proyecci\'on temporal de ratings: modelos ARIMA y LSTM}
+\label{ap:proyeccion_temporal}
+
+Este ap\'endice documenta un componente exploratorio del sistema predictivo, en el que se analiza la capacidad de proyecci\'on temporal de los ratings din\'amicos \(\mu\) generados por el Glicko-2 modificado. A diferencia del bloque de refinamiento neuronal (Cap\'itulo~\ref{ch:resultados}), que opera sobre vectores de caracter\'isticas est\'aticos para corregir probabilidades de resultado, en este ap\'endice se aborda el problema desde la perspectiva de la serie temporal univariante: dado el historial semanal de \(\mu\) de cada equipo, ¿es posible anticipar su evoluci\'on futura?
+
+Se comparan dos enfoques: 
+
+\begin{enumerate}
+	\item Un modelo ARIMA univariado por equipo, que captura la autocorrelación específica de cada trayectoria.
+	\item Una red \textit{Long Short-Term Memory (LSTM)} global, que aprende patrones transferibles entre equipos compartiendo par\'ametros.
+\end{enumerate}
+
+La evaluaci\'on se realiza sobre el \textsc{dataset Full}, el \textsc{dataset Lite} y el \textsc{dataset Lite Recortado} en un r\'egimen de \textit{backtesting}, y se complementa con una proyecci\'on a futuro para el Ap\'endice~\ref{ap:forecasting}. El horizonte de prueba abarca desde mediados de 2023 hasta diciembre de 2025 para el \textit{dataset Full}, lo que permite evaluar el desempe\~no en condiciones reales de estacionalidad y parones competitivos.
+
+\section{Justificaci\'on de la agregaci\'on semanal}
+\label{ap:justificacion_semanal}
+
+La elecci\'on de la semana como unidad temporal responde a dos restricciones operativas. 
+
+\begin{enumerate}
+	\item El panel de competiciones analizado presenta calendarios asincr\'onicos, pues las ligas europeas se disputan bajo un calendario interanual, de Agosto a Mayo del a\~no siguiente, mientras que las ligas americanas y algunas asi\'aticas se disputan bajo un calendario anual. Una unidad temporal diaria generar\'ia una matr\'iz de faltantes superior al 90\%, mientras que las unidades temporales mensuales o anuales har\'ian al modelo correr un riesgo real de sobreajuste.
+	\item La semana (\texttt{W-MON}, con ancla en lunes) constituye la unidad m\'inima que garantiza la presencia de al menos una observaci\'on por equipo durante los per\'iodos de competici\'on activa, sin incurrir en la dispersi\'on de los partidos entre distintos d\'ias de la semana. 
+\end{enumerate}
+
+El l\'imite de \texttt{12} semanas para el relleno hacia adelante (\texttt{ffill}) se fija a partir de la duración m\'axima del par\'on vacacional europeo, y se aplica \'unicamente para mantener la continuidad de la serie temporal sin inventar informaci\'on en ausencia de actividad competitiva prolongada.
+
+\section{Fundamentos te\'oricos de los modelos de proyecci\'on}
+\label{ap:fundamento_teorico}
+
+La proyecci\'on de series temporales de ratings $\mu$ requiere modelos capaces de capturar la estructura de dependencia temporal inherente a las trayectorias de los equipos. En este ap\'endice se emplean dos enfoques complementarios: los modelos ARIMA \textit{(AutoRegressive Integrated Moving Average)}, fundamentados en la teoría clásica de Box-Jenkins; y las redes LSTM \textit{(Long Short-Term Memory)}, pertenecientes al paradigma del aprendizaje profundo recurrente. A continuaci\'on se exponen los elementos te\'oricos esenciales de cada uno, con especial \'enfasis en su aplicabilidad a series con periodicidad semanal y presencia de huecos estructurales.
+
+\subsection{Modelos ARIMA: fundamentos y aplicaci\'on univariada}
+\label{ap:arima_teoria}
+
+El modelo ARIMA constituye una generalizaci\'on de los procesos autorregresivos de media m\'ovil (ARMA) para series no estacionarias, mediante la inclusi\'on de un operador de diferencias \cite{brockwell2002,shumway2002}. Su formulaci\'on general para una serie $\{x_t\}$ se escribe como:
+
+\begin{equation}
+	\phi(B)(1-B)^d x_t = \theta(B) w_t,
+\end{equation}
+
+donde $B$ es el operador de desplazamiento hacia atr\'as ($B x_t = x_{t-1}$), $d$ es el orden de diferenciaci\'on, $\phi(B)=1-\phi_1 B-\cdots-\phi_p B^p$ es el polinomio autorregresivo de orden $p$, $\theta(B)=1+\theta_1 B+\cdots+\theta_q B^q$ es el polinomio de media m\'ovil de orden $q$, y $\{w_t\}$ es un ruido blanco con media cero y varianza $\sigma_w^2$ \cite{shumway2006}. El operador $\nabla^d=(1-B)^d$ elimina tendencias polin\'omicas de grado $d-1$, reduciendo la serie a un proceso ARMA estacionario \cite{HernandezColina}.
+
+La selecci\'on autom\'atica de los \'ordenes $(p,d,q)$ se realiza mediante el algoritmo \texttt{auto\_arima} implementado en el paquete \texttt{pmdarima} \cite{pmdarima2021}, el cual minimiza el Criterio de Informaci\'on de Akaike (AIC) o el Bayesiano (BIC) sobre un espacio de b\'usqueda restringido. Para cada equipo, el modelo se ajusta sobre su historial de $\mu$, y las predicciones se generan recursivamente con actualización secuencial de par\'ametros, emulando un entorno operativo \cite{brockwell2002}. La condici\'on de invertibilidad del modelo MA, $|\theta(z)|>0$ para $|z|\le 1$, se verifica autom\'aticamente mediante la selección de ra\'ices fuera del c\'irculo unitario \cite{shumway2006}.
+
+\subsection{Redes LSTM: modelado de dependencias secuenciales a largo plazo}
+\label{ap:lstm_teoria}
+
+Las redes LSTM \cite{hochreiter1997} son una variante de las redes neuronales recurrentes \textit{(Recurrent Neural Networks, RNN)} dise\~nadas para superar el problema del gradiente desvaneciente, permitiendo el aprendizaje de dependencias temporales de largo alcance. Su unidad b\'asica contiene tres compuertas: entrada, olvido y salida, estas regulan el flujo de informaci\'on a trav\'es de un estado de memoria celular. Para una secuencia de entrada $\mathbf{x}_t \in \mathbb{R}^{d}$, la actualizaci\'on en el paso $t$ se define como:
+
+\begin{align}
+	\mathbf{i}_t &= \sigma(\mathbf{W}_{xi}\mathbf{x}_t + \mathbf{W}_{hi}\mathbf{h}_{t-1} + \mathbf{b}_i), \label{eq:lstm_input}\\
+	\mathbf{f}_t &= \sigma(\mathbf{W}_{xf}\mathbf{x}_t + \mathbf{W}_{hf}\mathbf{h}_{t-1} + \mathbf{b}_f), \label{eq:lstm_forget}\\
+	\mathbf{o}_t &= \sigma(\mathbf{W}_{xo}\mathbf{x}_t + \mathbf{W}_{ho}\mathbf{h}_{t-1} + \mathbf{b}_o), \label{eq:lstm_output}\\
+	\mathbf{g}_t &= \tanh(\mathbf{W}_{xg}\mathbf{x}_t + \mathbf{W}_{hg}\mathbf{h}_{t-1} + \mathbf{b}_g), \label{eq:lstm_candidate}\\
+	\mathbf{c}_t &= \mathbf{f}_t \odot \mathbf{c}_{t-1} + \mathbf{i}_t \odot \mathbf{g}_t, \label{eq:lstm_cell}\\
+	\mathbf{h}_t &= \mathbf{o}_t \odot \tanh(\mathbf{c}_t), \label{eq:lstm_hidden}
+\end{align}
+
+donde $\mathbf{i}_t$, $\mathbf{f}_t$ y $\mathbf{o}_t$ son las compuertas de entrada, olvido y salida; $\mathbf{g}_t$ es la activaci\'on candidata; $\mathbf{c}_t$ es el estado de la celda; $\mathbf{h}_t$ es el estado oculto; $\sigma$ es la funci\'on sigmoide; $\odot$ denota el producto de Hadamard; y $\mathbf{W}_{(\cdot)}$, $\mathbf{b}_{(\cdot)}$ son matrices de pesos y sesgos aprendibles \cite{brockwell2002}. La compuerta de olvido permite descartar informaci\'on irrelevante, mientras que la de entrada decide qu\'e nueva informaci\'on almacenar, otorgando a la red la capacidad de retener patrones a lo largo de m\'ultiples pasos temporales.
+
+En el contexto del presente ap\'endice, la LSTM se entrena de forma global sobre las secuencias de $\mu$ de todos los equipos, compartiendo par\'ametros a trav\'es de las diferentes trayectorias. Este enfoque asume que las din\'amicas subyacentes del rating son transferibles entre equipos, una hip\'otesis que se contrasta emp\'iricamente en la Secci\'on~\ref{evaluacion_comparativa}. Cada serie se escala individualmente con un \texttt{StandardScaler} ajustado sobre los datos de entrenamiento para evitar \textit{data leakage}, y se generan secuencias de longitud fija $T=8$ semanas \cite{shumway2006}. La funci\'on de p\'erdida es el error cuadr\'atico medio (MSE), y el optimizador Adam con \textit{early stopping} previene el sobreajuste \cite{hochreiter1997}.
+
+\subsection{Complementariedad y justificaci\'on de la comparaci\'on}
+\label{ap:comparacion_teorica}
+
+La comparaci\'on entre ARIMA y LSTM en este ap\'endice responde a un criterio metodol\'ogico: mientras que ARIMA modela la autocorrelaci\'on espec\'ifica de cada equipo mediante un enfoque param\'etrico lineal, la LSTM aproxima no linealidades y patrones compartidos entre equipos a partir de los datos. Esta dualidad permite evaluar si la estructura temporal del rating $\mu$ es predominantemente lineal y espec\'ifica de cada entidad, o si, por el contrario, existen regularidades globales que una red recurrente puede explotar. El marco te\'orico aqu\'i expuesto proporciona las bases para interpretar los resultados num\'ericos de las secciones subsiguientes, donde se comparan ambos enfoques en t\'erminos de error de predicci\'on, preservaci\'on del ranking y estabilidad temporal.
+
+\section{Construcci\'on del panel semanal}
+\label{ap:panel_semanal}
+
+El punto de partida son los archivos hist\'oricos de ratings generados por el m\'odulo \texttt{G2Av1513.py}. Cada registro contiene el identificador del partido, los equipos y sus respectivos \(\mu\) y \(RD\) (rating deviation). La transformaci\'on a panel semanal sigue los siguientes pasos:
+
+\begin{enumerate}
+	\item \textbf{Formato ancho a largo}: Se extraen las columnas del equipo local y visitante, y se concatenan en un \'unico \texttt{DataFrame} con columnas \texttt{team}, \texttt{match\_date} y \texttt{mu}.
+	\item \textbf{Agregaci\'on semanal}: Para cada par \texttt{(team, year\_week)}, se toma el \'ultimo valor de \(\mu\) registrado en esa semana (\texttt{last()}).
+	\item \textbf{Pivote a panel}: Se construye una tabla con \'indice \texttt{year\_week} y columnas \texttt{team}, rellenando con los valores de \(\mu\).
+	\item \textbf{Frecuencia regular}: Se fuerza la frecuencia semanal (\texttt{asfreq('W-MON')}), insertando filas para semanas sin datos.
+	\item \textbf{Forward fill con l\'imite}: Se aplica \texttt{ffill(limit=12)} para propagar el \'ultimo valor conocido durante períodos de inactividad cortos.
+	\item \textbf{Filtros de calidad}: Se eliminan equipos con desviación t\'ipica nula (\texttt{std == 0}) y aquellos con menos de 20 observaciones reales (\texttt{MIN\_OBSERVATIONS}), para garantizar series con suficiente variabilidad y soporte muestral.
+\end{enumerate}
+
+La Tabla~\ref{tab:panel_dimensiones} resume las dimensiones resultantes para cada dataset. N\'otese que el \textsc{dataset Full} y el \textsc{dataset Lite Recortado} comparten id\'entica ventana temporal (2019--2025), mientras que el \textsc{dataset Lite} se extiende a las temporadas 2017--2018, lo que explica su mayor n\'umero de equipos y semanas.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Dimensiones del panel semanal por dataset.}
+	\label{tab:panel_dimensiones}
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{lccccccc}
+			\toprule
+			\textbf{Dataset} & \textbf{Sem.} & \textbf{Equ. ini.} & \textbf{Elim. std=0} & \textbf{Elim. obs<20} & \textbf{Eq. fin.} & \textbf{Fecha split} & \textbf{Train / Test} \\
+			\midrule
+			Full            & 346 & 325 & 0 & 10 & 315 & 2023-12-19 & 242 / 104 \\
+			Lite            & 425 & 404 & 0 & 6  & 398 & 2023-07-04 & 297 / 128 \\
+			Lite Recortado  & 346 & 325 & 0 & 10 & 315 & 2023-12-19 & 242 / 104 \\
+			\bottomrule
+		\end{tabular}}%
+\end{table}
+
+La selecci\'on autom\'atica de equipos representativos para la visualizaci\'on posterior arrojó los siguientes conjuntos:
+\begin{itemize}
+	\item \textbf{Full y Lite Recortado}: Manchester City, Real Madrid, 1.FC K\:oln, Colorado Rapids, Toronto FC, Cincinnati FC.
+	\item \textbf{Lite}: Manchester City, Real Madrid, Panionios, Leeds United, Sepahan, Cincinnati FC.
+\end{itemize}
+
+Esta selecci\'on cubre equipos de alto rating (Top 2), rating medio (pr\'oximos a la mediana) y alta volatilidad, asegurando una muestra diversa para el an\'alisis gr\'afico.
+
+\section{Modelo ARIMA univariado por equipo}
+\label{ap:arima_univariado}
+
+El primer enfoque de proyecci\'on consiste en ajustar un modelo ARIMA \textit{no estacional} de forma independiente para cada equipo. Dada la longitud limitada de las series y la ausencia de un patr\'on estacional anual robusto debido a los parones, se opt\'o por la selecci\'on autom\'atica de \'ordenes mediante \texttt{auto\_arima} con los siguientes par\'ametros:
+\[
+\text{max\_p} = 3,\quad \text{max\_q} = 3,\quad \text{max\_d} = 2,\quad \text{max\_order} = 5,\quad \text{stepwise} = \text{True}.
+\]
+La b\'usqueda se restringe a modelos de orden bajo para evitar sobreajuste.
+
+\paragraph{Control de tiempo de ejecuci\'on.} 
+Dado que \texttt{auto\_arima} puede presentar comportamientos err\'aticos en series con ra\'ices unitarias o varianza cambiante, se implement\'o un mecanismo de \textit{timeout} de 60 segundos por equipo mediante \texttt{signal.alarm}. Si el proceso de optimizaci\'on no converge en ese lapso, el equipo se descarta para el ARIMA, garantizando que el bucle principal no se bloquee.
+
+\paragraph{Predicci\'on recursiva con actualizaci\'on.}
+Para cada semana del conjunto de prueba, se genera una predicci\'on \textit{one-step ahead}:
+\[
+\hat{\mu}_{t+1} = \text{ARIMA}( \mu_1, \dots, \mu_t ).
+\]
+Tras observar el valor real \(\mu_{t+1}\), se actualiza el modelo mediante \texttt{model.update([actual])}, permitiendo que el estimador incorpore la nueva informaci\'on en tiempo real, simulando as\'i un entorno de producci\'on.
+
+La Tabla~\ref{tab:arima_ejecucion} resume las estad\'isticas de ejecuci\'on. El tiempo total de procesamiento fue de aproximadamente 25 minutos para el \textsc{dataset Full} y 36 minutos para el \textsc{dataset Lite}. La ausencia de \textit{timeouts} y errores confirma la estabilidad de la configuraci\'on elegida.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Estad\'isticas de ejecuci\'on del modelo ARIMA por dataset.}
+	\label{tab:arima_ejecucion}
+	\begin{tabular}{lccccc}
+		\toprule
+		\textbf{Dataset} & \textbf{Equipos totales} & \textbf{\'Exitos} & \textbf{Saltados} & \textbf{Timeouts} & \textbf{Errores} \\
+		\midrule
+		Full            & 315 & 289 & 26 & 0 & 0 \\
+		Lite            & 398 & 366 & 32 & 0 & 0 \\
+		Lite Recortado  & 315 & 289 & 26 & 0 & 0 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+Los equipos saltados corresponden a aquellos con menos de 24 observaciones en el conjunto de entrenamiento o con desviaci\'on t\'ipica nula, casos en los que la estimac\'on de par\'ametros ARIMA no es fiable.
+
+\section{Modelo LSTM global}
+\label{ap:lstm_global}
+
+El segundo enfoque emplea una red LSTM \textit{global}, es decir, un \'unico modelo entrenado sobre las secuencias de todos los equipos, pero con un escalado previo espec\'ifico por equipo.
+
+\paragraph{Arquitectura.}
+La red se implementa en \texttt{Keras/TensorFlow} con la siguiente topolog\'ia:
+\begin{itemize}
+	\item Capa de entrada: secuencias de \(T = 8\) semanas (un único canal, \(\mu\)).
+	\item LSTM con 64 unidades, activaci\'on $\tanh$ por defecto.
+	\item Dropout con tasa 0.2 para regularizaci\'on.
+	\item Capa densa con 1 neurona: salida escalar.
+\end{itemize}
+El número de pasos temporales \(T = 8\) se fij\'o como compromiso entre capturar la forma reciente y disponer de suficientes secuencias para el entrenamiento.
+
+\paragraph{Escalado por equipo.}
+Dado que la escala de \(\mu\) puede variar entre ligas y equipos, aunque el Glicko-2 est\'e anclado en 1500, cada serie se estandariza individualmente utilizando un \texttt{StandardScaler}. El escalador se ajusta exclusivamente sobre el conjunto de entrenamiento de cada equipo, para evitar \textit{data leakage}. La f\'ormula aplicada es:
+\[
+\mu_{\text{scaled}} = \frac{\mu - \bar{\mu}_{\text{train}}}{\sigma_{\text{train}}}.
+\]
+
+\paragraph{Generaci\'on de secuencias y entrenamiento.}
+Para cada equipo se generan ventanas deslizantes de longitud \(T=8\), donde la entrada son las semanas \(t-T+1, \dots, t\) y la salida es la semana \(t+1\). Las secuencias se asignan a entrenamiento o prueba según la fecha de la salida, respetando el split cronológico definido en la Sección~\ref{ap:panel_semanal}.
+
+El entrenamiento se realiza con:
+\begin{itemize}
+	\item Funci\'on de p\'erdida: error cuadr\'atico medio (MSE).
+	\item Optimizador: Adam con tasa de aprendizaje \(10^{-3}\).
+	\item Early stopping con paciencia de 5 \'epocas sobre \texttt{val\_loss}.
+	\item 100 \'epocas m\'aximas, \textit{batch size} de 32.
+\end{itemize}
+
+\paragraph{Desescalado de predicciones.}
+Una vez obtenidas las predicciones en el espacio escalado, se aplica la transformaci\'on inversa de cada escalador para devolver los valores a la escala original de \(\mu\), utilizando el operador \texttt{scaler.inverse\_transform}.
+
+La Tabla~\ref{tab:lstm_dimensiones} muestra el n\'umero de secuencias generadas y los equipos con predicci\'on exitosa. El mayor volumen de datos en el \textsc{dataset Lite} resulta en un conjunto de entrenamiento de casi 70\,000 secuencias, que permite una convergencia estable del optimizador.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Dimensiones del conjunto de secuencias para la LSTM.}
+	\label{tab:lstm_dimensiones}
+	\begin{tabular}{lccc}
+		\toprule
+		\textbf{Dataset} & \textbf{Secuencias train} & \textbf{Secuencias test} & \textbf{Equipos con predicci\'on} \\
+		\midrule
+		Full            & 47\,094 & 20\,928 & 256 \\
+		Lite            & 69\,877 & 29\,279 & 296 \\
+		Lite Recortado  & 47\,094 & 20\,928 & 256 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+Los equipos exclu\'idos de la LSTM fueron 17 en el \textsc{dataset Full} y 27 en el \textsc{dataset Lite}, estos son aquellos con menos de \(T+1 = 9\) observaciones en el panel, insuficientes para formar al menos una secuencia completa.
+
+\section{Evaluaci\'on comparativa}
+\label{ap:evaluacion_comparativa}
+
+La comparaci\'on entre ARIMA y LSTM se realiza sobre el conjunto de prueba, utilizando tres familias de m\'etricas: error absoluto/relativo (RMSE, MAE), preservaci\'on de ranking (Spearman \(\rho\)) y desagregaci\'on por equipo.
+
+\subsection{M\'etricas globales}
+
+La Tabla~\ref{tab:metricas_globales} consolida los resultados para los tres datasets. Se observa un patr\'on consistente: el modelo ARIMA supera a la LSTM en RMSE y MAE en todos los casos, con una ventaja de 2.76 puntos $\mu$ en el \textit{dataset Full}, 6.17 puntos $\mu$ en el \textit{dataset Lite} y 2.41 puntos $\mu$ en el \textit{dataset Lite Recortado}. Esta diferencia es atribuible a la estructura del conjunto de prueba: al incluir el parón estival de 2025, donde muchas series permanecen planas por \texttt{ffill}, el ARIMA (que esencialmente predice el último valor observado) obtiene errores casi nulos en esas semanas. La LSTM, al intentar modelar dinámicas no lineales, introduce variaciones que penalizan el error absoluto.
+
+\begin{table}[htbp]
+	\centering
+	\caption{M\'etricas globales de error y preservación de ranking.}
+	\label{tab:metricas_globales}
+	\begin{tabular}{lccccc}
+		\toprule
+		\textbf{Dataset} & \textbf{Modelo} & \textbf{RMSE} & \textbf{MAE} & \textbf{Spearman \(\rho\)} & \textbf{LSTM wins} \\
+		\midrule
+		\multirow{2}{*}{Full} & ARIMA & 7.2887 & 4.9211 & 0.9965 \(\pm\) 0.0019 & \multirow{2}{*}{20.6\%} \\
+		& LSTM  & 10.0447 & 7.1382 & 0.9954 \(\pm\) 0.0022 & \\
+		\midrule
+		\multirow{2}{*}{Lite} & ARIMA & 10.8003 & 5.3221 & 0.9957 \(\pm\) 0.0031 & \multirow{2}{*}{31.6\%} \\
+		& LSTM  & 16.9750 & 8.1474 & 0.9902 \(\pm\) 0.0059 & \\
+		\midrule
+		\multirow{2}{*}{Lite Recortado} & ARIMA & 7.2887 & 4.9211 & 0.9965 \(\pm\) 0.0019 & \multirow{2}{*}{23.9\%} \\
+		& LSTM  & 9.6968 & 6.9721 & 0.9955 \(\pm\) 0.0022 & \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\paragraph{Spearman \(\rho\): preservaci\'on del ranking.}
+Ambos modelos alcanzan coeficientes de Spearman superiores a \(0.99\) en todos los \textit{datasets}. Este resultado es notable: aunque la LSTM erre m\'as en la magnitud absoluta de \(\mu\), preserva el ordenamiento relativo de los equipos casi a la perfecci\'on. La desviaci\'on est\'andar de \(\rho\) es ligeramente mayor en el \textsc{dataset Lite} para la LSTM (0.0059), lo que sugiere una mayor inestabilidad semana a semana en el universo ampliado de competiciones.
+
+\subsection{Desempe\~no por equipo}
+
+A nivel individual, la LSTM solo supera en el 20.6\% (\textit{dataset Full}), 31.6\% (\textit{dataset Lite}) y 23.9\% (\textit{dataset Lite Recortado}) de los equipos. El an\'alisis de los casos donde la LSTM es superior revela que se trata, en su mayor\'ia, de equipos con alta volatilidad en su serie hist\'orica. Estos equipos presentan cambios bruscos en \(\mu\) asociados a reestructuraciones de plantilla o cambios de entrenador; la LSTM, al aprender patrones de otros equipos vol\'atiles, logra anticipar estas transiciones mejor que el ARIMA univariado. En contraste, para equipos estables el ARIMA es claramente superior.
+
+\subsection{Visualizaciones descriptivas}
+
+Las m\'etricas agregadas de la Tabla~\ref{tab:metricas_globales} resumen el desempe\~no num\'erico de ambos modelos, pero un an\'alisis visual de las series temporales y los errores de predicci\'on permite identificar comportamientos diferenciales que complementan la evaluaci\'on cuantitativa. En particular, la inspección gr\'afica de las trayectorias de \(\mu\) revela c\'omo cada modelo responde ante per\'iodos de inactividad prolongada, cambios bruscos de rendimiento y la heterogeneidad de calendarios entre competiciones. Por su parte, los diagramas de dispersi\'on, \(\mu\) real (\texttt{G2Av1513}  vs. \(\mu\) predicho, permiten evaluar la calibraci\'on puntual de las predicciones y detectar posibles sesgos sistem\'aticos en la estimaci\'on de los ratings, más all\'a de los errores agregados. Por otro lado, los histogramas de errores complementan el an\'alisis al mostrar la distribuci\'on de los residuos, revelando si los errores se concentran sim\'etricamente alrededor de cero o si presentan colas que indican subestimaci\'on o sobreestimaci\'on en rangos espec\'ificos de \(\mu\).
+
+Las Figuras~\ref{fig:ARIMAvsLSTMfull}-\ref{fig:ARIMAvsLSTMliterec} agrupan, para cada conjunto de datos, las series temporales de los seis equipos representativos, mientras que la Figura~\ref{fig:scatters_datasets} muestra los diagramas de dispersión (ARIMA y LSTM) y la Figura ~\ref{fig:hist_ARIMALSTM} los histogramas de los errores de predicci\'on de \(\mu\).
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.85\textwidth]{ARIMAvsLSTMfull}
+	\caption{Comparativa de predicciones ARIMA y LSTM frente al rating real (G2Av1513) - Dataset Full}
+	\label{fig:ARIMAvsLSTMfull}
+\end{figure}
+
+\begin{figure}[htbp]
+	\includegraphics[width=0.85\textwidth]{ARIMAvsLSTMlite}
+	\caption{Comparativa de predicciones ARIMA y LSTM frente al rating real (G2Av1513) - Dataset Lite}
+	\label{fig:ARIMAvsLSTMlite}
+\end{figure}
+
+\begin{figure}[htbp]
+	\includegraphics[width=0.85\textwidth]{ARIMAvsLSTMliterec}
+	\caption{Comparativa de predicciones ARIMA y LSTM frente al rating real (G2Av1513) - Dataset Lite Recortado}
+	\label{fig:ARIMAvsLSTMliterec}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{subfigure}[b]{0.6\textwidth}
+		\includegraphics[width=\textwidth]{ScatterARIMALSTMfull.png}
+		\caption{Dataset Full}
+		\label{fig:Scatterfull}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.6\textwidth}
+		\includegraphics[width=\textwidth]{ScatterARIMALSTMlite.png}
+		\caption{Dataset Lite}
+		\label{fig:Scatterlite}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.6\textwidth}
+		\includegraphics[width=\textwidth]{ScatterARIMALSTMliterec.png}
+		\caption{Dataset Lite Recortado}
+		\label{fig:Scatterliterec}
+	\end{subfigure}
+	\caption{Comparativa de diagramas de Dispersion ARIMA y LSTM.}
+	\label{fig:comparativa_scatters}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{subfigure}[b]{0.6\textwidth}
+		\includegraphics[width=\textwidth]{ErrorARIMALSTMfull.png}
+		\caption{Dataset Full}
+		\label{fig:error_full}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.6\textwidth}
+		\includegraphics[width=\textwidth]{ErrorARIMALSTMlite.png}
+		\caption{Dataset Lite}
+		\label{fig:error_lite}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.6\textwidth}
+		\includegraphics[width=\textwidth]{ErrorARIMALSTMliterec.png}
+		\caption{Dataset Lite Recortado}
+		\label{fig:error_lite_rec}
+	\end{subfigure}
+	\caption{Comparativa de histogramas de errores ARIMA y LSTM.}
+	\label{fig:comparativa_histogramas}
+\end{figure}
+
+\paragraph{An\'alisis general.}
+En los tres \textit{datasets}, ambos modelos siguen la tendencia general del rating real, con coeficientes de Spearman superiores a \(0.99\) (Tabla~\ref{tab:metricas_globales}). Los diagramas de dispersi\'on muestran una alta concentraci\'on alrededor de la diagonal, confirmando la capacidad de ambos enfoques para preservar el ordenamiento relativo de los equipos. Los histogramas de errores est\'an centrados cerca de cero, aunque la LSTM presenta colas m\'as anchas en todos los casos, reflejando su mayor RMSE y MAE.
+
+\paragraph{An\'alisis diferenciado por dataset.}
+
+\begin{itemize}
+	\item \textbf{Dataset Full (Figura~\ref{fig:full_completa}):} ARIMA y LSTM se comportan de manera consistente. Las series temporales muestran que ambos modelos capturan las fluctuaciones estacionales y los cambios de forma de los equipos, con la LSTM introduciendo ligeras oscilaciones adicionales durante los per\'iodos de inactividad estival, pero sin divergencias significativas. El scatter y los histogramas confirman la superioridad de ARIMA en error absoluto, coherente con los RMSE reportados (\(7.29\) vs \(10.04\)).
+	
+	\item \textbf{Dataset Lite (Figura~\ref{fig:lite_completa}):} Este dataset presenta un hallazgo diferencial que no se observa en los otros conjuntos: el comportamiento de los modelos en el equipo Leeds United durante un período de inactividad prolongada. Mientras que el rating real \(\mu\) (G2A) permanece plano, ARIMA y LSTM reaccionan de forma radicalmente distinta:
+	\begin{itemize}
+		\item \textbf{ARIMA oscila:} el modelo autorregresivo, al actualizar secuencialmente con valores planos, introduce una inercia que genera oscilaciones amortiguadas. El t\'ermino AR(1) intenta ajustar una tendencia que no existe, produciendo un efecto de rebote que se aten\'ua gradualmente.
+		\item \textbf{LSTM se estaciona:} al usar una ventana fija de 8 semanas con valores constantes, la red predice valores constantes sin inercia oscilatoria. La LSTM global, al haber aprendido de otros equipos que en períodos sin actividad la mejor predicci\'on es mantener el valor, se estabiliza r\'apidamente.
+	\end{itemize}
+	Esta divergencia evidencia una diferencia estructural entre ambos enfoques: ARIMA tiene memoria larga, es decir, dependencia de todos los valores pasados, que genera oscilaciones ante cambios abruptos en la entrada, mientras que LSTM, con su ventana limitada, reacciona de manera m\'as estable. El fen\'omeno solo aparece en el \textit{dataset Lite} porque incluye el ciclo completo de ascenso/descenso de Leeds United (2017--2025), mientras que en el \textit{dataset Full} y \textit{dataset Lite Recortado} (2019--2025) la serie es m\'as corta y no alcanza a generar este efecto. Adicionalmente, en el subgr\'afico de series temporales del \textit{dataset Lite} aparece un espacio en blanco correspondiente a \texttt{Panionios}, equipo exclu\'ido del panel por inactividad prolongada (ver Secci\'on~\ref{ap:panel_semanal}).
+	
+	\item \textbf{Dataset Lite Recortado:} Al compartir la misma ventana temporal que Full (2019--2025) pero sin las m\'etricas deportivas avanzadas, el comportamiento es similar al del \textit{dataset Full}. ARIMA y LSTM siguen el patr\'on del rating real sin divergencias notables durante los per\'iodos de inactividad. Los diagramas de dispersi\'on y los histogramas confirman las m\'etricas reportadas: ARIMA mantiene su superioridad en RMSE y MAE (\(7.29\) vs \(9.70\)), mientras que LSTM preserva el ordenamiento relativo con \(\rho > 0.99\). La ausencia de la divergencia observada en el \textit{dataset Lite} refuerza la hip\'otesis de que esta es atribuible a la mayor longitud temporal del panel (2017--2025).
+\end{itemize}
+
+\section{Ranking proyectado: \'ultima semana de test}
+\label{ap:ranking_proyectado}
+
+Como aplicaci\'on pr\'actica del componente exploratorio, se gener\'o un ranking proyectado para la \'ultima semana del conjunto de prueba. Para cada equipo, se calcul\'o su posici\'on real basada en \(\mu\) observado y las posiciones predichas por ARIMA y LSTM. La Tabla~\ref{tab:top20_full} presenta el Top 20 para el \textsc{dataset Full}; las tablas correspondientes para \textsc{Lite} y \textsc{Lite Recortado} se exportaron a archivos CSV y presentan una estructura an\'aloga, con la salvedad de que en \textsc{Lite} aparecen equipos venezolanos (\texttt{Carabobo}, \texttt{DepTachira}, \texttt{DepLaGuaira}) que no están presentes en los otros datasets debido al recorte temporal.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Top 20 del ranking proyectado para el \textsc{dataset Full} (semana del 2025-12-09).}
+	\label{tab:top20_full}
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{crrrcrrcr}
+		\toprule
+		\textbf{Pos. G2Av1513} & \textbf{Equipo} & \textbf{\(\mu\) est.} & \textbf{Pos. ARIMA} & \textbf{\(\mu\) ARIMA} & \(\Delta\) \textbf{ARIMA} & \textbf{Pos. LSTM} & \textbf{\(\mu\) LSTM} & \(\Delta\) \textbf{LSTM} \\
+		\midrule
+		1  & Flamengo           & 1696.818 & 1  & 1697.032 &  0 & 1  & 1688.052 &  0 \\
+		2  & Palmeiras          & 1673.218 & 2  & 1679.971 &  0 & 2  & 1668.049 &  0 \\
+		3  & Kashima Antlers    & 1641.726 & 3  & 1641.726 &  0 & 3  & 1637.811 &  0 \\
+		4  & Botafogo           & 1634.644 & 4  & 1634.644 &  0 & 4  & 1624.422 &  0 \\
+		5  & Sanfrecce Hiroshima& 1630.176 & 5  & 1630.176 &  0 & 6  & 1622.713 & +1 \\
+		6  & Jeonbuk Hyundai    & 1623.202 & 6  & 1626.017 &  0 & 5  & 1624.217 & -1 \\
+		7  & Vissel Kobe        & 1603.136 & 7  & 1604.170 &  0 & 8  & 1598.155 & +1 \\
+		8  & Boca Juniors       & 1601.386 & 8  & 1602.779 &  0 & 7  & 1600.281 & -1 \\
+		9  & Inter Miami        & 1583.124 & 9  & 1583.124 &  0 & 14 & 1551.410 & +5 \\
+		10 & LAFC               & 1574.773 & 10 & 1574.773 &  0 & 10 & 1574.921 &  0 \\
+		11 & Racing Avellaneda  & 1572.620 & 11 & 1573.929 &  0 & 9  & 1574.951 & -2 \\
+		12 & Fluminense         & 1571.826 & 12 & 1571.826 &  0 & 11 & 1569.670 & -1 \\
+		13 & River Plate        & 1564.472 & 13 & 1565.859 &  0 & 12 & 1564.932 & -1 \\
+		14 & Rosario Central    & 1560.334 & 14 & 1560.334 &  0 & 13 & 1555.049 & -1 \\
+		15 & Cruzeiro           & 1553.499 & 15 & 1553.499 &  0 & 15 & 1551.177 &  0 \\
+		16 & Kashiwa Reysol     & 1553.285 & 16 & 1553.285 &  0 & 16 & 1548.482 &  0 \\
+		17 & Kyoto Sanga        & 1541.841 & 17 & 1541.841 &  0 & 20 & 1533.792 & +3 \\
+		18 & Seattle Sounders   & 1541.724 & 18 & 1541.724 &  0 & 17 & 1542.427 & -1 \\
+		19 & Daejeon Hana Citizen & 1537.004 & 20 & 1536.665 & +1 & 19 & 1534.271 &  0 \\
+		20 & Cincinnati         & 1536.781 & 19 & 1537.336 & -1 & 21 & 1524.301 & +1 \\
+		\bottomrule
+	\end{tabular}}%
+	\newline 
+	{\textit{Nota:} Las columnas \(\Delta\) indican la diferencia entre la posici\'on predicha y la real; valores positivos implican que el modelo sobreestima al equipo.}
+\end{table}
+
+Se observa que el ARIMA acierta exactamente en las 18 primeras posiciones (con empates en \(\mu\) que mantienen el orden), mientras que la LSTM presenta ligeras oscilaciones en la zona media del ranking, por ejemplo, Inter Miami cae del puesto 9 al puesto 14, y Cincinnati sale del Top 20. Esta mayor inestabilidad en la zona media refuerza la conclusi\'on de que la LSTM, aunque \'util para equipos vol\'atiles, introduce ruido en la clasificaci\'on de equipos de rendimiento estable.
+
+\section{Limitaciones y observaciones finales}
+\label{ap:limitaciones}
+
+El componente exploratorio aqu\'i documentado presenta las siguientes limitaciones estructurales, que deben tenerse en cuenta al interpretar los resultados:
+
+\begin{itemize}
+	\item \textbf{Baja frecuencia:} Aproximadamente 400 puntos en 8 años, en general es insuficiente para capturar estacionalidad anual robusta.
+	
+	\item \textbf{Huecos estructurales:} El verano europeo (\(\sim\)10--12 semanas) genera tramos planos por forward-fill. La pandemia COVID-19 (mar--jun 2020) rompe series con gaps \(> 12\) semanas.
+	
+	\item \textbf{Calendarios asincr\'onicos:} Las ligas anuales vs. las ligas interanuales crean un panel no sincronizado donde el \textit{estado} de los equipos evoluciona a ritmos distintos.
+	
+	\item \textbf{LSTM global:} Asume patrones transferibles entre equipos de distintas ligas, lo cual puede no ser v\'alido en todos los casos.
+	
+	\item \textbf{Sin covariables:} Solo se utiliza \(\mu\) hist\'orico. No se incorpora informaci\'on de mercado de fichajes, lesiones, fixture ni condici\'on de local\'ia.
+	
+	\item \textbf{Ranking indirecto:} Se predice \(\mu\) continuo; la conversi\'on a posici\'on ordinal introduce ruido adicional en la zona media del ranking.
+	
+	\item \textbf{Split 70/30:} El conjunto de test incluye el par\'on estival europeo 2025, donde muchos equipos tienen \(\mu\) est\'atico por inactividad, sesgando el error de ARIMA hacia cero para esos equipos.
+	
+	\item \textbf{Barajado interno de \texttt{Keras}:} Todos los entrenamientos de la LSTM se realizaron en CPU con semillas fijas \texttt{Random\_Seed=42}. Las variaciones num\'ericas entre ejecuciones son inferiores al 3\%, y se atribuye al barajado interno de \texttt{Keras} durante la partici\'on de validaci\'on. Es importante aclarar que esto no afecta las conclusiones del an\'alisis.
+\end{itemize}
+
+En general, el ejercicio de \textit{backtesting} demuestra que, en el contexto de datos con inactividad estructural, el ARIMA univariado ofrece una proyecci\'on m\'as robusta y estable en t\'erminos de error absoluto, mientras que la LSTM global aporta valor \'unicamente en subconjuntos de equipos con alta volatilidad. Ambos modelos preservan el ordenamiento relativo de los equipos con una precisi\'on sobresaliente (\(\rho > 0.99\)), lo que los hace \'utiles para tareas de ranking, aunque con las salvedades se\~naladas. El Ap\'endice~\ref{ap:forecasting} extiende este an\'alisis al dominio del pron\'ostico puro hacia adelante, donde se contrastan las proyecciones con datos reales no vistos durante el entrenamiento.
