@@ -1,0 +1,177 @@
+﻿rank,team,country,points
+1.0,Bayern MÃ¼nchen,Ger,147.5
+2.0,Real Madrid,Esp,144.5
+3.0,Paris Saint-Germain,Fra,132.0
+4.0,Liverpool,Eng,130.0
+5.0,Internazionale,Ita,127.0
+6.0,Manchester City,Eng,125.5
+7.0,Arsenal,Eng,119.0
+8.0,FC Barcelona,Esp,113.25
+9.0,Bayer Leverkusen,Ger,105.0
+10.0,AtlÃ©tico Madrid,Esp,104.75
+11.0,Borussia Dortmund,Ger,100.75
+12.0,Chelsea,Eng,99.25
+13.0,AS Roma,Ita,97.75
+14.0,Benfica,Por,90.0
+15.0,Sporting CP Lisbon,Por,84.0
+17.0,Aston Villa,Eng,83.0
+19.0,Tottenham Hotspur,Eng,82.0
+20.0,FC Porto,Por,80.75
+21.0,Manchester United,Eng,76.5
+22.0,Fiorentina,Ita,76.25
+23.0,Club Brugge,Bel,75.25
+24.0,Real Betis,Esp,74.5
+25.0,Juventus,Ita,72.25
+26.0,PSV Eindhoven,Ned,71.25
+27.0,Feyenoord,Ned,71.0
+28.0,West Ham United,Eng,69.0
+29.0,Lille OSC,Fra,68.75
+30.0,AC Milan,Ita,66.0
+31.0,Olympique Lyon,Fra,65.75
+32.0,BodÃ¸/Glimt,Nor,64.0
+33.0,Sporting Braga,Por,63.75
+34.0,Napoli,Ita,63.0
+35.0,AZ Alkmaar,Ned,62.875
+36.0,Olympiakos Piraeus,Gre,62.25
+37.0,RB Leipzig,Ger,61.0
+38.0,Glasgow Rangers,Sco,59.25
+39.0,Villarreal,Esp,59.0
+41.0,Ajax,Ned,58.25
+42.0,FenerbahÃ§e,Tur,57.75
+43.0,Real Sociedad,Esp,57.0
+44.0,SC Freiburg,Ger,56.5
+45.0,Shakhtar Donetsk,Ukr,56.25
+46.0,AS Monaco,Fra,56.0
+47.0,FC KÃ¸benhavn,Den,54.375
+48.0,Olympique Marseille,Fra,54.0
+49.0,Galatasaray,Tur,53.5
+50.0,FerencvÃ¡ros,Hun,51.25
+51.0,Viktoria Plzen,Cze,50.5
+52.0,FC Midtjylland,Den,48.25
+54.0,Union Saint-Gilloise,Bel,48.0
+55.0,Red Star Belgrade,Srb,46.5
+57.0,FC Salzburg,Aut,45.0
+58.0,Celtic,Sco,44.0
+60.0,Qarabag FK,Azb,42.75
+61.0,AA Gent,Bel,39.0
+63.0,Athletic Bilbao,Esp,38.75
+64.0,Sparta Praha,Cze,38.25
+65.0,Slovan Bratislava,Svk,36.0
+66.0,Stade Rennais,Fra,35.0
+67.0,FC Basel,Sui,34.5
+68.0,Legia Warsaw,Pol,32.5
+70.0,DjurgÃ¥rdens IF,Swe,32.0
+71.0,Bologna,Ita,30.75
+73.0,Newcastle United,Eng,29.75
+75.0,Young Boys,Sui,29.5
+76.0,Panathinaikos,Gre,29.25
+77.0,Racing Genk,Bel,29.0
+78.0,Ludogorets Razgrad,Bul,28.75
+79.0,Sturm Graz,Aut,28.0
+80.0,VfB Stuttgart,Ger,27.5
+81.0,Lech Poznan,Pol,27.25
+82.0,FCSB,Rom,25.5
+83.0,Pafos FC,Cyp,24.125
+84.0,AEK Athens,Gre,24.0
+85.0,Nottingham Forest,Eng,23.0
+89.0,NK Celje,Slo,23.0
+91.0,RakÃ³w Czestochowa,Pol,22.25
+92.0,Rayo Vallecano,Esp,22.0
+95.0,Molde FK,Nor,21.75
+96.0,RC Strasbourg,Fra,21.5
+97.0,Omonia Nicosia,Cyp,21.25
+99.0,LASK,Aut,21.0
+100.0,AEK Larnaca,Cyp,20.25
+101.0,OGC Nice,Fra,20.0
+103.0,Istanbul Basaksehir,Tur,19.5
+104.0,Celta de Vigo,Esp,16.25
+107.0,Shamrock Rovers,Irl,19.375
+108.0,VitÃ³ria GuimarÃ£es,Por,18.75
+109.0,NK Rijeka,Cro,18.625
+110.0,FSV Mainz 05,Ger,17.5
+115.0,Olimpija Ljubljana,Slo,18.375
+116.0,Dynamo Kyiv,Ukr,17.5
+119.0,Stade Brestois,Fra,16.75
+120.0,RC Lens,Fra,12.5
+123.0,Besiktas,Tur,15.5
+124.0,MalmÃ¶ FF,Swe,15.0
+125.0,APOEL Nicosia,Cyp,14.75
+126.0,CD Santa Clara,Por,5.0
+130.0,KuPS Kuopio,Fin,14.0
+133.0,FC Drita,Kos,13.625
+134.0,Go Ahead Eagles,Ned,6.5
+138.0,Lincoln Red Imps,Gib,13.5
+139.0,Zrinjski Mostar,Bos,13.25
+140.0,Borac Banja Luka,Bos,13.125
+141.0,Cercle Brugge,Bel,12.75
+142.0,RFS Riga,Lat,12.5
+147.0,Charleroi,Bel,1.5
+148.0,SK Brann Bergen,Nor,12.25
+149.0,Breidablik,Isl,12.0
+154.0,Vikingur Reykjavik,Isl,11.75
+155.0,Hearts FC,Sco,11.5
+156.0,Samsunspor,Tur,11.125
+157.0,Kairat Almaty,Kaz,11.0
+160.0,Shkendija Tetovo,Mac,10.875
+161.0,FC Noah,Arm,10.75
+162.0,Universitatea Craiova,Rom,10.5
+166.0,Adana Demirspor,Tur,2.5
+168.0,Lausanne Sports,Sui,10.0
+176.0,Sigma Olomouc,Cze,6.62
+182.0,Aris Thessaloniki,Gre,7.0
+183.0,BrÃ¸ndby IF,Den,9.5
+186.0,Wisla KrakÃ³w,Pol,2.5
+190.0,Larne FC,Nir,9.0
+193.0,Hamrun Spartans,Mlt,8.5
+195.0,Silkeborg IF,Den,8.0
+200.0,Rosenborg BK,Nor,7.0
+206.0,TSC Backa Topola,Srb,8.125
+207.0,F91 Dudelange,Lux,8.0
+210.0,St. Patrick's Athletic,Irl,7.5
+218.0,Aris Limassol,Cyp,6.5
+222.0,Levski Sofia,Bul,7.0
+227.0,FC Sankt Gallen,Sui,4.0
+230.0,Wolfsberger AC,Aut,5.0
+231.0,Differdange 03,Lux,6.5
+238.0,Dundee United,Sco,4.0
+243.0,Neman Grodno,Bls,6.0
+253.0,AIK Stockholm,Swe,4.5
+255.0,NK Varazdin,Cro,1.5
+256.0,Beitar Jerusalem,Isr,3.5
+271.0,ETO GyÃ¶r,Hun,2.5
+278.0,Polissya Zhytomyr,Ukr,4.0
+283.0,Radnicki 1923,Srb,3.0
+286.0,Universitatea Cluj,Rom,1.5
+289.0,Iberia 1999,Geo,5.0
+299.0,NK Koper,Slo,3.0
+303.0,Araz Nakhchivan,Azb,2.0
+307.0,Lokomotiv Moscow,Rus,3.0
+310.0,Egnatia RrogozhinÃ«,Alb,4.5
+321.0,FC Kosice,Svk,1.5
+323.0,Arda Kardzhali,Bul,4.0
+328.0,Shelbourne,Irl,4.0
+335.0,Ilves Tampere,Fin,3.5
+348.0,Sligo Rovers,Irl,3.0
+350.0,Stjarnan FC,Isl,2.5
+353.0,Ararat Yerevan,Arm,2.5
+354.0,ProgrÃ¨s Niederkorn,Lux,3.0
+359.0,SfÃ¢ntul Gheorghe,Mol,2.0
+360.0,SJK SeinÃ¤joki,Fin,2.5
+365.0,KF Malisheva,Kos,2.0
+368.0,FK Kyzylzhar,Kaz,2.0
+370.0,Zeljeznicar Sarajevo,Bos,2.5
+373.0,BFC Daugavpils,Lat,1.0
+374.0,Dinamo Tirana,Alb,2.5
+381.0,FC Hegelmann,Lit,2.0
+388.0,Sliema Wanderers,Mlt,1.5
+392.0,Kalju Nomme,Est,1.5
+395.0,Vardar Skopje,Mac,1.5
+399.0,Banga Gargzdai,Lit,1.5
+402.0,Dungannon Swifts,Nir,1.5
+407.0,Coleraine,Nir,1.0
+408.0,Mons Calpe,Gib,1.0
+409.0,Sant JuliÃ,And,1.0
+410.0,Isloch Minsk Raion,Bls,1.0
+411.0,Arsenal Tivat,Mon,1.0
+414.0,Gagra Tbilisi,Geo,1.0
+415.0,Cosmos,Sma,1.0

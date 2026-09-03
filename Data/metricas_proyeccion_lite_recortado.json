@@ -1,0 +1,12 @@
+{
+  "rmse_arima": 7.288684340060979,
+  "mae_arima": 4.921099896728683,
+  "rmse_lstm": 10.103660247492595,
+  "mae_lstm": 7.129262210691413,
+  "diff_rmse": -2.8149759074316156,
+  "spearman_arima_mean": 0.9964963713201489,
+  "spearman_arima_std": 0.0018710026979175196,
+  "spearman_lstm_mean": 0.9953372466571377,
+  "spearman_lstm_std": 0.0022815926361788035,
+  "lstm_win_ratio": 0.25101214574898784
+}

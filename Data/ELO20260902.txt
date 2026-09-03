@@ -1,0 +1,1766 @@
+Club	Elo	+/-	Golo
+GER 1 Bayern München	2027	-0.01	2.46
+ENG 2 Arsenal	2011	-0.04	1.01
+ENG 3 Man City	2000	+0.10	1.42
+ESP 4 Barcelona	1989	+0.00	2.09
+ESP 5 Real Madrid	1955	+0.01	1.62
+FRA 6 Paris SG	1938	-0.00	1.53
+ITA 7 Internazionale	1924	-0.22	1.35
+ENG 8 Liverpool	1902	+0.02	1.54
+ESP 9 Atlético	1881	+0.00	1.51
+ENG 10 Aston Villa	1868	+0.02	1.39
+ENG 11 Chelsea	1868	-0.12	1.60
+GER 12 Dortmund	1867	-0.01	1.59
+ENG 13 Man United	1864	+0.07	1.60
+ENG 14 Newcastle	1862	+0.05	1.67
+POR 15 Sporting	1856	-0.01	1.50
+GER 16 Leverkusen	1843	+0.01	1.50
+ENG 17 Brighton	1843	-0.05	1.45
+BRA 18 Flamengo	1837	-0.21	1.18
+ENG 19 Bournemouth	1832	+0.07	1.43
+BRA 20 Palmeiras	1828	-0.07	1.17
+ENG 21 Brentford	1827	+0.18	1.46
+ITA 22 Roma	1826	-0.30	1.24
+POR 23 Benfica	1823	-0.02	1.40
+ITA 24 Juventus	1821	-0.45	1.08
+GER 25 RB Leipzig	1818	+0.01	1.57
+ITA 26 Napoli	1818	-0.25	1.13
+POR 27 Porto	1810	-0.01	0.96
+ITA 28 Milan	1808	-0.41	1.21
+ITA 29 Atalanta	1805	-0.28	1.28
+FRA 30 Lens	1804	+0.01	1.40
+GER 31 Stuttgart	1803	+0.03	1.81
+ENG 32 Everton	1796	-0.18	1.01
+ENG 33 Crystal Palace	1794	+0.03	1.11
+ENG 34 Leeds	1787	+0.17	1.27
+RUS 35 Zenit	1787	-0.08	0.97
+ESP 36 Villarreal	1786	+0.00	1.82
+TUR 37 Galatasaray	1786	+0.19	1.60
+BEL 38 Brugge	1785	-0.00	1.78
+ENG 39 Tottenham	1784	+0.03	1.60
+ENG 40 Forest	1783	+0.06	1.18
+ITA 41 Como	1779	-0.30	1.27
+ENG 42 Fulham	1778	+0.02	1.24
+ESP 43 Betis	1777	+0.00	1.40
+BEL 44 St Gillis	1772	-0.00	1.07
+FRA 45 Marseille	1768	+0.00	1.72
+FRA 46 Monaco	1767	+0.00	1.81
+NED 47 PSV	1767	-0.00	2.34
+TUR 48 Fenerbahçe	1767	+0.23	1.59
+NOR 49 Bodø/Glimt	1766	-0.01	1.83
+ECU 50 Ind del Valle	1766	+0.06	1.43
+FRA 51 Lille	1766	+0.03	1.01
+FRA 52 Lyon	1764	+0.04	1.48
+GER 53 Freiburg	1761	+0.01	1.50
+RUS 54 FC Krasnodar	1755	-0.15	1.37
+ESP 55 Real Sociedad	1751	+0.00	1.36
+ENG 56 West Ham	1749	+5.36	1.52
+ITA 57 Lazio	1746	-0.31	1.04
+BRA 58 Cruzeiro	1744	-4.01	1.02
+BRA 59 Fluminense	1741	-0.08	1.03
+ITA 60 Bologna	1740	-0.27	1.13
+CZE 61 Slavia Praha	1740	-0.01	1.37
+KSA 62 Al Hilal	1738	+5.61	1.56
+ESP 63 Athletic Club	1736	+0.00	1.14
+FRA 64 Rennes	1734	+0.01	1.72
+ARG 65 Boca Juniors	1732	-0.12	1.00
+GER 66 Hoffenheim	1732	+0.01	1.92
+ESP 67 Valencia	1730	+0.00	1.20
+ESP 68 Celta	1729	+0.00	1.43
+ARG 69 Argentinos Juniors	1727	-0.04	1.01
+GER 70 Frankfurt	1724	+0.00	1.82
+ESP 71 Osasuna	1723	+0.00	1.21
+FRA 72 Strasbourg	1720	+0.01	1.46
+ESP 73 Rayo Vallecano	1719	+0.01	1.05
+BRA 74 Corinthians	1718	-0.15	0.94
+POR 75 Braga	1715	-0.00	1.25
+ARG 76 Ind Rivadavia	1714	-0.04	1.18
+GRE 77 Olympiakos	1713	+0.01	0.83
+MEX 78 Toluca	1713	-0.03	1.60
+GER 79 Mainz	1713	+0.01	1.16
+BRA 80 Ath Paranaense	1711	-0.06	1.17
+BRA 81 Atlético Mineiro	1709	+3.78	1.02
+COL 82 Atlético Nacional	1709	-0.16	1.36
+ENG 83 Sunderland	1708	-0.04	0.93
+ARG 84 Rosario Central	1708	-0.04	0.94
+ARG 85 River Plate	1708	-0.04	1.08
+BRA 86 Bahia	1706	-0.05	1.23
+ESP 87 Alaves	1705	+0.00	1.01
+JPN 88 Kashima Antlers	1704	-0.20	1.18
+ESP 89 Girona	1704	+0.00	1.34
+ARG 90 Estudiantes	1701	-0.05	1.00
+BRA 91 Botafogo	1701	-0.14	1.26
+ENG 92 Wolves	1699	-5.58	1.37
+ARG 93 Racing Club	1699	-0.05	1.25
+ARG 94 Vélez Sarsfield	1698	-0.04	0.92
+BRA 95 São Paulo	1697	-0.13	1.01
+ESP 96 Sevilla	1695	+0.00	1.33
+ITA 97 Fiorentina	1694	-0.20	1.38
+RUS 98 Spartak Moskva	1694	+0.09	1.45
+MEX 99 Cruz Azul	1693	-0.03	1.30
+ESP 100 Levante	1692	+0.00	1.41
+DEN 101 Midtjylland	1692	+0.02	1.53
+KSA 102 Al Nassr	1691	-0.11	1.83
+GER 103 Augsburg	1690	+0.01	1.25
+BRA 104 Mirassol	1689	-0.28	1.15
+ECU 105 LDU Quito	1689	-3.32	1.00
+ESP 106 Mallorca	1689	+0.00	1.03
+ITA 107 Udinese	1688	-0.21	1.17
+MEX 108 América	1687	-0.03	1.01
+NED 109 Feyenoord	1682	+0.00	1.58
+ESP 110 Espanyol	1681	+0.00	1.17
+ESP 111 Getafe	1681	+0.00	0.76
+BRA 112 Internacional	1679	-0.03	1.23
+GER 113 Gladbach	1677	+0.01	1.52
+GER 114 Union Berlin	1677	+0.01	1.25
+GRE 115 AEK	1676	+0.01	1.19
+NED 116 AZ	1676	+0.00	1.57
+ESP 117 Elche	1676	+0.00	1.22
+ARG 118 Belgrano	1675	-0.03	0.98
+BRA 119 Novorizontino	1674	-0.01	1.02
+BRA 120 Santos	1674	-0.09	1.24
+ENG 121 Southampton	1674	-0.34	1.59
+BRA 122 Bragantino	1674	+0.03	1.23
+ITA 123 Sassuolo	1674	-0.36	1.55
+NOR 124 Viking	1674	-0.00	2.03
+ESP 125 Santander	1673	+0.00	1.90
+USA 126 Inter Miami	1673	-0.03	2.41
+CHI 127 Colo-Colo	1673	-0.04	1.35
+ENG 128 Ipswich	1672	+0.43	1.51
+ENG 129 Coventry	1671	+0.13	1.47
+ARG 130 Independiente	1671	-0.04	0.97
+BRA 131 Grêmio	1671	+0.00	1.19
+URU 132 Peñarol	1670	-0.03	1.08
+NED 133 Ajax	1669	+0.00	1.56
+SCO 134 Celtic	1669	+0.32	1.53
+FRA 135 Paris FC	1668	+0.01	1.17
+FRA 136 Toulouse	1668	+0.01	1.39
+FRA 137 Lorient	1666	+0.01	1.43
+GER 138 Hamburg	1665	+0.01	1.52
+ESP 139 Depor	1665	+0.00	1.21
+BRA 140 Fortaleza	1664	-0.05	1.16
+GER 141 Wolfsburg	1663	+0.01	1.37
+ECU 142 Uni Catolica	1662	-0.08	1.59
+BEL 143 Genk	1661	+0.00	1.45
+MEX 144 UANL	1661	-0.03	1.14
+BRA 145 Vasco da Gama	1661	-0.14	1.36
+USA 146 Nashville	1659	-0.03	1.17
+ARG 147 Lanús	1659	-0.13	0.97
+JPN 148 FC Machida Zelvia	1657	-0.24	1.04
+ITA 149 Torino	1657	-8.43	1.08
+DEN 150 FC Kobenhavn	1657	+0.00	1.68
+GER 151 Werder	1657	+0.01	1.41
+CRO 152 Dinamo Zagreb	1657	+0.01	1.65
+TUR 153 Besiktas	1657	+0.28	1.32
+UKR 154 Shakhtar	1656	+0.01	1.33
+ARG 155 Huracán	1656	-0.01	0.78
+FRA 156 Brest	1655	+0.01	1.49
+BOL 157 Bolívar	1654	-0.01	1.88
+ARG 158 Gimnasia LP	1654	-0.04	1.05
+RUS 159 Dynamo Moskva	1653	-0.13	1.52
+ESP 160 Malaga	1653	+0.00	1.08
+USA 161 Vancouver	1653	-0.03	1.47
+BRA 162 Criciúma	1652	-0.03	0.96
+JPN 163 Sanfrecce Hiroshima	1652	-0.20	1.17
+ITA 164 Frosinone	1652	+0.50	1.41
+ESP 165 Eibar	1651	+0.00	1.02
+COL 166 América de Cali	1651	-0.03	1.06
+ITA 167 Genoa	1650	-0.30	1.05
+ESP 168 Almeria	1650	+0.00	1.92
+POL 169 Lech	1650	+0.01	1.65
+MEX 170 Guadalajara	1650	-0.03	1.13
+TUR 171 Amed SK	1650	-2.94	1.37
+USA 172 LAFC	1649	-0.03	1.30
+ARG 173 Instituto	1649	-0.04	0.99
+GER 174 Elversberg	1648	+0.01	1.52
+RUS 175 CSKA Moskva	1648	-9.26	1.04
+GRE 176 PAOK	1647	+0.00	1.47
+BRA 177 Vitória	1647	-0.05	1.06
+BRA 178 Juventude	1647	-1.21	1.09
+ITA 179 Venezia	1647	+0.39	1.35
+GER 180 Köln	1647	+0.01	1.40
+FRA 181 Nice	1646	+0.01	1.21
+ARG 182 Tigre	1646	-0.03	0.89
+JPN 183 Vissel Kobe	1644	-0.23	1.16
+ITA 184 Cagliari	1644	-0.43	1.14
+ESP 185 Castellon	1644	+0.00	1.59
+ESP 186 Las Palmas	1644	+0.00	1.11
+BRA 187 Coritiba	1643	-0.10	1.10
+GER 188 Paderborn	1643	+0.01	1.51
+COL 189 Santa Fe	1642	-0.09	1.06
+SRB 190 Crvena Zvezda	1641	+0.01	1.37
+ENG 191 Burnley	1641	-0.17	1.17
+PAR 192 Cerro Porteño	1639	-0.08	0.95
+CHI 193 Uni Católica	1638	-0.11	1.50
+BEL 194 Anderlecht	1637	+0.00	1.35
+NED 195 Twente	1637	+0.00	1.48
+ARG 196 GyE Mendoza	1637	-0.04	0.93
+KSA 197 Al Ahli SFC	1636	-5.75	1.42
+COL 198 DIM	1636	-0.23	1.25
+DEN 199 Nordsjaelland	1635	+0.00	1.51
+HUN 200 Ferencvaros	1633	+0.02	1.28
+COL 201 Tolima	1632	-0.16	0.99
+ENG 202 Millwall	1630	+0.34	1.01
+ESP 203 Oviedo	1630	+0.00	0.95
+ESP 204 Burgos	1629	+0.00	0.84
+URU 205 Nacional	1627	-0.03	1.38
+AUT 206 LASK	1627	+5.31	1.56
+ECU 207 Macará	1627	+0.09	1.03
+CHI 208 Uni de Chile	1627	-0.04	1.24
+CZE 209 Viktoria Plzeň	1626	-0.00	1.35
+ARG 210 Talleres	1626	-0.04	0.97
+TUR 211 Trabzonspor	1626	+0.28	1.45
+ITA 212 Parma	1626	-8.52	1.03
+BRA 213 Remo	1625	+0.01	1.27
+CHI 214 Coquimbo	1624	-0.04	0.98
+ARG 215 Unión de Santa Fe	1624	-0.03	1.05
+COL 216 Millonarios	1623	-0.16	1.09
+COL 217 Once Caldas	1623	+4.56	1.16
+ARG 218 San Lorenzo	1623	-0.04	0.65
+ENG 219 Middlesbrough	1623	+0.22	1.32
+FRA 220 Auxerre	1623	+0.01	1.24
+AUT 221 RB Salzburg	1623	-0.06	1.42
+USA 222 San Diego FC	1622	-0.03	1.49
+PAR 223 Club Olimpia	1622	+0.10	1.27
+CZE 224 Sparta Praha	1621	+0.00	1.55
+ITA 225 Monza	1621	+8.11	1.24
+ARG 226 Atlético Tucumán	1620	-0.04	1.11
+GER 227 Hertha	1619	+0.01	1.53
+ECU 228 Barcelona	1619	-0.08	1.02
+BRA 229 Náutico	1619	+0.01	1.08
+MEX 230 Pachuca	1618	-0.01	1.23
+MEX 231 UNAM	1618	-0.03	1.38
+ARG 232 Defensa y Justicia	1618	-0.04	1.24
+FRA 233 Reims	1617	+0.01	1.11
+BRA 234 Atl Goianiense	1617	-0.00	0.97
+MEX 235 Monterrey	1617	-0.03	1.47
+BRA 236 Cuiabá	1616	-0.03	0.86
+GER 237 Hannover	1614	+0.01	1.30
+ISR 238 Beer-Sheva	1614	-0.00	1.32
+ARG 239 Ferrocarril Midland	1614	-0.03	1.21
+GRE 240 Panathinaikos	1614	+0.03	1.03
+GER 241 Heidenheim	1613	+0.01	1.59
+RUS 242 Lok Moskva	1613	-0.14	1.54
+ESP 243 Gijon	1612	+0.00	1.20
+ITA 244 Palermo	1612	+0.58	1.38
+AUT 245 Sturm Graz	1612	+0.04	1.19
+TUR 246 Başakşehir	1612	+0.21	1.30
+CYP 247 Omonia	1611	-0.04	1.33
+RSA 248 Mamelodi Sundowns	1611	-0.13	0.95
+BRA 249 CR Brasil	1610	-0.03	1.18
+ARG 250 Platense	1610	-0.05	0.81
+BEL 251 St Truiden	1610	+0.00	1.43
+ENG 252 Sheffield United	1610	+3.81	1.43
+BRA 253 Goiás	1609	-0.09	1.02
+GER 254 Schalke	1608	+0.01	1.37
+ENG 255 Hull	1607	+0.45	1.21
+COL 256 Atlético Junior	1607	+0.09	1.26
+ESP 257 Albacete	1607	+0.00	1.34
+BRA 258 Ceará	1607	+0.01	1.02
+ESP 259 Granada	1607	+0.00	1.42
+ARG 260 Central Córdoba	1606	-0.06	1.06
+SUI 261 Lugano	1605	-0.18	1.33
+PER 262 Universitario	1604	+0.02	0.94
+KSA 263 Al Qadsiah	1603	-0.12	1.40
+ARG 264 Barracas Central	1603	-0.04	0.96
+POL 265 Jagiellonia	1603	-0.01	1.44
+BEL 266 Charleroi	1603	+0.00	1.14
+FRA 267 Troyes	1602	+0.01	1.27
+JPN 268 Kashiwa Reysol	1601	-0.20	1.29
+TUR 269 Samsunspor	1601	+0.28	1.22
+ARG 270 Riestra	1601	-0.04	0.73
+PER 271 Alianza Lima	1600	-0.15	0.89
+ARG 272 Madryn	1600	-0.03	1.00
+SWE 273 Hammarby	1600	+0.00	1.37
+MEX 274 Tijuana	1600	-0.03	1.45
+BRA 275 Vila Nova GO	1599	-0.04	1.08
+ECU 276 Aucas	1599	+0.09	1.28
+ENG 277 Birmingham	1599	+1.27	1.13
+COL 278 Bucaramanga	1597	-0.23	1.00
+ITA 279 Lecce	1597	-0.23	0.88
+TUR 280 Bandırmaspor	1597	-18.16	1.10
+ESP 281 Guadalajara	1597	+0.00	1.20
+ARG 282 Deportivo Morón	1597	-0.03	0.87
+DEN 283 Aarhus	1596	+0.00	1.46
+BEL 284 Gent	1596	+0.00	1.24
+FRA 285 Le Havre	1596	+0.01	0.96
+FRA 286 Angers	1596	+0.01	1.06
+PAR 287 Club Nacional	1596	-0.17	1.05
+TUR 288 Göztepe	1595	+0.22	1.26
+BEL 289 Waasland-Beveren	1594	+0.00	1.33
+RUS 290 Baltika	1594	-0.22	0.89
+SUI 291 Young Boys	1594	+4.79	2.07
+NED 292 Nijmegen	1593	+0.00	1.69
+USA 293 Cincinnati	1592	-0.03	1.91
+ARG 294 Newell's Old Boys	1592	-0.04	1.03
+BRA 295 Sport	1591	-0.01	1.32
+ITA 296 Cremonese	1591	+8.00	1.17
+Stade Malien	1590	-0.12	1.14
+ARG 297 Tristan Suárez	1590	-0.03	0.98
+ENG 298 Norwich	1590	-5.78	1.57
+ARG 299 Sarmiento	1589	-0.04	0.91
+ENG 300 Lincoln City	1589	-2.00	1.31
+POL 301 Legia	1588	+0.00	1.27
+ARG 302 Temperley	1588	-0.03	0.81
+USA 303 Philadelphia	1588	-0.03	1.59
+KOR 304 Jeonbuk FC	1587	-0.16	1.13
+ESP 305 Leganes	1587	+0.00	0.97
+GER 306 St Pauli	1587	+0.01	1.04
+URU 307 Torque	1587	-0.02	1.54
+MEX Atlante	1586	-0.03	1.25
+GER 308 Lautern	1586	+0.01	1.40
+ESP 309 Tenerife	1586	+0.00	0.88
+KOR 310 FC Seoul	1585	-0.16	1.39
+GER 311 Nürnberg	1585	+0.01	1.49
+ARG 312 Godoy Cruz	1585	+0.02	0.99
+USA 313 Seattle Sounders	1585	-0.03	1.23
+PAR 314 Libertad	1584	-0.18	1.16
+SCO 315 Rangers	1584	+0.04	1.40
+ENG 316 Swansea	1584	+6.14	1.25
+BOL 317 The Strongest	1583	-0.02	1.55
+USA 318 Houston Dynamo	1583	-0.03	1.18
+SWE 319 Djurgarden	1583	+0.01	1.37
+GER 320 Bochum	1583	+0.01	1.29
+DEN 321 Brondby	1583	+0.01	1.34
+BRA 322 Operário	1583	-0.00	1.04
+ENG 323 Wrexham	1583	+0.15	1.39
+ESP 324 Cordoba	1582	+0.00	1.55
+NOR 325 Brann	1582	-0.01	1.53
+FRA 326 Nantes	1582	+0.01	1.16
+JPN 327 FC Tokyo	1581	-0.20	1.23
+USA 328 NYC FC	1581	-0.03	1.30
+ESP 329 FC Andorra	1580	+0.00	1.23
+CYP 330 Paphos	1580	-0.02	1.22
+BOL 331 Always Ready	1580	-0.09	1.54
+AZE 332 Karabakh Agdam	1580	-0.01	1.36
+EGY 333 Al Ahly	1580	+0.05	1.04
+SUI 334 St. Gallen	1579	-0.13	1.71
+ARG 335 Banfield	1579	-0.04	0.98
+USA 336 Charlotte	1579	-0.03	1.36
+POL 337 Rakow	1579	-0.00	1.13
+ARG 338 San Juan	1579	-0.03	0.88
+POR 339 Famalicao	1578	-0.01	1.03
+ARG 340 GE Jujuy	1578	-0.03	0.95
+JPN 341 Kawasaki Frontale	1577	-0.21	1.94
+USA 342 Chicago Fire	1575	-0.03	1.73
+USA 343 FC Dallas	1575	-0.03	1.61
+JPN 344 Gamba Osaka	1575	-0.20	1.44
+CYP 345 Larnaca	1575	-0.01	1.06
+BEL 346 Antwerp	1574	+0.00	1.26
+JPN 347 Cerezo Osaka	1573	-0.20	1.47
+GER 348 Darmstadt	1573	+0.01	1.51
+BRA 349 São Bernardo	1573	+0.02	1.19
+PAR 350 Guaraní	1573	+0.02	1.12
+USA 351 Minnesota Utd	1572	-0.03	1.44
+ARG 352 Ferro	1572	-0.03	1.08
+GER 353 Holstein	1572	+0.01	1.54
+URU 354 Racing	1572	-0.02	1.00
+EGY 355 Pyramids FC	1572	-0.14	1.21
+URU 356 Liverpool	1571	-0.02	1.19
+BEL 357 Standard	1571	+0.00	1.00
+ISR 358 Maccabi Tel Aviv	1571	-0.01	1.68
+FRA 359 Saint-Etienne	1571	+0.01	1.49
+CHI 360 Ñublense	1570	-0.05	1.10
+USA 361 Orlando City	1570	-0.03	1.96
+BRA 362 Avaí	1570	-0.04	1.04
+BRA 363 Athletic	1570	+0.01	1.26
+CHI 364 O'Higgins	1569	-0.05	1.30
+DEN 365 Viborg	1569	+0.01	1.45
+ITA 366 Catanzaro	1569	+0.81	1.62
+NED 367 Utrecht	1568	+0.00	1.44
+ENG 368 Leicester	1568	+5.95	1.34
+ESP 369 CA Ceuta	1568	+0.00	1.37
+USA 370 Columbus	1568	-0.03	1.61
+ECU 371 Libertad de Loja	1567	+0.09	1.12
+RUS 372 Rostov	1567	+9.33	1.15
+SUI 373 Thun	1567	+0.19	1.77
+ESP 374 Eldense	1567	+0.00	1.34
+TUR 375 Genclerbirligi	1567	-0.40	1.13
+PAR 376 Sportivo Trinidense	1566	-0.01	1.17
+NOR 377 Tromsø	1566	-0.00	1.27
+ENG 378 West Brom	1565	+0.12	1.14
+ARG 379 Gimnasia y Tiro de Salta	1565	-0.03	0.88
+BUL 380 Levski	1564	+0.01	1.02
+ARG 381 SM Tucuman	1564	-0.03	0.77
+GER 382 Karlsruhe	1563	+0.01	1.84
+CRO 383 Hajduk	1563	-0.00	1.34
+BRA 384 Chapecoense	1563	-0.17	1.15
+BRA 385 Botafogo PB	1562	+0.04	1.30
+ENG 386 Cardiff	1561	-0.20	1.57
+ARG 387 Estudiantes de Caseros	1560	-0.03	0.80
+ENG 388 Derby	1560	+8.72	1.20
+FRA 389 Rodez	1560	+0.01	1.39
+POR 390 Guimaraes	1559	-0.02	1.19
+UAE 391 Shabab Al Ahli Club	1559	-0.12	1.43
+FRA 392 Le Mans	1559	+0.01	1.25
+ESP 393 RC Celta B	1559	+0.00	1.63
+RUS 394 Rubin Kazan	1559	-0.09	0.98
+ENG 395 Bristol City	1559	+7.60	1.22
+ECU 396 Mushuc Runa	1559	+3.95	1.35
+ECU 397 Guayaquil	1559	+0.01	0.96
+JPN 398 Nagoya Grampus	1558	-0.20	1.35
+ESP 399 Ponferradina	1558	+0.00	0.94
+USA 400 St. Louis City	1558	-0.03	1.50
+KSA 401 Al Ittihad	1557	-0.14	1.49
+IRN 402 Tractor Sazi	1557	-0.12	1.15
+CHI 403 Audax Italiano	1556	-0.04	1.47
+UKR 404 Dynamo Kyiv	1556	+0.00	1.35
+ENG 405 Blackburn	1556	+1.70	1.03
+ESP 406 Villarreal B	1556	+0.00	1.25
+JPN 407 Yokohama F. Marinos	1556	-0.19	1.73
+POR 408 Gil Vicente	1556	-0.01	1.05
+ARG 409 Maipú	1556	-0.03	1.09
+SUI 410 Basel	1555	-0.00	1.55
+ESP 411 Juventud Torremolinos	1555	+0.00	1.21
+ECU 412 Emelec	1555	+0.07	0.94
+GER 413 Bielefeld	1555	+0.01	1.39
+GER 414 Magdeburg	1554	+0.01	1.73
+BEL 415 Zulte Waregem	1554	+0.00	1.72
+USA 416 Portland Timbers	1553	-0.03	1.63
+ECU 417 Leones del Norte	1553	-0.06	1.18
+POL 418 Pogon	1552	+0.00	1.42
+ITA 419 Verona	1552	-0.32	1.03
+CHI 420 Palestino	1551	-0.03	1.43
+TUR 421 Kocaelispor	1551	-0.29	1.00
+ESP 422 Real Sociedad B	1551	+0.00	1.23
+ENG 423 QPR	1551	+0.18	1.38
+BRA 424 Botafogo SP	1550	-0.02	0.94
+POR 425 Arouca	1550	-0.01	1.40
+MEX 426 Querétaro	1549	-0.03	1.08
+FRA 427 Montpellier	1549	+0.01	1.27
+ESP 428 Sabadell	1549	+0.00	1.06
+ROU 429 Craiova	1549	+0.02	1.28
+MAR 430 FAR	1548	-0.11	1.06
+MEX 431 Atlas	1548	-0.03	1.20
+TUR 432 Erzurum	1548	-2.66	1.15
+GER 433 Dresden	1547	+0.01	1.42
+ESP 434 Mirandes	1547	+0.00	1.37
+ESP 435 Huesca	1546	+0.00	1.03
+ARG 436 Colón de Santa Fe	1546	-0.03	0.93
+JPN 437 Urawa Reds	1546	-0.19	1.19
+PAR 438 Sportivo Ameliano	1546	+0.06	1.12
+HUN 439 Gyoer	1545	+0.00	1.22
+COL 440 Deportivo Cali	1545	-0.12	1.01
+MAS 441 Johor Darul Ta’zim	1544	-0.28	1.23
+USA 442 Real Salt Lake	1544	-0.03	1.42
+ESP 443 Pontevedra	1544	+0.00	1.00
+ESP 444 Real Madrid B	1544	+0.00	1.53
+SVK 445 Slovan	1544	+0.03	1.52
+TUR 446 Rizespor	1544	+0.31	1.55
+POL 447 Gornik	1543	+0.01	1.25
+TUR 448 Bodrum	1543	-1.64	0.93
+BEL 449 Mechelen	1542	+0.00	1.51
+BRA 450 Ferroviária SP	1542	-0.02	1.22
+CZE 451 Hradec Kralove	1542	+0.01	1.03
+TUR 452 Alanyaspor	1541	+0.36	1.25
+FRA 453 Metz	1541	+0.01	1.42
+ITA 454 Vicenza	1541	+0.26	1.08
+SWE 455 Sirius	1541	+0.00	2.05
+COL 456 Águilas Doradas	1540	-0.25	1.16
+PAR 457 2 de Mayo	1540	-1.88	1.04
+SWE 458 Malmö	1539	+0.01	1.46
+ENG 459 Charlton	1539	+0.40	1.21
+ARG 460 Atlanta	1539	-0.03	0.93
+POL 461 Katowice	1539	+0.00	1.42
+ESP 462 Cadiz	1539	+0.00	1.13
+SUI 463 Sion	1539	+0.04	1.56
+ARG 464 Río Cuarto	1539	-0.03	0.67
+AUT 465 Rapid Wien	1538	+0.06	1.50
+RSA 466 Orlando Pirates	1538	+0.81	0.94
+URU 467 Maldonado	1538	-0.02	1.15
+USA 468 NE Revolution	1538	-0.03	1.51
+ECU 469 Orense	1538	+0.15	1.00
+KOR 470 Gangwon FC	1538	-0.16	0.99
+SUI 471 Servette FC	1537	-0.26	1.49
+USA 472 Colorado Rapids	1537	-0.03	1.33
+BEL 473 Cercle Brugge	1537	+0.01	1.47
+MEX 474 León	1537	-0.03	1.35
+MEX 475 San Luis	1537	-0.03	1.61
+MEX 476 Necaxa	1537	-0.03	1.58
+ARG 477 Aldosivi	1536	-0.04	1.06
+TUR 478 Kasimpasa	1536	+0.21	1.47
+GER 479 Düsseldorf	1536	+0.01	1.46
+ARG 480 Quilmes	1536	-0.03	0.87
+AZE 481 Sabah FK	1536	-0.01	1.42
+JPN 482 Kyoto Purple Sanga	1536	-0.20	1.43
+NOR 483 Molde	1535	-0.00	1.63
+ENG 484 Stockport	1535	-0.96	1.42
+CHI 485 Everton	1535	-0.05	1.17
+RUS 486 Terek Grozny	1535	+0.25	1.23
+ARG 487 Colegiales de Munro	1535	-0.03	1.03
+ARG 488 Almirante Brown	1535	-0.03	0.84
+GER 489 Osnabrück	1534	+0.01	1.30
+ITA 490 Pisa	1534	-0.05	1.23
+FRA 491 Red Star	1534	+0.01	1.26
+PAR 492 Deportivo Recoleta	1533	-0.11	1.68
+SWE 493 Mjällby	1533	+0.00	1.07
+AUT 494 Austria Wien	1533	+0.05	1.32
+CHI 495 Deportes Concepción	1533	-0.05	1.27
+ESP 496 Valladolid	1533	+0.00	1.23
+BRA 497 Figueirense	1532	+0.01	1.09
+URU 498 Central Español	1532	-0.02	1.22
+ITA 499 Modena	1532	+0.78	1.12
+ENG 500 Luton	1532	-0.37	1.49
+CRC 501 Deportivo Saprissa	1532	-0.03	1.19
+ESP 502 Atletico B	1532	+0.00	1.32
+POR 503 Santa Clara	1531	-0.01	0.85
+CZE 504 Jablonec	1531	-0.00	1.25
+CHN 505 Chengdu Rongcheng	1531	-0.18	1.36
+NOR 506 Rosenborg	1530	-0.00	1.46
+SWE 507 Elfsborg	1530	+0.00	1.46
+QAT 508 Al Sadd	1529	-0.08	2.10
+NED 509 Heerenveen	1529	+0.00	1.55
+ESP 510 Zamora	1529	+0.00	1.05
+CHI 511 Limache	1529	-0.04	1.60
+TUR 512 Eyupspor	1529	+0.34	1.17
+UAE 513 Al Ain	1529	-0.12	1.71
+SWE 514 AIK	1528	+0.00	1.21
+ROU 515 CFR Cluj	1528	+0.01	1.27
+USA 516 San Jose	1528	-0.03	1.75
+ESP 517 Barcelona B	1528	+0.00	1.62
+PER 518 Melgar	1528	-6.17	1.22
+FRA 519 Annecy	1527	+0.01	1.33
+BEL 520 Westerlo	1526	+0.00	1.76
+ECU 521 Cuenca	1526	+0.09	1.10
+KOR 522 Daejeon Hana Citizen	1526	-0.16	1.45
+BRA 523 Guarani	1526	-0.00	1.07
+BUL 524 Razgrad	1526	+0.02	1.12
+ENG 525 Portsmouth	1525	-7.42	1.32
+ITA 526 Juve Stabia	1525	+0.79	1.09
+COL 527 Llaneros	1524	-0.01	1.04
+CRC 528 LD Alajuelense	1524	-0.03	0.91
+POR 529 Moreirense	1524	-0.01	1.21
+SWE 530 GAIS	1524	+0.00	1.12
+BRA 531 América Mineiro	1524	+0.03	1.16
+ESP 532 CE Europa	1523	+0.00	1.36
+USA 533 LA Galaxy	1523	-0.03	1.68
+MAR 534 Berkane	1522	-0.12	0.96
+ARG 535 Ciudad de Bolívar	1522	-0.03	1.13
+IRN 536 Persepolis	1521	-0.10	0.74
+JPN 537 Fagiano Okayama	1521	-0.20	1.17
+ESP 538 Murcia	1520	+0.00	0.94
+NED 539 Go Ahead Eagles	1520	+0.00	1.45
+ITA 540 Empoli	1520	+0.36	1.26
+COL 541 Fortaleza	1520	-5.62	1.03
+SCO 542 Hearts	1520	+0.05	1.31
+FRA 543 Dijon	1519	+0.01	1.25
+KOR 544 Ulsan	1518	-0.16	1.31
+KOR 545 Gimcheon Sangmu	1518	-0.16	1.23
+FIN 546 Inter Turku	1518	+0.03	1.22
+MAR 547 Raja	1518	-0.12	0.86
+ESP Real Jaen	1518	+0.00	1.27
+CHI 548 Huachipato	1518	-0.04	1.43
+ITA 549 Union Brescia	1518	+0.26	0.82
+ARG 550 Agropecuario	1517	-0.03	1.07
+ISR 551 Beitar	1517	-0.00	1.73
+CZE 552 Slovan Liberec	1517	-0.00	1.10
+VEN 553 Deportivo Táchira	1517	-0.04	0.95
+CRC 554 CS Herediano	1517	-0.03	1.10
+USA 555 Austin	1517	-0.03	1.38
+TUN 556 ES Tunis	1516	-0.11	0.70
+CRO 557 Rijeka	1516	-0.00	0.97
+ENG 558 Stoke	1516	+6.38	1.10
+ENG 559 Plymouth	1516	-6.15	1.60
+URU 560 Cerro Largo	1515	-0.02	0.92
+GER 561 Verl	1515	+0.01	1.74
+UKR 562 Polissya Zhytomyr	1515	-0.00	1.16
+JPN 563 Avispa Fukuoka	1515	-0.20	0.94
+AUS 564 Auckland FC	1515	-0.17	1.14
+ESP 565 Barakaldo	1515	+0.00	1.11
+CYP 566 Aris Limassol	1514	-0.02	1.50
+URU 567 Albion	1514	-0.02	1.18
+ITA 568 Mantova	1514	+0.54	1.44
+ISR 569 Maccabi Haifa	1514	-0.00	1.63
+PER 570 Sporting Cristal	1514	-0.01	1.53
+ENG 571 Watford	1514	-4.74	1.25
+ESP 572 UD Ibiza	1513	+0.00	1.16
+URU 573 Juventud	1513	+0.04	1.17
+URU 574 Boston River	1513	-0.03	1.20
+BRA 575 Maringá PR	1513	+0.01	1.43
+BRA 576 Brusque	1513	+0.00	0.96
+BRA 577 Inter de Limeira - SP	1513	-0.01	1.14
+USA 578 New York RB	1512	-0.03	1.50
+ENG 579 Bolton	1512	-3.95	1.46
+GER 580 Rostock	1512	+0.01	1.39
+KOR 581 Incheon United	1512	-0.16	1.02
+COL 582 Pasto	1512	-0.05	1.16
+RUS 583 Kryliya Sovetov	1511	-0.34	1.58
+ARG 584 Atlético Rafaela	1511	-0.03	0.86
+GRE 585 Aris	1510	+0.01	1.01
+GER 586 Cottbus	1510	+0.01	1.62
+ESP 587 Sant Andreu	1510	+0.00	1.37
+PER 588 Real Garcilaso	1510	-0.00	1.40
+TUR 589 Konyaspor	1510	+0.38	1.18
+ARG 590 CA Los Andes	1510	-0.03	0.91
+ESP 591 Cultural Leonesa	1510	+0.00	1.21
+GER 592 Aachen	1510	+0.01	1.51
+VEN 593 Carabobo FC	1510	-0.03	0.87
+GER 594 Essen	1509	+0.01	1.81
+SVN 595 Celje	1508	-0.00	1.88
+ISL 596 Vikingur	1508	+0.03	1.70
+ARG 597 Chaco For Ever	1508	-0.03	0.86
+URU 598 Defensor	1508	-0.02	1.03
+AUT 599 Hartberg	1508	+0.12	1.26
+TUR 600 Gaziantep	1508	+0.38	1.33
+GER 601 Fürth	1508	+0.01	1.59
+ESP 602 Zaragoza	1508	+0.00	1.08
+KOR 603 Pohang Steelers	1508	-0.16	1.14
+ESP 604 Unionistas	1507	+0.00	1.18
+POL 605 Korona	1506	+0.00	1.07
+FRA 606 Dunkerque	1506	+0.01	1.28
+URU 607 Wanderers	1506	-0.02	1.06
+ARG 608 Defensores de Belgrano	1506	-0.03	0.77
+BRA 609 Londrina	1506	+1.55	1.05
+IRN 610 Esteghlal	1506	-0.12	0.89
+CHN 611 Shanghai Port FC	1506	-0.18	1.58
+ENG 612 Preston	1505	-7.17	1.23
+ESP 613 Antequera	1505	+0.00	1.34
+ITA 614 Spezia	1505	+0.55	1.29
+BRA 615 CSA AL	1505	+0.01	0.98
+ESP 616 Alcorcon	1504	+0.00	1.08
+FRA 617 Guingamp	1504	+0.01	1.42
+ITA 618 Avellino	1504	+0.69	1.20
+ITA 619 Ascoli	1504	+0.22	1.09
+ESP 620 Tarragona	1504	+0.00	1.07
+ESP 621 Numancia	1504	+0.00	0.93
+POR 622 Alverca	1504	-0.01	1.28
+POR 623 Estoril	1503	-0.01	1.58
+SUI 624 Luzern	1503	-0.18	1.85
+THA 625 Buriram United	1503	-0.20	1.47
+ITA 626 Cesena	1503	+0.55	1.24
+POL 627 Wisla	1503	+0.00	1.86
+RUS 628 Makhachkala	1502	+0.14	0.83
+ARG 629 Racing de Córdoba	1502	-0.03	1.19
+CHN 630 Beijing Guoan	1502	-0.18	1.84
+ARG 631 Patronato	1502	-0.03	1.00
+SUI 632 Aarau	1502	+0.01	1.27
+POL 633 Lubin	1502	+0.00	1.10
+CYP 634 Apollon Lemesos	1502	-0.02	1.13
+ESP 635 Ourense	1502	+0.00	1.13
+SWE 636 Häcken	1502	+0.00	1.81
+ESP 637 FC La Unión Atlético	1502	+0.00	1.01
+RUS 638 Rodina Moskva	1501	+0.21	1.37
+GER 639 Braunschweig	1501	+0.01	1.43
+BRA 640 Maranhao	1501	+0.01	1.15
+POL 641 KS Cracovia	1501	+0.00	1.22
+ARG 642 San Miguel	1501	-0.03	0.92
+FRA 643 Grenoble	1500	+0.01	0.99
+JPN 644 Shimizu S-Pulse	1500	-0.19	1.15
+COL 645 Unión Magdalena	1500	+10.27	1.23
+USA 646 Toronto FC	1500	-0.03	1.29
+ARG All Boys	1500	-0.03	0.68
+ARG Nueva Chicago	1498	-0.03	0.81
+JPN Tokyo Verdy	1498	-0.20	0.97
+KOR Jeju SK FC	1498	-0.16	1.15
+BRA Amazonas	1498	-0.02	1.07
+ESP SD Tarazona	1498	+0.00	0.92
+ENG Huddersfield	1498	+6.31	1.45
+EGY Zamalek	1498	-0.09	1.15
+ROU Universitatea Cluj	1497	+0.02	1.16
+ARG Mitre de SdE	1497	-0.03	0.88
+BRA Retrô - PE	1497	-0.02	1.14
+NED Groningen	1497	+0.00	1.27
+ARG Chacarita Juniors	1497	-0.03	0.99
+BRA Floresta	1497	+0.05	1.05
+POL Piast Gliwice	1496	+0.00	1.10
+ESP Cartagena	1495	+0.00	1.14
+NOR Lillestrøm	1495	-0.00	1.45
+BRA Paysandu	1495	-0.02	1.29
+ITA Arezzo	1494	+0.24	1.16
+ISR Hapoel Tel Aviv	1494	-0.01	1.07
+RUS Orenburg	1494	+0.19	1.33
+SVK FC DAC 1904	1493	+0.01	1.35
+AUT Wolfsberg	1493	-6.07	1.26
+LVA FK Riga	1493	+0.00	1.19
+TUR Çorum FK	1493	-2.57	1.29
+KOR FC Anyang	1493	-0.16	1.37
+BEL Leuven	1493	+0.00	1.18
+ITA Südtirol	1493	+0.58	1.03
+ARG Almagro	1493	-0.03	0.82
+COL Pereira	1492	-0.30	1.10
+ENG Oxford	1492	-6.56	1.17
+NED Sparta	1492	+0.00	1.33
+TUR Antalyaspor	1492	+12.42	1.12
+BEL Lommel	1492	+0.00	1.28
+ESP Europa	1491	+0.00	1.43
+BOL Real Potosi	1491	-0.02	1.11
+PER Cienciano	1491	-0.06	1.48
+KOR Bucheon FC 1995	1491	-0.16	1.16
+CHI La Calera	1490	-0.05	1.11
+MEX Juárez	1490	-0.03	1.52
+CRO NK Varteks	1490	-0.00	1.00
+FRA Rouen	1490	+0.01	1.09
+POR Rio Ave	1490	-0.01	1.15
+DEN Randers	1490	+0.01	1.27
+ESP Merida	1489	+0.00	1.24
+BRA Caxias	1489	+0.06	0.96
+ESP Lugo	1489	+0.00	1.00
+ITA Brescia	1489	+0.34	1.20
+ENG Reading	1489	-0.82	1.49
+PAR General Caballero DJLM	1488	-0.03	1.04
+FRA Sochaux	1488	+0.01	1.03
+KSA Al Draih	1488	-0.48	1.32
+ECU El Nacional	1488	+0.12	1.47
+URU Danubio	1487	-0.02	0.87
+ENG Mansfield	1487	-0.36	1.44
+ECU Técnico Uni	1487	-4.29	1.06
+ARG Arsenal de Sarandí	1487	-0.03	0.97
+POL Lechia	1486	+0.00	1.73
+COL Alianza Petrolera	1486	-0.29	1.18
+RUS Sverdlovsk	1486	+0.02	1.15
+ITA Padova	1486	+0.46	0.97
+JPN V-Varen Nagasaki	1485	-0.20	1.28
+ESP Amorebieta	1485	+0.00	1.14
+ROU Steaua	1485	+0.04	1.44
+NOR Fredrikstad	1485	-0.00	1.06
+GRE Iraklis	1485	+0.01	1.30
+NOR Sarpsborg	1484	-0.00	1.50
+ITA Salernitana	1484	+0.22	1.19
+ESP Algeciras	1484	+0.00	1.08
+BRA Santa Cruz	1484	+0.01	1.04
+CHN Shanghai Shenhua	1484	-0.18	1.60
+AUS Melbourne City FC	1484	-0.17	1.16
+ECU Delfín	1483	+4.67	1.03
+MEX Mazatlán	1483	-0.03	1.39
+ENG Blackpool	1483	-0.83	1.33
+ITA Carrarese	1483	+0.44	1.17
+ITA Casertana	1483	+0.19	1.28
+PER Deportivo Garcilaso	1483	+0.01	1.04
+POL Widzew	1482	+0.00	1.23
+USA Atlanta United	1482	-0.03	1.42
+TUR Karagümrük	1482	-0.31	1.21
+BRA Anápolis GO	1482	+0.04	1.11
+ESP CP Cacereño	1482	+0.00	1.30
+ITA Sampdoria	1481	+0.76	1.09
+SCO Hibernian	1481	+0.05	1.38
+ITA Catania	1481	-0.05	1.06
+DEN Silkeborg	1481	+0.01	1.59
+GER Münster	1480	+0.01	1.28
+FRA FC Fleury 91	1480	+0.01	1.19
+VEN Deportivo La Guaira	1480	-0.03	1.09
+CZE Sigma Olomouc	1480	-0.01	1.29
+ENG Wycombe	1480	-7.40	1.27
+TUR Kayseri	1479	+0.26	1.26
+ITA Bari	1479	+0.56	1.07
+ROU Dinamo Bucuresti	1479	+0.02	1.18
+ITA Entella	1479	+0.52	1.06
+NED Excelsior	1479	+0.00	1.50
+UKR Karpaty	1479	+0.00	1.20
+BUL CSKA Sofia	1478	+0.01	0.94
+POL Motor Lublin	1478	+0.00	1.46
+FRA Le Puy Foot 43	1478	+0.01	1.22
+POR Nacional	1478	-0.01	1.22
+MAR Fès	1478	-0.12	0.90
+BRA Volta Redonda	1478	-0.03	0.98
+ECU Vinotinto	1478	+0.10	1.29
+POL Radomiak	1478	+0.00	1.53
+POL Arka	1478	+0.00	1.28
+FRA Clermont	1478	+0.01	1.08
+ESP Athletic Club B	1477	+0.00	1.13
+USA Montréal	1477	-0.03	1.57
+DEN SonderjyskE	1477	+0.01	1.46
+JPN Yokohama FC	1476	-0.19	1.15
+COL La Equidad	1476	-0.20	1.13
+ROU Rapid Bucuresti	1476	+0.02	1.21
+ESP Hercules	1476	+0.00	1.05
+POR Maritimo	1476	-0.01	1.15
+ARG San Telmo	1475	-0.03	1.18
+CHI Iquique	1475	-0.02	1.75
+POL Plock	1475	+0.00	1.20
+KOR Suwon FC	1475	-0.16	1.75
+FRA Nancy	1474	+0.01	1.35
+POL Slask	1474	-0.00	1.41
+RUS FK Sochi	1474	-0.02	1.65
+ESP Arenas de Getxo	1474	+0.00	1.32
+FRA Pau	1474	+0.01	1.78
+UKR Cherkasy	1473	+0.00	0.85
+CYP APOEL	1473	-0.02	1.12
+FIN Kuopio	1473	+0.00	1.02
+ESP CA Antoniano	1473	+0.00	1.19
+ESP Ferrol	1472	+0.00	1.00
+SUI Lausanne	1472	-0.14	1.37
+GER Duisburg	1472	+0.01	1.52
+ENG Bradford	1472	-7.51	0.99
+ESP Águilas FC	1472	+0.00	1.08
+SCO Motherwell	1472	+0.05	1.33
+ESP Teruel	1471	+0.00	0.74
+SRB Partizan	1471	+0.01	1.52
+COD TP Mazembe	1471	-0.12	0.81
+ESP Sestao	1470	+0.00	1.05
+DEN Odense	1470	+0.01	1.44
+CHI Cobresal	1470	-0.05	1.59
+USA DC United	1470	-0.03	1.56
+FRA Ajaccio	1470	+0.01	0.90
+CZE Banik Ostrava	1470	-0.00	1.23
+BEL La Louviére	1470	+0.00	1.03
+RUS Fakel Voronezh	1469	+0.03	0.74
+BRA Ituano	1469	-0.00	1.10
+POR Estrela Amadora	1469	-0.01	1.21
+CHI La Serena	1469	-0.04	1.41
+JPN Shonan Bellmare	1469	-0.19	1.28
+URU Plaza Colonia	1468	-0.02	1.00
+FRA Bastia	1468	+0.01	0.96
+USA Louisville City	1468	-0.03	1.49
+ITA Ravenna	1468	+0.26	1.20
+BIH Zrinjski Mostar	1468	+0.01	0.98
+BRA Ypiranga - RS	1468	+0.01	1.22
+HUN Paksi	1468	+0.00	1.92
+TUR Sivasspor	1467	-1.12	1.23
+FRA Laval	1467	+0.01	1.07
+ARG alvarado	1467	-0.03	0.84
+PAR Rubio Nu	1467	+6.89	1.19
+CZE Mlada Boleslav	1467	-0.00	1.53
+PAR Sportivo Luqueño	1466	+1.84	1.28
+PER Alianza Atlético	1466	+0.01	1.01
+RUS FC Khimki	1465	+0.09	1.51
+TUR Boluspor	1465	-2.84	1.27
+CHN Shandong Taishan	1465	-0.18	1.87
+SVN Maribor	1465	+0.00	1.23
+MEX Puebla	1465	-0.03	1.38
+CZE Teplice	1465	-0.00	1.17
+ESP Atlético Baleares	1465	+0.00	1.03
+GER Ingolstadt	1465	+0.01	1.73
+NED Sittard	1464	+0.00	1.40
+FRA Boulogne	1464	+0.01	1.07
+ITA Feralpisalò	1463	+0.23	1.13
+POR Casa Pia	1463	-0.01	1.10
+GER Saarbrücken	1463	+0.01	1.25
+BRA Barra SC	1463	-0.00	1.16
+ESP CF Talavera	1462	+0.00	1.19
+FRA Orleans	1462	+0.01	1.18
+KOR Daegu FC	1462	-0.16	1.43
+ESP Logrones	1461	+0.00	0.67
+NOR Sandefjord	1461	-0.00	1.35
+ITA Reggiana	1461	+0.57	1.16
+ESP CD Estepona	1461	+0.00	1.10
+COL Cúcuta	1461	-0.25	1.32
+AUS Melbourne Victory	1460	-0.17	1.28
+BOL Nacional Potosí	1460	-0.02	1.62
+ARG Central Norte	1460	-0.03	1.07
+VEN Metropolitanos FC	1460	-0.03	1.33
+ARG Güemes de SdE	1459	-0.03	1.00
+BEL Dender	1459	+0.00	1.35
+ALG MC Alger	1459	-0.09	0.91
+SDN Al Hilal Omdurman	1458	-0.11	0.77
+HUN Puskas Akademia	1458	+0.00	1.29
+NED Zwolle	1458	+0.00	1.59
+ESP Real Union	1458	+0.00	1.30
+SWE Västerås	1458	+0.00	1.21
+ESP Linares	1458	+0.00	1.13
+CHI Uni de Concepción	1458	-0.05	1.28
+FRA Versailles	1458	+0.01	1.28
+NOR Valerenga	1457	-0.00	1.78
+DEN FC Fredericia	1457	+0.01	1.52
+ENG Barnsley	1457	-0.67	1.75
+KSA Al Taawoun	1456	-0.11	1.19
+CHI Unión Española	1456	-0.02	1.63
+SWE Göteborg	1455	+0.00	1.21
+POR Ac Viseu	1455	-0.01	1.25
+Saint-Eloi Lupopo	1455	-0.04	1.24
+ESP SD Eibar B	1455	+0.00	1.19
+ESP Guadalajara	1455	+0.00	1.30
+ENG Sheffield Weds	1455	+6.38	1.26
+COL Envigado	1455	-8.73	0.92
+IRN Sepahan	1455	-0.10	1.17
+KAZ FK Kairat	1454	+0.00	1.22
+CZE Zbrojovka Brno	1454	-0.00	1.29
+ESP Alcoyano	1453	+0.00	0.89
+BIH Borac Banja Luka	1453	+0.02	1.06
+BRA ABC	1453	-0.01	1.09
+AZE Zira	1453	-0.01	0.90
+VEN Academia Puerto Cabello	1453	+0.01	0.99
+ENG York City	1452	-28.54	1.41
+ENG Leyton Orient	1452	+12.23	1.29
+SVK Trnava	1452	+0.01	1.06
+JPN Mito HollyHock	1451	-0.20	1.24
+JPN Albirex Niigata	1451	-0.19	1.28
+FRA Martigues	1451	+0.01	1.21
+URU Cerro	1451	-0.02	0.91
+KOR Suwon Bluewings	1451	-0.16	1.13
+RUS Akron Tolyatti	1451	-0.11	1.33
+ESP UCAM Murcia	1450	+0.00	0.95
+ARM Noah	1450	+0.01	1.39
+POL Wieczysta Kraków	1449	+0.00	1.34
+GER München 60	1449	+0.01	1.34
+NOR Ham-Kam	1449	-0.00	1.32
+GRE Levadeiakos	1449	+0.01	1.37
+CZE Bohemians	1449	-0.00	1.02
+ENG Cambridge	1448	+6.69	1.03
+AUT Ried	1448	-0.07	1.21
+UKR Kryvbas	1448	+0.00	1.33
+ITA Crotone	1448	+0.18	1.22
+RUS Nizhny Novgorod	1448	+0.04	1.31
+USA Charleston	1448	-0.03	1.52
+TUR İstanbulspor AŞ	1448	-2.14	1.36
+TUN Club Africain	1447	-0.12	0.71
+ITA Pescara	1447	+0.47	1.69
+ECU Manta	1447	+0.03	1.04
+ESP Torremolinos	1447	+0.00	1.30
+SVN Koper	1447	+0.00	1.40
+AUS Sydney FC	1446	-0.17	1.28
+ESP Xerez	1445	+0.00	1.01
+GER Viktoria Köln	1445	+0.01	1.39
+UKR Zorya	1445	+0.00	1.31
+AUS Western United	1445	-0.17	1.67
+BOL Club Aurora	1444	-0.02	1.44
+ENG Doncaster	1444	-0.63	1.32
+ESP UD SS Reyes	1444	+0.00	1.09
+AUS Newcastle United Jets	1444	-0.17	1.68
+ESP Osasuna B	1444	+0.00	1.20
+KSA Al Ettifaq	1444	-0.15	1.33
+ESP Betis B	1443	+0.00	1.48
+ENG Stevenage FC	1443	-0.21	0.87
+BRA Tombense	1443	+0.01	1.03
+ITA Potenza	1443	+0.19	1.44
+RUS Spartak Kostroma	1443	+0.03	1.30
+SVN Olimpija Ljubljana	1443	+0.01	1.01
+ENG Notts County	1442	-0.18	1.41
+UAE Al Wasl	1442	-0.12	1.40
+BRA Ponte Preta	1442	+0.01	1.03
+ITA Benevento	1441	+0.23	1.19
+GER Wehen	1441	+0.01	1.43
+ITA Ternana	1441	+0.25	1.15
+ARM Ararat-Armenia	1441	+0.00	1.29
+RUS Torpedo Moskva	1441	-0.02	1.03
+AUT Altach	1440	-0.08	0.96
+SUI Zuerich	1440	-5.63	1.53
+ESP Aviles	1440	+0.00	1.07
+TUN CS Sfaxien	1440	-0.12	0.63
+ITA Cosenza	1440	+0.24	1.14
+VEN Universidad Central	1440	-0.03	1.47
+ESP Recreativo	1440	+0.00	0.95
+ENG Peterboro	1439	-1.41	1.71
+ESP CE Andratx	1439	+0.00	1.24
+ESP Segoviana	1439	+0.00	1.43
+FRA Caen	1439	+0.01	1.26
+SRB Novi Sad	1439	+0.01	1.37
+Young Africans	1439	-0.10	1.00
+POR Tondela	1438	-0.01	1.15
+ITA Trento	1438	+0.27	1.22
+ESP Yeclano	1438	+0.00	1.02
+COL Jaguares	1438	-0.06	0.93
+BEL Kortrijk	1436	+0.00	1.22
+ENG MK Dons	1436	-0.36	1.43
+PER Los Chankas	1436	-0.16	1.41
+LVA FK RFS	1436	+0.00	1.41
+ITA Casarano	1435	+0.19	1.52
+MEX Santos Laguna	1435	-0.03	1.50
+ITA Audace Cerignola	1434	+0.22	1.31
+POL Nieciecza	1434	+0.00	1.56
+ENG Barnet FC	1434	+0.42	1.34
+GER Regensburg	1434	+0.01	1.28
+BLR FK Maxline Vitebsk	1434	+0.01	1.21
+ESP CF Intercity	1434	+0.00	1.15
+AUS Adelaide United	1434	-0.17	2.02
+POR Vizela	1434	-0.01	1.10
+RUS Rotor Volgograd	1433	+0.02	0.97
+CRO Osijek	1433	-0.00	1.16
+ESP Sd Tarazona	1433	+0.00	1.05
+NED Telstar	1432	+0.00	1.42
+SWE Brommapojkarna	1432	+0.00	1.59
+ESP Fuenlabrada	1431	+0.00	1.05
+SVK Žilina	1431	+0.01	1.90
+AUT GAK	1431	-0.27	1.30
+GRE OFI	1431	+0.01	1.43
+BRA AD Confianca SE	1431	+0.01	1.02
+ARG Acassuso	1431	-0.03	1.14
+BUL CSKA 1948 Sofia	1430	+0.01	1.10
+MKD Shkendija	1429	+0.02	1.09
+ROU Oţelul Galaţi	1429	+0.02	1.14
+ESP SD Logroñés	1429	+0.00	1.05
+AZE Neftçi PFK	1428	-0.01	1.38
+ROU Arges Pitesti	1428	+0.02	0.89
+MAR Wydad	1427	-0.11	1.00
+COL Boyacá Chicó	1427	-0.19	1.09
+AZE Turan Tovuz	1427	-0.01	1.05
+ESP Torrent CF	1427	+0.00	1.15
+NOR Kfum	1427	-0.00	1.25
+ITA Cittadella	1427	+0.31	1.00
+QAT Al Rayyan	1426	-0.18	1.58
+POR Leiria	1426	-0.01	1.41
+USA Tampa Bay	1426	-0.03	1.52
+ITA Crotone	1426	+0.25	1.55
+ITA Catania	1426	+0.26	1.09
+CRO Istra 1961	1426	+0.00	1.12
+ENG Wigan	1426	-0.26	0.93
+UKR Kolos	1426	+0.00	0.70
+QAT Al Duhail SC	1425	-0.22	1.67
+ENG Bromley	1425	-13.62	1.33
+USA Sacramento	1424	-0.03	0.85
+GER Dortmund II	1424	+0.01	1.40
+URU River Plate	1424	-0.02	1.11
+NED Den Haag	1424	+0.00	1.65
+KOR Gwangju FC	1424	-0.14	1.19
+ITA Monopoli	1423	+0.18	1.06
+CRC CS Cartaginés	1423	-0.03	1.21
+BLR Dinamo Minsk	1423	+0.00	0.90
+AUT Wattens	1423	-0.27	1.46
+Petro Atlético	1422	-0.12	0.84
+VEN Caracas FC	1422	-0.02	1.08
+AUT BW Linz	1422	-0.35	1.26
+GRE Atromitos	1422	+0.01	1.11
+ROU Sepsi	1422	+0.02	1.16
+ESP Marino de Luanco	1421	+0.00	1.07
+MAR FUS	1421	-0.12	1.02
+SWE Kalmar	1421	+0.00	1.27
+POR Boavista	1421	-0.01	1.23
+PAR Atlético Tembetary	1420	-0.04	1.24
+POR AVS Futebol	1420	-0.01	1.16
+ESP UD Melilla	1420	+0.00	0.80
+BOL Blooming	1420	-0.02	1.39
+URU Miramar Misiones	1420	-0.02	1.23
+POR Torreense	1419	-0.01	1.20
+ALG CR Bélouizdad	1419	-0.09	0.95
+RUS Yenisey	1419	+0.02	1.14
+BOL Ind Petrolero	1419	-0.02	1.57
+CRO Lok Zagreb	1418	+0.00	1.42
+SUI Yverdon Sport	1418	-0.10	1.53
+FRA Concarneau	1418	+0.01	1.26
+PER Grau	1418	+6.51	0.95
+ESP Marbella FC	1418	+0.00	1.23
+ESP Real Avilés	1418	+0.00	1.54
+DEN Vejle	1418	+0.01	1.28
+FRA Amiens	1417	+0.01	1.16
+USA Sporting KC	1417	-0.03	1.69
+BOL CD Guabirá	1417	-0.02	1.68
+NED Heracles	1417	+0.00	1.84
+GER Waldhof	1416	+0.01	1.53
+HUN Debrecen	1416	+0.00	1.37
+ITA Atalanta II	1415	+0.24	1.52
+SUI Grasshoppers	1415	-0.16	1.40
+POR SC Farense	1414	-0.01	0.96
+UKR Metalist 1925	1413	+0.00	1.04
+ITA Taranto	1413	+0.25	0.78
+HON Motagua	1412	-0.03	1.21
+ESP Valencia B	1412	+0.00	1.22
+ROU UTA Arad	1412	+0.02	1.15
+ITA Renate AC	1411	+0.26	1.19
+ENG Exeter City	1411	-1.44	1.30
+URU Progreso	1411	-0.02	1.21
+CZE Karvina	1410	-0.00	1.49
+UAE Al Wahda	1410	-0.15	1.18
+CHN Zhejiang Professional	1410	-0.18	2.07
+NED Volendam	1410	+0.00	1.49
+KAZ FK Astana	1410	-0.01	1.58
+IRL Shamrock	1410	-0.01	1.22
+ITA Calcio Lecco 1912	1410	+0.25	1.04
+ITA Juventus II	1409	+0.25	1.29
+ISR Netanya	1409	-0.00	1.78
+BOL GV San José	1409	-0.00	1.49
+ITA Giana Erminio	1408	+0.24	1.07
+ITA AZ Picerno	1408	+0.25	0.92
+BRA Itabaiana	1408	+0.04	1.14
+SWE Norrköping	1408	+0.00	1.65
+USA New Mexico Utd	1408	-0.03	1.40
+ENG Burton	1408	-0.25	1.11
+KSA Al Shabab	1408	-0.16	1.47
+POR Lusitania FC Lourosa	1408	-0.01	1.27
+GER Stuttgart II	1408	+0.01	1.57
+EGY Wadi Degla FC	1407	+2.84	1.17
+ESP Getafe CF B	1406	+0.00	1.29
+MAR KACM	1406	-0.12	1.08
+ALB Egnatia Rrogozhine	1406	+0.00	1.15
+ITA Juventus U23	1405	+0.25	1.34
+AUT Klagenfurt	1405	-0.01	1.61
+SVN Bravo	1405	+0.00	1.21
+ESP Orihuela	1404	+0.00	1.05
+THA Port FC	1404	-0.19	1.53
+KSA NEOM	1404	-0.11	1.24
+RUS Shinnik Jaroslawl	1403	+0.02	0.98
+ENG Chesterfield	1403	-3.34	1.26
+ENG Salford	1403	+2.45	1.23
+THA Bangkok United	1403	-0.19	1.12
+ITA Atalanta II	1403	+0.18	1.30
+POR Felgueiras	1403	-0.01	1.09
+BEL K Beerschot VA	1403	+0.00	1.37
+CZE Pardubice	1403	-0.00	1.19
+BOL San Antonio Bulo Bulo	1402	+0.02	1.70
+USA Rhode Island FC	1402	-0.03	1.06
+GER Hoffenheim II	1402	+0.01	1.60
+ENG Grimsby	1402	-1.27	1.39
+VEN Portuguesa FC	1402	-0.03	1.08
+ESP Sevilla B	1402	+0.00	0.86
+NOR Kongsvinger	1401	-0.00	1.81
+PER Sport Huancayo	1401	+0.10	1.46
+GER Ulm	1401	+0.01	1.41
+ARG Talleres RdE	1401	-0.03	0.94
+PER Sport Boys	1400	+0.09	1.05
+ESP Sanluqueño	1400	+0.00	1.00
+DEN Lyngby	1400	+0.01	1.15
+POR SL Benfica B	1400	-0.01	1.41
+ENG Port Vale	1399	-7.98	0.99
+CHN Qingdao West Coast	1399	-0.18	1.17
+BUL Arda	1399	+0.01	1.05
+ITA US Pianese	1399	+0.25	1.06
+USA FC Tulsa	1399	-0.03	1.14
+NOR Kristiansund	1399	-0.00	1.32
+ESP CD Arenteiro	1398	+0.00	1.01
+ARG Zárate	1398	-0.03	1.03
+ROU Farul	1398	+0.02	1.28
+ESP Utebo FC	1398	+0.00	1.17
+ESP Salamanca CF UDS	1397	+0.00	1.35
+BOL CDT Real Oruro	1396	-0.02	1.85
+FRO Klaksvik	1396	+0.00	1.01
+NED Willem II	1396	+0.00	1.29
+FRA Quevilly	1396	+0.01	1.26
+BOL Oriente Petrolero	1396	-0.02	1.59
+JPN JEF United Ichihara	1395	-0.20	1.35
+ARM Pyunik	1395	+0.00	1.07
+CYP Anorthosis	1395	-0.02	1.10
+SWE Öster	1394	+0.00	1.27
+CHN Yunnan Yukun	1394	-0.18	1.80
+KAZ Ordabasy	1394	-0.00	1.16
+CHN Tianjin Jinmen Tiger	1394	-0.18	1.18
+KOS Drita	1393	+0.00	0.95
+RUS Veles Moskva	1393	+0.01	1.37
+SCO Dundee United	1393	+0.06	1.27
+USA Pittsburgh	1393	-0.03	0.76
+FRA Valenciennes	1393	+0.01	1.12
+ENG Oldham	1392	+0.69	1.26
+FRA Aubagne	1392	+0.01	1.28
+POR Penafiel	1392	-0.01	1.11
+POL Puszcza Niepołomice	1392	+0.00	1.31
+ITA Lumezzane	1392	+0.27	1.11
+ENG AFC Wimbledon	1391	-0.41	1.04
+DEN Aalborg	1391	+0.01	1.42
+ISL Valur	1391	+0.01	2.05
+FIN HJK Helsinki	1391	+0.01	1.51
+USA El Paso Locomotive	1391	-0.03	1.30
+UAE Al Jazira Club	1390	-0.13	1.66
+RUS Tula	1390	+0.02	1.11
+ITA Cavese	1390	+0.20	1.05
+USA Detroit City	1389	-0.03	0.86
+AUS Central Coast Mariners	1389	-0.17	1.50
+ENG Swindon	1389	+7.20	1.65
+ITA Trapani	1389	+0.18	1.24
+ALB Dinamo Tiranë	1389	+0.00	1.29
+ITA Alcione Milano	1388	+0.27	0.95
+ITA Monopoli	1388	+0.25	0.97
+ITA Campobasso	1388	+0.25	1.23
+AS Maniema Union	1388	-0.12	1.13
+PER AD Tarma	1388	+0.02	1.16
+EGY Al Masry Club	1387	-0.06	1.10
+EGY Ceramica Cleopatra	1387	-0.93	1.32
+VEN Anzoátegui FC	1387	-0.03	1.31
+HUN Ujpest	1386	+0.00	1.54
+POL Stal Mielec	1386	+0.00	1.35
+HUN MTK	1386	+0.00	1.68
+GER Hannover II	1386	+0.01	1.53
+GRE Panetolikos	1385	+0.01	0.95
+USA Union Omaha	1385	-0.03	1.34
+NED Breda	1385	+0.00	1.30
+GER Sandhausen	1385	+0.01	1.63
+KSA Al Kholood	1385	-0.30	1.35
+KSA Al Hazm	1384	-0.07	1.29
+ITA Virtus Verona	1384	+0.24	1.04
+AUT Lustenau	1384	-0.32	1.30
+CZE Slovacko	1384	-0.00	1.11
+GER Aue	1383	+0.01	1.60
+FRA Stade Briochin	1383	+0.00	1.21
+MAR Tanger	1383	-0.12	0.97
+ESP Deportivo Fabril	1383	+0.00	1.20
+POR Leixoes	1383	-0.01	1.22
+ITA Torres	1383	+0.25	1.06
+SUI Vaduz	1383	+0.09	1.63
+HUN Zalaegerszegi	1382	+0.00	1.32
+BOL Real Tomayapo	1382	-0.01	1.08
+CHN Henan Songshan Longmen	1382	-0.18	1.24
+RSA Kaizer Chiefs	1382	-0.40	0.88
+CRC AD San Carlos	1382	-0.03	1.18
+ENG Walsall	1381	+0.33	1.26
+ESP Real Ávila CF	1381	+0.00	1.12
+TUN US Monastir	1381	-0.12	0.72
+KSA Al-Faisaly	1380	+0.13	1.36
+POR Chaves	1380	-0.01	1.17
+SWE Degerfors	1380	+0.00	1.25
+MAR El Jadida	1380	-0.12	1.13
+USA Colorado Springs	1380	-0.03	1.41
+CHN Chongqing Tonglianglong	1380	-0.18	1.10
+ENG Fleetwood Town	1380	-1.12	1.21
+THA Ratchaburi FC	1380	-0.19	1.42
+TUR Hatayspor	1380	-1.06	1.60
+CRO Slaven Belupo	1380	+0.00	1.38
+CHN Dalian Yingbo	1379	-0.18	1.26
+UZB Pakhtakor Tashkent	1379	-0.08	1.28
+ESP UD Almería B	1379	+0.00	1.18
+ITA Potenza	1379	+0.25	1.39
+KSA Al Fateh	1379	-0.16	1.43
+ESP CDA Navalcarnero	1378	+0.00	1.35
+AUS Macarthur FC	1378	-0.17	1.71
+ISR Hapoel Haifa	1377	-0.00	1.26
+THA BG Pathum United	1377	-0.19	1.22
+ALG JS Kabylie	1377	-0.10	0.88
+ITA Trapani	1377	+0.23	1.36
+ROU Petrolul Ploiesti	1376	+0.02	0.94
+ROU Botosani	1376	+0.02	1.15
+GRE Asteras Tripolis	1376	+0.01	1.07
+RUS FC Chelyabinsk	1376	+0.04	1.29
+HUN Nyiregyhaza	1376	+0.00	1.33
+MAR Zemamra	1376	-0.12	1.10
+FRA Villefranche	1376	+0.01	1.11
+AUS Western Sydney Wanderers	1375	-0.17	1.60
+ESP Terrassa	1375	+0.00	1.07
+ENG Rotherham	1375	-1.54	1.16
+POR FC Porto B	1374	-0.01	1.33
+PER FC Cajamarca	1374	-0.02	1.50
+MKD Vardar	1374	+0.00	1.36
+CZE Zlín	1373	-0.00	1.46
+AUS Wellington Phoenix	1373	-0.17	1.38
+NOR Stromsgodset	1373	-0.00	1.51
+FRA Paris 13 Atletico	1372	+0.01	0.95
+ITA FC Arzignano Valchiampo	1372	+0.27	1.24
+FIN Ilves Tampere	1371	+0.00	1.56
+ITA Pineto	1371	+0.25	1.15
+ITA Albinoleffe	1371	+0.24	1.00
+FRA Nimes	1371	+0.01	1.18
+RUS FK Ufa	1371	+0.02	0.96
+LTU Kauno Zalgiris	1371	+0.02	1.18
+UZB Neftchi Farg'ona	1371	-0.11	1.02
+IRL St Patricks	1370	-0.00	1.07
+ITA Inter II	1370	+0.26	1.02
+TUN Étoile du Sahel	1370	-0.12	0.94
+VEN Zamora	1370	-0.03	1.06
+ESP Majadahonda	1370	+0.00	0.97
+ITA Az Picerno Asd	1370	+0.18	1.22
+TUN Stade Tunisien	1370	-0.12	0.75
+ITA Perugia	1370	+0.24	1.00
+ROU Hermannstadt	1370	+0.02	1.13
+ENG Bristol Rovers	1370	+7.28	1.22
+PER Comerciantes Unidos	1369	+0.08	1.25
+ENG Colchester	1369	-7.57	1.02
+NED Almere	1369	+0.00	1.53
+ITA Trento	1369	+0.24	1.01
+BIH FK Sarajevo	1369	+0.01	1.04
+ISL Breidablik	1369	+0.01	1.74
+UKR Epitsentr	1369	+0.00	1.22
+SWE Örgryte	1369	+0.00	1.43
+USA N Carolina FC	1369	-0.03	1.34
+RUS Noworossisk	1368	+0.03	1.24
+SCO St Mirren	1368	+0.05	1.08
+VEN Estudiantes de Mérida	1367	-0.03	1.45
+CRO HNK Gorica	1367	-0.00	1.06
+SCO Dundee	1367	+0.06	1.49
+POR Portimonense	1367	-0.01	1.26
+CRC Municipal Liberia	1367	-0.03	1.40
+ISR H Petach Tikva	1367	-0.00	1.20
+BLR Neman Grodno	1366	+0.00	1.24
+CRC Puntarenas FC	1366	-0.03	0.95
+NED Cambuur	1366	+0.00	1.72
+ITA Arzignano	1366	+0.24	0.99
+HUN Vasas SC	1366	+0.00	1.12
+ITA Novara	1365	+0.23	1.16
+USA Phoenix Rising	1365	-0.03	1.40
+ITA Casertana	1365	+0.25	1.05
+ITA Team Altamura	1365	+0.19	1.06
+CRC Sporting FC	1365	-0.03	1.21
+NOR Start	1365	-0.00	1.67
+MAR Touarga	1364	-0.12	1.19
+NOR Aalesund	1364	-0.00	1.84
+RSA Sekhukhune United	1364	-0.10	0.95
+SCO Falkirk	1364	+0.07	1.35
+ISL Stjarnan	1363	+0.01	1.85
+FRA Chateauroux	1363	+0.01	1.45
+SUI Winterthur	1363	-0.21	1.73
+SVK FK Železiarne Podbrezová	1363	+0.01	1.55
+POR Sporting CP B	1363	-0.01	1.13
+NED Waalwijk	1363	+0.00	1.69
+ENG Crewe	1363	-0.86	1.23
+CRC AD Guanacasteca	1363	-0.03	1.01
+HUN Videoton	1363	+0.00	1.16
+ITA Sorrento	1363	+0.18	1.19
+ITA Vis Pesaro	1363	+0.26	1.02
+GER Unterhaching	1362	+0.01	1.36
+SCO Aberdeen	1362	+0.05	1.20
+NZL Auckland City	1362	-0.10	1.30
+MAS Turan Tovuz	1361	-0.03	1.25
+PER UCV Moquegua	1361	-0.21	1.17
+RUS KAMAZ	1361	+0.02	0.97
+ITA AlbinoLeffe	1361	+0.27	1.26
+MDA Sheriff Tiraspol	1361	-0.01	0.96
+AFC Al Shorta	1360	-0.22	1.26
+DEN Horsens	1360	+0.01	1.35
+HUN Kecskemeti	1360	+0.00	1.14
+SWE Halmstad	1360	+0.00	0.97
+PER Binacional	1359	+0.03	1.66
+BEL Patro Eisden MM	1359	+0.00	1.31
+CYP Olympiakos Nicosia	1358	-0.02	1.21
+BOL Jorge Wilstermann	1358	-0.02	1.10
+PER Juan Pablo II College	1358	+0.18	1.45
+ITA Gubbio	1358	+0.25	0.89
+KSA Al Fayha	1357	-0.03	1.06
+USA Hartford Athletic	1357	-0.03	1.24
+POR Feirense	1357	-0.01	0.91
+SCO Kilmarnock	1357	+0.06	1.50
+ISR Kiryat Shmona	1357	-0.00	1.41
+GRE AE Kifisias	1357	+0.01	1.31
+ITA Renate	1356	+0.23	0.96
+ISR Ironi Tiberias	1356	-0.00	1.29
+FRA Bourg-Peronnas	1356	+0.01	1.02
+PER Alianza Universidad	1356	+0.10	1.42
+KOS KF Ballkani	1355	-0.00	1.12
+ITA Ospitaletto	1355	+0.27	1.12
+KSA Al Khaleej	1355	-0.06	1.36
+SRB Železničar Pančevo	1355	+0.01	1.17
+UKR Oleksandriya	1355	+0.00	1.17
+POR Pacos Ferreira	1355	-0.01	1.09
+NOR Haugesund	1355	-0.00	1.53
+ITA Siracusa Calcio	1355	+0.18	1.27
+RSA AmaZulu FC	1354	-0.11	0.92
+USA San Antonio FC	1353	-0.03	1.07
+UZB FC Nasaf	1353	-0.12	0.94
+ITA Triestina	1353	+0.24	1.09
+RSA Stellenbosch FC	1352	-1.09	0.96
+CYP AEL Limassol	1352	-0.02	1.30
+VEN Monagas	1352	-0.03	1.42
+GEO FC Iberia 1999	1352	+0.00	1.29
+KAZ FK Semey	1350	-0.00	1.43
+MAR Olympique Dcheira	1350	-0.12	1.24
+EGY ZED FC	1350	+5.91	1.02
+PER Juan Pablo II College	1349	+0.04	1.21
+EGY National Bank SC	1349	+0.02	1.21
+MAR Safi	1349	-0.12	0.99
+KOS KF Prishtina	1349	-0.00	1.28
+ITA Spal	1348	+0.23	1.18
+HUN Honved	1348	+0.00	1.28
+ROU Corvinul Hunedoara	1348	+0.01	1.22
+MAR Yacoub	1348	-0.12	1.34
+ITA Latina	1347	+0.19	1.03
+CZE Dukla	1347	-0.00	1.06
+KAZ Aktobe	1347	-0.00	1.24
+ALB AF Elbasani	1347	+0.00	1.22
+ITA Giugliano	1347	+0.25	1.62
+UKR Vorskla	1346	+0.00	1.08
+GRE NFC Volos	1346	+0.01	1.32
+NOR Bryne	1346	-0.00	1.30
+RSA Milford	1346	-1.09	1.15
+ROU FC Politehnica Iași	1346	+0.02	1.08
+CHN Liaoning Shenyang	1346	-0.18	1.38
+ESP Espanyol Barcelona B	1346	+0.00	1.15
+MAR Meknés	1346	-0.12	1.12
+ALB Vllaznia	1346	+0.00	1.18
+BUL Cherno More	1345	+0.01	0.91
+WAL The New Saints	1345	+0.00	1.38
+USA Orange County	1345	-0.03	1.33
+BOL Universitario de Vinto	1344	-0.02	1.13
+ESP CD Quintanar Del Rey	1344	+0.00	1.21
+IRL Bohemians Dublin	1343	-0.01	1.38
+GRE GS Kallithea	1343	+0.01	1.17
+ISR M Petach Tikva	1343	-0.00	1.21
+ITA Forli	1343	+0.26	1.37
+SRB OFK	1342	+0.01	1.29
+KSA Abha	1342	-0.70	1.41
+BEL RFC Liège	1342	+0.00	1.22
+ITA Novara	1342	+0.27	1.00
+HUN Kisvarda	1342	+0.00	1.12
+UAE Sharjah FC	1342	-0.13	1.26
+ISR Hapoel Jerusalem	1342	-0.00	1.04
+SWE Värnamo	1341	+0.00	1.46
+UKR Veres	1341	+0.00	1.03
+ROU Voluntari	1341	+0.02	1.23
+ITA Livorno	1341	+0.25	1.22
+MAR Agadir	1341	-0.12	1.05
+ITA Lucchese	1341	+0.25	1.11
+QAT Al Gharafa	1340	-0.18	1.80
+KSA Damac FC	1340	-0.17	1.07
+USA Lexington SC	1339	-0.03	1.22
+USA Indy Eleven	1339	-0.03	1.22
+ITA Lecco	1338	+0.22	1.19
+GEO Dinamo Tbilisi	1338	-0.00	1.31
+UAE Al Nasr SC	1338	-0.13	1.35
+EST Levadia Tallinn	1338	+0.00	1.50
+ITA Guidonia Montecelio	1337	+0.25	1.06
+FIN Seinajoki	1337	+0.01	1.62
+ESP CD Tudelano	1336	+0.00	0.91
+ENG Northampton	1336	-1.50	1.13
+ESP Real Valladolid B	1336	+0.00	1.24
+SCO St Johnstone	1336	+0.05	1.07
+KAZ Tobol	1336	-0.00	1.20
+SVK FC Košice	1336	+0.01	1.60
+ENG Cheltenham	1336	+7.13	1.49
+GRE AE Lárissa	1336	+0.01	1.26
+ITA Giugliano	1336	+0.18	1.14
+ITA Giana Erminio	1335	+0.27	1.06
+CHN Wuhan Three Towns	1335	-0.18	1.42
+RUS Alanya	1334	+0.01	1.28
+IRL Shelbourne	1334	-0.01	1.10
+BLR Torpedo Zhodino	1334	+0.00	1.02
+QAT Al Shamal SC	1334	-0.16	1.44
+GER Havelse	1333	+0.01	1.78
+ITA Foggia	1333	+0.25	1.26
+AUS Perth Glory	1333	-0.17	1.52
+RUS FK Neftekhimik	1333	+0.09	1.05
+ITA Rimini	1332	+0.25	1.04
+MDA Petrocub	1332	-0.00	1.24
+ITA FC Turris	1332	+0.25	1.35
+MLT Hamrun	1332	+0.00	0.96
+AUS Brisbane Roar	1331	-0.17	1.26
+SRB FK Čukarički	1330	+0.01	1.22
+NED Vitesse	1330	+0.00	1.55
+KSA Al Riyadh	1329	-0.15	1.27
+GIB Lincoln	1329	-0.00	1.16
+ESP SD Gernika	1329	+0.00	1.32
+ESP CD Alavés B	1329	+0.00	1.14
+EGY Modern Future FC	1328	-0.12	1.08
+ITA Cavese	1328	+0.24	1.06
+RSA Golden Arrows	1327	-0.12	1.01
+RUS FC Volga Ulyanovsk	1326	+0.03	1.23
+EGY Future FC	1325	+0.03	0.84
+SVN Brinje Grosuplje	1325	+0.00	1.33
+UKR Rukh Lviv	1324	+0.00	0.99
+KSA Al Ra’ed	1324	-0.19	1.59
+RUS SKA-Khabarovsk	1324	+0.02	1.20
+HUN Diosgyori	1324	+0.00	1.53
+NED De Graafschap	1324	+0.00	1.73
+SRB Backa Topola	1324	+0.01	1.53
+FRO Runavik	1323	-0.01	1.66
+LTU Zalgiris Vilnius	1323	+0.00	1.44
+ENG Rochdale AFC	1323	+11.25	1.38
+CRC Santos de Guápiles	1322	-0.03	1.40
+CYP Eny Digenis Ipsonas	1322	-0.02	1.20
+ITA Carpi	1322	+0.24	1.26
+ENG Crawley	1322	+0.36	1.36
+ITA Alcione Milano	1322	+0.24	1.05
+ARM Banants	1322	+0.00	1.18
+UZB Novbahor	1321	-0.10	1.14
+BOL ABB	1321	-0.02	1.52
+GEO Torpedo Kutaisi	1321	-0.00	1.29
+ISR Ashdod	1320	-0.00	1.45
+SRB Kragujevac	1320	+0.01	1.17
+CYP Omonia Aradippou	1320	-0.02	1.08
+SVK MFK Zemplín Michalovce	1319	+0.01	1.35
+ITA Altamura	1318	+0.26	1.20
+IRL Derry City	1318	-0.01	1.25
+PER UTC	1318	+0.17	1.28
+NIR Coleraine	1318	-0.00	1.54
+MKD Sileks	1318	+0.01	1.22
+ITA Pergolettese	1318	+0.24	1.14
+GEO Dila Gori	1318	-0.00	1.19
+CRO Sibenik	1317	-0.00	1.16
+ISR Bnei Sakhinin	1317	-0.00	0.90
+PER Ayacucho FC	1317	+0.01	1.25
+POR CD Mafra	1317	-0.01	1.18
+ROU FK Csikszereda	1317	+0.02	1.27
+RSA Siwelele	1317	-0.12	1.10
+SRB FK Novi Pazar	1316	+0.01	1.34
+BUL Botev Plovdiv	1316	+0.01	1.35
+RSA Polokwane City FC	1316	-0.19	0.80
+ITA Sambenedettese	1316	+0.25	1.08
+AZE Araz-Naxçıvan PFK	1315	-0.01	1.17
+FRO HB Torshavn	1315	+0.00	1.30
+RSA SuperSport United	1315	-0.14	0.95
+AND Escaldes	1315	+0.01	1.39
+ALB Partizani Tirana	1315	+0.00	0.87
+RSA Marumo Gallants	1314	-0.13	0.99
+RUS Tyumen	1314	+0.01	1.17
+NED Roda	1314	+0.00	1.31
+EGY ENPPI	1314	-0.27	0.91
+QAT Al Arabi	1312	-0.16	1.70
+QAT Al Wakrah	1312	-0.16	1.43
+ENG Accrington Stanley	1311	+0.87	1.27
+GRE Panserraikos	1310	+0.01	1.39
+KSA Al Orobah	1310	-0.14	1.32
+TUN Espérance Zarzis	1310	-0.12	0.82
+CRO Vukovar 91	1308	+0.00	1.39
+ARM Alashkert	1308	+0.00	1.21
+MDA Zimbru	1308	-0.00	1.35
+ITA Lumezzane	1308	+0.24	1.34
+KOS KF Malisheva	1308	+0.00	1.33
+SVN Radomlje	1307	+0.00	1.48
+POR UD Oliveirense	1307	-0.01	1.33
+ENG Gillingham	1307	+2.42	1.02
+UKR Obolon	1306	+0.00	0.96
+ITA Latina	1306	+0.25	1.14
+CYP Achnas	1306	-0.02	1.48
+ROU Unirea Slobozia	1306	+0.02	1.20
+ESP Ebro	1306	+0.00	1.32
+CRC Municipal Pérez Zeledón	1305	-0.03	0.99
+BUL Lok Plovdiv	1305	+0.01	0.97
+THA PT Prachuap FC	1304	-0.19	1.22
+RSA TS Galaxy	1304	-0.14	1.04
+EGY Petrojet	1304	-0.19	1.30
+UKR Chernomorets	1304	+0.00	1.09
+BUL Slavia Sofia	1303	+0.01	1.08
+TUR Adana Demirspor	1302	-1.32	2.57
+LUX US Mondorf	1302	+0.00	1.19
+PER Ayacucho FC	1302	+0.07	1.21
+LUX Differdang	1302	+0.00	1.33
+RSA Cape Town City FC	1301	-0.20	0.88
+CHN Shenzhen Peng City	1301	-0.18	1.34
+UKR Inhulets	1301	+0.00	0.95
+EGY El Gouna	1300	-0.98	0.79
+PAR Sportivo San Lorenzo	1300	-7.49	1.06
+ITA Legnago Salus	1300	+0.24	1.15
+ITA Pro Patria	1300	+0.23	0.94
+ITA Pro Vercelli	1300	+0.23	1.04
+VEN Rayo Zuliano	1300	-0.03	1.36
+MLT Floriana	1299	-0.00	1.02
+SRB IMT Beograd	1299	+0.01	1.17
+USA Oakland Roots	1299	-0.03	1.29
+NIR Larne	1298	-0.00	1.05
+AZE Imisli FK	1298	-0.01	1.05
+ITA Sestri Levante	1296	+0.26	1.21
+UAE Ajman Club	1296	-0.13	1.43
+ITA Messina	1296	+0.25	1.08
+BLR Dinamo Brest	1295	+0.00	1.32
+MAR Tétouan	1295	-0.12	0.98
+ISR Hapoel Eran Hadera	1294	-0.00	1.23
+LUX Atert Bissen	1294	+0.00	1.40
+SRB Mladost Lucani	1294	+0.01	0.96
+ENG Shrewsbury	1293	-7.96	1.11
+SVK AS Trenčín	1293	+0.01	1.46
+RUS Ivanovo	1293	+0.03	1.21
+ITA Sorrento	1293	+0.26	1.11
+ENG Carlisle	1293	-1.66	1.27
+ITA Bra	1292	+0.25	1.30
+RSA Royal AM	1291	-0.14	1.30
+UZB FC AGMK	1291	-0.11	1.58
+CZE FK MAS Táborsko	1291	-0.00	1.21
+ESP Langreo	1289	+0.00	1.10
+CYP Akritas Chlorakas	1288	-0.02	1.32
+SCO Partick	1287	+0.05	1.13
+LVA FK Auda	1287	+0.01	1.10
+SVK MFK Skalica	1287	+0.01	1.19
+MNE Podgorica	1287	+0.00	1.21
+EGY Ghazl Al Mehalla	1285	+0.41	1.08
+SRB Radnik Surdulica	1285	+0.01	0.98
+RSA Richards Bay FC	1285	-0.09	0.87
+PER Alianza Universidad	1285	+0.02	1.14
+KSA Al Okhdood	1284	-0.16	1.14
+NED Dordrecht	1284	+0.00	1.46
+UKR Livyi Bereh	1284	+0.00	0.99
+ENG Tranmere	1284	+0.92	1.40
+ENG Harrogate	1284	-0.41	1.16
+USA Las Vegas Lights	1284	-0.03	1.27
+ISR Maccabi Bnei Raina	1283	-0.00	1.21
+EGY Smouha Sporting Club	1282	-0.09	0.93
+THA Chonburi	1282	-0.19	1.26
+MAR Soualem	1282	-0.12	1.22
+RUS FK Leningradets	1282	+0.02	1.11
+EGY PetroJet FC	1281	-0.12	1.29
+NED Venlo	1281	+0.00	1.43
+KSA Al Wehda	1281	-0.15	1.53
+LUX UNA Strassen	1281	+0.00	1.02
+NED Emmen	1281	+0.00	1.62
+EGY Tala'ea El Gaish SC	1280	-5.80	0.75
+ENG Newport County	1280	-3.53	1.39
+USA Birmingham Legion	1280	-0.03	1.38
+IRL Galway United	1279	-0.01	1.17
+Djoliba AC	1279	-0.12	1.20
+SCO Livingston	1278	+0.05	1.17
+VEN Academia Anzoategui	1278	-0.03	1.34
+TUN US Ben Guerdane	1278	-0.12	0.76
+SVK Ruzomberok	1277	+0.01	1.18
+ITA AC Milan II	1277	+0.25	1.21
+SVN Aluminij	1277	+0.00	1.36
+LTU Banga Gargždai	1277	+0.01	1.06
+ITA Pontedera	1276	+0.25	1.37
+AZE Keshla	1276	-0.01	1.08
+CHN Changchun Yatai	1276	-0.17	1.47
+ENG Barrow	1276	-0.27	1.18
+SVN Mura	1275	+0.00	1.22
+GRE Lamia	1275	+0.01	1.13
+IRL Dundalk	1274	-0.01	1.36
+USA Loudoun United	1274	-0.03	1.30
+BUL Lok Sofia	1273	+0.01	1.40
+ITA Dolomiti	1272	+0.27	1.29
+QAT Qatar SC	1272	-0.16	1.39
+TUN ES Métlaoui	1271	-0.12	0.84
+UKR FC Kudrivka	1271	+0.00	1.26
+ITA US Pergolettese 1932	1271	+0.27	1.10
+CHN Qingdao Yizhong Hainiu	1271	-0.18	1.38
+ITA Pro Vercelli	1270	+0.27	1.18
+EST Paide Linnameeskond	1269	+0.01	1.31
+CYP Nea Salamis	1269	-0.01	1.44
+QAT Al Ahli Doha	1267	-0.16	1.95
+RUS Sokol Saratov	1266	+0.03	0.92
+ITA Triestina	1266	+0.27	1.38
+BLR BATE	1266	+0.00	1.28
+THA Chiangrai United	1265	-0.19	1.09
+ENG Morecambe	1265	-1.04	1.51
+ESP Coruxo FC	1265	+0.00	1.13
+EGY Ittihad El Iskandary	1264	-0.06	0.87
+SVN Domzale	1264	+0.00	1.51
+RSA Durban City	1264	+1.09	1.05
+BIH Zeljeznicar	1264	+0.01	1.01
+SVN Nafta	1264	+0.00	1.28
+Al Merrikh SC	1263	-0.11	0.90
+ESP Atletico Astorga FC	1263	+0.00	1.28
+AZE Sumqayit	1262	-0.01	1.12
+NED Jong AZ	1261	+0.00	1.91
+BIH Velez Mostar	1261	+0.01	1.01
+TUN CA Bizertin	1261	-0.12	0.74
+BUL Botev Vratsa	1261	+0.01	1.05
+ITA Foggia	1261	+0.18	1.07
+AND Santa Coloma	1261	+0.01	1.12
+NIR Linfield	1261	-0.00	1.00
+LVA Liepajas	1261	+0.01	1.32
+LTU FC Hegelmann	1260	+0.01	1.43
+IRL Waterford	1260	-0.01	1.49
+AZE Inter Baku	1260	-0.01	0.96
+NED Den Bosch	1260	+0.00	1.63
+SRB Radnički Niš	1260	+0.01	1.18
+USA Charlotte Ind	1260	-0.03	1.30
+SRB Macva Sabac	1259	+0.01	1.28
+SVK KFC Komárno	1258	+0.01	1.16
+EGY Al Mokawloon	1257	-0.14	1.00
+LTU Panevezys	1257	+0.00	1.18
+NED Jong PSV	1256	+0.00	1.93
+EGY Kahraba	1256	+0.15	1.39
+SCO Arbroath	1255	+0.05	1.16
+LUX Dudelange	1254	+0.00	1.68
+CHN Meizhou Hakka	1254	-0.17	1.62
+CYP Karmiotissa Polemidion	1254	-0.01	1.44
+BUL FK Krumovgrad	1253	+0.01	1.05
+RSA Chippa United	1253	-0.11	0.86
+RUS FK Chayka	1251	+0.02	1.33
+BUL Spartak Varna	1251	+0.01	1.28
+SCO Ross County	1250	+0.05	1.26
+UAE Khor Fakkan Club	1249	-0.13	1.57
+ROU Gloria Buzau	1249	+0.02	1.19
+NED Maastricht	1247	+0.00	1.46
+QAT Al Shahaniya	1247	-0.16	1.37
+MNE Sutjeska	1247	+0.00	1.03
+UAE Baniyas SC	1246	-0.13	1.43
+FRO Víkingur	1246	+0.00	1.20
+TUN JS Omrane	1246	-0.12	1.23
+VEN Yaracuyanos FC	1244	-0.03	1.16
+IRL Drogheda	1243	-0.01	1.27
+UAE Al Bataeh	1243	-0.13	1.21
+BUL Beroe Stara Zagora	1241	+0.01	0.98
+CRC Santa Ana	1241	-0.03	1.33
+UAE Ittihad Kalba SCC	1240	-0.13	1.50
+USA Miami FC	1240	-0.03	1.35
+GER Schweinfurt	1240	+0.01	1.33
+SVK 1. FC Tatran Prešov	1239	+0.02	1.15
+SVK Banska Bystrica	1239	+0.01	1.58
+ITA Caldiero Terme	1239	+0.24	1.26
+THA Lamphun Warriors	1238	-0.19	1.11
+SRB FK Javor	1238	+0.01	1.09
+RSA Magesi FC	1237	-0.16	1.05
+THA Uthai Thani FC	1237	-0.19	1.20
+USA Monterey Bay FC	1237	-0.03	1.22
+THA Muangthong United	1236	-0.19	1.51
+NED FC Eindhoven	1236	+0.00	1.57
+BUL Septemvri Sofia	1234	+0.01	1.20
+MLT Marsaxlokk	1234	-0.00	1.16
+EGY Pharco FC	1233	+0.01	0.79
+UZB Dinamo Samarqand	1233	-0.11	1.35
+UZB Buston	1233	-0.11	1.38
+EGY Haras El Hodood	1232	-0.15	0.81
+SVN Primorje	1231	+0.00	1.34
+EST Nomme Kalju	1230	+0.00	1.39
+QAT Umm-Salal	1230	-0.16	1.48
+KOS KF Dukagjini	1230	-0.01	1.08
+GD Sagrada Esperança	1230	-0.12	1.08
+AZE Kapaz PFK	1229	-0.01	1.18
+MDA Milsami Orhei	1229	-0.00	1.08
+USA Brooklyn	1229	-0.03	1.33
+EST Flora Tallinn	1229	+0.00	1.39
+VEN Yaracuyanos FC	1227	-0.03	1.29
+ROU Metaloglobus Bucureşti	1226	+0.02	1.37
+AZE Sabail	1225	-0.01	1.24
+MLT Birkirkara	1223	-0.00	0.96
+QAT Al-Sailiya SC	1222	-0.17	1.26
+SCO Ayr United	1222	+0.05	1.21
+SCO Dunfermline	1221	+0.05	1.27
+NED TOP Oss	1220	+0.00	1.20
+TUN Avenir de La Marsa	1219	-0.12	1.11
+EGY Ghazl Al Mehalla	1217	-0.11	1.04
+THA Rayong FC	1217	-0.19	1.42
+MNE FK Mornar	1217	+0.00	1.08
+UZB Lokomotiv Tashkent	1216	-0.11	1.32
+ISL Akureyri	1216	+0.01	1.51
+NIR Glentoran	1214	-0.00	1.30
+IRL Sligo	1212	-0.01	1.19
+CZE Dynamo České Budějovice	1212	-0.00	1.43
+NED Helmond Sport	1212	+0.00	1.26
+UZB Andijon PFK	1211	-0.11	1.11
+AZE FK Gabala	1210	-0.01	1.12
+TUN Olympique Béja	1209	-0.12	0.88
+HUN Kazincbarcika BSC	1208	+0.00	1.28
+VEN Trujillanos FC	1208	-0.03	1.27
+ASKO Kara	1207	-0.12	1.15
+TUN AS Soliman	1206	-0.12	0.86
+MNE Decic	1204	+0.00	0.97
+AS Pirae	1204	-0.11	1.26
+LVA BFC Daugavpils	1203	+0.00	1.44
+THA Ayutthaya Utd	1199	-0.19	1.26
+UZB Bunyodkor PFK	1198	-0.11	1.42
+NED Jong Ajax	1198	+0.00	1.63
+TUN JS Kairouanaise	1197	-0.12	1.19
+CZE Artis Brno	1197	-0.00	1.28
+ITA Virtus Verona	1194	+0.27	1.22
+EGY Ismaily	1190	-0.00	0.80
+THA Sukhothai FC	1187	-0.19	1.33
+MLT Hibernians Paola	1185	-0.00	1.43
+APR FC	1185	-0.13	0.97
+GIB St Josephs	1184	-0.00	1.28
+SRB Tekstilac Odžaci	1184	+0.01	1.20
+AND Atlétic Escaldes	1182	+0.01	1.23
+MLT Valletta	1179	-0.00	1.10
+UZB Buxoro FK	1178	-0.11	1.06
+NED Jong Utrecht	1177	+0.00	1.37
+BUL Dunav Ruse	1174	+0.01	1.32
+SRB Spartak Subotica	1174	+0.01	1.23
+THA Nongbua Pitchaya	1172	-0.19	1.39
+CRO Rudes Zagreb	1170	-0.00	1.28
+UAE Al-Dhafra	1170	-0.13	1.30
+UZB Qizilqum Zarafshon	1170	-0.11	1.01
+TUN EGS Gafsa	1169	-0.12	1.14
+MAR Mohammédia	1167	-0.12	1.07
+UKR SK Poltava	1166	+0.00	1.36
+ITA Clodiense	1166	+0.24	1.31
+Stade Abidjan	1165	-0.04	1.34
+BUL FK Dobrudzha	1165	+0.01	1.08
+EGY El Hodood	1164	-0.00	1.24
+QAT Al Khor SC	1161	-0.15	1.10
+MKD Rabotnicki	1160	+0.01	1.05
+SRB Krusevac	1160	+0.01	1.08
+THA Nakhon Ratchasima	1159	-0.19	1.16
+ITA Pro Patria	1157	+0.27	1.21
+THA Nakhon Pathom	1156	-0.19	1.39
+UZB Surkhon Termez FK	1156	-0.11	1.00
+CYP Enosis Neao	1155	-0.02	1.06
+UAE Dibba Al Fujairah	1155	-0.13	1.22
+ESP UD Mutilvera	1153	+0.00	1.33
+CYP Omonia 29is Maiou	1153	-0.02	1.13
+BUL Hebar Pazardzhik	1152	+0.01	1.09
+THA Khon Kaen United	1150	-0.19	1.39
+RSA Orbit College	1146	-0.08	1.14
+Al Najma	1145	-0.11	1.16
+IRL Cork City	1144	-0.01	1.17
+NIR Cliftonville	1142	-0.00	1.25
+THA Kanchanaburi	1139	-0.19	1.23
+SRB Jedinstvo Ub	1139	+0.01	1.27
+TUN AS Gabès	1139	-0.12	0.96
+TUN US Tataouine	1138	-0.12	1.20
+LUX R Letzebuerg	1135	+0.00	1.33
+BUL Montana 1921	1132	+0.01	1.10
+UZB FK Qo’qon 1912	1131	-0.11	1.16
+RSA Marumo Gallants	1129	-0.63	1.10
+WAL Connahs Quay	1121	+0.00	1.10
+GEO Spaeri FC	1119	-0.01	1.31
+NIR Dungannon	1119	-0.00	1.48
+MNE Petrovac	1116	+0.00	1.24
+SMR SS Virtus	1116	+0.01	1.20
+WAL Penybont FC	1115	+0.00	1.26
+UZB Xorazm Urganch	1111	-0.11	1.20
+UAE Dibba Al Hisn	1098	-0.13	1.25
+AZE Karvan Evlakh	1093	-0.01	1.17
+USA Sporting JAX	1092	-0.03	1.44
+PRK Hekari United	1088	-0.11	1.23
+SMR La Fiorita	1082	+0.01	0.91
+UAE Al Oruba	1082	-0.13	1.30
+AS Tiga Sport	1063	-0.11	1.20
+WAL Caernarfon Town	1052	+0.00	1.62
+UZB FK Mash'al Muborak	1049	-0.11	0.99
+Rewa FC	1046	-0.11	1.35
+VAN Ifira Black Bird	1036	-0.11	1.18
+GIB FCB Magpies	1015	-0.00	1.41
+SRB Zemun	1015	+0.01	1.23
+WAL Haverfordwest	1014	+0.00	1.19
+UZB Sho’rtan G’uzor	975	-0.10	1.15
+ISL IF Vestri	954	+0.01	1.13
+SMR Tre Fiori	946	+0.00	1.16
+SOL Central Coast FC	895	-0.11	1.28
+COK Tupapa Maraerenga	308	-0.11	2.17
