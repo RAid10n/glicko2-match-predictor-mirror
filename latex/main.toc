@@ -267,5 +267,30 @@
 \contentsline {paragraph}{An\'alisis diferenciado por dataset.}{133}{paragraph*.163}%
 \contentsline {section}{\numberline {C.7}Ranking proyectado: \'ultima semana de test}{139}{section.C.7}%
 \contentsline {section}{\numberline {C.8}Limitaciones y observaciones finales}{140}{section.C.8}%
-\contentsline {chapter}{Bibliograf\'ia}{142}{appendix*.165}%
+\contentsline {chapter}{\numberline {D}Validaci\'on contra rankings institucionales}{144}{appendix.D}%
+\contentsline {section}{\numberline {D.1}Fuentes de datos externos}{145}{section.D.1}%
+\contentsline {subsection}{\numberline {D.1.1}Ranking UEFA}{145}{subsection.D.1.1}%
+\contentsline {subsection}{\numberline {D.1.2}Ranking AFC}{145}{subsection.D.1.2}%
+\contentsline {subsection}{\numberline {D.1.3}Ranking CONMEBOL}{145}{subsection.D.1.3}%
+\contentsline {subsection}{\numberline {D.1.4}Ranking ClubElo}{146}{subsection.D.1.4}%
+\contentsline {subsection}{\numberline {D.1.5}G2A y LSTM}{146}{subsection.D.1.5}%
+\contentsline {subsection}{\numberline {D.1.6}Cobertura geogr\'afica}{146}{subsection.D.1.6}%
+\contentsline {section}{\numberline {D.2}Armonizaci\'on de nombres y filtrado}{147}{section.D.2}%
+\contentsline {section}{\numberline {D.3}Metodolog\'ia de comparaci\'on por instant\'aneas}{147}{section.D.3}%
+\contentsline {subsection}{\numberline {D.3.1}Enfoque est\'atico y escenario de validaci\'on}{148}{subsection.D.3.1}%
+\contentsline {section}{\numberline {D.4}M\'etricas de concordancia}{148}{section.D.4}%
+\contentsline {subsection}{\numberline {D.4.1}Coeficiente de correlaci\'on de Spearman (\(\rho \))}{149}{subsection.D.4.1}%
+\contentsline {subsection}{\numberline {D.4.2}Coeficiente \(\tau \) de Kendall}{149}{subsection.D.4.2}%
+\contentsline {subsection}{\numberline {D.4.3}\textit {Overlap} en los primeros \(K\) puestos}{150}{subsection.D.4.3}%
+\contentsline {subsection}{\numberline {D.4.4}Error absoluto medio de posici\'on (MAE)}{150}{subsection.D.4.4}%
+\contentsline {subsection}{\numberline {D.4.5}Complementariedad de las m\'etricas}{151}{subsection.D.4.5}%
+\contentsline {section}{\numberline {D.5}Resultados e interpretaci\'on}{151}{section.D.5}%
+\contentsline {subsection}{\numberline {D.5.1}Concordancia cuantitativa}{151}{subsection.D.5.1}%
+\contentsline {subsection}{\numberline {D.5.2}Comparaci\'on tangible: Top 10 global}{153}{subsection.D.5.2}%
+\contentsline {subsection}{\numberline {D.5.3}Modelo de nivel de poder}{154}{subsection.D.5.3}%
+\contentsline {subsection}{\numberline {D.5.4}Resumen de los resultados}{158}{subsection.D.5.4}%
+\contentsline {section}{\numberline {D.6}Discusi\'on y limitaciones}{158}{section.D.6}%
+\contentsline {subsection}{\numberline {D.6.1}Resumen de hallazgos}{159}{subsection.D.6.1}%
+\contentsline {subsection}{\numberline {D.6.2}Limitaciones}{160}{subsection.D.6.2}%
+\contentsline {chapter}{Bibliograf\'ia}{162}{appendix*.174}%
 \contentsfinish 

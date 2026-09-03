@@ -282,6 +282,28 @@
       \field{title}{Métricas en el fútbol moderno: concepto, análisis y uso}
       \field{year}{2020}
     \endentry
+    \entry{clubelo2025}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=d399b51916be97bb76dcaa3bfd9b2fe7}{%
+           family={{ClubElo}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{d399b51916be97bb76dcaa3bfd9b2fe7}
+      \strng{fullhash}{d399b51916be97bb76dcaa3bfd9b2fe7}
+      \strng{fullhashraw}{d399b51916be97bb76dcaa3bfd9b2fe7}
+      \strng{bibnamehash}{d399b51916be97bb76dcaa3bfd9b2fe7}
+      \strng{authorbibnamehash}{d399b51916be97bb76dcaa3bfd9b2fe7}
+      \strng{authornamehash}{d399b51916be97bb76dcaa3bfd9b2fe7}
+      \strng{authorfullhash}{d399b51916be97bb76dcaa3bfd9b2fe7}
+      \strng{authorfullhashraw}{d399b51916be97bb76dcaa3bfd9b2fe7}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Disponible en: \url{https://clubelo.com}}
+      \field{title}{World Football Elo Ratings}
+      \field{year}{2025}
+    \endentry
     \entry{CONCACAFRanking2023}{misc}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=94468c6861f766abd9a00bdabdbeaadf}{%
@@ -318,6 +340,7 @@
       \strng{authornamehash}{8c15a820452a726add96b8c3efd66a2a}
       \strng{authorfullhash}{8c15a820452a726add96b8c3efd66a2a}
       \strng{authorfullhashraw}{8c15a820452a726add96b8c3efd66a2a}
+      \field{extraname}{1}
       \field{sortinit}{C}
       \field{sortinithash}{4d103a86280481745c9c897c925753c0}
       \field{labelnamesource}{author}
@@ -325,6 +348,30 @@
       \field{howpublished}{\url{https://www.conmebol.com/}}
       \field{title}{Ranking de Clubes {CONMEBOL} 2021}
       \field{year}{2021}
+    \endentry
+    \entry{conmebol2026}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=8c15a820452a726add96b8c3efd66a2a}{%
+           family={{CONMEBOL}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{8c15a820452a726add96b8c3efd66a2a}
+      \strng{fullhash}{8c15a820452a726add96b8c3efd66a2a}
+      \strng{fullhashraw}{8c15a820452a726add96b8c3efd66a2a}
+      \strng{bibnamehash}{8c15a820452a726add96b8c3efd66a2a}
+      \strng{authorbibnamehash}{8c15a820452a726add96b8c3efd66a2a}
+      \strng{authornamehash}{8c15a820452a726add96b8c3efd66a2a}
+      \strng{authorfullhash}{8c15a820452a726add96b8c3efd66a2a}
+      \strng{authorfullhashraw}{8c15a820452a726add96b8c3efd66a2a}
+      \field{extraname}{2}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Documento PDF}
+      \field{month}{12}
+      \field{title}{Ranking de Clubes de la CONMEBOL 2026}
+      \field{year}{2025}
     \endentry
     \entry{cover2006}{book}{}{}
       \name{author}{2}{}{%
@@ -494,6 +541,52 @@
       \field{title}{Assessing Team Success in the Big-5 European Football Leagues}
       \field{type}{Thesis to obtain the Master of Science Degree in Industrial Engineering and Management}
       \field{year}{2022}
+    \endentry
+    \entry{footyrankings2025}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=125e18360037058eb1a7282605212458}{%
+           family={{Footy Rankings}},
+           familyi={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{125e18360037058eb1a7282605212458}
+      \strng{fullhash}{125e18360037058eb1a7282605212458}
+      \strng{fullhashraw}{125e18360037058eb1a7282605212458}
+      \strng{bibnamehash}{125e18360037058eb1a7282605212458}
+      \strng{authorbibnamehash}{125e18360037058eb1a7282605212458}
+      \strng{authornamehash}{125e18360037058eb1a7282605212458}
+      \strng{authorfullhash}{125e18360037058eb1a7282605212458}
+      \strng{authorfullhashraw}{125e18360037058eb1a7282605212458}
+      \field{extraname}{1}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Disponible en: \url{https://footyrankings.github.io/cpts2025/}}
+      \field{title}{AFC Club Competitions Ranking 2025}
+      \field{year}{2025}
+    \endentry
+    \entry{footyrankings2026}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=125e18360037058eb1a7282605212458}{%
+           family={{Footy Rankings}},
+           familyi={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{125e18360037058eb1a7282605212458}
+      \strng{fullhash}{125e18360037058eb1a7282605212458}
+      \strng{fullhashraw}{125e18360037058eb1a7282605212458}
+      \strng{bibnamehash}{125e18360037058eb1a7282605212458}
+      \strng{authorbibnamehash}{125e18360037058eb1a7282605212458}
+      \strng{authornamehash}{125e18360037058eb1a7282605212458}
+      \strng{authorfullhash}{125e18360037058eb1a7282605212458}
+      \strng{authorfullhashraw}{125e18360037058eb1a7282605212458}
+      \field{extraname}{2}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Disponible en: \url{https://footyrankings.github.io/cpts2026/}}
+      \field{title}{AFC Club Competitions Ranking 2026}
+      \field{year}{2026}
     \endentry
     \entry{Glickman1995}{article}{}{}
       \name{author}{1}{}{%
@@ -826,6 +919,58 @@
       \verb 10.1111/1467-9884.00366
       \endverb
     \endentry
+    \entry{kassiesa2025}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=f269aa4a6bf38daa7129168b6235ede5}{%
+           family={Kassies},
+           familyi={K\bibinitperiod},
+           given={Bert},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{f269aa4a6bf38daa7129168b6235ede5}
+      \strng{fullhash}{f269aa4a6bf38daa7129168b6235ede5}
+      \strng{fullhashraw}{f269aa4a6bf38daa7129168b6235ede5}
+      \strng{bibnamehash}{f269aa4a6bf38daa7129168b6235ede5}
+      \strng{authorbibnamehash}{f269aa4a6bf38daa7129168b6235ede5}
+      \strng{authornamehash}{f269aa4a6bf38daa7129168b6235ede5}
+      \strng{authorfullhash}{f269aa4a6bf38daa7129168b6235ede5}
+      \strng{authorfullhashraw}{f269aa4a6bf38daa7129168b6235ede5}
+      \field{extraname}{1}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Disponible en: \url{https://kassiesa.net/uefa/data/method5/trank2025.html}}
+      \field{title}{UEFA Club Coefficients 2025}
+      \field{year}{2025}
+    \endentry
+    \entry{kassiesa2026}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=f269aa4a6bf38daa7129168b6235ede5}{%
+           family={Kassies},
+           familyi={K\bibinitperiod},
+           given={Bert},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{f269aa4a6bf38daa7129168b6235ede5}
+      \strng{fullhash}{f269aa4a6bf38daa7129168b6235ede5}
+      \strng{fullhashraw}{f269aa4a6bf38daa7129168b6235ede5}
+      \strng{bibnamehash}{f269aa4a6bf38daa7129168b6235ede5}
+      \strng{authorbibnamehash}{f269aa4a6bf38daa7129168b6235ede5}
+      \strng{authornamehash}{f269aa4a6bf38daa7129168b6235ede5}
+      \strng{authorfullhash}{f269aa4a6bf38daa7129168b6235ede5}
+      \strng{authorfullhashraw}{f269aa4a6bf38daa7129168b6235ede5}
+      \field{extraname}{2}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Disponible en: \url{https://kassiesa.net/uefa/data/method5/trank2026.html}}
+      \field{title}{UEFA Club Coefficients 2026}
+      \field{year}{2026}
+    \endentry
     \entry{ke2017lightgbm}{inproceedings}{}{}
       \name{author}{8}{}{%
         {{un=0,uniquepart=base,hash=dadd87e1dad07728ce408894042b277e}{%
@@ -1089,6 +1234,41 @@
       \verb{url}
       \verb https://arxiv.org/abs/2310.11459
       \endverb
+    \endentry
+    \entry{shumway2006}{book}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=a18b90d2ba1bf90774ccb72d7290d426}{%
+           family={Shumway},
+           familyi={S\bibinitperiod},
+           given={R.\bibnamedelimi H.},
+           giveni={R\bibinitperiod\bibinitdelim H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9f5de5735e371aa2267654424c9b9a61}{%
+           family={Stoffer},
+           familyi={S\bibinitperiod},
+           given={D.\bibnamedelimi S.},
+           giveni={D\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{15dfc791d2840cb154d61af66b374134}
+      \strng{fullhash}{15dfc791d2840cb154d61af66b374134}
+      \strng{fullhashraw}{15dfc791d2840cb154d61af66b374134}
+      \strng{bibnamehash}{15dfc791d2840cb154d61af66b374134}
+      \strng{authorbibnamehash}{15dfc791d2840cb154d61af66b374134}
+      \strng{authornamehash}{15dfc791d2840cb154d61af66b374134}
+      \strng{authorfullhash}{15dfc791d2840cb154d61af66b374134}
+      \strng{authorfullhashraw}{15dfc791d2840cb154d61af66b374134}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{2nd}
+      \field{series}{Springer Texts in Statistics}
+      \field{title}{Time Series Analysis and Its Applications: With R Examples}
+      \field{year}{2006}
     \endentry
     \entry{skellam1946}{article}{}{}
       \name{author}{1}{}{%

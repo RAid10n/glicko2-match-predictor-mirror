@@ -2511,6 +2511,21 @@
     <bcf:citekey order="131" intorder="1">brockwell2002</bcf:citekey>
     <bcf:citekey order="132" intorder="1">shumway2006</bcf:citekey>
     <bcf:citekey order="133" intorder="1">hochreiter1997</bcf:citekey>
+    <bcf:citekey order="134" intorder="1">kassiesa2025</bcf:citekey>
+    <bcf:citekey order="134" intorder="2">kassiesa2026</bcf:citekey>
+    <bcf:citekey order="135" intorder="1">footyrankings2025</bcf:citekey>
+    <bcf:citekey order="135" intorder="2">footyrankings2026</bcf:citekey>
+    <bcf:citekey order="136" intorder="1">conmebol2026</bcf:citekey>
+    <bcf:citekey order="137" intorder="1">clubelo2025</bcf:citekey>
+    <bcf:citekey order="138" intorder="1">kassiesa2025</bcf:citekey>
+    <bcf:citekey order="138" intorder="2">kassiesa2026</bcf:citekey>
+    <bcf:citekey order="139" intorder="1">footyrankings2025</bcf:citekey>
+    <bcf:citekey order="139" intorder="2">footyrankings2026</bcf:citekey>
+    <bcf:citekey order="140" intorder="1">conmebol2026</bcf:citekey>
+    <bcf:citekey order="141" intorder="1">clubelo2025</bcf:citekey>
+    <bcf:citekey order="142" intorder="1">kendall1945</bcf:citekey>
+    <bcf:citekey order="142" intorder="2">spearman1904</bcf:citekey>
+    <bcf:citekey order="142" intorder="3">Glickman2022</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nyt">

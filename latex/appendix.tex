@@ -918,7 +918,7 @@ En los tres \textit{datasets}, ambos modelos siguen la tendencia general del rat
 \section{Ranking proyectado: \'ultima semana de test}
 \label{ap:ranking_proyectado}
 
-Como aplicaci\'on pr\'actica del componente exploratorio, se gener\'o un ranking proyectado para la \'ultima semana del conjunto de prueba. Para cada equipo, se calcul\'o su posici\'on real basada en \(\mu\) observado y las posiciones predichas por ARIMA y LSTM. La Tabla~\ref{tab:top20_full} presenta el Top 20 para el \textsc{dataset Full}; las tablas correspondientes para \textsc{Lite} y \textsc{Lite Recortado} se exportaron a archivos CSV y presentan una estructura an\'aloga, con la salvedad de que en \textsc{Lite} aparecen equipos venezolanos (\texttt{Carabobo}, \texttt{DepTachira}, \texttt{DepLaGuaira}) que no están presentes en los otros datasets debido al recorte temporal.
+Como aplicaci\'on pr\'actica del componente exploratorio, se gener\'o un ranking proyectado para la \'ultima semana del conjunto de prueba. Para cada equipo, se calcul\'o su posici\'on real basada en \(\mu\) observado y las posiciones predichas por ARIMA y LSTM. La Tabla~\ref{tab:top20_full} presenta el Top 20 para el \textsc{dataset Full}; las tablas correspondientes para \textsc{Lite} y \textsc{Lite Recortado} se exportaron a archivos CSV y presentan una estructura an\'aloga, con la salvedad de que en el \textsc{dataset Lite} aparecen equipos que no est\'an presentes en los otros datasets debido al recorte temporal.
 
 \begin{table}[htbp]
 	\centering
@@ -957,6 +957,76 @@ Como aplicaci\'on pr\'actica del componente exploratorio, se gener\'o un ranking
 
 Se observa que el ARIMA acierta exactamente en las 18 primeras posiciones (con empates en \(\mu\) que mantienen el orden), mientras que la LSTM presenta ligeras oscilaciones en la zona media del ranking, por ejemplo, Inter Miami cae del puesto 9 al puesto 14, y Cincinnati sale del Top 20. Esta mayor inestabilidad en la zona media refuerza la conclusi\'on de que la LSTM, aunque \'util para equipos vol\'atiles, introduce ruido en la clasificaci\'on de equipos de rendimiento estable.
 
+\begin{table}[htbp]
+	\centering
+	\caption{Top 20 del ranking proyectado — Dataset \textsc{Lite} (semana del 2025-12-09).}
+	\label{tab:top20_lite}
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{lrrrrrrrr}
+			\toprule
+			\textbf{Pos. real} & \textbf{Equipo} & \textbf{\(\mu\) real} & \textbf{Pos. ARIMA} & \textbf{\(\mu\) ARIMA} & \(\Delta\) \textbf{ARIMA} & \textbf{Pos. LSTM} & \textbf{\(\mu\) LSTM} & \(\Delta\) \textbf{LSTM} \\
+			\midrule
+			1  & Flamengo           & 1720.678 & 1  & 1720.849 &  0 & 1  & 1710.374 &  0 \\
+			2  & Palmeiras          & 1689.423 & 2  & 1696.647 &  0 & 2  & 1684.705 &  0 \\
+			3  & Botafogo           & 1650.873 & 3  & 1649.498 &  0 & 5  & 1622.952 & +2 \\
+			4  & Kashima Antlers    & 1637.674 & 4  & 1634.852 &  0 & 3  & 1635.379 & -1 \\
+			5  & Sanfrecce Hiroshima& 1625.976 & 5  & 1625.976 &  0 & 6  & 1621.755 & +1 \\
+			6  & Jeonbuk Hyundai    & 1624.175 & 6  & 1623.318 &  0 & 4  & 1624.515 & -2 \\
+			7  & Carabobo           & 1618.322 & 8  & 1616.455 & +1 & 9  & 1613.680 & +2 \\
+			8  & Dep. Táchira       & 1616.501 & 7  & 1616.501 & -1 & 8  & 1614.347 &  0 \\
+			9  & Dep. La Guaira     & 1613.715 & 9  & 1613.715 &  0 & 10 & 1609.672 & +1 \\
+			10 & Boca Juniors       & 1613.177 & 10 & 1613.486 &  0 & 7  & 1614.507 & -3 \\
+			11 & Vissel Kobe        & 1598.752 & 11 & 1593.155 &  0 & 11 & 1590.758 &  0 \\
+			12 & Fluminense         & 1583.475 & 13 & 1583.709 & +1 & 13 & 1579.758 & +1 \\
+			13 & Racing Avellaneda  & 1583.085 & 12 & 1586.875 & -1 & 12 & 1586.351 & -1 \\
+			14 & River Plate        & 1577.575 & 14 & 1577.575 &  0 & 14 & 1577.601 &  0 \\
+			15 & Cruzeiro           & 1568.896 & 15 & 1568.896 &  0 & 15 & 1567.895 &  0 \\
+			16 & Rosario Central    & 1566.176 & 16 & 1566.176 &  0 & 16 & 1555.118 &  0 \\
+			17 & Inter Miami        & 1558.678 & 17 & 1558.678 &  0 & 19 & 1538.118 & +2 \\
+			18 & UCVFC              & 1553.211 & 18 & 1553.211 &  0 & 18 & 1545.553 &  0 \\
+			19 & LAFC               & 1550.931 & 19 & 1550.931 &  0 & 17 & 1550.914 & -2 \\
+			20 & Kashiwa Reysol     & 1546.468 & 20 & 1543.805 &  0 & 20 & 1536.073 &  0 \\
+			\bottomrule
+	\end{tabular}}%
+	\newline 
+	{\small \textit{Nota:} Las columnas \(\Delta\) indican la diferencia entre la posici\'on predicha y la real; valores positivos implican que el modelo sobreestima al equipo.}
+\end{table}
+
+\begin{table}[htbp]
+	\centering
+	\caption{Top 20 del ranking proyectado — Dataset \textsc{Lite Recortado} (semana del 2025-12-09).}
+	\label{tab:top20_lite_rec}
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{lrrrrrrrr}
+			\toprule
+			\textbf{Pos. real} & \textbf{Equipo} & \textbf{\(\mu\) real} & \textbf{Pos. ARIMA} & \textbf{\(\mu\) ARIMA} & \(\Delta\) \textbf{ARIMA} & \textbf{Pos. LSTM} & \textbf{\(\mu\) LSTM} & \(\Delta\) \textbf{LSTM} \\
+			\midrule
+			1  & Flamengo           & 1696.818 & 1  & 1697.032 &  0 & 1  & 1688.233 &  0 \\
+			2  & Palmeiras          & 1673.218 & 2  & 1679.971 &  0 & 2  & 1667.514 &  0 \\
+			3  & Kashima Antlers    & 1641.726 & 3  & 1641.726 &  0 & 3  & 1637.864 &  0 \\
+			4  & Botafogo           & 1634.644 & 4  & 1634.644 &  0 & 4  & 1624.609 &  0 \\
+			5  & Sanfrecce Hiroshima& 1630.176 & 5  & 1630.176 &  0 & 6  & 1623.005 & +1 \\
+			6  & Jeonbuk Hyundai    & 1623.202 & 6  & 1626.017 &  0 & 5  & 1624.246 & -1 \\
+			7  & Vissel Kobe        & 1603.136 & 7  & 1604.170 &  0 & 8  & 1598.101 & +1 \\
+			8  & Boca Juniors       & 1601.386 & 8  & 1602.779 &  0 & 7  & 1600.316 & -1 \\
+			9  & Inter Miami        & 1583.124 & 9  & 1583.124 &  0 & 14 & 1553.749 & +5 \\
+			10 & LAFC               & 1574.773 & 10 & 1574.773 &  0 & 10 & 1574.977 &  0 \\
+			11 & Racing Avellaneda  & 1572.620 & 11 & 1573.929 &  0 & 9  & 1575.068 & -2 \\
+			12 & Fluminense         & 1571.826 & 12 & 1571.826 &  0 & 11 & 1569.845 & -1 \\
+			13 & River Plate        & 1564.472 & 13 & 1565.859 &  0 & 12 & 1564.926 & -1 \\
+			14 & Rosario Central    & 1560.334 & 14 & 1560.334 &  0 & 13 & 1554.787 & -1 \\
+			15 & Cruzeiro           & 1553.499 & 15 & 1553.499 &  0 & 15 & 1551.183 &  0 \\
+			16 & Kashiwa Reysol     & 1553.285 & 16 & 1553.285 &  0 & 16 & 1548.463 &  0 \\
+			17 & Kyoto Sanga        & 1541.841 & 17 & 1541.841 &  0 & 20 & 1533.870 & +3 \\
+			18 & Seattle Sounders   & 1541.724 & 18 & 1541.724 &  0 & 17 & 1542.494 & -1 \\
+			19 & Daejeon Hana Citizen & 1537.004 & 20 & 1536.665 & +1 & 18 & 1534.443 & -1 \\
+			20 & Cincinnati         & 1536.781 & 19 & 1537.336 & -1 & 21 & 1523.975 & +1 \\
+			\bottomrule
+	\end{tabular}}%
+	\newline 
+	{\small \textit{Nota:} Las columnas \(\Delta\) indican la diferencia entre la posici\'on predicha y la real; valores positivos implican que el modelo sobreestima al equipo.}
+\end{table}
+
 \section{Limitaciones y observaciones finales}
 \label{ap:limitaciones}
 
@@ -981,3 +1051,426 @@ El componente exploratorio aqu\'i documentado presenta las siguientes limitacion
 \end{itemize}
 
 En general, el ejercicio de \textit{backtesting} demuestra que, en el contexto de datos con inactividad estructural, el ARIMA univariado ofrece una proyecci\'on m\'as robusta y estable en t\'erminos de error absoluto, mientras que la LSTM global aporta valor \'unicamente en subconjuntos de equipos con alta volatilidad. Ambos modelos preservan el ordenamiento relativo de los equipos con una precisi\'on sobresaliente (\(\rho > 0.99\)), lo que los hace \'utiles para tareas de ranking, aunque con las salvedades se\~naladas. El Ap\'endice~\ref{ap:forecasting} extiende este an\'alisis al dominio del pron\'ostico puro hacia adelante, donde se contrastan las proyecciones con datos reales no vistos durante el entrenamiento.
+
+% ============================================================
+% AP\'ENDICE D: VALIDACI\'ON CONTRA RANKINGS INSTITUCIONALES
+% ============================================================
+
+
+\chapter{Validaci\'on contra rankings institucionales}
+\label{ap:validacion}
+
+El sistema predictivo desarrollado en este trabajo no solo estima probabilidades de resultado, sino que también genera un \textbf{ordenamiento competitivo} de los clubes a trav\'es del rating \(\mu\) del sistema Glicko‑2 modificado \texttt{G2Av1513}. Este ap\'endice tiene como objetivo validar externamente dicho ordenamiento, as\'i como los rankings proyectados por el modelo LSTM y ARIMA a maera de extensi\'on del Ap\'endice~\ref{ap:proyeccion_temporal}, contrast\'andolos con cuatro fuentes institucionales de referencia:
+
+\begin{itemize}
+	\item \textbf{Ranking UEFA}. \cite{kassiesa2025, kassiesa2026}
+	\item \textbf{Ranking AFC}. \cite{footyrankings2025,footyrankings2026}
+	\item \textbf{Ranking CONMEBOL}. \cite{conmebol2026}
+	\item \textbf{Ranking ClubElo}. \cite{clubelo2025}
+\end{itemize}
+
+La validaci\'on se realiza en tres escenarios temporales:
+\begin{enumerate}
+	\item \textbf{Agosto 2025:} Cierre de las temporadas interanuales 2024/25. En esta ventana se compara el ranking del motor Glicko‑2 (\texttt{G2Av1513}) contra las fuentes externas disponibles para ese per\'iodo: UEFA, AFC y ClubElo.
+	\item \textbf{Diciembre 2025:} Cierre de las temporadas anuales 2025. En esta ventana se compara el ranking del motor Glicko‑2 (\texttt{G2Av1513}) contra las fuentes externas de CONMEBOL.
+	\item \textbf{Julio 2026} Cierre de las temporadas interanuales 2025/26. En esta ventana se comparan los rankings proyectados por LSTM contra las fuentes externas disponibles para ese periodo: UEFA, AFC y ClubElo.
+\end{enumerate}
+
+Adicionalmente, se construye un \textbf{modelo de nivel de poder} basado en el \textit{Top 20 global} y el \textit{Top 5 por liga}, que permite visualizar las diferencias sistem\'aticas entre los sistemas de \textit{rating} y cuantificar la jerarqu\'ia competitiva entre competiciones.
+
+A diferencia de una validación secuencial semana a semana, este apéndice adopta un enfoque por \textbf{instant\'aneas (\textit{snapshots})}, alineado con la disponibilidad de los datos externos y con la pr\'actica habitual de los rankings de clubes.
+
+\section{Fuentes de datos externos}
+
+\subsection{Ranking UEFA}
+
+Los coeficientes UEFA se obtuvieron mediante \textit{web scraping} desde el sitio \textit{kassiesa.net} \cite{kassiesa2025, kassiesa2026}, que archiva las tablas hist\'oricas del ranking de clubes. Se extrajeron los rankings correspondientes a 2025 y 2026. Cada registro contiene:
+\begin{itemize}
+	\item \texttt{rank}: posici\'on en el ranking.
+	\item \texttt{team}: nombre del club.
+	\item \texttt{country}: pa\'is de origen.
+	\item \texttt{points}: coeficiente UEFA acumulado.
+\end{itemize}
+
+La carga inicial arroj\'o 170 equipos para 2025 y 176 para 2026.
+
+\subsection{Ranking AFC}
+
+Los rankings de la Confederaci\'on Asi\'atica de F\'utbol se obtuvieron a partir de archivos CSV de autor\'ia (\texttt{RankingAFC2025.csv}, \texttt{RankingAFC2026.csv}), creados manualmente tras revisar la p\'agina web \textit{footyrankings} \cite{footyrankings2025,footyrankings2026}. Cada archivo contiene la posici\'on, el nombre del club y la puntuaci\'on obtenida esa temporada. Los conjuntos iniciales contienen 16 equipos en 2025 y 15 en 2026.
+
+\subsection{Ranking CONMEBOL}
+
+El ranking de clubes de la CONMEBOL para 2026 se extrajo del PDF oficial \textit{Ranking-de-Clubes-CONMEBOL-2026-1.pdf} \cite{conmebol2026} mediante extracci\'on tabular con \texttt{tabula-py} y \texttt{pdfplumber}. La limpieza incluye la estandarizaci\'on de nombres y el filtrado por pa\'ises objetivo. El conjunto inicial contiene 106 equipos.
+
+\subsection{Ranking ClubElo}
+
+ClubElo proporciona ratings Elo diarios para cientos de clubes. Se utilizaron dos instant\'aneas:
+\begin{itemize}
+	\item \textbf{Agosto 2025}: 100 equipos, tomada a trav\'es de la \textit{Wayback Machine}.
+	\item \textbf{Septiembre 2026}: 662 equipos, tomados desde la p\'agina web de ClubElo \cite{clubelo2025}.
+\end{itemize}
+Se extraen el rating Elo y el ranking derivado.
+
+\subsection{G2A y LSTM}
+
+El motor Glicko‑2 modificado \texttt{G2Av1513} produce rankings para dos versiones del dataset:
+\begin{itemize}
+	\item \textbf{dataset Full}: 336 equipos.
+	\item \textbf{dataset Lite}: 414 equipos.
+\end{itemize}
+
+El modelo LSTM genera proyecciones para:
+
+\begin{itemize}
+	\item \textbf{LSTM Full}: 315 equipos.
+	\item \textbf{LSTM Lite}: 398 equipos.
+\end{itemize}
+
+El modelo ARIMA no produjo predicciones v\'alidas para ning\'un equipo en este an\'alisis, por lo que no se incluye en las comparaciones cuantitativas.
+
+\subsection{Cobertura geogr\'afica}
+
+Una propiedad deseable de cualquier sistema de \textit{rating} que aspire a tener validez global es su capacidad de generalizaci\'on a distintos contextos competitivos. Para que el sistema sea aceptado, es mandatorio que el ordenamiento sea consistente con los resultados a nivel local y regional. Cuanto m\'as amplia sea la cobertura del ranking, mayor ser\'a la evidencia de que el sistema de rating captura la fuerza latente de los equipos de forma objetiva y no est\'a sobreajustado a las particularidades de una regi\'on en concreto. Debido a esto, en el presente ap\'endice se contrasta el \textit{ranking} generado por el motor Glicko‑2 modificado \texttt{G2Av1513}, as\'i como las proyecciones LSTM, con fuentes externas que cubren Europa, Asia, Sudam\'erica y el sistema global de ClubElo, asegurando as\'i una validaci\'on multicontinental que pone a prueba la generalizaci\'on del modelo. A continuaci\'on se detalla la cobertura geogr\'afica resultante tras los filtros de países y el mapeo de nombres.
+
+\begin{itemize}	
+	\item \textbf{UEFA} y \textbf{ClubElo} en el a\~no 2025 se filtraron para incluir \'unicamente las ligas europeas consideradas en el estudio (Inglaterra, Espa\~na, Alemania, Italia, Francia, Grecia), resultando en 44 y 47 equipos para 2025 y 2026 respectivamente.
+	\item \textbf{AFC} cubre exclusivamente equipos asi\'aticos: Arabia Saudita, Jap\'on, Corea del Sur, Ir\'an. Con 16 y 15 equipos respectivamente.
+	\item \textbf{CONMEBOL} cubre Argentina, Brasil y Venezuela, con 77 equipos tras el filtrado.
+	\item \textbf{ELO Agosto 2025}: 79 equipos.
+	\item \textbf{ELO Septiembre 2026}: 276 equipos europeos, sudamericanos, norteamericanos y asi\'aticos.
+\end{itemize}
+
+\section{Armonizaci\'on de nombres y filtrado}
+
+Una de las tareas m\'as delicadas en la validaci\'on cruzada es la \textbf{armonizaci\'on de identidades} entre fuentes. Se implement\'o un proceso sistem\'atico de dos capas:
+\begin{enumerate}
+	\item \textbf{Mapeo manual:} Creado a partir de un diccionario con 422 entradas de correcciones expl\'icitas.
+	\item \textbf{Lista de exclusi\'on:} Creada para para eliminar 190 equipos que no pertenecen al conjunto activo del estudio.
+\end{enumerate}
+
+Tras aplicar el mapeo, se verifica que ning\'un nombre quede sin correspondencia con el \textit{dataset Lite} de Glicko‑2, garantizando que las comparaciones estad\'isticas solo se realicen sobre la intersecci\'on de equipos comunes.
+
+\section{Metodolog\'ia de comparaci\'on por instant\'aneas}
+
+El concepto de \textit{instant\'anea} o \textit{snapshot} se refiere a la captura del estado de algo en un momento temporal concreto, utilizando la informaci\'on disponible hasta esa fecha. En el \'ambito de los rankings deportivos, las instant\'aneas son especialmente \'utiles porque permiten comparar sistemas de clasificaci\'on que se publican con distinta periodicidad y porque facilitan el an\'alisis de la evoluci\'on de la fuerza competitiva en puntos de corte relevantes, como el final de una temporada o el cierre de un mercado de fichajes. Su importancia radica en que ofrecen una visi\'on est\'atica pero representativa del ordenamiento competitivo sin perder de vista el contexto temporal.
+
+\subsection{Enfoque est\'atico y escenario de validaci\'on}
+
+En este trabajo se emplean instant\'aneas en tres momentos estrat\'egicos: 
+\begin{itemize}
+	\item \textbf{Momento 1 (agosto 2025)}: estado al finalizar la temporada interanual 2024/25.
+	\item \textbf{Momento 2 (diciembre 2025):} estado al finalizar la temporada anual 2025
+	\item \textbf{Momento 2 (septiembre 2026)}: estado a punto de comenzar la temporada interanual 2026/27.
+\end{itemize}
+
+Esto permite evaluar tanto la capacidad del Glicko‑2 para reflejar el estado real del f\'utbol de clubes como la habilidad del modelo LSTM para proyectar el ordenamiento con un a\~no de antelaci\'on, pues los \textit{rankings} CONMEBOL UEFA y AFC se publican con periodicidad anual, no existe una serie semanal disponible para estas fuentes, mientras que para ClubElo, se selecciona la \'ultima fecha disponible anterior o igual al momento de corte o bien la \'ultima fecha disponible en la \textit{Wayback Machine}. Para UEFA, AFC y CONMEBOL, se toma directamente el ranking publicado para el a\~no correspondiente. 
+
+\begin{table}[htbp]
+	\centering
+	\caption{Escenarios de validaci\'on.}
+	\label{tab:escenarios_validacion}
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{c|c|c|c}
+		\toprule
+		\textbf{Escenario} & \textbf{Modelo} & \textbf{Fuentes externas} & \textbf{Per\'iodo} \\
+		\midrule
+		I & Glicko‑2 modificado (G2A) & UEFA 2025, ELO Ago 2025, AFC 2025, CONMEBOL 2026 & 2024/25 \\
+		II & Glicko‑2 modificado (G2A) & CONMEBOL 2026 & 2024/25 \\
+		III & LSTM (proyecciones) & UEFA 2026, ELO Sep 2026, AFC 2026 & 2025/26 \\
+		\bottomrule
+	\end{tabular}}%
+\end{table}
+
+Este enfoque est\'atico no solo es metodol\'ogicamente adecuado dadas las fuentes disponibles, sino que tambi\'en permite una comparaci\'on limpia y reproducible, evitando los problemas de alineaci\'on temporal que surgir\'ian al intentar forzar una frecuencia semanal sobre datos anuales.
+
+\section{M\'etricas de concordancia}
+
+La validaci\'on de un sistema de \textit{ranking} no consiste \'unicamente en verificar que las posiciones asignadas a los equipos se parecen a las de una fuente externa. Es necesario cuantificar en qu\'e medida dos ordenamientos coinciden, y para ello se requiere un conjunto de m\'etricas que capturen diferentes aspectos de la concordancia: la asociaci\'on global entre \textit{rankings}, la capacidad de identificar a los mejores equipos y el error posicional medio. Cada m\'etrica ofrece una perspectiva distinta y, en conjunto, proporcionan un diagn\'ostico completo de la calidad del ranking generado por el modelo.
+
+En esta secci\'on se definen las cuatro m\'etricas utilizadas en este ap\'endice, todas ellas ampliamente empleadas en la literatura de evaluaci\'on de rankings deportivos \cite{kendall1945, spearman1904, Glickman2022}. Se ha procurado seleccionar indicadores que sean complementarios, de modo que cubran tanto la concordancia ordinal global como el rendimiento en las posiciones de cabeza, que es donde suele concentrarse el inter\'es pr\'actico. A continuaci\'on se presentan las definiciones y una interpretación de cada una.
+
+\subsection{Coeficiente de correlaci\'on de Spearman (\(\rho\))}
+
+El coeficiente de correlaci\'on de Spearman es una medida no paramétrica de la asociaci\'on mon\'otona entre dos variables ordinales. En el contexto de \textit{rankings}, se aplica sobre las posiciones asignadas a cada equipo en ambos ordenamientos. Su definici\'on operativa es:
+
+\[
+\rho = 1 - \frac{6 \sum_{i=1}^{n} d_i^2}{n(n^2 - 1)},
+\]
+
+donde \(n\) es el n\'umero de equipos comparados y \(d_i\) es la diferencia de posiciones del equipo \(i\) entre los dos rankings. El coeficiente toma valores en el intervalo \([-1, 1]\): \(\rho = 1\) indica concordancia perfecta mientras que \(\rho = -1\) indica discordancia perfecta, y \(\rho = 0\) sugiere ausencia de asociaci\'on mon\'otona.
+
+La principal ventaja de Spearman es su sencillez computacional y su interpretaci\;on intuitiva: un \(\rho\) alto indica que, en t\'erminos generales, los equipos que aparecen arriba en un ranking tienden a aparecer arriba en el otro. Sin embargo, Spearman otorga el mismo peso a todas las diferencias de posici\'on, independientemente de si ocurren en la zona alta o baja del \textit{ranking}, por lo que debe complementarse con otras métricas que sean más sensibles a los primeros puestos.
+
+\subsection{Coeficiente \(\tau\) de Kendall}
+
+El coeficiente \(\tau\) de Kendall es otra medida de asociaci\'on ordinal, pero se basa en el n\'umero de pares de equipos que mantienen el mismo orden relativo entre los dos \textit{rankings}. Su definici\'on es:
+
+\[
+\tau = \frac{n_c - n_d}{\frac{1}{2}n(n-1)},
+\]
+
+donde \(n_c\) es el n\'umero de pares concordantes, en este caso equipos que aparecen en el mismo orden en ambos rankings, y \(n_d\) es el n\'umero de pares discordantes, en este caso equipos cuyo orden relativo se invierte. Al igual que Spearman, \(\tau \in [-1, 1]\), con interpretaci\'on an\'aloga.
+
+La diferencia fundamental entre Kendall y Spearman radica en que Kendall se interpreta directamente como una probabilidad: \(\tau\) es aproximadamente la diferencia entre la probabilidad de que un par elegido al azar esté correctamente ordenado y la probabilidad de que esté invertido. Esta propiedad hace que \(\tau\) sea m\'as sensible a las inversiones en las posiciones altas que Spearman, pues un par formado por dos equipos del Top 10 tiene el mismo peso que cualquier otro par, pero la inversi\'on de ese par es m\'as relevante desde el punto de vista competitivo. 
+
+\subsection{\textit{Overlap} en los primeros \(K\) puestos}
+
+El \textit{Overlap} o solapamiento en los primeros \(K\) puestos es una m\'etrica que se centra exclusivamente en la capacidad del modelo para identificar a los mejores equipos. Se define como la proporci\'on de equipos que aparecen simult\'aneamente en el Top \(K\) de ambos rankings:
+
+\[
+\text{Overlap@K} = \frac{|\mathcal{T}_K^{(1)} \cap \mathcal{T}_K^{(2)}|}{K},
+\]
+
+donde \(\mathcal{T}_K^{(j)}\) es el conjunto de los \(K\) primeros equipos del ranking \(j\). En este trabajo se reporta para \(K = 10\) y \(K = 20\), siguiendo la práctica habitual en estudios de rankings deportivos donde el interés se concentra en los puestos de acceso a competiciones internacionales o en la élite competitiva.
+
+El \textit{Overlap} es una m\'etrica muy exigente: un solo equipo que entre o salga del Top \(K\) reduce el valor en \(1/K\). Por tanto, complementa a Spearman y Kendall al penalizar expl\'icitamente los errores en la zona alta, donde las consecuencias pr\'acticas de una mala clasificación son más relevantes.
+
+\subsection{Error absoluto medio de posici\'on (MAE)}
+
+El error absoluto medio de posici\'on cuantifica, en promedio, cu\'antas posiciones se desv\'ia cada equipo entre un ranking y otro. Se calcula como:
+
+\[
+\text{MAE} = \frac{1}{n}\sum_{i=1}^{n} |\text{rank}_i^{(1)} - \text{rank}_i^{(2)}|.
+\]
+
+Esta m\'etrica es de interpretaci\'on directa: un MAE de 5 posiciones indica que, en promedio, cada equipo est\'a 5 puestos por encima o por debajo de su posici\'on real seg\'un la fuente externa. A diferencia de Spearman y Kendall, el MAE está expresado en las unidades originales del ranking, lo que facilita su comunicaci\'on a audiencias no t\'ecnicas.
+
+La principal limitaci\'on del MAE es que no distingue entre errores en la zona alta y errores en la zona baja: una desviaci\'on de 10 posiciones en el Top 10 es m\'as grave que una desviación de 10 posiciones en la cola del ranking. Sin embargo, su simplicidad y su interpretabilidad directa lo convierten en un complemento \'util a las m\'etricas ordinales.
+
+\subsection{Complementariedad de las m\'etricas}
+
+Las cuatro m\'etricas descritas no son redundantes, sino que ofrecen perspectivas complementarias sobre la calidad del \textit{ranking}. Spearman y Kendall eval\'uan la concordancia global, pero con distinta sensibilidad a las inversiones. El \textit{Overlap} se centra en la \'elite, donde el rendimiento del modelo tiene mayor impacto pr\'actico. El MAE proporciona una medida de error en la escala original, f\'acil de comunicar. En conjunto, permiten responder a preguntas diferentes: ¿el modelo ordena bien en general? (Spearman, Kendall), ¿acierta en los mejores equipos? (Overlap), y ¿cu\'anto se equivoca en promedio? (MAE). Esta combinaci\'on asegura una validaci\'on exhaustiva y evita que una \'unica m\'etrica enmascare debilidades del sistema.
+
+\section{Resultados e interpretaci\'on}
+
+Antes de presentar los resultados, es necesario se\~nalar una limitación estructural que condiciona cualquier comparaci\'on de \textit{rankings} entre regiones. El conjunto de datos utilizado en este estudio, si bien es extenso y cubre m\'ultiples continentes, presenta lo que en la literatura se denomina \emph{islas de datos}: conjuntos de equipos que compiten intensamente dentro de su propia regi\'on pero que tienen escasos o nulos enfrentamientos con equipos de otras regiones. Esta falta de conectividad intercontinental implica que los \textit{ratings} de equipos de distintas confederaciones no son directamente comparables en t\'erminos absolutos: un equipo con \(\mu = 1700\) en Europa y un equipo con \(\mu = 1700\) en Asia pueden no tener el mismo nivel de poder real, porque sus ratings se han construido en universos competitivos casi independientes. Las comparaciones num\'ericas entre regiones deben, por tanto, interpretarse con cautela, y las diferencias observadas en las tablas de nivel de poder reflejan m\'as una jerarqu\'ia relativa dentro de cada regi\'on que una medida absoluta de fuerza global.
+
+\subsection{Concordancia cuantitativa}
+
+La Tabla~\ref{tab:validaciones_lite} resume las m\'etricas de concordancia para las ocho comparaciones realizadas. Cada fila enfrenta el ranking interno (Glicko‑2 o LSTM) con una fuente externa, sobre la intersecci\'on de equipos comunes tras el mapeo de nombres. El conjunto de m\'etricas ofrece un diagn\'ostico completo de la calidad del ordenamiento.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Validaciones contra rankings institucionales (Lite).}
+	\label{tab:validaciones_lite}
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{lcccccc}
+			\toprule
+			\textbf{Validación} & \textbf{N} & \textbf{Spearman $\rho$} & \textbf{Kendall $\tau$} & \textbf{Overlap@10} & \textbf{Overlap@20} & \textbf{MAE pos} \\
+			\midrule
+			UEFA 2025 & 44 & 0.651 & 0.475 & 0.700 & 0.750 & 8.1 \\
+			ELO Ago 2025 & 79 & 0.786 & 0.609 & 0.700 & 0.750 & 11.4 \\
+			AFC 2025 & 16 & 0.079 & 0.050 & 0.600 & 0.800 & 5.1 \\
+			CONMEBOL 2026 & 77 & 0.643 & 0.470 & 0.600 & 0.600 & 14.0 \\
+			LSTM vs UEFA 2026 & 40 & 0.700 & 0.528 & 0.800 & 0.750 & 6.5 \\
+			LSTM vs ELO Sep 2026 & 258 & 0.448 & 0.314 & 0.600 & 0.650 & 59.7 \\
+			LSTM vs AFC 2026 & 15 & 0.120 & 0.077 & 0.800 & 0.750 & 4.9 \\
+			LSTM Lite & 394 & 0.964 & 0.848 & 0.900 & 0.850 & 21.1 \\
+			\bottomrule
+	\end{tabular}}%
+\end{table}
+
+Los resultados permiten extraer varias conclusiones inmediatas. En primer lugar, el motor Glicko‑2 modificado muestra una concordancia \emph{moderada-alta} con las fuentes externas m\'as consolidadas. La comparaci\'on con ELO Agosto 2025 arroja el mejor desempeño global (\(\rho = 0.786\), \(\tau = 0.609\)), esto indica que el sistema de rating captura una estructura de fuerzas muy similar a la del sistema Elo de ClubElo, considerado un est\'andar de referencia en el \'ambito deportivo. Las comparaciones con UEFA 2025 (\(\rho = 0.651\)) y CONMEBOL 2026 (\(\rho = 0.643\)) muestran concordancias ligeramente inferiores, lo cual es esperable dado que los coeficientes UEFA y CONMEBOL se basan exclusivamente en el rendimiento en competiciones continentales, mientras que Glicko‑2 y Elo integran todos los partidos disputados por cada equipo, incluyendo ligas dom\'esticas y torneos continentales.
+
+En segundo lugar, la comparaci\'on con AFC 2025 (\(\rho = 0.079\)) es notablemente baja. Sin embargo, este resultado debe interpretarse con cautela: el tama\~no muestral es muy reducido (\(n = 16\)) y el ranking AFC se construye \'unicamente a partir del rendimiento en competiciones asi\'aticas, mientras que Glicko‑2 incluye tambi\'en el desempe\~no en ligas dom\'esticas de cada pa\'is. La baja concordancia refleja, m\'as que una deficiencia del modelo, la naturaleza regional y especializada del ranking AFC.
+
+En tercer lugar, el modelo LSTM proyectado a 2026 mantiene una concordancia aceptable con UEFA 2026 (\(\rho = 0.700\), \(\tau = 0.528\)), ligeramente superior a la del Glicko‑2 hist\'orico con UEFA 2025. Esto indica que el modelo neuronal preserva la estructura ordinal de los ratings incluso en horizontes de proyección de un a\~no. Por el contrario, la concordancia con ELO Septiembre 2026 es moderada (\(\rho = 0.448\), \(\tau = 0.314\)), lo que refleja la incertidumbre inherente a las proyecciones a largo plazo. No obstante, el Overlap 10 de 0.600 indica que el 60\% de los mejores equipos proyectados por LSTM coinciden con los de ClubElo, lo que sugiere que, aunque el orden global se degrada, la identificaci\'on de la \'elite competitiva se mantiene relativamente estable.
+
+Por\'uúltimo, la comparaci\'on entre LSTM Lite y Glicko‑2 Lite (\(\rho = 0.964\), \(n = 394\)) confirma que el modelo LSTM reproduce fielmente la estructura ordinal del Glicko‑2 sin distorsi\'on significativa. Esta concordancia casi perfecta valida que las proyecciones no introducen sesgos sistem\'aticos en el ordenamiento, sino que preservan la jerarquía de fuerzas aprendida por el sistema de rating.
+
+\subsection{Comparaci\'on tangible: Top 10 global}
+
+M\'as all\'a de las m\'etricas agregadas, resulta ilustrativo observar directamente los primeros puestos de cada ranking. La Tabla~\ref{tab:top10_comparativo} enfrenta el Top 10 de G2A Full, LSTM Full, UEFA 2026 y ELO Septiembre 2026 para el escenario 2025/26.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Top 10 global comparativo — Escenario 2025/26.}
+	\label{tab:top10_comparativo}
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{c|cccc}
+		\toprule
+		\textbf{Pos.} & \textbf{G2A Full} & \textbf{LSTM Full} & \textbf{UEFA 2026} & \textbf{ELO Sep 2026} \\
+		\midrule
+		1 & PSG (1807.1) & PSG (1780.6) & Bayern (147.5) & Bayern (2027) \\
+		2 & Al Hilal (1788.5) & Real Madrid (1772.6) & Real Madrid (144.5) & Arsenal (2011) \\
+		3 & Bayern (1773.3) & Al Hilal (1769.1) & PSG (132.0) & Man. City (2000) \\
+		4 & Olympiacos (1765.9) & Olympiacos (1758.3) & Liverpool (130.0) & Barcelona (1989) \\
+		5 & Real Madrid (1765.9) & Inter de Milan (1746.4) & Inter de Milan (127.0) & Real Madrid (1955) \\
+		6 & Liverpool (1749.3) & Man.City (1746.1) & Man. City (125.5) & PSG (1938) \\
+		7 & Inter de Milan (1743.7) & Liverpool (1738.2) & Arsenal (119.0) & Inter de Milan (1924) \\
+		8 & Man. City (1724.5) & Leverkusen (1708.9) & Barcelona (113.3) & Liverpool (1902) \\
+		9 & Arsenal (1716.0) & Atl. Madrid (1704.7) & Leverkusen (105.0) & AtlMadrid (1881) \\
+		10 & Al Ittihad (1715.5) & Arsenal (1695.7) & Atl. Madrid (104.8) & AstonVilla (1868) \\
+		\bottomrule
+	\end{tabular}}%
+\end{table}
+
+Varios aspectos destacan de esta comparaci\'on. El primero es que \textbf{PSG} encabeza tanto G2A Full como LSTM Full, mientras que UEFA y ELO colocan al \textbf{Bayern} y al \textbf{Real Madrid} en las primeras posiciones. Esta discrepancia refleja una diferencia metodol\'ogica fundamental: el sistema Glicko‑2 otorga un peso considerable al dominio dom\'estico del PSG en la Ligue 1, as\'i como a su rendimiento en todas las competiciones disputadas, mientras que UEFA y ELO ponderan m\'as el rendimiento en competiciones europeas de \'elite, donde el Bayern y ek Real Madrid han acumulado más coeficiente.
+
+El segundo aspecto relevante es la presencia del \textbf{Al Hilal} en el Top 3 de G2A y LSTM, que por obvios motivos no figura en UEFA ni en el Top 10 de ELO. Esto evidencia la cobertura geogr\'afica limitada de ELO, pues en ese momento se limitaba a la geograf\'ia europea. El hecho de que Glicko‑2 y LSTM sit\'uen al Al Hilal entre los tres mejores clubes del mundo es un reflejo del impacto de las inversiones millonarias en la liga saud\'i.
+
+El tercer aspecto es que el \textbf{Bayern} y el \textbf{PSG} son los \'unicos equipos que aparecen en el Top 3 de al menos tres de las cuatro fuentes. Esta consistencia los consolida como los clubes con mayor consenso de fortaleza a nivel global, un hallazgo que refuerza la validez de los rankings generados por el sistema.
+
+\subsection{Modelo de nivel de poder}
+
+El concepto de \emph{nivel de poder} se introduce como una herramienta para cuantificar la jerarqu\'ia competitiva entre ligas. Para cada competici\'on, se seleccionan los cinco equipos con mayor rating \(\mu\) seg\'un el modelo correspondiente, y se calcula la media de dichos ratings. Esta media se interpreta como un indicador del nivel competitivo promedio de la \'elite de esa liga. Las Tablas~\ref{tab:top5_liga_g2afull} a~\ref{tab:top5_liga_lstmlite} presentan los resultados para los cuatro modelos considerados: G2A Full, G2A Lite, LSTM Full y LSTM Lite.
+
+\begin{table}[htbp]
+	\centering
+	\small
+	\caption{Top 5 por liga y media de valoración - G2A Full.}
+	\label{tab:top5_liga_g2afull}
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{l c c c}
+		\toprule
+		\textbf{Liga} & \textbf{Top 5 (equipos)} & \textbf{Media \(\mu\)} & \textbf{Dif. vs Premier League} \\
+		\midrule
+		Premier League & \makecell[l]{Liverpool  Man. City \\ Arsenal Chelsea Aston Villa} & 1690.2 & 0.0 \\
+		Saudi Pro League & \makecell[l]{Al Hilal Al Ittihad \\ Al Nassr Al Ahli Al Qadsiah} & 1677.0 & -13.2 \\
+		Serie A & \makecell[l]{Inter de Milan Napoli \\ Roma Atalanta Juventus} & 1667.8 & -22.4 \\
+		LaLiga & \makecell[l]{Real Madrid Barcelona \\ Atl. Madrid Villarreal Ath. Bilbao} & 1667.6 & -22.6 \\
+		Ligue 1 & \makecell[l]{PSG  Monaco \\ Lille O. Marseille Nice} & 1652.1 & -38.1 \\
+		Super League Greece & \makecell[l]{Olympiacos PAOK \\ Panathinaikos AEK Aris} & 1648.6 & -41.6 \\
+		Bundesliga & \makecell[l]{Bayern Leverkusen \\ Dortmund  Leipzig  E. Frankfurt} & 1644.3 & -45.9 \\
+		Brasileir\~ao & \makecell[l]{Flamengo  Palmeiras \\ Botafogo Mirassol Fluminense} & 1632.1 & -58.1 \\
+		Liga MX & \makecell[l]{CruzAzul America \\ Toluca Monterrey Tigres UANL} & 1605.7 & -84.5 \\
+		J1 League & \makecell[l]{Kashima Antlers Sanfrecce Hiroshima \\ Vissel Kobe Machida Zelvia Kashiwa Reysol} & 1598.2 & -92.0 \\
+		Liga Profesional Argentina & \makecell[l]{Boca Juniors Racing \\ River Plate Rosario Central Dep. Riestra} & 1565.2 & -125.0 \\
+		Major League Soccer & \makecell[l]{InterMiami LAFC \\ San Diego Seattle Sounders Cincinnati} & 1558.2 & -132.0 \\
+		K League 1 & \makecell[l]{Jeonbuk Hyundai Sangju Sangmu \\ Daejeon Hana Citizen Pohang Steelers Gangwon} & 1546.9 & -143.3 \\
+		\bottomrule
+	\end{tabular}}%
+\end{table}
+
+En el modelo G2A Full, la Premier League encabeza claramente el nivel de poder con una media de 1690.2, superando en 13.2 puntos a la Saudi Pro League (1677.0), que ocupa el segundo lugar. Este resultado es notable: la liga saud\'i, impulsada por inversiones masivas en fichajes de primer nivel, aparece por delante de Serie A, LaLiga y Bundesliga. La Serie A y LaLiga se sit\'uan muy pr\'oximas, con una diferencia de apenas 0.2 puntos, lo que refleja el equilibrio competitivo entre ambas. La Bundesliga, a pesar de contar con Bayern, queda rezagada debido a la menor profundidad de su \'elite. Por otro lado, Las ligas no europeas ocupan posiciones intermedias, mientras que la Liga Profesional Argentina, la MLS y la K League 1 se sit\'uan en la cola, con diferencias superiores a los 120 puntos respecto a la Premier League.
+
+\begin{table}[htbp]
+	\centering
+	\small
+	\caption{Top 5 por liga y media de valoración — G2A Lite.}
+	\label{tab:top5_liga_g2alite}
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{l c c c}
+		\toprule
+		\textbf{Liga} & \textbf{Top 5 (equipos)} & \textbf{Media \(\mu\)} & \textbf{Diferencia vs Premier} \\
+		\midrule
+		Premier League & \makecell[l]{Liverpool Man.City \\ Arsenal Chelsea Aston Villa} & 1682.8 & 0.0 \\
+		Saudi Pro League & \makecell[l]{Al Hilal Al Nassr \\ Al Ittihad AlAhli  Al Shabab} & 1679.8 & -3.0 \\
+		Serie A & \makecell[l]{Inter de Milan Napoli \\ Roma Atalanta Juventus} & 1670.5 & -12.3 \\
+		LaLiga & \makecell[l]{Real Madrid  Barcelona \\ Atl. Madrid Villarreal  Ath.Bilbao} & 1663.1 & -19.7 \\
+		Persian Gulf Pro League & \makecell[l]{Persepolis Sepahan \\ Tractor Esteghlal  Gol Gohar Sirjan} & 1656.6 & -26.2 \\
+		Brasileir\~ao & \makecell[l]{Flamengo Palmeiras \\ Botafogo Mirassol Fluminense} & 1647.3 & -35.5 \\
+		Ligue 1 & \makecell[l]{PSG  Monaco \\ Lille O. Marseille  Nice} & 1644.8 & -38.0 \\
+		Super League Greece & \makecell[l]{Olympiacos PAOK \\ Panathinaikos AEK Aris} & 1639.4 & -43.4 \\
+		Bundesliga & \makecell[l]{Bayern Leverkusen \\ Dortmund Leipzig E. Frankfurt} & 1642.6 & -40.2 \\
+		Liga MX & \makecell[l]{Cruz Azul America \\ Monterrey Toluca Tigres UANL} & 1594.4 & -88.4 \\
+		J1 League & \makecell[l]{Sanfrecce Hiroshima Kashima Antlers \\ Vissel Kobe Machida Zelvia Kashiwa Reysol} & 1591.7 & -91.1 \\
+		FutVe & \makecell[l]{Carabobo Dep.T achira \\ Dep.La Guaira UCV Pto. Cabello} & 1586.1 & -96.7 \\
+		Liga Profesional Argentina & \makecell[l]{Boca Juniors Racing \\ RiverPlate Rosario Central Dep. Riestra} & 1575.4 & -107.4 \\
+		K League 1 & \makecell[l]{Jeonbuk Hyundai Daejeon Hana Citizen \\ Sangju Sangmu Gangwon Pohang Steelers} & 1539.8 & -143.0 \\
+		Major League Soccer & \makecell[l]{InterMiami LAFC \\ San Diego Seattle Sounders Cincinnati} & 1536.1 & -146.7 \\
+		\bottomrule
+	\end{tabular}}%
+\end{table}
+
+En el modelo G2A Lite, que incluye el per\'iodo 2017--2025 y ligas adicionales, el panorama se ampl\'ia. La Persian Gulf Pro League de Ir\'an aparece con una media de 1656.6, superando a Ligue 1 y Bundesliga, un indicativo de que los equipos iran\'ies tienen un nivel competitivo m\'as alto de lo que se podr\'ia pensar en primera instancia. Esto valida la inclusi\'on de esta liga en el estudio y sugiere que el sistema Glicko‑2 captura adecuadamente el rendimiento en competiciones periféricas. Por otra parte, la liga venezolana (FutVe) aparece con el nivel de poder m\'as bajo (1586.1), coherente con su posición hist\'orica en el contexto sudamericano.
+
+\begin{table}[htbp]
+	\centering
+	\small
+	\caption{Top 5 por liga y media de valoración - LSTM Full.}
+	\label{tab:top5_liga_lstmfull}
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{l c c c}
+		\toprule
+		\textbf{Liga} & \textbf{Top 5 (equipos)} & \textbf{Media \(\mu\)} & \textbf{Diferencia vs Premier} \\
+		\midrule
+		Premier League & \makecell[l]{Man. City Liverpool \\ Arsenal  Chelsea  Aston Villa} & 1677.0 & 0.0 \\
+		Saudi Pro League & \makecell[l]{Al Hilal Al Nassr \\ Al Ittihad Al Ahli Al Shabab} & 1656.3 & -20.7 \\
+		Ligue 1 & \makecell[l]{PSG Lille \\ Monaco Nice O. Marseille} & 1649.3 & -27.7 \\
+		Super League Greece & \makecell[l]{Olympiacos PAOK \\ Panathinaikos AEK Aris} & 1648.1 & -28.9 \\
+		LaLiga & \makecell[l]{Real Madrid Atl. Madrid \\ Ath. Bilbao Villarreal Real Betis} & 1637.4 & -39.6 \\
+		Bundesliga & \makecell[l]{Leverkusen Dortmund \\ Leipzig E. Frankfurt Freiburg} & 1616.1 & -60.9 \\
+		Brasileir\~ao & \makecell[l]{Flamengo Palmeiras \\ Botafogo Mirassol Fluminense} & 1612.7 & -64.3 \\
+		Serie A & \makecell[l]{Inter de Milan Roma \\ Bologna Udinese Torino} & 1593.8 & -83.2 \\
+		J1 League & \makecell[l]{Kashima Antlers Sanfrecce Hiroshima \\ Kawasaki Frontale Vissel Kobe Machida Zelvia} & 1592.7 & -84.3 \\
+		Liga MX & \makecell[l]{America CruzAzul \\ Tigres UANL Monterrey Toluca} & 1590.2 & -86.8 \\
+		K League 1 & \makecell[l]{Jeonbuk Hyundai Ulsan HD \\ Sangju Sangmu Pohang Steelers Daejeon Hana Citizen} & 1560.2 & -116.8 \\
+		Liga Profesional Argentina & \makecell[l]{Boca Juniors River Plate \\ Racing Rosario Central Dep. Riestra} & 1559.8 & -117.2 \\
+		Major League Soccer & \makecell[l]{LAFC San Diego \\ Seattle Sounders Philadelphia Union Inter Miami} & 1548.2 & -128.8 \\
+		\bottomrule
+	\end{tabular}}%
+\end{table}
+
+El modelo LSTM Full, que proyecta ratings a 2026, mantiene la Premier League en cabeza (1677.0), pero reduce las diferencias con las dem\'as ligas. La Saudi Pro League (1656.3) y Ligue 1 (1649.3) se acercan, mientras que Serie A cae a la octava posici\'on (1593.8), muy por debajo de su posici\'on en los modelos Glicko‑2. Esto refleja que las proyecciones LSTM tienden a comprimir las diferencias entre ligas, posiblemente debido a la naturaleza suavizadora de los modelos de series temporales, que aten\'uan las fluctuaciones extremas. La Bundesliga (1616.1) y el Brasileirao (1612.7) mantienen posiciones intermedias.
+
+\begin{table}[htbp]
+	\centering
+	\small
+	\caption{Top 5 por liga y media de valoración - LSTM Lite.}
+	\label{tab:top5_liga_lstmlite}
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{l c c c}
+		\toprule
+		\textbf{Liga} & \textbf{Top 5 (equipos)} & \textbf{Media \(\mu\)} & \textbf{Diferencia vs Premier} \\
+		\midrule
+		Premier League & \makecell[l]{Man. City Liverpool \\ Arsenal Chelsea Man. Utd} & 1644.9 & 0.0 \\
+		Super League Greece & \makecell[l]{Olympiacos  PAOK \\ AEK Panathinaikos Aris} & 1627.7 & -17.2 \\
+		Saudi Pro League & \makecell[l]{Al Hilal AlNassr \\ Al Ittihad Al Ahli Al Shabab} & 1622.9 & -22.0 \\
+		LaLiga & \makecell[l]{Real Madrid Atl. Madrid \\ Villarreal Ath. Bilbao Real Betis} & 1616.8 & -28.1 \\
+		Ligue 1 & \makecell[l]{PSG O. Marseille \\ Monaco Lille Nice} & 1614.7 & -30.2 \\
+		Persian Gulf Pro League & \makecell[l]{Persepolis Sepahan \\ Esteghlal Tractor Foolad} & 1606.7 & -38.2 \\
+		Brasileir\~ao & \makecell[l]{Palmeiras Flamengo \\ Botafogo Mirassol Fluminense} & 1588.1 & -56.8 \\
+		Bundesliga & \makecell[l]{Leverkusen Dortmund \\ Leipzig E. Frankfurt Freiburg} & 1584.4 & -60.5 \\
+		Serie A & \makecell[l]{Inter de Milan Roma \\ Bologna Torino Udinese} & 1571.9 & -73.0 \\
+		Liga MX & \makecell[l]{America Tigres UANL \\ Cruz Azul Monterrey Toluca} & 1572.8 & -72.1 \\
+		J1 League & \makecell[l]{Kashima Antlers Sanfrecce Hiroshima \\ Machida Zelvia Vissel Kobe Kawasaki Frontale} & 1561.3 & -83.6 \\
+		Liga Profesional Argentina & \makecell[l]{Boca Juniors River Plate \\ Racing Dep. Riestra Hurac\'an} & 1553.3 & -91.6 \\
+		FutVe & \makecell[l]{Dep. Tachira Dep. LaGuaira \\ Carabobo Caracas Dep. Lara} & 1543.8 & -101.1 \\
+		K League 1 & \makecell[l]{Jeonbuk Hyundai Ulsan HD \\ Pohang Steelers Daejeon Hana Citizen Sangju Sangmu} & 1522.6 & -122.3 \\
+		Major League Soccer & \makecell[l]{LAFC San Diego \\ Seattle Sounders Philadelphia Union Columbus Crew} & 1510.0 & -134.9 \\
+		\bottomrule
+	\end{tabular}}%
+\end{table}
+
+Finalmente, el modelo LSTM Lite presenta la compresi\'on más pronunciada. La Premier League (1644.9) sigue siendo la m\'as fuerte, pero la Super League de Grecia (1627.7) y la Saudi Pro League (1622.9) se sit\'uan muy cerca, lo que sugiere que en el escenario Lite las proyecciones tienden a igualar los niveles de las ligas europeas secundarias con las grandes ligas. Por su parte, la Persian Gulf Pro League (1606.7) aparece por encima de la Bundesliga y la Serie A, un resultado que, aunque sorprendente, es consistente con el patr\'on observado en G2A Lite y refleja la alta competitividad de los equipos iran\'ies en el panel completo.
+
+Una advertencia adicional es necesaria aqu\'i. Los resultados de las tablas de nivel de poder, aunque sugerentes, no deben interpretarse como una clasificaci\'on global definitiva de ligas. Como se ha se\~nalado al inicio de esta secci\'on, las \emph{islas de datos} impiden establecer comparaciones absolutas entre regiones. Por ejemplo, el hecho de que la Persian Gulf Pro League aparezca con un nivel de poder similar a la Bundesliga no implica necesariamente que los equipos iran\'ies sean tan fuertes como los alemanes; simplemente indica que, dentro de sus respectivos universos competitivos, ambos conjuntos de equipos han alcanzado ratings similares. La ausencia de enfrentamientos directos entre ambas ligas impide calibrar el verdadero valor de esa diferencia. En este sentido, el modelo de nivel de poder es una herramienta \'util para describir la estructura interna del ranking, pero no debe ser utilizado como un argumento de paridad competitiva entre regiones sin un an\'alisis adicional que incorpore partidos intercontinentales o mecanismos de calibraci\'on cruzada.
+
+\subsection{Resumen de los resultados}
+
+En conjunto, los resultados de este ap\'endice permiten extraer tres conclusiones principales. Primero, el motor Glicko‑2 modificado produce rankings que son consistentes con las fuentes externas m\'as consolidadas (ELO, UEFA, CONMEBOL), con concordancias moderadas-altas que validan la capacidad del sistema para ordenar equipos de múltiples regiones. Segundo, el modelo LSTM proyecta rankings que preservan la estructura ordinal del Glicko‑2 sin distorsi\'on significativa, aunque con una tendencia a comprimir las diferencias entre ligas en horizontes largos. Tercero, el modelo de nivel de poder revela una jerarqu\'ia de ligas en la que la Premier League ocupa el primer lugar de forma consistente, seguida por la Saudi Pro League y las grandes ligas europeas, mientras que las ligas sudamericanas y asi\'aticas ocupan posiciones m\'as rezagadas, con la excepci\'on de la Persian Gulf Pro League, que muestra un nivel competitivo superior al esperado.
+
+No obstante, estas conclusiones deben enmarcarse en la limitaci\'on de las \emph{islas de datos}. Las comparaciones numéricas entre regiones son v\'alidas en t\'erminos relativos dentro de cada universo competitivo, pero no deben interpretarse como evidencia de paridad o superioridad global. Futuros trabajos podr\'ian abordar esta limitación mediante técnicas de calibración de ratings que alineen las escalas de distintas regiones. Con esta salvedad, los resultados presentados ofrecen una validaci\'on s\'olida del sistema de ranking desarrollado y constituyen una base cuantitativa para futuros análisis comparativos.
+
+\section{Discusi\'on y limitaciones}
+
+Los resultados presentados en la Secci\'on anterior ofrecen una validación externa del sistema de \textit{ranking} desarrollado, pero tambi\'en revelan sus alcances y restricciones. En esta secci\'on se sintetizan los hallazgos principales, se discuten las limitaciones metodol\'ogicas y emp\'iricas que condicionan la interpretaci\'on, y se se\~nalan las precauciones necesarias al extrapolar las conclusiones a otros contextos. 
+
+\subsection{Resumen de hallazgos}
+
+Los resultados de este ap\'endice pueden resumirse en cuatro hallazgos principales.
+
+En primer lugar, el sistema Glicko‑2 modificado muestra una concordancia moderada-alta con los rankings externos m\'es consolidados. La correlación de Spearman con ELO Agosto 2025 alcanza \(\rho = 0.79\), mientras que con UEFA 2025 y CONMEBOL 2026 se sit\'ua en torno a \(\rho = 0.64\). Estas cifras, aunque no perfectas, son consistentes con las diferencias metodol\'ogicas esperables entre sistemas de rating que ponderan de forma distinta los partidos dom\'esticos, continentales e intercontinentales. La concordancia más alta con ELO, un sistema también basado en actualización secuencial de ratings, refuerza la validez del enfoque Glicko‑2 con las modificaciones.
+
+En segundo lugar, el modelo LSTM proyecta rankings que preservan la estructura ordinal del Glicko‑2 modificado con una fidelidad pr\'acticamente perfecta (\(\rho = 0.964\), \(n = 394\)). Este resultado es importante porque indica que las proyecciones a futuro no introducen distorsiones sistem\'aticas en el ordenamiento de los equipos; es decir, el modelo neuronal aprende la jerarqu\'ia de fuerzas subyacente sin alterarla significativamente.
+
+En tercer lugar, las proyecciones LSTM a 2026 mantienen una concordancia aceptable con UEFA 2026 (\(\rho = 0.700\)) y moderada con ELO Septiembre 2026 (\(\rho = 0.448\)). La caída respecto a la concordancia del Glicko‑2 hist\'orico con ELO (\(0.79\) vs \(0.45\)) refleja la incertidumbre inherente a cualquier proyecci\'on a un a\~no vista en un deporte de alta variabilidad como el f\'utbol. No obstante, el Overlap 10 de \(0.60\) indica que el modelo acierta en el 60\,\% de los equipos que componen la \'elite, lo que sugiere que la p\'erdida de precisi\'on se concentra en las posiciones medias y bajas del ranking.
+
+En cuarto lugar, el modelo de nivel de poder revela una jerarqu\'ia de ligas que, con las salvedades ya señaladas sobre las islas de datos, es consistente con la percepci\'on general del fútbol de clubes: la Premier League se sit\'ua claramente por delante, seguida por un grupo compacto formado por LaLiga, Serie A y Bundesliga, con Ligue 1 y las ligas sudamericanas en posiciones intermedias, y las ligas asi\'aticas, con la excepción de la Saudi Pro League, en la cola. La presencia de la Saudi Pro League y la Persian Gulf Pro League en posiciones altas dentro de sus respectivos modelos es un hallazgo que merece atenci\'on, aunque debe interpretarse con cautela debido a la limitaci\'on de las islas de datos.
+
+\subsection{Limitaciones}
+
+A pesar de la solidez de los resultados, es necesario reconocer varias limitaciones que condicionan el alcance de las conclusiones.
+
+La primera limitación es la \textbf{cobertura geogr\'afica incompleta}. El panel de ligas utilizado en este estudio, aunque extenso, no incluye confederaciones como CAF (\'Africa) u OFC (Ocean\'ia). Además, dentro de las confederaciones representadas, la cobertura no es exhaustiva: por ejemplo, de Sudam\'erica solo se incluyen Argentina, Brasil y Venezuela; de Asia, solo Arabia Saudita, Jap\'on, Corea del Sur e Ir\'an. Esto implica que los resultados de validaci\'on son representativos \'inicamente de las regiones y ligas activas en el estudio, y no necesariamente generalizables a otras.
+
+La segunda limitaci\'on es el \textbf{reducido tama\~no muestral en las comparaciones con AFC}. Con solo 15--16 equipos en cada año, las m\'etricas de concordancia (\(\rho = 0.079\) para 2025 y \(\rho = 0.120\) para 2026) son estad\'isticamente inestables. Cualquier interpretaci\'on de estos valores debe hacerse con extrema precauci\'on, pues una diferencia en el orden de dos o tres equipos puede alterar dr\'asticamente el coeficiente de correlación. Esta limitaci\'on es inherente a la propia estructura del ranking AFC, que clasifica \'unicamente a los equipos que participan en competiciones continentales asi\'aticas.
+
+La tercera limitaci\'on es la diferencia de escalas entre sistemas de puntuaci\'on. UEFA y AFC utilizan coeficientes que t\'ipicamente oscilan entre 0 y 150 puntos, mientras que Glicko‑2 y ELO emplean escalas centradas entre 1500 y 2000. Aunque las m\'etricas de concordancia ordinal (Spearman, Kendall, Overlap) son invariantes a transformaciones mon\'otonas de la escala, la comparaci\'on directa de valores absolutos no es posible. Esto impide, por ejemplo, afirmar que un equipo con \(\mu = 1700\) en Glicko‑2 es equivalente a un equipo con 100 puntos en UEFA. Las tablas de nivel de poder presentadas en este ap\'endice evitan esta comparaci\'on directa y se limitan a comparar posiciones relativas dentro de cada sistema.
+
+La cuarta limitaci\'on, ya anticipada, es la \textbf{existencia de islas de datos}. La escasa conectividad intercontinental entre ligas implica que los ratings de equipos de distintas regiones no son directamente comparables en términos absolutos. Un equipo con \(\mu = 1700\) en Europa y otro con \(\mu = 1700\) en Asia pueden no tener el mismo nivel de poder real, porque sus ratings se han construido en universos competitivos casi independientes. Esto afecta especialmente a las tablas de nivel de poder, donde se comparan medias de ligas de distintas confederaciones. El lector debe interpretar estas comparaciones como una descripci\'on de la estructura interna del ranking, no como una medición objetiva de paridad global.
+
+Por \'ultimo, la incertidumbre de las proyecciones LSTM a horizontes largos es una limitación pr\'ctica. La concordancia con ELO Septiembre 2026 (\(\rho = 0.448\)) indica que el error en el ordenamiento global es considerable. Esto es esperable dado el carácter estoc\'astico del fútbol, pero tambi\'en sugiere que las proyecciones más all\'a de unos pocos meses deben interpretarse con cautela y, preferiblemente, complementarse con intervalos de confianza o an\'alisis de sensibilidad. En su estado actual, el sistema es más fiable para proyecciones a corto plazo que para horizontes de un a\~no completo.
+
+Estas limitaciones no invalidan los resultados obtenidos, pero s\'i delimitan el dominio de validez de las conclusiones. El sistema de ranking desarrollado es robusto dentro del conjunto de ligas y per\'iodos considerados, pero su generalizaci\'on a otras regiones, otros horizontes temporales o comparaciones intercontinentales directas requiere precauciones adicionales y, posiblemente, la incorporaci\'on de nuevas fuentes de datos y mecanismos de calibraci\'on.
