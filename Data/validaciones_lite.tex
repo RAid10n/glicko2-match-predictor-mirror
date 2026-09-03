@@ -1,0 +1,20 @@
+\begin{table}[htbp]
+\centering
+\caption{Validaciones contra rankings institucionales (Lite)}
+\label{tab:validaciones_lite}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Validación} & \textbf{N} & \textbf{Spearman $\rho$} & \textbf{Kendall $\tau$} & \textbf{Overlap@10} & \textbf{Overlap@20} & \textbf{MAE pos} \\
+\midrule
+UEFA 2025 & 44 & 0.651 & 0.475 & 0.700 & 0.750 & 8.1 \\
+ELO Ago 2025 & 79 & 0.786 & 0.609 & 0.700 & 0.750 & 11.4 \\
+AFC 2025 & 16 & 0.079 & 0.050 & 0.600 & 0.800 & 5.1 \\
+CONMEBOL 2026 & 77 & 0.643 & 0.470 & 0.600 & 0.600 & 14.0 \\
+LSTM vs UEFA 2026 & 47 & 0.704 & 0.539 & 0.900 & 0.700 & 7.5 \\
+LSTM vs ELO Sep 2026 & 273 & 0.473 & 0.333 & 0.700 & 0.650 & 61.3 \\
+LSTM vs AFC 2026 & 15 & 0.170 & 0.115 & 0.800 & 0.750 & 4.9 \\
+ARIMA Lite & 411 & 0.990 & 0.941 & 0.800 & 0.950 & 9.2 \\
+LSTM Lite & 411 & 0.985 & 0.903 & 0.900 & 0.950 & 14.2 \\
+\bottomrule
+\end{tabular}
+\end{table}

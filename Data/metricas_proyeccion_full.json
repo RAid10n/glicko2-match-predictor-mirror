@@ -1,12 +1,12 @@
 {
-  "rmse_arima": 6.783626540404005,
-  "mae_arima": 4.299707569863902,
-  "rmse_lstm": 9.53839612328396,
-  "mae_lstm": 6.297894395170823,
-  "diff_rmse": -2.7547695828799545,
-  "spearman_arima_mean": 0.9972918679990189,
-  "spearman_arima_std": 0.0014015086220864393,
-  "spearman_lstm_mean": 0.9965035878725614,
-  "spearman_lstm_std": 0.0013194336903617752,
-  "lstm_win_ratio": 0.30980392156862746
+  "rmse_arima": 6.87619427410697,
+  "mae_arima": 4.4232040647313005,
+  "rmse_lstm": 9.717204708044767,
+  "mae_lstm": 6.9706392665569075,
+  "diff_rmse": -2.8410104339377966,
+  "spearman_arima_mean": 0.9975149652443007,
+  "spearman_arima_std": 0.0012913136722046495,
+  "spearman_lstm_mean": 0.9967392249371362,
+  "spearman_lstm_std": 0.0011909688952589743,
+  "lstm_win_ratio": 0.22592592592592592
 }

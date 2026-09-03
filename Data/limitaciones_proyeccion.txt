@@ -1,0 +1,33 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LIMITACIONES DEL MODELO DE PROYECCIÓN ARIMA + LSTM
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{itemize}
+    \item \textbf{Baja frecuencia:} Aproximadamente 400 puntos en 8 años, 
+    insuficiente para capturar estacionalidad anual robusta.
+    
+    \item \textbf{Huecos estructurales:} El verano europeo ($\sim$10--12 semanas) 
+    genera tramos planos por forward-fill. La pandemia COVID-19 (Mar--Jun 2020) 
+    rompe series con gaps $>$ 12 semanas.
+    
+    \item \textbf{Calendarios asincrónicos:} Ligas anuales (MLS, J1) vs. 
+    temporadas europeas crean un panel no sincronizado donde el ``estado'' de 
+    los equipos evoluciona a ritmos distintos.
+    
+    \item \textbf{LSTM global:} Asume patrones transferibles entre equipos de 
+    distintas ligas, lo cual puede no ser válido.
+    
+    \item \textbf{Sin covariables:} Solo se utiliza $\mu$ histórico. No se 
+    incorpora información de mercado de fichajes, lesiones, fixture ni 
+    condición de localía.
+    
+    \item \textbf{Ranking indirecto:} Se predice $\mu$ continuo; la conversión 
+    a posición ordinal introduce ruido adicional en la zona media del ranking.
+    
+    \item \textbf{Split 70/30:} El conjunto de test incluye el parón estival 
+    europeo 2025, donde muchos equipos tienen $\mu$ estático por inactividad, 
+    sesgando el error de ARIMA hacia cero para esos equipos.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
