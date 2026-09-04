@@ -393,6 +393,7 @@ Para comprender el origen de las diferencias, se analizan los equipos y ligas co
 	\caption{Top 10 global de equipos con mayor $|\Delta \mu|$ (dataset Full).}
 	\label{tab:app_b_top10_full}
 	\small
+	\resizebox{\textwidth}{!}{%
 	\begin{tabular}{lccccccc}
 		\toprule
 		\textbf{Equipo} & \textbf{Liga} & $\mu_{\text{naive}}$ & $\mu_{\text{G2}}$ & $|\Delta \mu|$ & \textbf{Rank naive} & \textbf{Rank G2} \\
@@ -408,7 +409,7 @@ Para comprender el origen de las diferencias, se analizan los equipos y ligas co
 		Mazatlán & Liga MX & 1404.28 & 1311.51 & 92.77 & 240 & 311 \\
 		Real Valladolid & LaLiga & 1285.32 & 1193.33 & 91.99 & 325 & 334 \\
 		\bottomrule
-	\end{tabular}
+	\end{tabular}}%
 \end{table}
 
 \newpage
@@ -420,6 +421,7 @@ La Tabla~\ref{tab:app_b_league_full} presenta, para cada liga, el equipo con may
 	\caption{Top 10 ligas con mayor $|\Delta \mu|$ del equipo más discrepante (dataset Full).}
 	\label{tab:app_b_league_full}
 	\small
+	\resizebox{\textwidth}{!}{%
 	\begin{tabular}{lcccccc}
 		\toprule
 		\textbf{Liga} & \textbf{Equipo} & $\mu_{\text{naive}}$ & $\mu_{\text{G2}}$ & $|\Delta \mu|$ & \textbf{Rank \textit{naive}} & \textbf{Rank G2} \\
@@ -435,7 +437,7 @@ La Tabla~\ref{tab:app_b_league_full} presenta, para cada liga, el equipo con may
 		Super League Grecia & Xanthi & 1356.75 & 1427.06 & 70.32 & 295 & 177 \\
 		K League 1 & Suwon Samsung BW & 1415.75 & 1357.58 & 58.16 & 226 & 265 \\
 		\bottomrule
-	\end{tabular}
+	\end{tabular}}%
 \end{table}
 
 El \textit{dataset Lite}, al incluir ligas adicionales, presenta una mayor dispersi\'on. La Tabla~\ref{tab:app_b_top10_lite} muestra el Top 10 global para este \textit{dataset}.
@@ -445,6 +447,7 @@ El \textit{dataset Lite}, al incluir ligas adicionales, presenta una mayor dispe
 	\caption{Top 10 global de equipos con mayor $|\Delta \mu|$ (dataset Lite).}
 	\label{tab:app_b_top10_lite}
 	\small
+	\resizebox{\textwidth}{!}{%
 	\begin{tabular}{lccccccc}
 		\toprule
 		\textbf{Equipo} & \textbf{Liga} & $\mu_{\text{naive}}$ & $\mu_{\text{G2}}$ & $|\Delta \mu|$ & \textbf{Rank naive} & \textbf{Rank G2} \\
@@ -460,7 +463,7 @@ El \textit{dataset Lite}, al incluir ligas adicionales, presenta una mayor dispe
 		Rayo Vallecano & LaLiga & 1518.07 & 1396.09 & 121.99 & 150 & 239 \\
 		Las Palmas & LaLiga & 1392.68 & 1271.89 & 120.79 & 310 & 396 \\
 		\bottomrule
-	\end{tabular}
+	\end{tabular}}%
 \end{table}
 
 \newpage
@@ -472,6 +475,7 @@ Y la Tabla~\ref{tab:app_b_league_lite} muestra el Top 10 de ligas m\'as sensible
 	\caption{Top 10 ligas con mayor $|\Delta \mu|$ del equipo más discrepante (dataset Lite).}
 	\label{tab:app_b_league_lite}
 	\small
+	\resizebox{\textwidth}{!}{%
 	\begin{tabular}{lcccccc}
 		\toprule
 		\textbf{Liga} & \textbf{Equipo} & $\mu_{\text{naive}}$ & $\mu_{\text{G2}}$ & $|\Delta \mu|$ & \textbf{Rank naive} & \textbf{Rank G2} \\
@@ -487,7 +491,7 @@ Y la Tabla~\ref{tab:app_b_league_lite} muestra el Top 10 de ligas m\'as sensible
 		Liga Profesional Argentina & Aldosivi & 1414.18 & 1328.97 & 85.21 & 275 & 347 \\
 		K League 1 & Suwon Samsung BW & 1441.86 & 1368.16 & 73.71 & 242 & 294 \\
 		\bottomrule
-	\end{tabular}
+	\end{tabular}}%
 \end{table}
 
 \subsection{Top 10 de la \'elite seg\'un el modelo calibrado}
@@ -603,7 +607,7 @@ Se comparan dos enfoques:
 	\item Una red \textit{Long Short-Term Memory (LSTM)} global, que aprende patrones transferibles entre equipos compartiendo par\'ametros.
 \end{enumerate}
 
-La evaluaci\'on se realiza sobre el \textsc{dataset Full}, el \textsc{dataset Lite} y el \textsc{dataset Lite Recortado} en un r\'egimen de \textit{backtesting}, y se complementa con una proyecci\'on a futuro para el Ap\'endice~\ref{ap:forecasting}. El horizonte de prueba abarca desde mediados de 2023 hasta diciembre de 2025 para el \textit{dataset Full}, lo que permite evaluar el desempe\~no en condiciones reales de estacionalidad y parones competitivos.
+La evaluaci\'on se realiza sobre el \textsc{dataset Full} y el \textsc{dataset Lite} en un r\'egimen de \textit{backtesting}, y se complementa con una proyecci\'on a futuro para el Ap\'endice~\ref{ap:forecasting}. El horizonte de prueba abarca desde mediados de 2023 hasta diciembre de 2025 para el \textit{dataset Full}, lo que permite evaluar el desempe\~no en condiciones reales de estacionalidad y parones competitivos.
 
 \section{Justificaci\'on de la agregaci\'on semanal}
 \label{ap:justificacion_semanal}
@@ -625,7 +629,7 @@ La proyecci\'on de series temporales de ratings $\mu$ requiere modelos capaces d
 \subsection{Modelos ARIMA: fundamentos y aplicaci\'on univariada}
 \label{ap:arima_teoria}
 
-El modelo ARIMA constituye una generalizaci\'on de los procesos autorregresivos de media m\'ovil (ARMA) para series no estacionarias, mediante la inclusi\'on de un operador de diferencias \cite{brockwell2002,shumway2002}. Su formulaci\'on general para una serie $\{x_t\}$ se escribe como:
+El modelo ARIMA constituye una generalizaci\'on de los procesos autorregresivos de media m\'ovil (ARMA) para series no estacionarias, mediante la inclusi\'on de un operador de diferencias \cite{brockwell2002,shumway2006}. Su formulaci\'on general para una serie $\{x_t\}$ se escribe como:
 
 \begin{equation}
 	\phi(B)(1-B)^d x_t = \theta(B) w_t,
@@ -668,11 +672,11 @@ El punto de partida son los archivos hist\'oricos de ratings generados por el m\
 	\item \textbf{Agregaci\'on semanal}: Para cada par \texttt{(team, year\_week)}, se toma el \'ultimo valor de \(\mu\) registrado en esa semana (\texttt{last()}).
 	\item \textbf{Pivote a panel}: Se construye una tabla con \'indice \texttt{year\_week} y columnas \texttt{team}, rellenando con los valores de \(\mu\).
 	\item \textbf{Frecuencia regular}: Se fuerza la frecuencia semanal (\texttt{asfreq('W-MON')}), insertando filas para semanas sin datos.
-	\item \textbf{Forward fill con l\'imite}: Se aplica \texttt{ffill(limit=12)} para propagar el \'ultimo valor conocido durante períodos de inactividad cortos.
-	\item \textbf{Filtros de calidad}: Se eliminan equipos con desviación t\'ipica nula (\texttt{std == 0}) y aquellos con menos de 20 observaciones reales (\texttt{MIN\_OBSERVATIONS}), para garantizar series con suficiente variabilidad y soporte muestral.
+	\item \textbf{Forward fill con l\'imite}: Se aplica \texttt{ffill(limit=30)} para propagar el \'ultimo valor conocido durante per\'iodos de inactividad cortos.
+	\item \textbf{Filtros de calidad}: Se eliminan equipos con desviaci\'on t\'ipica nula (\texttt{std == 0}) y aquellos con menos de 20 observaciones reales (\texttt{MIN\_OBSERVATIONS}), para garantizar series con suficiente variabilidad y soporte muestral.
 \end{enumerate}
 
-La Tabla~\ref{tab:panel_dimensiones} resume las dimensiones resultantes para cada dataset. N\'otese que el \textsc{dataset Full} y el \textsc{dataset Lite Recortado} comparten id\'entica ventana temporal (2019--2025), mientras que el \textsc{dataset Lite} se extiende a las temporadas 2017--2018, lo que explica su mayor n\'umero de equipos y semanas.
+La Tabla~\ref{tab:panel_dimensiones} resume las dimensiones resultantes para cada dataset. N\'otese que el \textit{dataset Full} y el \textit{dataset Lite} difieren en ventanas temporales, (2019--2025) y (2017--2025) respectivamente, es decir, el \textit{dataset Lite} se extiende a las temporadas 2017--2018, lo que explica su mayor n\'umero de equipos y semanas.
 
 \begin{table}[htbp]
 	\centering
@@ -683,17 +687,16 @@ La Tabla~\ref{tab:panel_dimensiones} resume las dimensiones resultantes para cad
 			\toprule
 			\textbf{Dataset} & \textbf{Sem.} & \textbf{Equ. ini.} & \textbf{Elim. std=0} & \textbf{Elim. obs<20} & \textbf{Eq. fin.} & \textbf{Fecha split} & \textbf{Train / Test} \\
 			\midrule
-			Full            & 346 & 325 & 0 & 10 & 315 & 2023-12-19 & 242 / 104 \\
-			Lite            & 425 & 404 & 0 & 6  & 398 & 2023-07-04 & 297 / 128 \\
-			Lite Recortado  & 346 & 325 & 0 & 10 & 315 & 2023-12-19 & 242 / 104 \\
+			Full            & 346 & 336 & 0 & 3 & 333 & 2023-12-19 & 242 / 104 \\
+			Lite            & 425 & 414 & 0 & 3  & 411 & 2023-07-04 & 297 / 128 \\
 			\bottomrule
 		\end{tabular}}%
 \end{table}
 
 La selecci\'on autom\'atica de equipos representativos para la visualizaci\'on posterior arrojó los siguientes conjuntos:
 \begin{itemize}
-	\item \textbf{Full y Lite Recortado}: Manchester City, Real Madrid, 1.FC K\:oln, Colorado Rapids, Toronto FC, Cincinnati FC.
-	\item \textbf{Lite}: Manchester City, Real Madrid, Panionios, Leeds United, Sepahan, Cincinnati FC.
+	\item \textbf{Full}: Manchester City, Bayern M\:unchen, Dallas, Valencia, Toronto, Cincinnati.
+	\item \textbf{Lite}: Manchester City, Bayern M\:unchen, Minnesota United, Cuiaba, Sepahan, Cincinnati.
 \end{itemize}
 
 Esta selecci\'on cubre equipos de alto rating (Top 2), rating medio (pr\'oximos a la mediana) y alta volatilidad, asegurando una muestra diversa para el an\'alisis gr\'afico.
@@ -717,7 +720,7 @@ Para cada semana del conjunto de prueba, se genera una predicci\'on \textit{one-
 \]
 Tras observar el valor real \(\mu_{t+1}\), se actualiza el modelo mediante \texttt{model.update([actual])}, permitiendo que el estimador incorpore la nueva informaci\'on en tiempo real, simulando as\'i un entorno de producci\'on.
 
-La Tabla~\ref{tab:arima_ejecucion} resume las estad\'isticas de ejecuci\'on. El tiempo total de procesamiento fue de aproximadamente 25 minutos para el \textsc{dataset Full} y 36 minutos para el \textsc{dataset Lite}. La ausencia de \textit{timeouts} y errores confirma la estabilidad de la configuraci\'on elegida.
+La Tabla~\ref{tab:arima_ejecucion} resume las estad\'isticas de ejecuci\'on. El tiempo total de procesamiento fue de aproximadamente 20 minutos para el \textsc{dataset Full} y 32 minutos para el \textsc{dataset Lite}. La ausencia de \textit{timeouts} y errores confirma la estabilidad de la configuraci\'on elegida.
 
 \begin{table}[htbp]
 	\centering
@@ -727,14 +730,13 @@ La Tabla~\ref{tab:arima_ejecucion} resume las estad\'isticas de ejecuci\'on. El 
 		\toprule
 		\textbf{Dataset} & \textbf{Equipos totales} & \textbf{\'Exitos} & \textbf{Saltados} & \textbf{Timeouts} & \textbf{Errores} \\
 		\midrule
-		Full            & 315 & 289 & 26 & 0 & 0 \\
-		Lite            & 398 & 366 & 32 & 0 & 0 \\
-		Lite Recortado  & 315 & 289 & 26 & 0 & 0 \\
+		Full            & 333 & 304 & 29 & 0 & 0 \\
+		Lite            & 411 & 376 & 35 & 0 & 0 \\
 		\bottomrule
 	\end{tabular}
 \end{table}
 
-Los equipos saltados corresponden a aquellos con menos de 24 observaciones en el conjunto de entrenamiento o con desviaci\'on t\'ipica nula, casos en los que la estimac\'on de par\'ametros ARIMA no es fiable.
+Los equipos saltados corresponden a aquellos con menos de 24 observaciones en el conjunto de entrenamiento o con desviaci\'on t\'ipica nula, casos en los que la estimaci\'on de par\'ametros ARIMA no es fiable.
 
 \section{Modelo LSTM global}
 \label{ap:lstm_global}
@@ -781,14 +783,13 @@ La Tabla~\ref{tab:lstm_dimensiones} muestra el n\'umero de secuencias generadas 
 		\toprule
 		\textbf{Dataset} & \textbf{Secuencias train} & \textbf{Secuencias test} & \textbf{Equipos con predicci\'on} \\
 		\midrule
-		Full            & 47\,094 & 20\,928 & 256 \\
-		Lite            & 69\,877 & 29\,279 & 296 \\
-		Lite Recortado  & 47\,094 & 20\,928 & 256 \\
+		Full            & 52\,674 & 25\,632 & 283 \\
+		Lite            & 76\,496 & 35\,008 & 312 \\
 		\bottomrule
 	\end{tabular}
 \end{table}
 
-Los equipos exclu\'idos de la LSTM fueron 17 en el \textsc{dataset Full} y 27 en el \textsc{dataset Lite}, estos son aquellos con menos de \(T+1 = 9\) observaciones en el panel, insuficientes para formar al menos una secuencia completa.
+Los equipos exclu\'idos de la LSTM fueron 19 en el \textit{dataset Full} y 30 en el \textit{dataset Lite}, estos son aquellos con menos de \(T+1 = 9\) observaciones en el panel, insuficientes para formar al menos una secuencia completa.
 
 \section{Evaluaci\'on comparativa}
 \label{ap:evaluacion_comparativa}
@@ -797,7 +798,7 @@ La comparaci\'on entre ARIMA y LSTM se realiza sobre el conjunto de prueba, util
 
 \subsection{M\'etricas globales}
 
-La Tabla~\ref{tab:metricas_globales} consolida los resultados para los tres datasets. Se observa un patr\'on consistente: el modelo ARIMA supera a la LSTM en RMSE y MAE en todos los casos, con una ventaja de 2.76 puntos $\mu$ en el \textit{dataset Full}, 6.17 puntos $\mu$ en el \textit{dataset Lite} y 2.41 puntos $\mu$ en el \textit{dataset Lite Recortado}. Esta diferencia es atribuible a la estructura del conjunto de prueba: al incluir el parón estival de 2025, donde muchas series permanecen planas por \texttt{ffill}, el ARIMA (que esencialmente predice el último valor observado) obtiene errores casi nulos en esas semanas. La LSTM, al intentar modelar dinámicas no lineales, introduce variaciones que penalizan el error absoluto.
+La Tabla~\ref{tab:metricas_globales} consolida los resultados para los tres datasets. Se observa un patr\'on consistente: el modelo ARIMA supera a la LSTM en RMSE y MAE en todos los casos, con una ventaja de 2.76 puntos $\mu$ en el \textit{dataset Full} y 6.17 puntos $\mu$ en el \textit{dataset Lite}. Esta diferencia es atribuible a la estructura del conjunto de prueba: al incluir el parón estival de 2025, donde muchas series permanecen planas por \texttt{ffill}, el ARIMA (que esencialmente predice el último valor observado) obtiene errores casi nulos en esas semanas. La LSTM, al intentar modelar dinámicas no lineales, introduce variaciones que penalizan el error absoluto.
 
 \begin{table}[htbp]
 	\centering
@@ -807,30 +808,27 @@ La Tabla~\ref{tab:metricas_globales} consolida los resultados para los tres data
 		\toprule
 		\textbf{Dataset} & \textbf{Modelo} & \textbf{RMSE} & \textbf{MAE} & \textbf{Spearman \(\rho\)} & \textbf{LSTM wins} \\
 		\midrule
-		\multirow{2}{*}{Full} & ARIMA & 7.2887 & 4.9211 & 0.9965 \(\pm\) 0.0019 & \multirow{2}{*}{20.6\%} \\
-		& LSTM  & 10.0447 & 7.1382 & 0.9954 \(\pm\) 0.0022 & \\
+		\multirow{2}{*}{Full} & ARIMA & 6.8762 & 4.4232 & 0.9975 \(\pm\) 0.0013 & \multirow{2}{*}{22.6\%} \\
+		& LSTM  & 9.7172 & 6.9706 & 0.9967 \(\pm\) 0.0012 & \\
 		\midrule
-		\multirow{2}{*}{Lite} & ARIMA & 10.8003 & 5.3221 & 0.9957 \(\pm\) 0.0031 & \multirow{2}{*}{31.6\%} \\
-		& LSTM  & 16.9750 & 8.1474 & 0.9902 \(\pm\) 0.0059 & \\
-		\midrule
-		\multirow{2}{*}{Lite Recortado} & ARIMA & 7.2887 & 4.9211 & 0.9965 \(\pm\) 0.0019 & \multirow{2}{*}{23.9\%} \\
-		& LSTM  & 9.6968 & 6.9721 & 0.9955 \(\pm\) 0.0022 & \\
+		\multirow{2}{*}{Lite} & ARIMA & 10.0526 & 4.8368 & 0.9967 \(\pm\) 0.0026 & \multirow{2}{*}{37.9\%} \\
+		& LSTM  & 16.9699 & 7.6892 & 0.9913 \(\pm\) 0.0057 & \\
 		\bottomrule
 	\end{tabular}
 \end{table}
 
 \paragraph{Spearman \(\rho\): preservaci\'on del ranking.}
-Ambos modelos alcanzan coeficientes de Spearman superiores a \(0.99\) en todos los \textit{datasets}. Este resultado es notable: aunque la LSTM erre m\'as en la magnitud absoluta de \(\mu\), preserva el ordenamiento relativo de los equipos casi a la perfecci\'on. La desviaci\'on est\'andar de \(\rho\) es ligeramente mayor en el \textsc{dataset Lite} para la LSTM (0.0059), lo que sugiere una mayor inestabilidad semana a semana en el universo ampliado de competiciones.
+Ambos modelos alcanzan coeficientes de Spearman superiores a \(0.99\) en todos los \textit{datasets}. Este resultado es notable: aunque la LSTM erre m\'as en la magnitud absoluta de \(\mu\), preserva el ordenamiento relativo de los equipos casi a la perfecci\'on. La desviaci\'on est\'andar de \(\rho\) es ligeramente mayor en el \textsc{dataset Lite} para la LSTM (0.0057), lo que sugiere una mayor inestabilidad semana a semana en el universo ampliado de competiciones.
 
 \subsection{Desempe\~no por equipo}
 
-A nivel individual, la LSTM solo supera en el 20.6\% (\textit{dataset Full}), 31.6\% (\textit{dataset Lite}) y 23.9\% (\textit{dataset Lite Recortado}) de los equipos. El an\'alisis de los casos donde la LSTM es superior revela que se trata, en su mayor\'ia, de equipos con alta volatilidad en su serie hist\'orica. Estos equipos presentan cambios bruscos en \(\mu\) asociados a reestructuraciones de plantilla o cambios de entrenador; la LSTM, al aprender patrones de otros equipos vol\'atiles, logra anticipar estas transiciones mejor que el ARIMA univariado. En contraste, para equipos estables el ARIMA es claramente superior.
+A nivel individual, la LSTM solo supera a ARIMA en el 22.6\% (\textit{dataset Full}) y 37.9\% (\textit{dataset Lite})) de los equipos. El an\'alisis de los casos donde la LSTM es superior revela que se trata, en su mayor\'ia, de equipos con alta volatilidad en su serie hist\'orica. Estos equipos presentan cambios bruscos en \(\mu\) asociados a reestructuraciones de plantilla o cambios de entrenador; la LSTM, al aprender patrones de otros equipos vol\'atiles, logra anticipar estas transiciones mejor que el ARIMA univariado. En contraste, para equipos estables el ARIMA es claramente superior.
 
 \subsection{Visualizaciones descriptivas}
 
 Las m\'etricas agregadas de la Tabla~\ref{tab:metricas_globales} resumen el desempe\~no num\'erico de ambos modelos, pero un an\'alisis visual de las series temporales y los errores de predicci\'on permite identificar comportamientos diferenciales que complementan la evaluaci\'on cuantitativa. En particular, la inspección gr\'afica de las trayectorias de \(\mu\) revela c\'omo cada modelo responde ante per\'iodos de inactividad prolongada, cambios bruscos de rendimiento y la heterogeneidad de calendarios entre competiciones. Por su parte, los diagramas de dispersi\'on, \(\mu\) real (\texttt{G2Av1513}  vs. \(\mu\) predicho, permiten evaluar la calibraci\'on puntual de las predicciones y detectar posibles sesgos sistem\'aticos en la estimaci\'on de los ratings, más all\'a de los errores agregados. Por otro lado, los histogramas de errores complementan el an\'alisis al mostrar la distribuci\'on de los residuos, revelando si los errores se concentran sim\'etricamente alrededor de cero o si presentan colas que indican subestimaci\'on o sobreestimaci\'on en rangos espec\'ificos de \(\mu\).
 
-Las Figuras~\ref{fig:ARIMAvsLSTMfull}-\ref{fig:ARIMAvsLSTMliterec} agrupan, para cada conjunto de datos, las series temporales de los seis equipos representativos, mientras que la Figura~\ref{fig:scatters_datasets} muestra los diagramas de dispersión (ARIMA y LSTM) y la Figura ~\ref{fig:hist_ARIMALSTM} los histogramas de los errores de predicci\'on de \(\mu\).
+Las Figuras~\ref{fig:ARIMAvsLSTMfull} y \ref{fig:ARIMAvsLSTMlite} agrupan, para cada conjunto de datos, las series temporales de los seis equipos representativos, mientras que la Figura~\ref{fig:comparativa_scatters} muestra los diagramas de dispersión (ARIMA y LSTM) y la Figura~\ref{fig:comparativa_histogramas} los histogramas de los errores de predicci\'on de \(\mu\).
 
 \begin{figure}[htbp]
 	\centering
@@ -846,12 +844,6 @@ Las Figuras~\ref{fig:ARIMAvsLSTMfull}-\ref{fig:ARIMAvsLSTMliterec} agrupan, para
 \end{figure}
 
 \begin{figure}[htbp]
-	\includegraphics[width=0.85\textwidth]{ARIMAvsLSTMliterec}
-	\caption{Comparativa de predicciones ARIMA y LSTM frente al rating real (G2Av1513) - Dataset Lite Recortado}
-	\label{fig:ARIMAvsLSTMliterec}
-\end{figure}
-
-\begin{figure}[htbp]
 	\centering
 	\begin{subfigure}[b]{0.6\textwidth}
 		\includegraphics[width=\textwidth]{ScatterARIMALSTMfull.png}
@@ -863,12 +855,6 @@ Las Figuras~\ref{fig:ARIMAvsLSTMfull}-\ref{fig:ARIMAvsLSTMliterec} agrupan, para
 		\includegraphics[width=\textwidth]{ScatterARIMALSTMlite.png}
 		\caption{Dataset Lite}
 		\label{fig:Scatterlite}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.6\textwidth}
-		\includegraphics[width=\textwidth]{ScatterARIMALSTMliterec.png}
-		\caption{Dataset Lite Recortado}
-		\label{fig:Scatterliterec}
 	\end{subfigure}
 	\caption{Comparativa de diagramas de Dispersion ARIMA y LSTM.}
 	\label{fig:comparativa_scatters}
@@ -887,38 +873,27 @@ Las Figuras~\ref{fig:ARIMAvsLSTMfull}-\ref{fig:ARIMAvsLSTMliterec} agrupan, para
 		\caption{Dataset Lite}
 		\label{fig:error_lite}
 	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.6\textwidth}
-		\includegraphics[width=\textwidth]{ErrorARIMALSTMliterec.png}
-		\caption{Dataset Lite Recortado}
-		\label{fig:error_lite_rec}
-	\end{subfigure}
 	\caption{Comparativa de histogramas de errores ARIMA y LSTM.}
 	\label{fig:comparativa_histogramas}
 \end{figure}
 
 \paragraph{An\'alisis general.}
-En los tres \textit{datasets}, ambos modelos siguen la tendencia general del rating real, con coeficientes de Spearman superiores a \(0.99\) (Tabla~\ref{tab:metricas_globales}). Los diagramas de dispersi\'on muestran una alta concentraci\'on alrededor de la diagonal, confirmando la capacidad de ambos enfoques para preservar el ordenamiento relativo de los equipos. Los histogramas de errores est\'an centrados cerca de cero, aunque la LSTM presenta colas m\'as anchas en todos los casos, reflejando su mayor RMSE y MAE.
+En los dos \textit{datasets}, ambos modelos siguen la tendencia general del rating real, con coeficientes de Spearman superiores a \(0.99\) (Tabla~\ref{tab:metricas_globales}). Los diagramas de dispersi\'on muestran una alta concentración alrededor de la diagonal, confirmando la capacidad de ambos enfoques para preservar el ordenamiento relativo de los equipos. Los histogramas de errores, si bien centrados cerca de cero, presentan formas diferenciadas entre modelos y datasets. La LSTM exhibe colas m\'as altas en una distribuci\'on aproximadamente piramidal, reflejando su mayor RMSE y MAE. En contraste, ARIMA muestra una forma multimodal en el \textit{dataset Full}: tres picos, con el pico central dominante en cero, que se aten\'ua a una forma m\'as piramidal en el \textit{dataset Lite}; esta diferencia refleja la mayor sensibilidad de ARIMA a la estructura temporal de los datos y su inercia autorregresiva, que se manifiesta en una mayor concentraci\'on de errores en valores discretos durante per\'iodos de alta regularidad competitiva.
 
 \paragraph{An\'alisis diferenciado por dataset.}
 
 \begin{itemize}
-	\item \textbf{Dataset Full (Figura~\ref{fig:full_completa}):} ARIMA y LSTM se comportan de manera consistente. Las series temporales muestran que ambos modelos capturan las fluctuaciones estacionales y los cambios de forma de los equipos, con la LSTM introduciendo ligeras oscilaciones adicionales durante los per\'iodos de inactividad estival, pero sin divergencias significativas. El scatter y los histogramas confirman la superioridad de ARIMA en error absoluto, coherente con los RMSE reportados (\(7.29\) vs \(10.04\)).
+	\item \textbf{Dataset Full (Figura~\ref{fig:ARIMAvsLSTMfull}):} ARIMA y LSTM se comportan de manera consistente. Las series temporales muestran que ambos modelos capturan las fluctuaciones estacionales y los cambios de forma de los equipos, con la LSTM siendo mas estable los per\'iodos de inactividad, sin divergencias significativas entre ambos. El scatter y los histogramas confirman la superioridad de ARIMA en error absoluto, coherente con los RMSE reportados (\(6.88\) vs \(9.72\)).
 	
-	\item \textbf{Dataset Lite (Figura~\ref{fig:lite_completa}):} Este dataset presenta un hallazgo diferencial que no se observa en los otros conjuntos: el comportamiento de los modelos en el equipo Leeds United durante un período de inactividad prolongada. Mientras que el rating real \(\mu\) (G2A) permanece plano, ARIMA y LSTM reaccionan de forma radicalmente distinta:
-	\begin{itemize}
-		\item \textbf{ARIMA oscila:} el modelo autorregresivo, al actualizar secuencialmente con valores planos, introduce una inercia que genera oscilaciones amortiguadas. El t\'ermino AR(1) intenta ajustar una tendencia que no existe, produciendo un efecto de rebote que se aten\'ua gradualmente.
-		\item \textbf{LSTM se estaciona:} al usar una ventana fija de 8 semanas con valores constantes, la red predice valores constantes sin inercia oscilatoria. La LSTM global, al haber aprendido de otros equipos que en períodos sin actividad la mejor predicci\'on es mantener el valor, se estabiliza r\'apidamente.
-	\end{itemize}
-	Esta divergencia evidencia una diferencia estructural entre ambos enfoques: ARIMA tiene memoria larga, es decir, dependencia de todos los valores pasados, que genera oscilaciones ante cambios abruptos en la entrada, mientras que LSTM, con su ventana limitada, reacciona de manera m\'as estable. El fen\'omeno solo aparece en el \textit{dataset Lite} porque incluye el ciclo completo de ascenso/descenso de Leeds United (2017--2025), mientras que en el \textit{dataset Full} y \textit{dataset Lite Recortado} (2019--2025) la serie es m\'as corta y no alcanza a generar este efecto. Adicionalmente, en el subgr\'afico de series temporales del \textit{dataset Lite} aparece un espacio en blanco correspondiente a \texttt{Panionios}, equipo exclu\'ido del panel por inactividad prolongada (ver Secci\'on~\ref{ap:panel_semanal}).
+	\item \textbf{Dataset Lite (Figura~\ref{fig:ARIMAvsLSTMlite}):} Este dataset presenta un hallazgo estructural que no se observa en el \textit{dataset Full}: en equipos pertenecientes a torneos de calendario interanual (Manchester City, Bayern M\:unchen y Sepahan), ARIMA exhibe picos oscilatorios durante los per\'iodos de inactividad prolongada y durante caidas bruscas de (\(\mu\)), esto \'utimo queda en evidencia cuando el modelo autorregresivo, al actualizar secuencialmente con valores planos, genera efectos de rebote que se amortiguan lentamente. En contraste, LSTM se mantiene estable, moderando tanto las ca\'idas bruscas como los rebotes posteriores. Este fen\'omeno no ocurre en equipos de calendario anual, donde los parones son m\'as cortos y distribuidos, ni en el \textit{dataset Full}, donde la ventana temporal más reducida (2019--2025) contiene menos ciclos completos de inactividad.
 	
-	\item \textbf{Dataset Lite Recortado:} Al compartir la misma ventana temporal que Full (2019--2025) pero sin las m\'etricas deportivas avanzadas, el comportamiento es similar al del \textit{dataset Full}. ARIMA y LSTM siguen el patr\'on del rating real sin divergencias notables durante los per\'iodos de inactividad. Los diagramas de dispersi\'on y los histogramas confirman las m\'etricas reportadas: ARIMA mantiene su superioridad en RMSE y MAE (\(7.29\) vs \(9.70\)), mientras que LSTM preserva el ordenamiento relativo con \(\rho > 0.99\). La ausencia de la divergencia observada en el \textit{dataset Lite} refuerza la hip\'otesis de que esta es atribuible a la mayor longitud temporal del panel (2017--2025).
+	Este patr\'on explica por qu\'e la proporci\'on de equipos donde LSTM supera a ARIMA es mayor en Lite (37.9\%) que en Full (22.6\%): la mayor extensi\'on temporal de Lite expone a ARIMA a m\'as per\'iodos de inactividad prolongada, donde su inercia se convierte en una desventaja. La LSTM, al ser menos sensible a la historia lejana, capitaliza esta irregularidad.
 \end{itemize}
 
 \section{Ranking proyectado: \'ultima semana de test}
 \label{ap:ranking_proyectado}
 
-Como aplicaci\'on pr\'actica del componente exploratorio, se gener\'o un ranking proyectado para la \'ultima semana del conjunto de prueba. Para cada equipo, se calcul\'o su posici\'on real basada en \(\mu\) observado y las posiciones predichas por ARIMA y LSTM. La Tabla~\ref{tab:top20_full} presenta el Top 20 para el \textsc{dataset Full}; las tablas correspondientes para \textsc{Lite} y \textsc{Lite Recortado} se exportaron a archivos CSV y presentan una estructura an\'aloga, con la salvedad de que en el \textsc{dataset Lite} aparecen equipos que no est\'an presentes en los otros datasets debido al recorte temporal.
+Como aplicaci\'on pr\'actica del componente exploratorio, se gener\'o un ranking proyectado para la \'ultima semana del conjunto de prueba. Para cada equipo, se calcul\'o su posici\'on real basada en \(\mu\) observado y las posiciones predichas por ARIMA y LSTM. La Tabla~\ref{tab:top20_full} presenta el Top 20 para el \textsc{dataset Full}; las tablas correspondientes para el \textit{dataset Lite} se export\'o a un archivo CSV.
 
 \begin{table}[htbp]
 	\centering
@@ -992,41 +967,6 @@ Se observa que el ARIMA acierta exactamente en las 18 primeras posiciones (con e
 	{\small \textit{Nota:} Las columnas \(\Delta\) indican la diferencia entre la posici\'on predicha y la real; valores positivos implican que el modelo sobreestima al equipo.}
 \end{table}
 
-\begin{table}[htbp]
-	\centering
-	\caption{Top 20 del ranking proyectado — Dataset \textsc{Lite Recortado} (semana del 2025-12-09).}
-	\label{tab:top20_lite_rec}
-	\resizebox{\textwidth}{!}{%
-		\begin{tabular}{lrrrrrrrr}
-			\toprule
-			\textbf{Pos. real} & \textbf{Equipo} & \textbf{\(\mu\) real} & \textbf{Pos. ARIMA} & \textbf{\(\mu\) ARIMA} & \(\Delta\) \textbf{ARIMA} & \textbf{Pos. LSTM} & \textbf{\(\mu\) LSTM} & \(\Delta\) \textbf{LSTM} \\
-			\midrule
-			1  & Flamengo           & 1696.818 & 1  & 1697.032 &  0 & 1  & 1688.233 &  0 \\
-			2  & Palmeiras          & 1673.218 & 2  & 1679.971 &  0 & 2  & 1667.514 &  0 \\
-			3  & Kashima Antlers    & 1641.726 & 3  & 1641.726 &  0 & 3  & 1637.864 &  0 \\
-			4  & Botafogo           & 1634.644 & 4  & 1634.644 &  0 & 4  & 1624.609 &  0 \\
-			5  & Sanfrecce Hiroshima& 1630.176 & 5  & 1630.176 &  0 & 6  & 1623.005 & +1 \\
-			6  & Jeonbuk Hyundai    & 1623.202 & 6  & 1626.017 &  0 & 5  & 1624.246 & -1 \\
-			7  & Vissel Kobe        & 1603.136 & 7  & 1604.170 &  0 & 8  & 1598.101 & +1 \\
-			8  & Boca Juniors       & 1601.386 & 8  & 1602.779 &  0 & 7  & 1600.316 & -1 \\
-			9  & Inter Miami        & 1583.124 & 9  & 1583.124 &  0 & 14 & 1553.749 & +5 \\
-			10 & LAFC               & 1574.773 & 10 & 1574.773 &  0 & 10 & 1574.977 &  0 \\
-			11 & Racing Avellaneda  & 1572.620 & 11 & 1573.929 &  0 & 9  & 1575.068 & -2 \\
-			12 & Fluminense         & 1571.826 & 12 & 1571.826 &  0 & 11 & 1569.845 & -1 \\
-			13 & River Plate        & 1564.472 & 13 & 1565.859 &  0 & 12 & 1564.926 & -1 \\
-			14 & Rosario Central    & 1560.334 & 14 & 1560.334 &  0 & 13 & 1554.787 & -1 \\
-			15 & Cruzeiro           & 1553.499 & 15 & 1553.499 &  0 & 15 & 1551.183 &  0 \\
-			16 & Kashiwa Reysol     & 1553.285 & 16 & 1553.285 &  0 & 16 & 1548.463 &  0 \\
-			17 & Kyoto Sanga        & 1541.841 & 17 & 1541.841 &  0 & 20 & 1533.870 & +3 \\
-			18 & Seattle Sounders   & 1541.724 & 18 & 1541.724 &  0 & 17 & 1542.494 & -1 \\
-			19 & Daejeon Hana Citizen & 1537.004 & 20 & 1536.665 & +1 & 18 & 1534.443 & -1 \\
-			20 & Cincinnati         & 1536.781 & 19 & 1537.336 & -1 & 21 & 1523.975 & +1 \\
-			\bottomrule
-	\end{tabular}}%
-	\newline 
-	{\small \textit{Nota:} Las columnas \(\Delta\) indican la diferencia entre la posici\'on predicha y la real; valores positivos implican que el modelo sobreestima al equipo.}
-\end{table}
-
 \section{Limitaciones y observaciones finales}
 \label{ap:limitaciones}
 
@@ -1050,7 +990,7 @@ El componente exploratorio aqu\'i documentado presenta las siguientes limitacion
 	\item \textbf{Barajado interno de \texttt{Keras}:} Todos los entrenamientos de la LSTM se realizaron en CPU con semillas fijas \texttt{Random\_Seed=42}. Las variaciones num\'ericas entre ejecuciones son inferiores al 3\%, y se atribuye al barajado interno de \texttt{Keras} durante la partici\'on de validaci\'on. Es importante aclarar que esto no afecta las conclusiones del an\'alisis.
 \end{itemize}
 
-En general, el ejercicio de \textit{backtesting} demuestra que, en el contexto de datos con inactividad estructural, el ARIMA univariado ofrece una proyecci\'on m\'as robusta y estable en t\'erminos de error absoluto, mientras que la LSTM global aporta valor \'unicamente en subconjuntos de equipos con alta volatilidad. Ambos modelos preservan el ordenamiento relativo de los equipos con una precisi\'on sobresaliente (\(\rho > 0.99\)), lo que los hace \'utiles para tareas de ranking, aunque con las salvedades se\~naladas. El Ap\'endice~\ref{ap:forecasting} extiende este an\'alisis al dominio del pron\'ostico puro hacia adelante, donde se contrastan las proyecciones con datos reales no vistos durante el entrenamiento.
+En general, el ejercicio de \textit{backtesting} demuestra que, en el contexto de datos con inactividad estructural, el ARIMA univariado ofrece una proyecci\'on m\'as robusta y estable en t\'erminos de error absoluto, mientras que la LSTM global aporta valor \'unicamente en subconjuntos de equipos con alta volatilidad. Ambos modelos preservan el ordenamiento relativo de los equipos con una precisi\'on sobresaliente (\(\rho > 0.99\)), lo que los hace \'utiles para tareas de ranking, aunque con las salvedades se\~naladas. El Ap\'endice~\ref{ap:validacion} extiende este an\'alisis al dominio del pron\'ostico puro hacia adelante, donde se contrastan las proyecciones con datos reales no vistos durante el entrenamiento.
 
 % ============================================================
 % AP\'ENDICE D: VALIDACI\'ON CONTRA RANKINGS INSTITUCIONALES
@@ -1218,7 +1158,7 @@ La diferencia fundamental entre Kendall y Spearman radica en que Kendall se inte
 El \textit{Overlap} o solapamiento en los primeros \(K\) puestos es una m\'etrica que se centra exclusivamente en la capacidad del modelo para identificar a los mejores equipos. Se define como la proporci\'on de equipos que aparecen simult\'aneamente en el Top \(K\) de ambos rankings:
 
 \[
-\text{Overlap@K} = \frac{|\mathcal{T}_K^{(1)} \cap \mathcal{T}_K^{(2)}|}{K},
+\text{Overlap K} = \frac{|\mathcal{T}_K^{(1)} \cap \mathcal{T}_K^{(2)}|}{K},
 \]
 
 donde \(\mathcal{T}_K^{(j)}\) es el conjunto de los \(K\) primeros equipos del ranking \(j\). En este trabajo se reporta para \(K = 10\) y \(K = 20\), siguiendo la práctica habitual en estudios de rankings deportivos donde el interés se concentra en los puestos de acceso a competiciones internacionales o en la élite competitiva.
@@ -1247,7 +1187,7 @@ Antes de presentar los resultados, es necesario se\~nalar una limitación estruc
 
 \subsection{Concordancia cuantitativa}
 
-La Tabla~\ref{tab:validaciones_lite} resume las m\'etricas de concordancia para las ocho comparaciones realizadas. Cada fila enfrenta el ranking interno (Glicko‑2 o LSTM) con una fuente externa, sobre la intersecci\'on de equipos comunes tras el mapeo de nombres. El conjunto de m\'etricas ofrece un diagn\'ostico completo de la calidad del ordenamiento.
+La Tabla~\ref{tab:validaciones_lite} resume las m\'etricas de concordancia para las ocho comparaciones realizadas. Cada fila enfrenta el ranking interno (Glicko‑2 con el \textit{dataset Lite} o LSTM) con una fuente externa, sobre la intersecci\'on de equipos comunes tras el mapeo de nombres. El conjunto de m\'etricas ofrece un diagn\'ostico completo de la calidad del ordenamiento.
 
 \begin{table}[htbp]
 	\centering
@@ -1256,16 +1196,16 @@ La Tabla~\ref{tab:validaciones_lite} resume las m\'etricas de concordancia para 
 	\resizebox{\textwidth}{!}{%
 		\begin{tabular}{lcccccc}
 			\toprule
-			\textbf{Validación} & \textbf{N} & \textbf{Spearman $\rho$} & \textbf{Kendall $\tau$} & \textbf{Overlap@10} & \textbf{Overlap@20} & \textbf{MAE pos} \\
+			\textbf{Validación} & \textbf{N} & \textbf{Spearman $\rho$} & \textbf{Kendall $\tau$} & \textbf{Overlap 10} & \textbf{Overlap 20} & \textbf{MAE pos} \\
 			\midrule
 			UEFA 2025 & 44 & 0.651 & 0.475 & 0.700 & 0.750 & 8.1 \\
 			ELO Ago 2025 & 79 & 0.786 & 0.609 & 0.700 & 0.750 & 11.4 \\
 			AFC 2025 & 16 & 0.079 & 0.050 & 0.600 & 0.800 & 5.1 \\
 			CONMEBOL 2026 & 77 & 0.643 & 0.470 & 0.600 & 0.600 & 14.0 \\
-			LSTM vs UEFA 2026 & 40 & 0.700 & 0.528 & 0.800 & 0.750 & 6.5 \\
-			LSTM vs ELO Sep 2026 & 258 & 0.448 & 0.314 & 0.600 & 0.650 & 59.7 \\
-			LSTM vs AFC 2026 & 15 & 0.120 & 0.077 & 0.800 & 0.750 & 4.9 \\
-			LSTM Lite & 394 & 0.964 & 0.848 & 0.900 & 0.850 & 21.1 \\
+			LSTM vs UEFA 2026 & 46 & 0.704 & 0.539 & 0.900 & 0.700 & 7.5 \\
+			LSTM vs ELO Sep 2026 & 273 & 0.473 & 0.333 & 0.700 & 0.650 & 61.3 \\
+			LSTM vs AFC 2026 & 15 & 0.170 & 0.115 & 0.800 & 0.750 & 4.9 \\
+			LSTM Lite & 411 & 0.9847 & 0.903 & 0.900 & 0.950 & 14.2 \\
 			\bottomrule
 	\end{tabular}}%
 \end{table}
@@ -1274,13 +1214,13 @@ Los resultados permiten extraer varias conclusiones inmediatas. En primer lugar,
 
 En segundo lugar, la comparaci\'on con AFC 2025 (\(\rho = 0.079\)) es notablemente baja. Sin embargo, este resultado debe interpretarse con cautela: el tama\~no muestral es muy reducido (\(n = 16\)) y el ranking AFC se construye \'unicamente a partir del rendimiento en competiciones asi\'aticas, mientras que Glicko‑2 incluye tambi\'en el desempe\~no en ligas dom\'esticas de cada pa\'is. La baja concordancia refleja, m\'as que una deficiencia del modelo, la naturaleza regional y especializada del ranking AFC.
 
-En tercer lugar, el modelo LSTM proyectado a 2026 mantiene una concordancia aceptable con UEFA 2026 (\(\rho = 0.700\), \(\tau = 0.528\)), ligeramente superior a la del Glicko‑2 hist\'orico con UEFA 2025. Esto indica que el modelo neuronal preserva la estructura ordinal de los ratings incluso en horizontes de proyección de un a\~no. Por el contrario, la concordancia con ELO Septiembre 2026 es moderada (\(\rho = 0.448\), \(\tau = 0.314\)), lo que refleja la incertidumbre inherente a las proyecciones a largo plazo. No obstante, el Overlap 10 de 0.600 indica que el 60\% de los mejores equipos proyectados por LSTM coinciden con los de ClubElo, lo que sugiere que, aunque el orden global se degrada, la identificaci\'on de la \'elite competitiva se mantiene relativamente estable.
+En tercer lugar, el modelo LSTM proyectado a 2026 mantiene una concordancia aceptable con UEFA 2026 (\(\rho = 0.704\), \(\tau = 0.539\)), ligeramente superior a la del Glicko‑2 hist\'orico con UEFA 2025. Esto indica que el modelo neuronal preserva la estructura ordinal de los ratings incluso en horizontes de proyecci\'on de un a\~no. Por el contrario, la concordancia con ELO Septiembre 2026 es moderada (\(\rho = 0.473\), \(\tau = 0.333\)), lo que refleja la incertidumbre inherente a las proyecciones a largo plazo. No obstante, el Overlap 20 de 0.650 indica que el 65\% de los 20 mejores equipos proyectados por LSTM coinciden con los de ClubElo, lo que sugiere que, aunque el orden global se degrada, la identificaci\'on de la \'elite competitiva se mantiene relativamente estable.
 
-Por\'uúltimo, la comparaci\'on entre LSTM Lite y Glicko‑2 Lite (\(\rho = 0.964\), \(n = 394\)) confirma que el modelo LSTM reproduce fielmente la estructura ordinal del Glicko‑2 sin distorsi\'on significativa. Esta concordancia casi perfecta valida que las proyecciones no introducen sesgos sistem\'aticos en el ordenamiento, sino que preservan la jerarquía de fuerzas aprendida por el sistema de rating.
+Por \'ultimo, la comparaci\'on entre LSTM Lite y Glicko‑2 Lite (\(\rho = 0.985\), \(n = 411\)) confirma que el modelo LSTM reproduce fielmente la estructura ordinal del Glicko‑2 sin distorsi\'on significativa. Esta concordancia casi perfecta valida que las proyecciones no introducen sesgos sistem\'aticos en el ordenamiento, sino que preservan la jerarqu\'ia de fuerzas aprendida por el sistema de rating.
 
 \subsection{Comparaci\'on tangible: Top 10 global}
 
-M\'as all\'a de las m\'etricas agregadas, resulta ilustrativo observar directamente los primeros puestos de cada ranking. La Tabla~\ref{tab:top10_comparativo} enfrenta el Top 10 de G2A Full, LSTM Full, UEFA 2026 y ELO Septiembre 2026 para el escenario 2025/26.
+M\'as all\'a de las m\'etricas agregadas, resulta ilustrativo observar directamente los primeros puestos de cada ranking. La Tabla~\ref{tab:top10_comparativo} enfrenta el Top 10 de G2A Lite, LSTM Lite, UEFA 2026 y ELO Septiembre 2026 para el escenario 2025/26.
 
 \begin{table}[htbp]
 	\centering
@@ -1289,31 +1229,31 @@ M\'as all\'a de las m\'etricas agregadas, resulta ilustrativo observar directame
 	\resizebox{\textwidth}{!}{%
 	\begin{tabular}{c|cccc}
 		\toprule
-		\textbf{Pos.} & \textbf{G2A Full} & \textbf{LSTM Full} & \textbf{UEFA 2026} & \textbf{ELO Sep 2026} \\
+		\textbf{Pos.} & \textbf{G2A Lite} & \textbf{LSTM Lite} & \textbf{UEFA 2026} & \textbf{ELO Sep 2026} \\
 		\midrule
-		1 & PSG (1807.1) & PSG (1780.6) & Bayern (147.5) & Bayern (2027) \\
-		2 & Al Hilal (1788.5) & Real Madrid (1772.6) & Real Madrid (144.5) & Arsenal (2011) \\
-		3 & Bayern (1773.3) & Al Hilal (1769.1) & PSG (132.0) & Man. City (2000) \\
-		4 & Olympiacos (1765.9) & Olympiacos (1758.3) & Liverpool (130.0) & Barcelona (1989) \\
-		5 & Real Madrid (1765.9) & Inter de Milan (1746.4) & Inter de Milan (127.0) & Real Madrid (1955) \\
-		6 & Liverpool (1749.3) & Man.City (1746.1) & Man. City (125.5) & PSG (1938) \\
-		7 & Inter de Milan (1743.7) & Liverpool (1738.2) & Arsenal (119.0) & Inter de Milan (1924) \\
-		8 & Man. City (1724.5) & Leverkusen (1708.9) & Barcelona (113.3) & Liverpool (1902) \\
-		9 & Arsenal (1716.0) & Atl. Madrid (1704.7) & Leverkusen (105.0) & AtlMadrid (1881) \\
-		10 & Al Ittihad (1715.5) & Arsenal (1695.7) & Atl. Madrid (104.8) & AstonVilla (1868) \\
+		1 & PSG (1801.5) & PSG (1774.3) & Bayern (147.5) & Bayern (2027) \\
+		2 & Al Hilal (1793.9) & Al Hilal (1762.6) & Real Madrid (144.5) & Arsenal (2011) \\
+		3 & Bayern (1773.9) & Bayern (1754.3) & PSG (132.0) & Man. City (2000) \\
+		4 & Real Madrid (1762.7) & Real Madrid (1741.2) & Liverpool (130.0) & Barcelona (1989) \\
+		5 & Olympiacos (1758.3) & Persepolis (1734.7) & Inter de Milan (127.0) & Real Madrid (1955) \\
+		6 & Persepolis (1752.4) & Olympiacos (1731.7) & Man. City (125.5) & PSG (1938) \\
+		7 & Inter de Milan (1746.5) & Liverpool (1722.36) & Arsenal (119.0) & Inter de Milan (1924) \\
+		8 & Liverpool (1742.5) & Man. City (1721.0) & Barcelona (113.3) & Liverpool (1902) \\
+		9 & Al Nassr (1722.2) & Barcelona (1699.2) & Leverkusen (105.0) & AtlMadrid (1881) \\
+		10 & Man. City (1719.2) & Inter de Milan (1692.1) & Atl. Madrid (104.8) & AstonVilla (1868) \\
 		\bottomrule
 	\end{tabular}}%
 \end{table}
 
-Varios aspectos destacan de esta comparaci\'on. El primero es que \textbf{PSG} encabeza tanto G2A Full como LSTM Full, mientras que UEFA y ELO colocan al \textbf{Bayern} y al \textbf{Real Madrid} en las primeras posiciones. Esta discrepancia refleja una diferencia metodol\'ogica fundamental: el sistema Glicko‑2 otorga un peso considerable al dominio dom\'estico del PSG en la Ligue 1, as\'i como a su rendimiento en todas las competiciones disputadas, mientras que UEFA y ELO ponderan m\'as el rendimiento en competiciones europeas de \'elite, donde el Bayern y ek Real Madrid han acumulado más coeficiente.
+Varios aspectos destacan de esta comparaci\'on. El primero es que \textbf{PSG} encabeza tanto G2A Lite como LSTM Lite mientras que UEFA y ELO colocan al \textbf{Bayern} en las primera posici\'on. Esta discrepancia refleja una diferencia metodol\'ogica fundamental: el sistema Glicko‑2 otorga un peso considerable al dominio dom\'estico del PSG en la Ligue 1, as\'i como a su rendimiento en todas las competiciones disputadas, mientras que UEFA ponderan m\'as el rendimiento en competiciones europeas de \'elite, donde el Bayern ha acumulado más coeficiente.
 
-El segundo aspecto relevante es la presencia del \textbf{Al Hilal} en el Top 3 de G2A y LSTM, que por obvios motivos no figura en UEFA ni en el Top 10 de ELO. Esto evidencia la cobertura geogr\'afica limitada de ELO, pues en ese momento se limitaba a la geograf\'ia europea. El hecho de que Glicko‑2 y LSTM sit\'uen al Al Hilal entre los tres mejores clubes del mundo es un reflejo del impacto de las inversiones millonarias en la liga saud\'i.
+El segundo aspecto relevante es la presencia del \textbf{Al Hilal} en el Top 3 de G2A y LSTM, que por obvios motivos no figura en UEFA, pero destaca su no presencia en el Top 10 de ELO. Esto evidencia la diferencia en la arquitectura entre G2A y ClubElo, el motivo real de esto fue comentado brevemente en la introducci\'on de este cap\'itulo: las \textit{islas de datos}, pues el \textit{ranking} ClubElo busca mitigar esto utilizando todos los partidos disponibles, incluyendo amistosos y copas menores, asignandoles pesos menores y aligerando el cambio de medias (\(\mu\)). El hecho de que Glicko‑2 y LSTM sit\'uen al Al Hilal entre los tres mejores clubes del mundo es justamente un reflejo de las \textit{islas de datos}, as\'i como el impacto de las inversiones millonarias en la liga saud\'i.
 
-El tercer aspecto es que el \textbf{Bayern} y el \textbf{PSG} son los \'unicos equipos que aparecen en el Top 3 de al menos tres de las cuatro fuentes. Esta consistencia los consolida como los clubes con mayor consenso de fortaleza a nivel global, un hallazgo que refuerza la validez de los rankings generados por el sistema.
+El tercer aspecto es que el \textbf{Bayern} es el \'unico equipo que aparece en el Top 3 de las cuatro fuentes. Esta consistencia los consolida como el club de mayor fortaleza a nivel global, un hallazgo que refuerza la validez de los rankings generados por el sistema, junto con la consistencia del \textbf{PSG} estando en el Top 3 en 3 de las 4 fuentes y el \textbf{Real Madrid} apareciendo en el Top 5 de las cuatro fuentes.
 
-\subsection{Modelo de nivel de poder}
+\subsection{Modelos de nivel de poder}
 
-El concepto de \emph{nivel de poder} se introduce como una herramienta para cuantificar la jerarqu\'ia competitiva entre ligas. Para cada competici\'on, se seleccionan los cinco equipos con mayor rating \(\mu\) seg\'un el modelo correspondiente, y se calcula la media de dichos ratings. Esta media se interpreta como un indicador del nivel competitivo promedio de la \'elite de esa liga. Las Tablas~\ref{tab:top5_liga_g2afull} a~\ref{tab:top5_liga_lstmlite} presentan los resultados para los cuatro modelos considerados: G2A Full, G2A Lite, LSTM Full y LSTM Lite.
+El concepto de \emph{nivel de poder} se introduce como una herramienta para cuantificar la jerarqu\'ia competitiva entre ligas. Para cada competici\'on, se seleccionan los cinco equipos con mayor \textit{rating} (\(\mu\)) seg\'un el modelo correspondiente, y se calcula la media de dichos \textit{ratings}. Esta media se interpreta como un indicador del nivel competitivo promedio de la \'elite de esa liga. Las Tablas~\ref{tab:top5_liga_g2afull} a~\ref{tab:top5_liga_arimalite} presentan los resultados para los cuatro modelos considerados: G2A Full, G2A Lite, LSTM Full, LSTM Lite, ARIMA Full y ARIMA Lite.
 
 \begin{table}[htbp]
 	\centering
@@ -1385,24 +1325,26 @@ En el modelo G2A Lite, que incluye el per\'iodo 2017--2025 y ligas adicionales, 
 		\toprule
 		\textbf{Liga} & \textbf{Top 5 (equipos)} & \textbf{Media \(\mu\)} & \textbf{Diferencia vs Premier} \\
 		\midrule
-		Premier League & \makecell[l]{Man. City Liverpool \\ Arsenal  Chelsea  Aston Villa} & 1677.0 & 0.0 \\
-		Saudi Pro League & \makecell[l]{Al Hilal Al Nassr \\ Al Ittihad Al Ahli Al Shabab} & 1656.3 & -20.7 \\
-		Ligue 1 & \makecell[l]{PSG Lille \\ Monaco Nice O. Marseille} & 1649.3 & -27.7 \\
-		Super League Greece & \makecell[l]{Olympiacos PAOK \\ Panathinaikos AEK Aris} & 1648.1 & -28.9 \\
-		LaLiga & \makecell[l]{Real Madrid Atl. Madrid \\ Ath. Bilbao Villarreal Real Betis} & 1637.4 & -39.6 \\
-		Bundesliga & \makecell[l]{Leverkusen Dortmund \\ Leipzig E. Frankfurt Freiburg} & 1616.1 & -60.9 \\
-		Brasileir\~ao & \makecell[l]{Flamengo Palmeiras \\ Botafogo Mirassol Fluminense} & 1612.7 & -64.3 \\
-		Serie A & \makecell[l]{Inter de Milan Roma \\ Bologna Udinese Torino} & 1593.8 & -83.2 \\
-		J1 League & \makecell[l]{Kashima Antlers Sanfrecce Hiroshima \\ Kawasaki Frontale Vissel Kobe Machida Zelvia} & 1592.7 & -84.3 \\
-		Liga MX & \makecell[l]{America CruzAzul \\ Tigres UANL Monterrey Toluca} & 1590.2 & -86.8 \\
-		K League 1 & \makecell[l]{Jeonbuk Hyundai Ulsan HD \\ Sangju Sangmu Pohang Steelers Daejeon Hana Citizen} & 1560.2 & -116.8 \\
-		Liga Profesional Argentina & \makecell[l]{Boca Juniors River Plate \\ Racing Rosario Central Dep. Riestra} & 1559.8 & -117.2 \\
-		Major League Soccer & \makecell[l]{LAFC San Diego \\ Seattle Sounders Philadelphia Union Inter Miami} & 1548.2 & -128.8 \\
+		Premier League & \makecell[l]{Man. City Liverpool \\ Arsenal  Chelsea  Aston Villa} & 1671.4 & 0.0 \\
+		Saudi Pro League & \makecell[l]{Al Hilal Al Nassr \\ Al Ittihad Al Ahli Al Shabab} & 1654.8 & -16.6 \\
+		LaLiga & \makecell[l]{Real Madrid Barcelona \\ Atl. Madrid Ath. Bilbao Villarreal} & 1653.8 & -17.6 \\
+		Super League Greece & \makecell[l]{Olympiacos PAOK \\ Panathinaikos AEK Aris} & 1641.2 & -30.2 \\
+		Ligue 1 & \makecell[l]{PSG Monaco \\ Lille Nice O. Marseille} & 1640.7 & -30.6 \\
+		Serie A & \makecell[l]{Inter de Milan Napoli \\ Juventus Atalanta Roma} & 1640.1 & -31.3 \\
+		Bundesliga & \makecell[l]{Bayern Leverkusen \\ Dortmund Leipzig E. Frankfurt} & 1639.7 & -31.7 \\
+		Brasileir\~ao & \makecell[l]{Flamengo Palmeiras \\ Botafogo Mirassol Fluminense} & 1605.96 & -65.4 \\
+		Liga MX & \makecell[l]{America CruzAzul \\ Tigres UANL Monterrey Toluca} & 1587.7 & -83.7 \\
+		J1 League & \makecell[l]{Kashima Antlers Sanfrecce Hiroshima \\ Kawasaki Frontale Vissel Kobe Machida Zelvia} & 1585.0 & -86.4 \\
+		Liga Profesional Argentina & \makecell[l]{Boca Juniors River Plate \\ Racing Rosario Central Dep. Riestra} & 1556.7 & -114.7 \\
+		K League 1 & \makecell[l]{Jeonbuk Hyundai Ulsan HD \\ Sangju Sangmu Pohang Steelers Daejeon Hana Citizen} & 1551.7 & -119.7 \\
+		Major League Soccer & \makecell[l]{LAFC San Diego \\ Seattle Sounders Philadelphia Union Columbus Crew} & 1542.5 & -128.9 \\
 		\bottomrule
 	\end{tabular}}%
 \end{table}
 
 El modelo LSTM Full, que proyecta ratings a 2026, mantiene la Premier League en cabeza (1677.0), pero reduce las diferencias con las dem\'as ligas. La Saudi Pro League (1656.3) y Ligue 1 (1649.3) se acercan, mientras que Serie A cae a la octava posici\'on (1593.8), muy por debajo de su posici\'on en los modelos Glicko‑2. Esto refleja que las proyecciones LSTM tienden a comprimir las diferencias entre ligas, posiblemente debido a la naturaleza suavizadora de los modelos de series temporales, que aten\'uan las fluctuaciones extremas. La Bundesliga (1616.1) y el Brasileirao (1612.7) mantienen posiciones intermedias.
+
+\newpage
 
 \begin{table}[htbp]
 	\centering
@@ -1414,26 +1356,90 @@ El modelo LSTM Full, que proyecta ratings a 2026, mantiene la Premier League en 
 		\toprule
 		\textbf{Liga} & \textbf{Top 5 (equipos)} & \textbf{Media \(\mu\)} & \textbf{Diferencia vs Premier} \\
 		\midrule
-		Premier League & \makecell[l]{Man. City Liverpool \\ Arsenal Chelsea Man. Utd} & 1644.9 & 0.0 \\
-		Super League Greece & \makecell[l]{Olympiacos  PAOK \\ AEK Panathinaikos Aris} & 1627.7 & -17.2 \\
-		Saudi Pro League & \makecell[l]{Al Hilal AlNassr \\ Al Ittihad Al Ahli Al Shabab} & 1622.9 & -22.0 \\
-		LaLiga & \makecell[l]{Real Madrid Atl. Madrid \\ Villarreal Ath. Bilbao Real Betis} & 1616.8 & -28.1 \\
-		Ligue 1 & \makecell[l]{PSG O. Marseille \\ Monaco Lille Nice} & 1614.7 & -30.2 \\
-		Persian Gulf Pro League & \makecell[l]{Persepolis Sepahan \\ Esteghlal Tractor Foolad} & 1606.7 & -38.2 \\
-		Brasileir\~ao & \makecell[l]{Palmeiras Flamengo \\ Botafogo Mirassol Fluminense} & 1588.1 & -56.8 \\
-		Bundesliga & \makecell[l]{Leverkusen Dortmund \\ Leipzig E. Frankfurt Freiburg} & 1584.4 & -60.5 \\
-		Serie A & \makecell[l]{Inter de Milan Roma \\ Bologna Torino Udinese} & 1571.9 & -73.0 \\
-		Liga MX & \makecell[l]{America Tigres UANL \\ Cruz Azul Monterrey Toluca} & 1572.8 & -72.1 \\
-		J1 League & \makecell[l]{Kashima Antlers Sanfrecce Hiroshima \\ Machida Zelvia Vissel Kobe Kawasaki Frontale} & 1561.3 & -83.6 \\
-		Liga Profesional Argentina & \makecell[l]{Boca Juniors River Plate \\ Racing Dep. Riestra Hurac\'an} & 1553.3 & -91.6 \\
-		FutVe & \makecell[l]{Dep. Tachira Dep. LaGuaira \\ Carabobo Caracas Dep. Lara} & 1543.8 & -101.1 \\
-		K League 1 & \makecell[l]{Jeonbuk Hyundai Ulsan HD \\ Pohang Steelers Daejeon Hana Citizen Sangju Sangmu} & 1522.6 & -122.3 \\
-		Major League Soccer & \makecell[l]{LAFC San Diego \\ Seattle Sounders Philadelphia Union Columbus Crew} & 1510.0 & -134.9 \\
+		Premier League & \makecell[l]{Man. City Liverpool \\ Arsenal Chelsea Aston Villa} & 1658.8 & 0.0 \\
+		Saudi Pro League & \makecell[l]{Al Hilal Al Nassr \\ Al Ittihad Al Ahli Al Shabab} & 1646.9 & -11.9 \\
+		LaLiga & \makecell[l]{Real Madrid Barcelona \\ Atl. Madrid Villarreal Ath. Bilbao} & 1646.3 & -12.6 \\
+		Serie A & \makecell[l]{Inter de Milan Napoli \\ Juventus Atalanta Roma} & 1634.7 & -24.11 \\
+		Persian Gulf Pro League & \makecell[l]{Persepolis Sepahan \\ Esteghlal Tractor Foolad} & 1632.1 & -26.8 \\
+		Bundesliga & \makecell[l]{Bayern Leverkusen \\ Dortmund Leipzig E. Frankfurt} & 1627.5 & -31.3 \\
+		Ligue 1 & \makecell[l]{PSG Monaco \\ O. Marseille O. Lyon Lille} & 1625.7 & -33.1 \\
+		Super League Greece & \makecell[l]{Olympiacos  PAOK \\ AEK Panathinaikos Aris} & 1625.7 & -33.2 \\
+		Brasileir\~ao & \makecell[l]{Palmeiras Flamengo \\ Botafogo Mirassol Fluminense} & 1613.7 & -45.1 \\
+		Liga MX & \makecell[l]{America Cruz Azul \\ Tigres UANL Monterrey Toluca} & 1585.6 & -73.2 \\
+		J1 League & \makecell[l]{Kashima Antlers Sanfrecce Hiroshima \\ Machida Zelvia Vissel Kobe Kawasaki Frontale} & 1574.2 & -84.67 \\
+		Liga Profesional Argentina & \makecell[l]{Boca Juniors River Plate \\ Racing Dep. Riestra Rosario Central} & 1559.7 & -99.1 \\
+		FutVe & \makecell[l]{Dep. Tachira Dep. LaGuaira \\ Carabobo Caracas UCV} & 1559.4 & -99.4 \\
+		K League 1 & \makecell[l]{Jeonbuk Hyundai Ulsan HD \\ Pohang Steelers Daejeon Hana Citizen Sangju Sangmu} & 1534.3 & -124.5 \\
+		Major League Soccer & \makecell[l]{LAFC San Diego \\ Seattle Sounders Inter Miami Philadelphia Union} & 1514.0 & -144.9 \\
 		\bottomrule
 	\end{tabular}}%
 \end{table}
 
-Finalmente, el modelo LSTM Lite presenta la compresi\'on más pronunciada. La Premier League (1644.9) sigue siendo la m\'as fuerte, pero la Super League de Grecia (1627.7) y la Saudi Pro League (1622.9) se sit\'uan muy cerca, lo que sugiere que en el escenario Lite las proyecciones tienden a igualar los niveles de las ligas europeas secundarias con las grandes ligas. Por su parte, la Persian Gulf Pro League (1606.7) aparece por encima de la Bundesliga y la Serie A, un resultado que, aunque sorprendente, es consistente con el patr\'on observado en G2A Lite y refleja la alta competitividad de los equipos iran\'ies en el panel completo.
+El modelo LSTM Lite presenta la compresi\'on más pronunciada. La Premier League (1644.9) sigue siendo la m\'as fuerte, pero la Super League de Grecia (1627.7) y la Saudi Pro League (1622.9) se sit\'uan muy cerca, lo que sugiere que en el escenario Lite las proyecciones tienden a igualar los niveles de las ligas europeas secundarias con las grandes ligas. Por su parte, la Persian Gulf Pro League (1606.7) aparece por encima de la Bundesliga y la Serie A, un resultado que, aunque sorprendente, es consistente con el patr\'on observado en G2A Lite y refleja la alta competitividad de los equipos iran\'ies en el panel completo.
+
+\newpage
+
+\begin{table}[htbp]
+	\centering
+	\small
+	\caption{Top 5 por liga y media de valoración - ARIMA Full}
+	\label{tab:top5_liga_arimafull}
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{l c c c}
+			\toprule
+			\textbf{Liga} & \textbf{Top 5 (equipos)} & \textbf{Media \(\mu\)} & \textbf{Dif. vs Premier} \\
+			\midrule
+			Premier League & \makecell[l]{Liverpool Man. City \\ Arsenal Chelsea Aston Villa} & 1691.04 & 0.0 \\
+			Saudi Pro League & \makecell[l]{Al Hilal Al Nassr \\ Al Ittihad Al Ahli Al Qadsiah} & 1685.53 & -5.51 \\
+			Serie A & \makecell[l]{Inter de Milan Napoli \\ Roma Atalanta Juventus} & 1675.70 & -15.34 \\
+			LaLiga & \makecell[l]{Real Madrid Barcelona \\ Atl. Madrid Villarreal Ath. Bilbao} & 1670.82 & -20.22 \\
+			Ligue 1 & \makecell[l]{PSG Monaco \\ Lille O. Marseille Nice} & 1660.05 & -30.99 \\
+			Brasileir\~ao & \makecell[l]{Palmeiras Flamengo \\ Mirassol Botafogo Fluminense} & 1658.17 & -32.87 \\
+			Super League Greece & \makecell[l]{Olympiacos PAOK \\ Panathinaikos AEK Aris} & 1653.30 & -37.74 \\
+			Bundesliga & \makecell[l]{Bayern Leverkusen \\ Dortmund Leipzig E. Frankfurt} & 1646.10 & -44.94 \\
+			Liga MX & \makecell[l]{Cruz Azul America \\ Toluca Monterrey Tigres UANL} & 1605.70 & -85.34 \\
+			J1 League & \makecell[l]{Kashima Antlers Sanfrecce Hiroshima \\ Vissel Kobe Kyoto Sanga Machida Zelvia} & 1601.12 & -89.92 \\
+			Major League Soccer & \makecell[l]{Inter Miami LAFC \\ San Diego Cincinnati Seattle Sounders} & 1561.22 & -129.82 \\
+			Liga Profesional Argentina & \makecell[l]{Boca Juniors River Plate \\ Rosario Central Racing Dep. Riestra} & 1558.95 & -132.09 \\
+			K League 1 & \makecell[l]{Jeonbuk Hyundai Daejeon Hana Citizen \\ Sangju Sangmu Pohang Steelers Gangwon} & 1556.09 & -134.95 \\
+			\bottomrule
+	\end{tabular}}%
+\end{table}
+
+El modelo ARIMA Full mantiene a la Premier League en la cima (1691.04), pero la Saudi Pro League (1685.53) se acerca m\'as que en G2A Full, quedando a solo 5.5 puntos. La Serie A (1675.70) y LaLiga (1670.82) siguen muy de cerca, confirmando el equilibrio entre las grandes ligas europeas. El Brasileirao (1658.17) escala posiciones, superando a la Super League de Grecia y la Bundesliga, lo que refleja la alta valoraci\'on de equipos brasile\~nos como Flamengo y Palmeiras por parte del ARIMA. Las ligas americanas (MLS, Argentina) y asi\'aticas (J1, K League) quedan rezagadas con diferencias superiores a los 85 puntos, y más de 130 en los casos de Argentina, MLS y K League.
+
+\newpage
+
+\begin{table}[htbp]
+	\centering
+	\small
+	\caption{Top 5 por liga y media de valoración - ARIMA Lite}
+	\label{tab:top5_liga_arimalite}
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{l c c c}
+			\toprule
+			\textbf{Liga} & \textbf{Top 5 (equipos)} & \textbf{Media \(\mu\)} & \textbf{Dif. vs Premier} \\
+			\midrule
+			Premier League & \makecell[l]{Liverpool Arsenal \\ Man. City Chelsea Aston Villa} & 1685.52 & 0.0 \\
+			Serie A & \makecell[l]{Inter de Milan Napoli \\ Roma Atalanta Juventus} & 1676.46 & -9.06 \\
+			Persian Gulf Pro League & \makecell[l]{Persepolis Sepahan \\ Tractor Esteghlal Foolad} & 1676.34 & -9.18 \\
+			Saudi Pro League & \makecell[l]{Al Hilal Al Ittihad \\ Al Nassr Al Ahli Al Shabab} & 1674.64 & -10.88 \\
+			Brasileir\~ao & \makecell[l]{Flamengo Palmeiras \\ Mirassol Botafogo Fluminense} & 1674.58 & -10.94 \\
+			LaLiga & \makecell[l]{Real Madrid Barcelona \\ Atl.Madrid Villarreal Ath. Bilbao} & 1666.12 & -19.40 \\
+			Ligue 1 & \makecell[l]{PSG Monaco \\ Lille O. Marseille Nice} & 1648.71 & -36.81 \\
+			Bundesliga & \makecell[l]{Bayern Leverkusen \\ Dortmund Leipzig E. Frankfurt} & 1643.47 & -42.05 \\
+			Super League Greece & \makecell[l]{Olympiacos PAOK \\ Panathinaikos AEK Aris} & 1643.13 & -42.39 \\
+			Liga MX & \makecell[l]{Cruz Azul America \\ Toluca Monterrey Tigres UANL} & 1601.34 & -84.18 \\
+			J1 League & \makecell[l]{Sanfrecce Hiroshima Kashima Antlers \\ Vissel Kobe Kyoto Sanga Machida Zelvia} & 1595.20 & -90.32 \\
+			FutVe & \makecell[l]{Dep. Tachira Carabobo \\ Dep. La Guaira UCVFC Pto. Cabello} & 1585.36 & -100.16 \\
+			Liga Profesional Argentina & \makecell[l]{Boca Juniors Racing \\ River Plate Rosario Central Dep. Riestra} & 1575.42 & -110.10 \\
+			K League 1 & \makecell[l]{Jeonbuk Hyundai Daejeon Hana Citizen \\ Sangju Sangmu Pohang Steelers Ulsan HD} & 1546.62 & -138.90 \\
+			Major League Soccer & \makecell[l]{Inter Miami LAFC \\ San Diego Cincinnati Seattle Sounders} & 1546.08 & -139.44 \\
+			\bottomrule
+	\end{tabular}}%
+\end{table}
+
+En el modelo ARIMA Lite, que cubre el per\'iodo 2017-2025, la jerarqu\'ia se comprime notablemente. La Premier League (1685.52) sigue liderando, pero la Serie A (1676.46) y la Persian Gulf Pro League (1676.34) quedan a menos de 10 puntos, seguidas muy de cerca por la Saudi Pro League (1674.64) y el Brasilei\~ao (1674.58). Este resultado es llamativo: la inclusi\'on de m\'as temporadas (2017-2019) eleva el nivel medio de la Serie A y de la liga iran\'i, mientras que la Bundesliga (1643.47) y la Super League de Grecia (1643.13) caen a la zona media. La liga venezolana (FutVe) mantiene una media de 1585.36, superando a la Liga Profesional Argentina (1575.42) en este modelo, lo que refleja el buen rendimiento histórico de equipos como Dep. T\'achira y Carabobo en el panel completo. La MLS (1546.08) y la K League (1546.62) se sit\'uan en la cola, con diferencias superiores a los 138 puntos respecto a la Premier League.
 
 Una advertencia adicional es necesaria aqu\'i. Los resultados de las tablas de nivel de poder, aunque sugerentes, no deben interpretarse como una clasificaci\'on global definitiva de ligas. Como se ha se\~nalado al inicio de esta secci\'on, las \emph{islas de datos} impiden establecer comparaciones absolutas entre regiones. Por ejemplo, el hecho de que la Persian Gulf Pro League aparezca con un nivel de poder similar a la Bundesliga no implica necesariamente que los equipos iran\'ies sean tan fuertes como los alemanes; simplemente indica que, dentro de sus respectivos universos competitivos, ambos conjuntos de equipos han alcanzado ratings similares. La ausencia de enfrentamientos directos entre ambas ligas impide calibrar el verdadero valor de esa diferencia. En este sentido, el modelo de nivel de poder es una herramienta \'util para describir la estructura interna del ranking, pero no debe ser utilizado como un argumento de paridad competitiva entre regiones sin un an\'alisis adicional que incorpore partidos intercontinentales o mecanismos de calibraci\'on cruzada.
 

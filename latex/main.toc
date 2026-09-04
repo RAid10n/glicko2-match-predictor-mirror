@@ -252,45 +252,45 @@
 \contentsline {section}{\numberline {C.3}Construcci\'on del panel semanal}{128}{section.C.3}%
 \contentsline {section}{\numberline {C.4}Modelo ARIMA univariado por equipo}{129}{section.C.4}%
 \contentsline {paragraph}{Control de tiempo de ejecuci\'on.}{129}{paragraph*.147}%
-\contentsline {paragraph}{Predicci\'on recursiva con actualizaci\'on.}{130}{paragraph*.148}%
+\contentsline {paragraph}{Predicci\'on recursiva con actualizaci\'on.}{129}{paragraph*.148}%
 \contentsline {section}{\numberline {C.5}Modelo LSTM global}{130}{section.C.5}%
 \contentsline {paragraph}{Arquitectura.}{130}{paragraph*.150}%
-\contentsline {paragraph}{Escalado por equipo.}{131}{paragraph*.151}%
+\contentsline {paragraph}{Escalado por equipo.}{130}{paragraph*.151}%
 \contentsline {paragraph}{Generaci\'on de secuencias y entrenamiento.}{131}{paragraph*.152}%
 \contentsline {paragraph}{Desescalado de predicciones.}{131}{paragraph*.153}%
 \contentsline {section}{\numberline {C.6}Evaluaci\'on comparativa}{132}{section.C.6}%
 \contentsline {subsection}{\numberline {C.6.1}M\'etricas globales}{132}{subsection.C.6.1}%
 \contentsline {paragraph}{Spearman \(\rho \): preservaci\'on del ranking.}{132}{paragraph*.156}%
-\contentsline {subsection}{\numberline {C.6.2}Desempe\~no por equipo}{133}{subsection.C.6.2}%
+\contentsline {subsection}{\numberline {C.6.2}Desempe\~no por equipo}{132}{subsection.C.6.2}%
 \contentsline {subsection}{\numberline {C.6.3}Visualizaciones descriptivas}{133}{subsection.C.6.3}%
-\contentsline {paragraph}{An\'alisis general.}{133}{paragraph*.162}%
-\contentsline {paragraph}{An\'alisis diferenciado por dataset.}{133}{paragraph*.163}%
-\contentsline {section}{\numberline {C.7}Ranking proyectado: \'ultima semana de test}{139}{section.C.7}%
-\contentsline {section}{\numberline {C.8}Limitaciones y observaciones finales}{140}{section.C.8}%
-\contentsline {chapter}{\numberline {D}Validaci\'on contra rankings institucionales}{144}{appendix.D}%
-\contentsline {section}{\numberline {D.1}Fuentes de datos externos}{145}{section.D.1}%
-\contentsline {subsection}{\numberline {D.1.1}Ranking UEFA}{145}{subsection.D.1.1}%
-\contentsline {subsection}{\numberline {D.1.2}Ranking AFC}{145}{subsection.D.1.2}%
-\contentsline {subsection}{\numberline {D.1.3}Ranking CONMEBOL}{145}{subsection.D.1.3}%
-\contentsline {subsection}{\numberline {D.1.4}Ranking ClubElo}{146}{subsection.D.1.4}%
-\contentsline {subsection}{\numberline {D.1.5}G2A y LSTM}{146}{subsection.D.1.5}%
-\contentsline {subsection}{\numberline {D.1.6}Cobertura geogr\'afica}{146}{subsection.D.1.6}%
-\contentsline {section}{\numberline {D.2}Armonizaci\'on de nombres y filtrado}{147}{section.D.2}%
-\contentsline {section}{\numberline {D.3}Metodolog\'ia de comparaci\'on por instant\'aneas}{147}{section.D.3}%
-\contentsline {subsection}{\numberline {D.3.1}Enfoque est\'atico y escenario de validaci\'on}{148}{subsection.D.3.1}%
-\contentsline {section}{\numberline {D.4}M\'etricas de concordancia}{148}{section.D.4}%
-\contentsline {subsection}{\numberline {D.4.1}Coeficiente de correlaci\'on de Spearman (\(\rho \))}{149}{subsection.D.4.1}%
-\contentsline {subsection}{\numberline {D.4.2}Coeficiente \(\tau \) de Kendall}{149}{subsection.D.4.2}%
-\contentsline {subsection}{\numberline {D.4.3}\textit {Overlap} en los primeros \(K\) puestos}{150}{subsection.D.4.3}%
-\contentsline {subsection}{\numberline {D.4.4}Error absoluto medio de posici\'on (MAE)}{150}{subsection.D.4.4}%
-\contentsline {subsection}{\numberline {D.4.5}Complementariedad de las m\'etricas}{151}{subsection.D.4.5}%
-\contentsline {section}{\numberline {D.5}Resultados e interpretaci\'on}{151}{section.D.5}%
-\contentsline {subsection}{\numberline {D.5.1}Concordancia cuantitativa}{151}{subsection.D.5.1}%
-\contentsline {subsection}{\numberline {D.5.2}Comparaci\'on tangible: Top 10 global}{153}{subsection.D.5.2}%
-\contentsline {subsection}{\numberline {D.5.3}Modelo de nivel de poder}{154}{subsection.D.5.3}%
-\contentsline {subsection}{\numberline {D.5.4}Resumen de los resultados}{158}{subsection.D.5.4}%
-\contentsline {section}{\numberline {D.6}Discusi\'on y limitaciones}{158}{section.D.6}%
-\contentsline {subsection}{\numberline {D.6.1}Resumen de hallazgos}{159}{subsection.D.6.1}%
-\contentsline {subsection}{\numberline {D.6.2}Limitaciones}{160}{subsection.D.6.2}%
-\contentsline {chapter}{Bibliograf\'ia}{162}{appendix*.174}%
+\contentsline {paragraph}{An\'alisis general.}{133}{paragraph*.161}%
+\contentsline {paragraph}{An\'alisis diferenciado por dataset.}{133}{paragraph*.162}%
+\contentsline {section}{\numberline {C.7}Ranking proyectado: \'ultima semana de test}{136}{section.C.7}%
+\contentsline {section}{\numberline {C.8}Limitaciones y observaciones finales}{137}{section.C.8}%
+\contentsline {chapter}{\numberline {D}Validaci\'on contra rankings institucionales}{140}{appendix.D}%
+\contentsline {section}{\numberline {D.1}Fuentes de datos externos}{141}{section.D.1}%
+\contentsline {subsection}{\numberline {D.1.1}Ranking UEFA}{141}{subsection.D.1.1}%
+\contentsline {subsection}{\numberline {D.1.2}Ranking AFC}{141}{subsection.D.1.2}%
+\contentsline {subsection}{\numberline {D.1.3}Ranking CONMEBOL}{141}{subsection.D.1.3}%
+\contentsline {subsection}{\numberline {D.1.4}Ranking ClubElo}{142}{subsection.D.1.4}%
+\contentsline {subsection}{\numberline {D.1.5}G2A y LSTM}{142}{subsection.D.1.5}%
+\contentsline {subsection}{\numberline {D.1.6}Cobertura geogr\'afica}{142}{subsection.D.1.6}%
+\contentsline {section}{\numberline {D.2}Armonizaci\'on de nombres y filtrado}{143}{section.D.2}%
+\contentsline {section}{\numberline {D.3}Metodolog\'ia de comparaci\'on por instant\'aneas}{143}{section.D.3}%
+\contentsline {subsection}{\numberline {D.3.1}Enfoque est\'atico y escenario de validaci\'on}{144}{subsection.D.3.1}%
+\contentsline {section}{\numberline {D.4}M\'etricas de concordancia}{144}{section.D.4}%
+\contentsline {subsection}{\numberline {D.4.1}Coeficiente de correlaci\'on de Spearman (\(\rho \))}{145}{subsection.D.4.1}%
+\contentsline {subsection}{\numberline {D.4.2}Coeficiente \(\tau \) de Kendall}{145}{subsection.D.4.2}%
+\contentsline {subsection}{\numberline {D.4.3}\textit {Overlap} en los primeros \(K\) puestos}{146}{subsection.D.4.3}%
+\contentsline {subsection}{\numberline {D.4.4}Error absoluto medio de posici\'on (MAE)}{146}{subsection.D.4.4}%
+\contentsline {subsection}{\numberline {D.4.5}Complementariedad de las m\'etricas}{147}{subsection.D.4.5}%
+\contentsline {section}{\numberline {D.5}Resultados e interpretaci\'on}{147}{section.D.5}%
+\contentsline {subsection}{\numberline {D.5.1}Concordancia cuantitativa}{147}{subsection.D.5.1}%
+\contentsline {subsection}{\numberline {D.5.2}Comparaci\'on tangible: Top 10 global}{149}{subsection.D.5.2}%
+\contentsline {subsection}{\numberline {D.5.3}Modelos de nivel de poder}{150}{subsection.D.5.3}%
+\contentsline {subsection}{\numberline {D.5.4}Resumen de los resultados}{156}{subsection.D.5.4}%
+\contentsline {section}{\numberline {D.6}Discusi\'on y limitaciones}{157}{section.D.6}%
+\contentsline {subsection}{\numberline {D.6.1}Resumen de hallazgos}{157}{subsection.D.6.1}%
+\contentsline {subsection}{\numberline {D.6.2}Limitaciones}{158}{subsection.D.6.2}%
+\contentsline {chapter}{Bibliograf\'ia}{160}{appendix*.174}%
 \contentsfinish 

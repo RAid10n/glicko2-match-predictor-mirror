@@ -1041,6 +1041,31 @@
       \field{title}{LightGBM: A Highly Efficient Gradient Boosting Decision Tree}
       \field{year}{2017}
     \endentry
+    \entry{kendall1945}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=c6de6664bfb9ecb58d2e1c6d0dc60479}{%
+           family={Kendall},
+           familyi={K\bibinitperiod},
+           given={M.\bibnamedelimi G.},
+           giveni={M\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{c6de6664bfb9ecb58d2e1c6d0dc60479}
+      \strng{fullhash}{c6de6664bfb9ecb58d2e1c6d0dc60479}
+      \strng{fullhashraw}{c6de6664bfb9ecb58d2e1c6d0dc60479}
+      \strng{bibnamehash}{c6de6664bfb9ecb58d2e1c6d0dc60479}
+      \strng{authorbibnamehash}{c6de6664bfb9ecb58d2e1c6d0dc60479}
+      \strng{authornamehash}{c6de6664bfb9ecb58d2e1c6d0dc60479}
+      \strng{authorfullhash}{c6de6664bfb9ecb58d2e1c6d0dc60479}
+      \strng{authorfullhashraw}{c6de6664bfb9ecb58d2e1c6d0dc60479}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Biometrika}
+      \field{title}{The treatment of ties in ranking problems}
+      \field{year}{1945}
+    \endentry
     \entry{loshchilov2017adamw}{article}{}{}
       \name{author}{2}{}{%
         {{un=0,uniquepart=base,hash=1241b8181104f1917578d4c7f9b323b6}{%
@@ -1326,6 +1351,31 @@
       \verb https://www.alkaline-ml.com/pmdarima/
       \endverb
     \endentry
+    \entry{spearman1904}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=fe74eb0f9a2d4cd74c2a1f1dcf7caf85}{%
+           family={Spearman},
+           familyi={S\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{fe74eb0f9a2d4cd74c2a1f1dcf7caf85}
+      \strng{fullhash}{fe74eb0f9a2d4cd74c2a1f1dcf7caf85}
+      \strng{fullhashraw}{fe74eb0f9a2d4cd74c2a1f1dcf7caf85}
+      \strng{bibnamehash}{fe74eb0f9a2d4cd74c2a1f1dcf7caf85}
+      \strng{authorbibnamehash}{fe74eb0f9a2d4cd74c2a1f1dcf7caf85}
+      \strng{authornamehash}{fe74eb0f9a2d4cd74c2a1f1dcf7caf85}
+      \strng{authorfullhash}{fe74eb0f9a2d4cd74c2a1f1dcf7caf85}
+      \strng{authorfullhashraw}{fe74eb0f9a2d4cd74c2a1f1dcf7caf85}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{American Journal of Psychology}
+      \field{title}{The proof and measurement of association between two things}
+      \field{year}{1904}
+    \endentry
     \entry{FBRef}{online}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=e10dfe18f6742fa95e30b076ba00c198}{%
@@ -1540,7 +1590,6 @@
       \field{year}{2023}
     \endentry
   \enddatalist
-  \missing{shumway2002}
 \endrefsection
 \endinput
 
