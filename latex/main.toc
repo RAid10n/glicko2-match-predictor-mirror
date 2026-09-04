@@ -286,11 +286,11 @@
 \contentsline {subsection}{\numberline {D.4.5}Complementariedad de las m\'etricas}{147}{subsection.D.4.5}%
 \contentsline {section}{\numberline {D.5}Resultados e interpretaci\'on}{147}{section.D.5}%
 \contentsline {subsection}{\numberline {D.5.1}Concordancia cuantitativa}{147}{subsection.D.5.1}%
-\contentsline {subsection}{\numberline {D.5.2}Comparaci\'on tangible: Top 10 global}{149}{subsection.D.5.2}%
-\contentsline {subsection}{\numberline {D.5.3}Modelos de nivel de poder}{150}{subsection.D.5.3}%
-\contentsline {subsection}{\numberline {D.5.4}Resumen de los resultados}{156}{subsection.D.5.4}%
-\contentsline {section}{\numberline {D.6}Discusi\'on y limitaciones}{157}{section.D.6}%
-\contentsline {subsection}{\numberline {D.6.1}Resumen de hallazgos}{157}{subsection.D.6.1}%
-\contentsline {subsection}{\numberline {D.6.2}Limitaciones}{158}{subsection.D.6.2}%
-\contentsline {chapter}{Bibliograf\'ia}{160}{appendix*.174}%
+\contentsline {subsection}{\numberline {D.5.2}Comparaci\'on tangible: Top 10 global}{150}{subsection.D.5.2}%
+\contentsline {subsection}{\numberline {D.5.3}Modelos de nivel de poder}{151}{subsection.D.5.3}%
+\contentsline {subsection}{\numberline {D.5.4}Resumen de los resultados}{159}{subsection.D.5.4}%
+\contentsline {section}{\numberline {D.6}Discusi\'on y limitaciones}{160}{section.D.6}%
+\contentsline {subsection}{\numberline {D.6.1}Resumen de hallazgos}{160}{subsection.D.6.1}%
+\contentsline {subsection}{\numberline {D.6.2}Limitaciones}{161}{subsection.D.6.2}%
+\contentsline {chapter}{Bibliograf\'ia}{163}{appendix*.175}%
 \contentsfinish 

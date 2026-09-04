@@ -1205,18 +1205,60 @@ La Tabla~\ref{tab:validaciones_lite} resume las m\'etricas de concordancia para 
 			LSTM vs UEFA 2026 & 46 & 0.704 & 0.539 & 0.900 & 0.700 & 7.5 \\
 			LSTM vs ELO Sep 2026 & 273 & 0.473 & 0.333 & 0.700 & 0.650 & 61.3 \\
 			LSTM vs AFC 2026 & 15 & 0.170 & 0.115 & 0.800 & 0.750 & 4.9 \\
-			LSTM Lite & 411 & 0.9847 & 0.903 & 0.900 & 0.950 & 14.2 \\
+			ARIMA vs UEFA 2026 & 47 & 0.681 & 0.521 & 0.900 & 0.700 & 7.8 \\
+			ARIMA vs ELO Sep 2026 & 273 & 0.471 & 0.334 & 0.600 & 0.600 & 61.7 \\
+			ARIMA vs AFC 2026 & 15 & 0.191 & 0.134 & 0.800 & 0.750 & 4.7 \\
 			\bottomrule
 	\end{tabular}}%
 \end{table}
 
 Los resultados permiten extraer varias conclusiones inmediatas. En primer lugar, el motor Glicko‑2 modificado muestra una concordancia \emph{moderada-alta} con las fuentes externas m\'as consolidadas. La comparaci\'on con ELO Agosto 2025 arroja el mejor desempeño global (\(\rho = 0.786\), \(\tau = 0.609\)), esto indica que el sistema de rating captura una estructura de fuerzas muy similar a la del sistema Elo de ClubElo, considerado un est\'andar de referencia en el \'ambito deportivo. Las comparaciones con UEFA 2025 (\(\rho = 0.651\)) y CONMEBOL 2026 (\(\rho = 0.643\)) muestran concordancias ligeramente inferiores, lo cual es esperable dado que los coeficientes UEFA y CONMEBOL se basan exclusivamente en el rendimiento en competiciones continentales, mientras que Glicko‑2 y Elo integran todos los partidos disputados por cada equipo, incluyendo ligas dom\'esticas y torneos continentales.
 
-En segundo lugar, la comparaci\'on con AFC 2025 (\(\rho = 0.079\)) es notablemente baja. Sin embargo, este resultado debe interpretarse con cautela: el tama\~no muestral es muy reducido (\(n = 16\)) y el ranking AFC se construye \'unicamente a partir del rendimiento en competiciones asi\'aticas, mientras que Glicko‑2 incluye tambi\'en el desempe\~no en ligas dom\'esticas de cada pa\'is. La baja concordancia refleja, m\'as que una deficiencia del modelo, la naturaleza regional y especializada del ranking AFC.
+En segundo lugar, la comparaci\'on con AFC 2025 (\(\rho = 0.079\)) es notablemente baja. Sin embargo, este resultado debe interpretarse con cautela: el tama\~no muestral es muy reducido (\(n = 16\)) y el ranking AFC se construye \'unicamente a partir del rendimiento en competiciones asi\'aticas, mientras que Glicko‑2 incluye tambi\'en el desempe\~no en ligas dom\'esticas de cada pa\'is. La baja concordancia refleja, m\'as que una deficiencia del modelo, la naturaleza regional y especializada del la fuente.
 
-En tercer lugar, el modelo LSTM proyectado a 2026 mantiene una concordancia aceptable con UEFA 2026 (\(\rho = 0.704\), \(\tau = 0.539\)), ligeramente superior a la del Glicko‑2 hist\'orico con UEFA 2025. Esto indica que el modelo neuronal preserva la estructura ordinal de los ratings incluso en horizontes de proyecci\'on de un a\~no. Por el contrario, la concordancia con ELO Septiembre 2026 es moderada (\(\rho = 0.473\), \(\tau = 0.333\)), lo que refleja la incertidumbre inherente a las proyecciones a largo plazo. No obstante, el Overlap 20 de 0.650 indica que el 65\% de los 20 mejores equipos proyectados por LSTM coinciden con los de ClubElo, lo que sugiere que, aunque el orden global se degrada, la identificaci\'on de la \'elite competitiva se mantiene relativamente estable.
+En tercer lugar, los modelos ARIMA y LSTM proyectadso a 2026 mantiene una concordancia aceptable con las fuentes externas. LSTM Lite alcanza \(\rho=0.704\) y \(\tau=0.539\) contra UEFA 2026 y \(\rho=0.473\) y \(\tau=0.333\) contra ELO de Septiembre 2026, mientras que ARIMA Lite obtiene valores ligeramente inferiores (\(\rho=0.681\) y \(\rho=0.471\) respectivamente). Una diferencia peque\~na, pero que sugiere que la LSTM preserva ligeramente mejor la estructura original en horizontes de un a\~no que ARIMA. No obstante, ambos modelos muestran una ca\'ida significativa frente a ELO Septiembre 2026 (\(\rho=0.79\) y \(\rho=0.47\) respectivamente), lo que refleja la incertidumbre inherente a las proyecciones a largo plazo y las diferencias metodol\'ogicas entre sistemas de \textit{rating}. No obstante, los Overlap 20 de 0.65 para la LSTM y 0.6 para la ARIMA indican que, aunque el orden global se pueda degradar, la identificaci\'on de la \'elite competitiva se mantiene en al menos un 60\%.
 
-Por \'ultimo, la comparaci\'on entre LSTM Lite y Glicko‑2 Lite (\(\rho = 0.985\), \(n = 411\)) confirma que el modelo LSTM reproduce fielmente la estructura ordinal del Glicko‑2 sin distorsi\'on significativa. Esta concordancia casi perfecta valida que las proyecciones no introducen sesgos sistem\'aticos en el ordenamiento, sino que preservan la jerarqu\'ia de fuerzas aprendida por el sistema de rating.
+Por ultimo, no se incluyen en la tabla las comparaciones entre ARIMA/LSTM y Glicko-2 Lite, pues ARIMA y LSTM son proyecciones del mismo sistema de rating que se entrenan sobre las series históricas generadas por Glicko-2 modificado, y sus concordancias internas (\(\rho > 0.98\)) son matem\'aticamente esperadas y no constituyen una validaci\'on externa.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{subfigure}[b]{0.32\textwidth}
+		\includegraphics[width=\textwidth]{scatter_ELO_Ago_2025.png}
+		\caption{G2A vs ELO Ago 2025 ($\rho=0.786$)}
+		\label{fig:scatter_elo2025}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.32\textwidth}
+		\includegraphics[width=\textwidth]{scatter_UEFA_2025.png}
+		\caption{G2A vs UEFA 2025 ($\rho=0.651$)}
+		\label{fig:scatter_uefa2025}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.32\textwidth}
+		\includegraphics[width=\textwidth]{scatter_CONMEBOL_2026.png}
+		\caption{G2A vs CONMEBOL 2026 ($\rho=0.643$)}
+		\label{fig:scatter_conmebol2026}
+	\end{subfigure}
+	
+	\vspace{0.5cm}
+	
+	\begin{subfigure}[b]{0.32\textwidth}
+		\includegraphics[width=\textwidth]{scatter_LSTM_vs_UEFA_2026.png}
+		\caption{LSTM vs UEFA 2026 ($\rho=0.704$)}
+		\label{fig:scatter_lstm_uefa2026}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.32\textwidth}
+		\includegraphics[width=\textwidth]{scatter_LSTM_vs_ELO_Sep_2026.png}
+		\caption{LSTM vs ELO Sep 2026 ($\rho=0.473$)}
+		\label{fig:scatter_lstm_elo2026}
+	\end{subfigure}
+	
+	\caption{Diagramas de dispersi\'on de posiciones entre el sistema Glicko-2/LSTM) y fuentes externas. La l\'inea roja discontinua representa la concordancia perfecta.}
+	\label{fig:scatter_validacion}
+\end{figure}
+
+Los diagramas de dispersi\'on de la Figura~\ref{fig:scatter_validacion} complementan las m\'etricas de la Tabla~\ref{tab:validaciones_lite}. En la comparaci\'on con ELO Agosto 2025 ($\rho=0.786$), la nube de puntos dibuja dos par\'abolas, la una par\'abola superior cercana a la diagonal en los extremos y una par\'abola inferior m\'as separada, lo que indica que ambos sistemas coinciden en la \'elite y la cola, pero divergen sistem\'aticamente en la zona media. Cuatro puntos at\'ipicos muy por debajo de la diagonal y uno por encima refuerzan esta interpretaci\'on. La comparaci\'on con UEFA 2025 ($\rho=0.651$) muestra muchos puntos cerca de la diagonal, con aproximadamente un 10\% de desviaciones notables, reflejando la naturaleza regional del coeficiente UEFA. El scatter con CONMEBOL 2026 ($\rho=0.643$) presenta unos varios equipos alineados sobre la diagonal y una dispersi\'on moderada en el resto, coherente con la ponderaci\'on continental. Las proyecciones LSTM a 2026 mantienen una concordancia aceptable con UEFA ($\rho=0.704$), con la mayor\'ia de los puntos cerca de la diagonal; sin embargo, la comparaci\'on con ELO Septiembre 2026 ($\rho=0.473$) exhibe una dispersi\'on generalizada, evidenciando la incertidumbre de horizontes largos y las diferencias metodol\'ogicas entre sistemas de rating.
 
 \subsection{Comparaci\'on tangible: Top 10 global}
 
