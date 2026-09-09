@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.18.1 (MiKTeX 24.4) (format=lualatex 2026.8.10)  4 SEP 2026 00:34
+This is LuaHBTeX, Version 1.18.1 (MiKTeX 24.4) (format=lualatex 2026.8.10)  9 SEP 2026 13:41
  restricted system commands enabled.
 **main.tex
 (./main.tex
@@ -1692,11 +1692,6 @@ terecortado.png>]
 [90]
 
 [91]
-Overfull \hbox (6.42407pt too wide) in paragraph at lines 253--267
- [][] 
- []
-
-
 
 [92]
 
@@ -1734,9 +1729,9 @@ LaTeX Font Info:    Font shape `TU/LatinModernMono(0)/m/n' will be
 
 [98]
 
-[99])
+[99]
 
-[100]
+[100])
 
 [101]
 \openout2 = conclusiones.aux
@@ -1888,35 +1883,35 @@ tó-ri-cos de ra-tings ge-ne-ra-dos por el mó-du-lo \TU/LatinModernMono(0)/m/n
 [131]
 
 [132]
-<figures/ARIMAvsLSTMfull.png, id=2657, 1146.9249pt x 964.0818pt>
+<figures/ARIMAvsLSTMfull.png, id=2664, 1146.9249pt x 964.0818pt>
 File: figures/ARIMAvsLSTMfull.png Graphic file (type png)
 <use figures/ARIMAvsLSTMfull.png>
 Package luatex.def Info: figures/ARIMAvsLSTMfull.png  used on input line 835.
 (luatex.def)             Requested size: 389.13692pt x 327.09207pt.
-<figures/ARIMAvsLSTMlite.png, id=2658, 1146.2022pt x 964.0818pt>
+<figures/ARIMAvsLSTMlite.png, id=2665, 1146.2022pt x 964.0818pt>
 File: figures/ARIMAvsLSTMlite.png Graphic file (type png)
 <use figures/ARIMAvsLSTMlite.png>
 Package luatex.def Info: figures/ARIMAvsLSTMlite.png  used on input line 841.
 (luatex.def)             Requested size: 389.13692pt x 327.29802pt.
-<figures/ScatterARIMALSTMfull.png, id=2659, 1003.8303pt x 354.123pt>
+<figures/ScatterARIMALSTMfull.png, id=2666, 1003.8303pt x 354.123pt>
 File: figures/ScatterARIMALSTMfull.png Graphic file (type png)
 <use figures/ScatterARIMALSTMfull.png>
 Package luatex.def Info: figures/ScatterARIMALSTMfull.png  used on input line 8
 49.
 (luatex.def)             Requested size: 274.6857pt x 96.9005pt.
-<figures/ScatterARIMALSTMlite.png, id=2660, 1003.8303pt x 354.123pt>
+<figures/ScatterARIMALSTMlite.png, id=2667, 1003.8303pt x 354.123pt>
 File: figures/ScatterARIMALSTMlite.png Graphic file (type png)
 <use figures/ScatterARIMALSTMlite.png>
 Package luatex.def Info: figures/ScatterARIMALSTMlite.png  used on input line 8
 55.
 (luatex.def)             Requested size: 274.6857pt x 96.9005pt.
-<figures/ErrorARIMALSTMfull.png, id=2661, 1003.8303pt x 281.853pt>
+<figures/ErrorARIMALSTMfull.png, id=2668, 1003.8303pt x 281.853pt>
 File: figures/ErrorARIMALSTMfull.png Graphic file (type png)
 <use figures/ErrorARIMALSTMfull.png>
 Package luatex.def Info: figures/ErrorARIMALSTMfull.png  used on input line 866
 .
 (luatex.def)             Requested size: 274.6857pt x 77.1249pt.
-<figures/ErrorARIMALSTMlite.png, id=2662, 1003.8303pt x 281.853pt>
+<figures/ErrorARIMALSTMlite.png, id=2669, 1003.8303pt x 281.853pt>
 File: figures/ErrorARIMALSTMlite.png Graphic file (type png)
 <use figures/ErrorARIMALSTMlite.png>
 Package luatex.def Info: figures/ErrorARIMALSTMlite.png  used on input line 872
@@ -1992,31 +1987,31 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 [147]
 
 [148]
-<figures/scatter_ELO_Ago_2025.png, id=2788, 433.62pt x 433.62pt>
+<figures/scatter_ELO_Ago_2025.png, id=2795, 433.62pt x 433.62pt>
 File: figures/scatter_ELO_Ago_2025.png Graphic file (type png)
 <use figures/scatter_ELO_Ago_2025.png>
 Package luatex.def Info: figures/scatter_ELO_Ago_2025.png  used on input line 1
 226.
 (luatex.def)             Requested size: 146.5009pt x 146.50253pt.
-<figures/scatter_UEFA_2025.png, id=2789, 433.62pt x 433.62pt>
+<figures/scatter_UEFA_2025.png, id=2796, 433.62pt x 433.62pt>
 File: figures/scatter_UEFA_2025.png Graphic file (type png)
 <use figures/scatter_UEFA_2025.png>
 Package luatex.def Info: figures/scatter_UEFA_2025.png  used on input line 1232
 .
 (luatex.def)             Requested size: 146.5009pt x 146.50253pt.
-<figures/scatter_CONMEBOL_2026.png, id=2790, 433.62pt x 433.62pt>
+<figures/scatter_CONMEBOL_2026.png, id=2797, 433.62pt x 433.62pt>
 File: figures/scatter_CONMEBOL_2026.png Graphic file (type png)
 <use figures/scatter_CONMEBOL_2026.png>
 Package luatex.def Info: figures/scatter_CONMEBOL_2026.png  used on input line 
 1238.
 (luatex.def)             Requested size: 146.5009pt x 146.50253pt.
-<figures/scatter_LSTM_vs_UEFA_2026.png, id=2791, 433.62pt x 433.62pt>
+<figures/scatter_LSTM_vs_UEFA_2026.png, id=2798, 433.62pt x 433.62pt>
 File: figures/scatter_LSTM_vs_UEFA_2026.png Graphic file (type png)
 <use figures/scatter_LSTM_vs_UEFA_2026.png>
 Package luatex.def Info: figures/scatter_LSTM_vs_UEFA_2026.png  used on input l
 ine 1246.
 (luatex.def)             Requested size: 146.5009pt x 146.50253pt.
-<figures/scatter_LSTM_vs_ELO_Sep_2026.png, id=2792, 433.62pt x 433.62pt>
+<figures/scatter_LSTM_vs_ELO_Sep_2026.png, id=2799, 433.62pt x 433.62pt>
 File: figures/scatter_LSTM_vs_ELO_Sep_2026.png Graphic file (type png)
 <use figures/scatter_LSTM_vs_ELO_Sep_2026.png>
 Package luatex.def Info: figures/scatter_LSTM_vs_ELO_Sep_2026.png  used on inpu
@@ -2108,16 +2103,16 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 )
 
 Here is how much of LuaTeX's memory you used:
- 27194 strings out of 475664
+ 27195 strings out of 475664
  156463,1648299 words of node,token memory allocated
  2819 words of node memory still in use:
    7 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 2 sub_mlist, 1 glyph, 711 attribute
 , 72 glue_spec, 357 attribute_list, 1 write, 18 pdf_action nodes
-   avail lists: 1:3,2:3219,3:457,4:606,5:534,6:101,7:12953,8:94,9:1138,10:38,11:
+   avail lists: 1:3,2:3219,3:457,4:606,5:534,6:102,7:12953,8:94,9:1138,10:38,11:
 1422
  48581 multiletter control sequences out of 65536+600000
  158 fonts using 14272991 bytes
- 94i,16n,135p,2032b,2361s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 94i,16n,135p,2105b,2361s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Program Files/MiKTeX/fonts/opentype/public/lm/lmroman7-regular.otf><C:/Progr
 am Files/MiKTeX/fonts/opentype/public/lm/lmroman10-bold.otf><C:/Program Files/Mi
 KTeX/fonts/opentype/public/lm/lmroman6-regular.otf><C:/Program Files/MiKTeX/font
@@ -2147,9 +2142,9 @@ fonts/cm/cmr8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10
 am Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTe
 X/fonts/type1/public/amsfonts/symbols/msam10.pfb><C:/Program Files/MiKTeX/fonts/
 type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (175 pages, 2644273 bytes).
+Output written on main.pdf (175 pages, 2648806 bytes).
 
-PDF statistics: 3127 PDF objects out of 3580 (max. 8388607)
- 868 named destinations out of 1000 (max. 131072)
+PDF statistics: 3134 PDF objects out of 3580 (max. 8388607)
+ 869 named destinations out of 1000 (max. 131072)
  1361 words of extra memory for PDF output out of 10000 (max. 100000000)
 

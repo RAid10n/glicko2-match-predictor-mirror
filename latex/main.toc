@@ -205,7 +205,7 @@
 \contentsline {section}{\numberline {4.4}Discusi\'on integrada}{98}{section.4.4}%
 \contentsline {subsection}{\numberline {4.4.1}Jerarqu\'ia de aporte predictivo por bloque}{98}{subsection.4.4.1}%
 \contentsline {subsection}{\numberline {4.4.2}El rol de las m\'etricas deportivas avanzadas}{99}{subsection.4.4.2}%
-\contentsline {subsection}{\numberline {4.4.3}Limitaciones emergentes de los resultados}{99}{subsection.4.4.3}%
+\contentsline {subsection}{\numberline {4.4.3}Limitaciones emergentes de los resultados}{100}{subsection.4.4.3}%
 \contentsline {paragraph}{Colapso persistente del empate.}{100}{paragraph*.128}%
 \contentsline {paragraph}{Sensibilidad del MLP a la composici\'on de features.}{100}{paragraph*.129}%
 \contentsline {paragraph}{Generalizaci\'on geogr\'afica.}{100}{paragraph*.130}%
