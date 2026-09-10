@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.18.1 (MiKTeX 24.4) (format=lualatex 2026.8.10)  10 SEP 2026 14:44
+This is LuaHBTeX, Version 1.18.1 (MiKTeX 24.4) (format=lualatex 2026.8.10)  10 SEP 2026 16:04
  restricted system commands enabled.
 **main.tex
 (./main.tex
@@ -2143,7 +2143,7 @@ fonts/cm/cmr8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10
 am Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTe
 X/fonts/type1/public/amsfonts/symbols/msam10.pfb><C:/Program Files/MiKTeX/fonts/
 type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (175 pages, 2910031 bytes).
+Output written on main.pdf (175 pages, 2910079 bytes).
 
 PDF statistics: 3136 PDF objects out of 3580 (max. 8388607)
  869 named destinations out of 1000 (max. 131072)
