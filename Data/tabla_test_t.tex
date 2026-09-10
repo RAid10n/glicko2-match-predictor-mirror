@@ -1,0 +1,15 @@
+\begin{table}[htbp]
+    \centering
+    \caption{Test $t$ pareado sobre las diferencias de las 10 corridas (Base $-$ Completo).}
+    \label{tab:test_t}
+    \begin{tabular}{lcccccc}
+        \toprule
+        & \multicolumn{2}{c}{\textbf{Log-Loss Cat.}} & \multicolumn{2}{c}{\textbf{Log-Loss Bin.}} & \multicolumn{2}{c}{\textbf{$F1_D$}} \\
+        \textbf{Dataset} & $t$ & $p$ & $t$ & $p$ & $t$ & $p$ \\
+        \midrule
+        Full & $-7.872$ & $<0.0001$ & $3.603$ & 0.0057 & $-4.146$ & 0.0025 \\
+        Lite & $2.590$ & 0.0292 & $9.185$ & $<0.0001$ & $-14.495$ & $<0.0001$ \\
+        Lite Rec. & $-12.831$ & $<0.0001$ & $-7.036$ & $<0.0001$ & $-1.406$ & 0.1933 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
