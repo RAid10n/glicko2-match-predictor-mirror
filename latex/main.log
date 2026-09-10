@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.18.1 (MiKTeX 24.4) (format=lualatex 2026.8.10)  10 SEP 2026 05:59
+This is LuaHBTeX, Version 1.18.1 (MiKTeX 24.4) (format=lualatex 2026.8.10)  10 SEP 2026 14:44
  restricted system commands enabled.
 **main.tex
 (./main.tex
@@ -1703,11 +1703,11 @@ terecortado.png>]
 [95]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 317.
+(hyperref)                removing `math shift' on input line 319.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 317.
+(hyperref)                removing `math shift' on input line 319.
 
 
 
@@ -1715,15 +1715,15 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 <figures/correlacionlite.png, id=2301, 578.16pt x 505.89pt>
 File: figures/correlacionlite.png Graphic file (type png)
 <use figures/correlacionlite.png>
-Package luatex.def Info: figures/correlacionlite.png  used on input line 348.
+Package luatex.def Info: figures/correlacionlite.png  used on input line 350.
 (luatex.def)             Requested size: 206.01077pt x 180.25992pt.
 <figures/correlacionfull.png, id=2302, 578.16pt x 505.89pt>
 File: figures/correlacionfull.png Graphic file (type png)
 <use figures/correlacionfull.png>
-Package luatex.def Info: figures/correlacionfull.png  used on input line 354.
+Package luatex.def Info: figures/correlacionfull.png  used on input line 356.
 (luatex.def)             Requested size: 206.01077pt x 180.25992pt.
 LaTeX Font Info:    Font shape `TU/LatinModernMono(0)/m/n' will be
-(Font)              scaled to size 12.0pt on input line 358.
+(Font)              scaled to size 12.0pt on input line 360.
 
 
 [97<./figures/correlacionlite.png><./figures/correlacionfull.png>]
@@ -2143,7 +2143,7 @@ fonts/cm/cmr8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10
 am Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTe
 X/fonts/type1/public/amsfonts/symbols/msam10.pfb><C:/Program Files/MiKTeX/fonts/
 type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (175 pages, 2909997 bytes).
+Output written on main.pdf (175 pages, 2910031 bytes).
 
 PDF statistics: 3136 PDF objects out of 3580 (max. 8388607)
  869 named destinations out of 1000 (max. 131072)
