@@ -1,13 +1,13 @@
 {
-  "fecha": "2026-09-10T09:42:55.064402",
-  "python": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+  "fecha": "2026-09-16T22:47:25.683582",
+  "python": "3.13.15 (main, Aug  6 2026, 11:06:22) [GCC 13.3.0]",
   "evals": {
     "full": 660,
     "lite": 780,
     "lite_recortado": 660
   },
   "hashes": {
-    "full/skellam": "00c3e02ac0a94fc9",
+    "full/skellam": "c71e175557d3ed61",
     "full/hist": "66e7c388397354d9",
     "full/final": "1bc023fdd9e3447f",
     "full/par": "51e39f669819ad28",
@@ -15,8 +15,8 @@
     "full/pred": "1ddeec54cc134a28",
     "full/h_pkl": "6524dede8ff109e7",
     "full/a_pkl": "1ffaa62a88b871cb",
-    "full/clean": "e1bd40c7749a1a45",
-    "lite/skellam": "02e029d4821887dc",
+    "full/clean": "9e09f6faa6b3079d",
+    "lite/skellam": "c35fba8d17b2a2a4",
     "lite/hist": "5640dcb95ed7a27f",
     "lite/final": "e1b28765e61cf20f",
     "lite/par": "d3fcfd94107440cd",
@@ -24,8 +24,8 @@
     "lite/pred": "6b6628dd7edab21f",
     "lite/h_pkl": "f96399067ec255d7",
     "lite/a_pkl": "b2464fef209fa8fa",
-    "lite/clean": "f8c7c5b0302f8a00",
-    "lite_recortado/skellam": "5d57d6c2073cd096",
+    "lite/clean": "a7ba066d336e849d",
+    "lite_recortado/skellam": "ab8fc1f47f2ce018",
     "lite_recortado/hist": "66e7c388397354d9",
     "lite_recortado/final": "1bc023fdd9e3447f",
     "lite_recortado/par": "51e39f669819ad28",
@@ -33,6 +33,6 @@
     "lite_recortado/pred": "6ccea79c78b59487",
     "lite_recortado/h_pkl": "6524dede8ff109e7",
     "lite_recortado/a_pkl": "1ffaa62a88b871cb",
-    "lite_recortado/clean": "f8c7c5b0302f8a00"
+    "lite_recortado/clean": "a7ba066d336e849d"
   }
 }

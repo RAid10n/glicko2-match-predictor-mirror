@@ -1,0 +1,1 @@
+Lista de equipos únicos con datos faltantes en travel_km:
