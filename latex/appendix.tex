@@ -125,7 +125,7 @@ La Tabla~\ref{tab:gru_curvas} resume la evoluci\'on del entrenamiento para los t
 
 \begin{table}[htbp]
 	\centering
-	\caption{Evoluci\'on del entrenamiento GRU (modo \textit{Deep}, $T=8$). Pérdida de entrop\'ia cruzada y \emph{accuracy}.}
+	\caption{Evoluci\'on del entrenamiento GRU (modo \textit{Deep}, $T=8$). P\'erdida de entrop\'ia cruzada y \emph{accuracy}.}
 	\label{tab:gru_curvas}
 	\begin{tabular}{lcccccc}
 		\toprule
@@ -134,13 +134,13 @@ La Tabla~\ref{tab:gru_curvas} resume la evoluci\'on del entrenamiento para los t
 		\textbf{Dataset} & Entrenamiento & Validaci\'on & \'Epoca & Validaci\'on & Entrenamiento & Validaci\'on \\
 		\midrule
 		Full & 1.0494 & 0.9992 & 3 & 0.9929 & 0.8926 & 1.0711 \\
-		Lite & 1.0467 & 1.0298 & 2 & 1.0254 & 0.9458 & 1.0613 \\
+		Lite & 1.0467 & 1.0298 & 9 & 1.0254 & 0.9458 & 1.0613 \\
 		Lite Recortado & 1.0478 & 1.0025 & 4 & 0.9975 & 0.9376 & 1.0421 \\
 		\bottomrule
 	\end{tabular}
 \end{table}
 
-El patr\'on es consistente en los tres conjuntos: la p\'erdida de validaci\'on alcanza su m\'inimo entre las \'epocas $2$ y $4$, para luego diverger mon\'otonamente mientras la p\'erdida de entrenamiento contin\'ua descendiendo. En el \textit{dataset Full}, la brecha entrenamiento--validaci\'on se ampl\'ia desde $0.0355$ en la \'epoca 1, hasta $0.1785$ en la \'epoca 30; la \textit{accuracy} de entrenamiento asciende del $46.0\%$ al $57.8\%$, mientras que la de validaci\'on desciende de $51.4\%$ a $47.1\%$. Este comportamiento es evidencia de sobreajuste. La red tiende a memorizar patrones del entrenamiento y su capacidad de generalizaci\'on se degrada.
+El patr\'on es consistente en los tres conjuntos: la p\'erdida de validaci\'on alcanza su m\'inimo en las primeras \'epocas, para luego diverger mon\'otonamente mientras la p\'erdida de entrenamiento contin\'ua descendiendo. En el \textit{dataset Full}, la brecha entrenamiento--validaci\'on se ampl\'ia desde $0.0355$ en la \'epoca 1, hasta $0.1785$ en la \'epoca 30; la \textit{accuracy} de entrenamiento asciende del $46.0\%$ al $57.8\%$, mientras que la de validaci\'on desciende de $51.4\%$ a $47.1\%$. Este comportamiento es evidencia de sobreajuste. La red tiende a memorizar patrones del entrenamiento y su capacidad de generalizaci\'on se degrada.
 
 \subsection{M\'etricas de evaluaci\'on sobre el conjunto de prueba}
 \label{subsec:app_gru_test}
@@ -155,16 +155,16 @@ La Tabla~\ref{tab:gru_test} reporta las m\'etricas finales sobre el $30\%$ crono
 		\toprule
 		\textbf{Dataset} & \textbf{Modelo} & \textbf{LL Cat.} & \textbf{LL Bin.} & \textbf{Accuracy} \\
 		\midrule
-		\multirow{3}{*}{Full} & Glicko-2 aislado & 1.0424 & 0.6499 & --- \\
-		& MLP completo & 1.0261 & 0.6445 & 0.486 \\
+		\multirow{3}{*}{Full} & Glicko-2 aislado & 1.0425 & 0.6500 & --- \\
+		& MLP completo & 1.0261 & 0.6445 & 0.489 \\
 		& GRU & 1.1067 & 0.6927 & 0.434 \\
 		\midrule
-		\multirow{3}{*}{Lite} & Glicko-2 aislado & 1.0411 & 0.6478 & --- \\
-		& MLP completo & 1.0224 & 0.6402 & 0.487 \\
+		\multirow{3}{*}{Lite} & Glicko-2 aislado & 1.0414 & 0.6478 & --- \\
+		& MLP completo & 1.0224 & 0.6402 & 0.488 \\
 		& GRU & 1.0598 & 0.6635 & 0.464 \\
 		\midrule
-		\multirow{3}{*}{Lite Rec.} & Glicko-2 aislado & 1.0424 & 0.6499 & --- \\
-		& MLP completo & 1.0273 & 0.6460 & 0.485 \\
+		\multirow{3}{*}{Lite Rec.} & Glicko-2 aislado & 1.0425 & 0.6500 & --- \\
+		& MLP completo & 1.0273 & 0.6460 & 0.486 \\
 		& GRU & 1.0696 & 0.6718 & 0.447 \\
 		\bottomrule
 	\end{tabular}
@@ -284,9 +284,9 @@ El motor \textit{naive} se ejecuta independientemente sobre cada dataset, partie
 
 Para cada dataset, el \textit{notebook} produce:
 \begin{enumerate}
-	\item Un archivo CSV con los ratings finales de todos los equipos: \texttt{ratings\_final\_\textit{naive}\_trinomial\_\{dataset\}.csv}.
-	\item Un archivo CSV con el historial completo de actualizaciones: \texttt{ratings\_history\_\textit{naive}\_trinomial\_\{dataset\}.csv}.
-	\item Un conjunto de estadísticas descriptivas: rango de ratings, correlación de Spearman entre $\mu$ y número de partidos, distribución de \texttt{draw\_prob}.
+	\item Un archivo CSV con los ratings finales de todos los equipos:\\ \texttt{ratings\_final\_\textit{naive}\_trinomial\_\{dataset\}.csv}.
+	\item Un archivo CSV con el historial completo de actualizaciones:\\ \texttt{ratings\_history\_\textit{naive}\_trinomial\_\{dataset\}.csv}.
+	\item Un conjunto de estad\'isticas descriptivas: rango de ratings, correlación de Spearman entre $\mu$ y número de partidos, distribuci\'on de \texttt{draw\_prob}.
 \end{enumerate}
 
 Estos resultados constituyen la l\'inea base contra la cual se contrasta el desempe\~no del motor calibrado \texttt{G2Av1513}.
@@ -607,7 +607,7 @@ Se comparan dos enfoques:
 	\item Una red \textit{Long Short-Term Memory (LSTM)} global, que aprende patrones transferibles entre equipos compartiendo par\'ametros.
 \end{enumerate}
 
-La evaluaci\'on se realiza sobre el \textsc{dataset Full} y el \textsc{dataset Lite} en un r\'egimen de \textit{backtesting}, y se complementa con una proyecci\'on a futuro para el Ap\'endice~\ref{ap:forecasting}. El horizonte de prueba abarca desde mediados de 2023 hasta diciembre de 2025 para el \textit{dataset Full}, lo que permite evaluar el desempe\~no en condiciones reales de estacionalidad y parones competitivos.
+La evaluaci\'on se realiza sobre el \textsc{dataset Full} y el \textsc{dataset Lite} en un r\'egimen de \textit{backtesting}, y se complementa con una proyecci\'on a futuro para el Ap\'endice~\ref{ap:validacion}. El horizonte de prueba abarca desde mediados de 2023 hasta diciembre de 2025 para el \textit{dataset Full}, lo que permite evaluar el desempe\~no en condiciones reales de estacionalidad y parones competitivos.
 
 \section{Justificaci\'on de la agregaci\'on semanal}
 \label{ap:justificacion_semanal}
@@ -932,9 +932,11 @@ Como aplicaci\'on pr\'actica del componente exploratorio, se gener\'o un ranking
 
 Se observa que el ARIMA acierta exactamente en las 18 primeras posiciones (con empates en \(\mu\) que mantienen el orden), mientras que la LSTM presenta ligeras oscilaciones en la zona media del ranking, por ejemplo, Inter Miami cae del puesto 9 al puesto 14, y Cincinnati sale del Top 20. Esta mayor inestabilidad en la zona media refuerza la conclusi\'on de que la LSTM, aunque \'util para equipos vol\'atiles, introduce ruido en la clasificaci\'on de equipos de rendimiento estable.
 
+\newpage
+
 \begin{table}[htbp]
 	\centering
-	\caption{Top 20 del ranking proyectado — Dataset \textsc{Lite} (semana del 2025-12-09).}
+	\caption{Top 20 del ranking proyectado - Dataset \textsc{Lite} (semana del 2025-12-09).}
 	\label{tab:top20_lite}
 	\resizebox{\textwidth}{!}{%
 		\begin{tabular}{lrrrrrrrr}
@@ -1300,7 +1302,7 @@ El concepto de \emph{nivel de poder} se introduce como una herramienta para cuan
 \begin{table}[htbp]
 	\centering
 	\small
-	\caption{Top 5 por liga y media de valoración - G2A Full.}
+	\caption{Top 5 por liga y media de valoraci\'on - G2A Full.}
 	\label{tab:top5_liga_g2afull}
 	\resizebox{\textwidth}{!}{%
 	\begin{tabular}{l c c c}
@@ -1329,7 +1331,7 @@ En el modelo G2A Full, la Premier League encabeza claramente el nivel de poder c
 \begin{table}[htbp]
 	\centering
 	\small
-	\caption{Top 5 por liga y media de valoración — G2A Lite.}
+	\caption{Top 5 por liga y media de valoraci\'on - G2A Lite.}
 	\label{tab:top5_liga_g2alite}
 	\resizebox{\textwidth}{!}{%
 	\begin{tabular}{l c c c}
@@ -1360,7 +1362,7 @@ En el modelo G2A Lite, que incluye el per\'iodo 2017--2025 y ligas adicionales, 
 \begin{table}[htbp]
 	\centering
 	\small
-	\caption{Top 5 por liga y media de valoración - LSTM Full.}
+	\caption{Top 5 por liga y media de valoraci\'on - LSTM Full.}
 	\label{tab:top5_liga_lstmfull}
 	\resizebox{\textwidth}{!}{%
 	\begin{tabular}{l c c c}
@@ -1386,12 +1388,10 @@ En el modelo G2A Lite, que incluye el per\'iodo 2017--2025 y ligas adicionales, 
 
 El modelo LSTM Full, que proyecta ratings a 2026, mantiene la Premier League en cabeza (1677.0), pero reduce las diferencias con las dem\'as ligas. La Saudi Pro League (1656.3) y Ligue 1 (1649.3) se acercan, mientras que Serie A cae a la octava posici\'on (1593.8), muy por debajo de su posici\'on en los modelos Glicko‑2. Esto refleja que las proyecciones LSTM tienden a comprimir las diferencias entre ligas, posiblemente debido a la naturaleza suavizadora de los modelos de series temporales, que aten\'uan las fluctuaciones extremas. La Bundesliga (1616.1) y el Brasileirao (1612.7) mantienen posiciones intermedias.
 
-\newpage
-
 \begin{table}[htbp]
 	\centering
 	\small
-	\caption{Top 5 por liga y media de valoración - LSTM Lite.}
+	\caption{Top 5 por liga y media de valoraci\'on - LSTM Lite.}
 	\label{tab:top5_liga_lstmlite}
 	\resizebox{\textwidth}{!}{%
 	\begin{tabular}{l c c c}
@@ -1424,7 +1424,7 @@ El modelo LSTM Lite presenta la compresi\'on más pronunciada. La Premier League
 \begin{table}[htbp]
 	\centering
 	\small
-	\caption{Top 5 por liga y media de valoración - ARIMA Full}
+	\caption{Top 5 por liga y media de valoraci\'on - ARIMA Full}
 	\label{tab:top5_liga_arimafull}
 	\resizebox{\textwidth}{!}{%
 		\begin{tabular}{l c c c}
@@ -1450,12 +1450,10 @@ El modelo LSTM Lite presenta la compresi\'on más pronunciada. La Premier League
 
 El modelo ARIMA Full mantiene a la Premier League en la cima (1691.04), pero la Saudi Pro League (1685.53) se acerca m\'as que en G2A Full, quedando a solo 5.5 puntos. La Serie A (1675.70) y LaLiga (1670.82) siguen muy de cerca, confirmando el equilibrio entre las grandes ligas europeas. El Brasileirao (1658.17) escala posiciones, superando a la Super League de Grecia y la Bundesliga, lo que refleja la alta valoraci\'on de equipos brasile\~nos como Flamengo y Palmeiras por parte del ARIMA. Las ligas americanas (MLS, Argentina) y asi\'aticas (J1, K League) quedan rezagadas con diferencias superiores a los 85 puntos, y más de 130 en los casos de Argentina, MLS y K League.
 
-\newpage
-
 \begin{table}[htbp]
 	\centering
 	\small
-	\caption{Top 5 por liga y media de valoración - ARIMA Lite}
+	\caption{Top 5 por liga y media de valoraci\'on - ARIMA Lite}
 	\label{tab:top5_liga_arimalite}
 	\resizebox{\textwidth}{!}{%
 		\begin{tabular}{l c c c}

@@ -1,335 +1,53 @@
 \chapter{Marco Te\'orico}
 \label{ch:marco}
 
-El objetivo de este cap\'itulo es construir el aparato formal que permite abordar la pregunta de investigaci\'on planteada al final de la secci\'on anterior. El desarrollo se organiza en tres bloques conceptuales. En primer lugar, se delimita el dominio de aplicaci\'on y se justifica la relevancia de las variables deportivas, econ\'omicas y ambientales que alimentar\'an el modelo. En segundo lugar, se presentan los sistemas de rating din\'amico que constituyen el n\'ucleo inferencial para la estimaci\'on de la fuerza latente de los equipos, transitando desde los modelos est\'aticos de comparaci\'on probabil\'istica hasta los esquemas bayesianos de actualizaci\'on secuencial. En tercer lugar, se desarrolla el modelamiento probabil\'istico del resultado como proceso de conteo, se integran las covariables ex\'ogenas al sistema predictivo y se cierra con el fundamento matem\'atico de las m\'etricas de evaluaci\'on. Cada herramienta se introduce en su contexto hist\'orico y formal, de modo que el lector pueda reconstruir la l\'ogica que vincula la teor\'ia de la probabilidad con la predicci\'on de resultados deportivos.
+Este cap\'itulo construye el aparato formal que sustenta el sistema predictivo. Se organiza en seis bloques. El primero define las variables del modelo, agrupadas en tres dominios: deportivo, ambiental y econ\'omico. El segundo presenta los sistemas de rating, transitando desde las comparaciones pareadas de Bradley-Terry y el esquema Elo hasta el Glicko-2 y su adaptaci\'on trinomial al f\'utbol. El tercero desarrolla el modelado probabil\'istico del resultado como proceso de conteo. El cuarto formaliza la integraci\'on de covariables ex\'ogenas y la estimaci\'on por m\'axima verosimilitud. El quinto describe el refinador neuronal. El sexto cierra con las m\'etricas de evaluaci\'on.
 
-\section{Contexto y motivaci\'on}
-\label{sec:contexto}
+\section{Variables del modelo}
+\label{sec:variables}
 
-Antes de introducir la matem\'atica del modelo, es necesario establecer por qu\'e el f\'utbol constituye un dominio v\'alido para la inferencia probabil\'istica, y qu\'e variables, tanto intr\'insecas al juego como ex\'ogenas al terreno de juego, justifican una extensi\'on m\'as all\'a de los sistemas de rating can\'onicos. Esta secci\'on sintetiza el contexto deportivo, econ\'omico y ambiental del estudio, comprimiendo la informaci\'on necesaria para motivar la arquitectura predictiva que se desarrollar\'a en las secciones posteriores. Se cierra con la formulaci\'on expl\'icita de la pregunta de investigaci\'on que orienta el resto del trabajo.
-
-\subsection{El f\'utbol como dominio de estudio}
-
-El f\'utbol constituye un sistema din\'amico cuya naturaleza estoc\'astica y el volumen de datos hist\'oricos disponibles lo posicionan como un dominio apropiado para el modelado probabil\'istico \cite{Fonseca}. 
-
-Desde una perspectiva formal, el problema central radica en estimar la fuerza relativa de los equipos para predecir la distribuci\'on de resultados de manera coherente. Aunque el 
-desenlace individual de un partido presenta varianza residual considerable, el rendimiento agregado en ligas profesionales 
-muestra estabilidad que puede explicarse mediante covariables de 
-alta correlaci\'on \cite{SZYMAN1}. La digitalizaci\'on 
-masiva de eventos ha permitido la transici\'on de m\'etricas de 
-conteo simple hacia variables probabil\'isticas como los goles 
-esperados (xG), que eval\'uan la calidad de las oportunidades 
-creadas en lugar de los resultados brutos 
-\cite{xG,MetricasBase}. En consecuencia, el f\'utbol 
-ofrece un entorno donde la inferencia multivariante puede 
-aplicarse para optimizar la predicci\'on de resultados 
-\cite{VanPutten2023}.
+Se llamar\'a variable externa, o bien covariable ex\'ogena, a todo aquel factor externo que pueda explicar, modular o alterar el resultado de un partido de f\'utbol. Estas covariables son muy importantes, y en casos extremos pueden llegar a ser determinantes para el resultado de un partido. El modelo se alimenta de tres bloques de variables: deportivas, ambientales y econ\'omicas. Cada bloque se describe a continuaci\'on en t\'erminos de las covariables que ingresan al pipeline.
 
 \subsection{M\'etricas deportivas}
 
-La cuantificaci\'on del rendimiento en el f\'utbol ha evolucionado 
-hacia la construcci\'on de vectores de caracter\'isticas que 
-alimentan modelos probabil\'isticos. En este estudio, las 
-m\'etricas deportivas primarias se consideran covariables que 
-operan dentro de una ecuaci\'on de goles esperados (xG), 
-parametrizando la probabilidad de transici\'on de eventos 
-t\'acticos hacia resultados terminales \cite{MetricasBase}. El 
-proceso de modelado no utiliza estas variables de conteo de 
-manera aislada, sino que las agrega en bloques funcionales y, 
-posteriormente, en \'indices compuestos de autor\'ia que resumen 
-la capacidad ofensiva, creativa y defensiva de cada equipo.
+La cuantificaci\'on del rendimiento en el f\'utbol ha evolucionado hacia la construcci\'on de caracter\'isticas que alimentan modelos probabilisticos. Este trabajo se apoya en un conjunto de m\'etricas primarias que describen la producci\'on ofensiva, la recuperaci\'on defensiva y el contexto del jugador. En el bloque ofensivo, los goles anotados (Gls)  constituyen la variable de \'exito por excelencia, mientras que los remates totales (Sh) y los remates a puerta (SoT) aproximan el potencial de anotaci\'on con independencia de la efectividad del portero rival \cite{xG}. A este n\'ucleo se suman las asistencias (Ast), los penaltis intentados (PKatt) y penaltis anotados (PK), las faltas recibidas (Fld), los centros (Crs) y las posiciones adelantadas (Off), que en conjunto describen la amplitud y profundidad del ataque.
 
-\subsubsection{M\'etricas de producci\'on ofensiva} 
-El indicador directo 
-de capacidad de generaci\'on de peligro radica en las acciones 
-de finalizaci\'on. Los goles anotados (Gls) constituyen la 
-variable dependiente de \'exito por excelencia, mientras que los 
-remates totales (Sh) y los remates a puerta (SoT) aproximan el 
-potencial de anotaci\'on independientemente de la efectividad 
-individual del portero rival \cite{xG}. A este n\'ucleo se suman 
-las asistencias (Ast), que capturan la calidad del \'ultimo pase 
-previo a la anotaci\'on; los penaltis intentados (PKatt) y 
-convertidos (PK), que representan situaciones de alta 
-probabilidad de gol derivadas de faltas dentro del \'area; y las 
-faltas recibidas (Fld), que operan como proxy indirecto de la 
-peligrosidad ofensiva al forzar infracciones del adversario. Los 
-centros (Crs) y las posiciones adelantadas (Off) completan este 
-bloque al describir la amplitud y profundidad del ataque.
+La eficiencia defensiva se mide a trav\'es de acciones que interrumpen la progresi\'on rival. Las entradas ganadas (TklW) y las intercepciones (Int) cuantifican la recuperaci\'on de posesi\'on en zonas medias y avanzadas, mientras que las faltas cometidas (Fls) reflejan la intensidad defensiva con su costo asociado en tarjetas. Las tarjetas amarillas (CrdY) y tarjetas rojas (CrdR) alteran la distribuci\'on de probabilidades del resultado al modificar la simetr\'ia num\'erica del encuentro \cite{Iskandaryan2020}. Los goles en propia puerta (OG) y los penaltis concedidos (PKcon), aunque eventos raros, se incorporan como indicadores de error defensivo.
 
-\subsubsection{M\'etricas de recuperaci\'on y disciplina} 
+Para que las m\'etricas de conteo sean comparables entre equipos con distintas cargas de calendario o profundidad de plantilla, se introducen variables de contexto. Los minutos jugados (Min) permiten normalizar las estad\'isticas acumuladas en tasas por unidad de tiempo, mientras que la edad (Age) y la posici\'on t\'actica (Pos) proporcionan el marco estructural sobre el cual se agregan las estad\'isticas individuales al nivel de equipo.
 
-La eficiencia 
-defensiva se mide a trav\'es de acciones que interrumpen la 
-progresi\'on rival. Las entradas ganadas (TklW) y las 
-intercepciones (Int) cuantifican la recuperaci\'on de posesi\'on 
-en zonas medias y avanzadas, mientras que las faltas cometidas 
-(Fls) reflejan la intensidad defensiva, aunque con un costo 
-asociado en t\'erminos de tarjetas. Las tarjetas amarillas (CrdY) 
-y rojas (CrdR) alteran la distribuci\'on de probabilidades del 
-resultado al modificar la simetr\'ia num\'erica del encuentro y 
-restringir las opciones t\'acticas del equipo sancionado 
-\cite{Iskandaryan2020}. Los goles en propia puerta (OG) y los 
-penaltis concedidos (PKcon), aunque eventos raros, se incorporan 
-como indicadores de error defensivo y desconcentraci\'on 
-situacional.
+Sobre este conjunto de m\'etricas primarias se construyen \'indices compuestos de autor\'ia: el \'indice de goles esperados te\'oricos (xG\_teo), el \'indice de asistencias esperadas te\'oricas (xA\_teo) y el \'indice de eficiencia defensiva (DDI). Estos \'indices se calculan como combinaciones lineales ponderadas de las m\'etricas primarias, con coeficientes calibrados emp\'iricamente sobre el conjunto de datos obtenido. Adicionalmente, se generan promedios m\'oviles sobre ventanas de 5, 10, 20 y 30 partidos para capturar la forma reciente de cada equipo. La formulaci\'on exacta de estos \'indices y el protocolo de selecci\'on de variables se detallan en el Cap\'itulo~\ref{ch:metodologia}.
 
-\subsubsection{Variables de contexto y normalizaci\'on} 
+\subsection{Factores ambientales}
 
-Para que las 
-m\'etricas de conteo sean comparables entre equipos con 
-diferentes cargas calendario o profundidad de plantilla, es 
-necesario introducir variables de contexto. Los minutos jugados 
-(Min) permiten normalizar las estad\'isticas acumuladas en tasas 
-por unidad de tiempo, mientras que la edad del jugador (Age) y 
-la posici\'on t\'actica (Pos) , diferenciada entre 
-porteros (GK), defensas (DF), mediocampistas (MF) y delanteros 
-(FW), proporcionan el marco estructural sobre el cual se 
-agregan las estad\'isticas individuales al nivel de equipo.
+El rendimiento deportivo no opera en un vac\'io f\'isico. Las condiciones meteorol\'ogicas y geogr\'aficas del lugar act\'uan como covariables que imponen restricciones fisiol\'ogicas sobre los jugadores y modulan la din\'amica del juego. La temperatura ambiente exhibe una correlaci\'on positiva documentada con el volumen de anotaci\'on: incrementos de $10^{\circ}\mathrm{C}$ sobre el promedio de la jornada se asocian con un aumento aproximado de $0{,}48$ goles por partido \cite{TemperaturaGoles}. La humedad relativa interact\'ua con la temperatura para definir el estr\'es t\'ermico percibido \cite{Iskandaryan2020}. En el presente trabajo se busca que estas magnitudes se incorporen naturalmente, no como ruido ambiental, si no como descriptores estructurales del contexto que permitan capturar la asimetr\'ia ambiental del encuentro.
 
-\subsubsection{De m\'etricas primarias a \'indices compuestos} 
+Un componente estructural clave es la altitud del estadio sobre el nivel del mar. Su relevancia radica en la variaci\'on de la presi\'on parcial de ox\'igeno (PiO2), que decrece con la elevaci\'on. La disminuci\'on de la disponibilidad de ox\'igeno reduce la capacidad aer\'obica m\'axima y acelera el umbral de fatiga, otorgando una ventaja adaptativa a las escuadras locales aclimatadas frente a visitantes no habituados \cite{West1996}. La idea es cuantificar la asimatr\'ia ambiental a trav\'es de la diferencia de presi\'on parcial de ox\'igeno usual a la que ambas plantillas est\'an acostumbradas. La derivaci\'on de la ley barom\'etrica que fundamenta este c\'alculo se presenta en la Secci\'on~\ref{sec:integracion}.
 
-El conjunto de variables anteriores, extra\'ido de registros 
-estad\'isticos estandarizados de competici\'on, se procesa en 
-un pipeline de ingenier\'ia de caracter\'isticas que genera, 
-por un lado, promedios m\'oviles de forma (m\'etricas 
-\textit{rolling} sobre 5, 10, 20 y 30 partidos) y, por otro, 
-\'indices compuestos de autor\'ia. En particular, el \'indice 
-de goles esperados te\'oricos (xG\_teo), el \'indice de 
-asistencias esperadas te\'oricas (xA\_teo) y el \'indice de 
-eficiencia defensiva (DDI) se construyen como combinaciones 
-lineales ponderadas de m\'etricas primarias, donde los coeficientes de ponderaci\'on son de autor\'ia propia, calibrados emp\'iricamente sobre el conjunto de datos. 
+M\'as all\'a de las variables f\'isicas, la local\'ia constituye un sesgo sistem\'atico documentado. Factores como el tiempo de viaje, el desfase horario, la presi\'on de la afici\'on y la familiaridad con el terreno distorsionan la probabilidad a priori de victoria en favor del equipo anfitri\'on \cite{Iskandaryan2020}.
 
-La 
-formulaci\'on exacta de estos \'indices y el protocolo de 
-selecci\'on de variables se detallan en el cap\'itulo de 
-metodolog\'ia.
+\subsection{Factores econ\'omicos}
 
-\subsection{Factores externos: econ\'omicos y ambientales}
+El rendimiento deportivo no puede desvincularse del entorno econ\'omico del club. Los factores financieros act\'uan como proxies de la profundidad de plantilla, la estabilidad institucional y el volumen de recursos disponibles. En el plano microecon\'omico, el valor total de mercado de la plantilla constituye un predictor robusto del \'exito deportivo, con coeficientes de determinaci\'on cercanos a $0{,}90$ en estudios longitudinales sobre las grandes ligas europeas \cite{SZYMAN1}. La din\'amica de transferencias, capturada a trav\'es de ingresos por ventas, gastos en adquisiciones y el balance neto, parametriza la ambici\'on institucional y la capacidad de reposici\'on de talento \cite{SZYMAN2}.
 
-El rendimiento deportivo no depende \'unicamente de variables 
-intr\'insecas al juego. Desde un enfoque de modelado, los 
-factores ex\'ogenos act\'uan como reguladores de la varianza 
-residual, permitiendo que el sistema de rating transite de una 
-agregaci\'on hist\'orica a una estimaci\'on multivariante 
-\cite{Iskandaryan2020}.
+En cuanto a la composici\'on de plantilla, la proporci\'on de jugadores extranjeros y la distribuci\'on de minutos reflejan la diversidad t\'actica y la rotaci\'on del equipo. Variables como la asistencia promedio al estadio del equipo local y el ratio de ocupaci\'on permiten capturar el respaldo de la afici\'on como factor contextual.
 
-\subsubsection{Factores ambientales}
+A nivel macroecon\'omico, los indicadores como el Producto Interno Bruto, la tasa de inflaci\'on, la Inversi\'on Extranjera Directa, el coeficiente de Gini del pa\'is, el gasto p\'ublico y la deuda soberana del pa\'is de origen de cada liga podr\'ian tambi\'en explicar estas asimetr\'ias dado el contexto pol\'itico, econ\'omico y social de la regi\'on.
 
-El rendimiento deportivo no opera en un vac\'io f\'isico. Las 
-condiciones meteorol\'ogicas y geogr\'aficas del estadio act\'uan 
-como covariables ex\'ogenas que imponen restricciones 
-fisiol\'ogicas sobre los jugadores, alterando la din\'amica del 
-juego de manera predecible y cuantificable. En el presente 
-trabajo, estas variables se incorporan no como ruido ambiental, 
-sino como descriptores estructurales del contexto de competencia 
-que modulan la tasa de goles esperados y, en consecuencia, la 
-probabilidad de resultado.
-
-\paragraph{Variables meteorol\'ogicas instant\'aneas.} La 
-temperatura ambiente exhibe una correlaci\'on positiva 
-documentada con el volumen de anotaci\'on: incrementos de 
-$10^{\circ}\mathrm{C}$ sobre el promedio de la jornada se 
-asocian con un aumento aproximado de $0{,}48$ goles por 
-partido, efecto atribuible a la mayor fluidez muscular y 
-velocidad de circulaci\'on del bal\'on en superficies secas 
-\cite{TemperaturaGoles}. La humedad relativa, por su parte, 
-interact\'ua con la temperatura para definir el estr\'es 
-t\'ermico percibido; en conjunto, ambas variables operan como 
-descriptores del ecoclima del estadio en el momento del 
-encuentro \cite{Iskandaryan2020}. Estas magnitudes se 
-operacionalizan en el modelo como diferencias entre las 
-condiciones clim\'aticas de la sede del equipo local y las del 
-equipo visitante, capturando la asimetr\'ia ambiental a la que 
-se enfrenta el conjunto viajero.
-
-\paragraph{Variables geogr\'aficas y fisiol\'ogicas.} Un 
-componente cr\'itico de car\'acter estructural es la altitud 
-($h$) del estadio sobre el nivel del mar. Su relevancia radica 
-en la variaci\'on de la presi\'on parcial de ox\'igeno 
-($\mathrm{P}_{\mathrm{O}_2}$), la cual decrece 
-exponencialmente con la elevaci\'on seg\'un la ecuaci\'on 
-barom\'etrica (v\'ease Proposici\'on \ref{prop:barometrica}). 
-La disminuci\'on de la disponibilidad de ox\'igeno reduce la 
-capacidad aer\'obica m\'axima ($\dot{V}_{\mathrm{O}_2\max}$) y 
-acelera el umbral de fatiga, otorgando una ventaja adaptativa 
-sustancial a las escuadras locales aclimatadas frente a 
-visitantes no habituados \cite{West1996}. En el modelo, esta 
-asimetr\'ia se cuantifica mediante la diferencia de 
-$\mathrm{P}_{\mathrm{O}_2}$ entre la sede del local y la del 
-visitante ($\mathit{diff\_PiO_2}$).
-
-\paragraph{Ventaja de local\'ia.} M\'as all\'a de las 
-variables f\'isicas, la local\'ia constituye un sesgo 
-sistem\'atico documentado en la literatura deportiva. Factores 
-como el tiempo de viaje, el desfase horario, la presi\'on 
-ejercida por la afici\'on y la familiaridad con las 
-dimensiones del terreno de juego distorsionan la probabilidad 
-a priori de victoria en favor del equipo anfitri\'on 
-\cite{Iskandaryan2020}. En el marco de este trabajo, la ventaja 
-de local\'ia se modela inicialmente como un par\'ametro 
-estructural $h_\ell$ espec\'ifico por liga, calibrado 
-conjuntamente con los dem\'as hiperpar\'ametros del sistema de 
-rating.
-
-\subsubsection{Factores econ\'omicos}
-
-El rendimiento deportivo no puede desvincularse del entorno 
-econ\'omico en el que opera el club. Desde una perspectiva de 
-modelado, los factores financieros act\'uan como proxies de la 
-profundidad de plantilla, la estabilidad institucional y el 
-volumen de recursos disponibles para la competencia. En el 
-presente trabajo, estas variables se organizan en tres bloques 
-anal\'iticos: indicadores microecon\'omicos de mercado, 
-m\'etricas de composici\'on de plantilla e indicadores 
-macroecon\'omicos del pa\'is de origen.
-
-\paragraph{Indicadores microecon\'omicos de mercado} 
-Las 
-decisiones financieras de un club definen la calidad relativa 
-de su plantilla. El valor total de mercado del conjunto de 
-jugadores constituye un predictor robusto del \'exito 
-deportivo en ligas de largo plazo, alcanzando coeficientes de 
-determinaci\'on ($R^2$) cercanos a $0{,}90$ en estudios 
-longitudinales sobre las grandes ligas europeas 
-\cite{SZYMAN1}. Paralelamente, la din\'amica de transferencias, capturada a trav\'es de ingresos por ventas de jugadores, 
-gastos en adquisiciones y el \textit{net spending} (balance 
-neto de la operaci\'on), parametriza la ambici\'on 
-institucional y la capacidad de reposici\'on de talento a 
-corto plazo \cite{SZYMAN2}. 
-
-\paragraph{M\'etricas de composici\'on de plantilla} 
-
-M\'as 
-all\'a del valor agregado, la estructura interna del roster 
-ofrece informaci\'on sobre la diversidad y profundidad del 
-plantilla. La proporci\'on de jugadores extranjeros, la 
-cantidad total de efectivos registrados y la distribuci\'on de 
-minutos jugados sirven como proxies de diversidad t\'actica y 
-rotaci\'on. En particular, la cantidad de extranjeros se vincula con la exposici\'on a 
-diferentes estilos de juego y condiciones clim\'aticas, 
-mientras que variables como asistencia al estadio del equipo local 
-($\mathit{home\_Assist}$) y ratio de ocupaci\'on 
-($\mathit{home\_OccRat}$) reflejan la regularidad de la plantilla.
-
-\paragraph{Indicadores macroecon\'omicos} 
-
-En el contexto 
-macroecon\'omico, el pa\'is de origen de cada liga define un 
-marco de recursos institucionales y de bienestar general que 
-condiciona indirectamente la competitividad de sus clubes. Se 
-consideraron inicialmente variables tales como el Producto 
-Interno Bruto (PIB) nominal, la tasa de inflaci\'on anual, la 
-Inversi\'on Extranjera Directa (IED), el coeficiente de Gini, 
-el gasto p\'ublico como proporci\'on del PIB, la deuda 
-soberana y la poblaci\'on total. Estos indicadores, extra\'idos 
-de bases de datos econ\'omicos consolidados, reflejan el 
-volumen de recursos disponibles en el ecosistema futbol\'istico 
-nacional \cite{SZYMAN1}. Su incorporaci\'on al modelo buscaba 
-capturar efectos de escala y estabilidad institucional que 
-trascienden la administraci\'on individual de cada club.
-
-Todos los factores econ\'omicos descritos se evaluaron como 
-covariables potenciales en la ecuaci\'on de goles esperados, 
-tanto de forma aislada como en interacci\'on con los bloques 
-deportivo y ambiental. El proceso de selecci\'on final y la 
-justificaci\'on del descarte de variables macroecon\'omicas se 
-detallan en el cap\'itulo correspondiente a la metodolog\'ia 
-emp\'irica.
-
-\subsection{Rankings institucionales y la medici\'on del poder}
-
-Los sistemas de clasificaci\'on institucionales constituyen el marco 
-de referencia mediante el cual los organismos rectores del f\'utbol 
-global asignan posiciones, conforman bombos y distribuyen recursos. 
-No obstante, sus l\'ogicas de c\'alculo exhiben limitaciones 
-estructurales que justifican el desarrollo de modelos 
-probabil\'isticos alternativos. A continuaci\'on se sistematizan los 
-esquemas dominantes y sus restricciones metodol\'ogicas.
-
-\subsubsection{Ranking FIFA} 
-
-El sistema de la FIFA, denominado 
-\textit{SUM}, adopta una variante del m\'etodo Elo con escala 
-$600$ en lugar de la escala can\'onica $400$ 
-\cite{FIFARanking2024}. La f\'ormula de actualizaci\'on es 
-$P = P_{\text{before}} + I \cdot (W - W_e)$, donde $I$ es un 
-factor de peso por competici\'on y $W_e = 1/(10^{-dr/600}+1)$. 
-Aunque incorpora el empate con $W=0{,}5$, el sistema carece de 
-una medida de dispersi\'on asociada a la calificaci\'on (rating 
-deviation) y no integra covariables contextuales. Adem\'as, incluye 
-condiciones ad hoc como la protecci\'on de puntos en eliminatorias 
-(si $W-W_e<0$, entonces $P=P_{\text{before}}$), lo que rompe la 
-consistencia probabil\'istica del actualizador.
-
-\subsubsection{UEFA, CONMEBOL y AFC: l\'ogicas contables} 
-La UEFA calcula su coeficiente de clubes como la suma acumulada de puntos 
-sobre cinco temporadas (2 por victoria, 1 por empate, bonificaciones 
-por ronda alcanzada), con un piso del 20\% del coeficiente de 
-federaci\'on \cite{UEFARanking2024}. La CONMEBOL opera de manera 
-an\'aloga: sumatoria de performance sobre diez a\~nos, coeficiente 
-hist\'orico y puntos por campeonato local \cite{CONMEBOLRanking2021}. 
-La AFC pondera 10\% el ranking FIFA de selecciones nacionales y 
-90\% el rendimiento de clubes en competiciones continentales, con 
-escalas diferenciadas entre la Champions League asi\'atica y la 
-AFC Cup \cite{AFCRanking2024}. En los tres casos, la l\'ogica es 
-predominantemente contable: acumulan puntos sin modelar la fuerza 
-latente del oponente de manera din\'amica ni cuantificar la 
-incertidumbre estad\'istica de la estimaci\'on.
-
-\subsubsection{CONCACAF: Elo pragm\'atico} El ranking de clubes de la 
-CONCACAF s\'i adopta un esquema Elo con actualizaci\'on zero-sum, 
-incorporando ventaja de local\'ia y factor de peso por competici\'on 
-\cite{CONCACAFRanking2023}. No obstante, codifica el resultado como 
-$+1$ (victoria), $0$ (empate) y $-1$ (derrota), lo que reduce el 
-empate a una ausencia de se\~nal en lugar de modelarlo como 
-categor\'ia estoc\'astica independiente. Tampoco dispone de 
-medida de volatilidad ni integra factores ex\'ogenos.
-
-\subsubsection{IFFHS: arbitrariedad de factores multiplicativos} El 
-ranking hist\'orico de la Federaci\'on Internacional de Historia y 
-Estad\'istica del F\'utbol asigna puntos mediante factores 
-multiplicativos por pa\'is ($M$) y competici\'on ($N$), donde 
-$M=5$ para Italia, $M=4$ para Francia, etc., con cambios 
-discrecionales a lo largo del tiempo \cite{IFFHSRanking2021}. El 
-propio compilador del m\'etodo se\~nala que el algoritmo no es 
-``particularmente brillante''. La ausencia de fundamentaci\'on 
-probabil\'istica lo descalifica como sistema de inferencia de 
-fuerza latente.
-
-\subsubsection{S\'intesis de la brecha metodol\'ogica} Ninguno de los esquemas revisados modela simult\'aneamente:
-\begin{itemize}
-	\item El empate como categor\'ia estoc\'astica independiente con probabilidad 	end\'ogena.
-	\item La incertidumbre sobre la fuerza de cada equipo.
-	\item La influencia de covariables 	deportivas, econ\'omicas y ambientales en la probabilidad del resultado.
-\end{itemize}
-Esta triple ausencia constituye la motivaci\'on central del presente trabajo.
-
-\subsection*{Pregunta de investigaci\'on}
-
-Los sistemas de clasificaci\'on institucionales operan bajo 
-l\'ogicas predominantemente contables o adaptaciones pragm\'aticas 
-del modelo Elo que no cuantifican la incertidumbre estad\'istica 
-ni integran covariables contextuales. El ranking FIFA emplea una 
-variante de Elo con escala 600 pero sin medida de dispersi\'on; 
-la UEFA y la CONMEBOL acumulan puntos sin ponderar la fuerza del 
-oponente. Ninguno de estos esquemas modela el empate como 
-categor\'ia estoc\'astica independiente ni incorpora factores 
-econ\'omicos o ambientales.
-
-En consecuencia, este trabajo aborda la siguiente pregunta: 
-¿C\'omo estimar probabil\'isticamente el resultado de un partido 
-integrando informaci\'on deportiva, econ\'omica y ambiental, de 
-forma que el sistema sea actualizable secuencialmente y cuantifique 
-la incertidumbre sobre la fuerza de cada equipo?
+Los tres bloques anteriores describen el contexto del partido. Sin embargo, 
+para predecir el resultado no basta con caracterizar las condiciones del 
+enfrentamiento: es necesario estimar la fuerza relativa de los equipos. Esa 
+estimaci\'on es el problema central de los sistemas de rating usuales, que se revisan 
+en la secci\'on~\ref{sec:rating}.
 
 \section{Sistemas de rating y comparaci\'on probabil\'istica}
-\label{sec:sistemas_rating}
+\label{sec:rating}
 
-Con el objetivo de resolver la interrogante planteada en la secci\'on anterior, este bloque sistematiza el aparato formal necesario para la inferencia de la fuerza relativa de los equipos, transitando desde los modelos est\'aticos de comparaci\'on probabil\'istica hasta los sistemas de actualizaci\'on din\'amica de estados.
+Los sistemas de rating buscan asignar a cada equipo una medida de su fuerza relativa a partir de los resultados observados. La literatura ha transitado desde modelos est\'aticos de comparaci\'on pareada hasta esquemas de actualizaci\'on secuencial que incorporan incertidumbre. A continuaci\'on se revisan los hitos de esta progresi\'on.
 
-\subsection{Comparaciones pareadas: el modelo de Bradley-Terry}
+\subsection{Modelos fundacionales: Bradley-Terry y Elo}
 
-El fundamento probabil\'istico de todo sistema de rating moderno radica en el modelo de comparaciones pareadas. Bradley y Terry \cite{bradley1952} postularon que la probabilidad de que una entidad $i$ venza a una entidad $j$ depende de la proporci\'on de sus fuerzas latentes relativas.
+El fundamento probabil\'istico de todo sistema de rating moderno radica en el modelo de comparaciones pareadas de Bradley y Terry \cite{bradley1952}. Este modelo postula que la probabilidad de que una entidad $i$ derrote a una entidad $j$ depende de la proporci\'on de sus fuerzas latentes relativas.
 
 \begin{definition}[Modelo de Bradley-Terry]
 	Sean $n$ equipos con fuerzas latentes $\pi_1, \pi_2, \dots, \pi_n > 0$. La probabilidad de que el equipo $i$ venza al equipo $j$ es:
@@ -338,11 +56,9 @@ El fundamento probabil\'istico de todo sistema de rating moderno radica en el mo
 	\end{equation}
 \end{definition}
 
-Thurstone \cite{thurstone1927} propuso un enfoque an\'alogo bajo el supuesto de que las fuerzas latentes se perturban con ruido gaussiano, lo que conduce a una funci\'on de distribuci\'on acumulada normal para la probabilidad de victoria. En la pr\'actica moderna, la formulaci\'on log\'istica de Bradley-Terry se prefiere por su tratabilidad anal\'itica y la forma cerrada de sus derivadas \cite{Glickman1999}.
+Esta definici\'on, aunque captura la esencia de la comparaci\'on binaria, no incorpora incertidumbre sobre la estimaci\'on de las fuerzas latentes ni permite actualizaci\'on secuencial.
 
-\subsection{El sistema Elo y la funci\'on log\'istica de comparaci\'on}
-
-La transici\'on hacia un esquema de implementaci\'on din\'amica se materializa en el sistema de calificaci\'on desarrollado por Elo \cite{Elo1978}. El n\'ucleo anal\'itico reside en la adopci\'on de una funci\'on log\'istica para mapear la diferencia de fuerzas latentes entre dos competidores en una probabilidad de victoria.
+Por este motivo, la transici\'on hacia un esquema din\'amico se hizo una necesidad para satisfacer una forma mas completa de medir estas fuerzas latentes, esto se materializ\'o en el sistema de calificaci\'on desarrollado por Elo \cite{Elo1978}. El n\'ucleo de este modelo reside modelar la probabilidad esperada de victoria mediante una funci\'on log\'istica.
 
 \begin{definition}[Funci\'on de rendimiento esperado Elo]\label{eq:rendimiento_esperado_elo}
 	Sean $R_i, R_j \in \mathbb{R}$ las calificaciones de dos equipos. La probabilidad esperada de victoria del equipo $i$ frente al equipo $j$ es:
@@ -351,17 +67,19 @@ La transici\'on hacia un esquema de implementaci\'on din\'amica se materializa e
 	\end{equation}
 \end{definition}
 
-El par\'ametro $400$ define la sensibilidad del sistema ante las discrepancias de rating. Una diferencia de $400$ puntos implica una probabilidad de victoria aproximada de $0{,}909$ para el equipo favorecido \cite{EloModelConvergenceFinal}.
+Tras observar un resultado $S_{ij} \in \{1, 0{.}5, 0\}$, la calificaci\'on se actualiza mediante $R_i^{\text{nuevo}} = R_i^{\text{viejo}} + K(S_{ij} - P_{ij})$, donde $K > 0$ es el coeficiente de desarrollo.
+
+El par\'ametro $400$ define la sensibilidad del sistema ante las discrepancias de rating. Una diferencia de $400$ puntos implica una probabilidad de victoria aproximada de $0{.}909$ para el equipo favorecido \cite{EloModelConvergenceFinal}.
 
 \begin{prop}[Complementariedad estoc\'astica]
 	Para cualesquiera $R_i, R_j \in \mathbb{R}$, se cumple $P_{ij} + P_{ji} = 1$.
 \end{prop}
 \begin{proof}
-La demostraci\'on se obtiene directamente de sustituir la ecuaci\'on \ref{eq:rendimiento_esperado_elo} y simplificar la expresi\'on resultante como sigue:
-\begin{equation}
-	P_{ij} + P_{ji} = \frac{1}{1 + 10^{-(R_i-R_j)/400}} + \frac{1}{1 + 10^{(R_i-R_j)/400}} = 1.
-\end{equation}
-
+	La demostraci\'on se obtiene directamente de sustituir la ecuaci\'on \eqref{eq:rendimiento_esperado_elo} y simplificar la expresi\'on resultante como sigue:
+	\begin{equation}
+		P_{ij} + P_{ji} = \frac{1}{1 + 10^{-(R_i-R_j)/400}} + \frac{1}{1 + 10^{(R_i-R_j)/400}} = 1.
+	\end{equation}
+	
 \end{proof}
 
 \begin{definition}[Operador de actualizaci\'on Elo]
@@ -374,7 +92,7 @@ La demostraci\'on se obtiene directamente de sustituir la ecuaci\'on \ref{eq:ren
 
 El sistema Elo can\'onico presenta limitaciones estructurales: trata el rating como un escalar determinista, omite una medida de incertidumbre asociada a la calificaci\'on y utiliza una constante $K$ uniforme que no distingue entre la volatilidad de un equipo en transici\'on y la estabilidad de una escuadra consolidada \cite{Glickman1995}.
 
-\subsection{Modelos Glicko y Glicko-2: fuerza como variable aleatoria}
+\subsection{Glicko y Glicko-2}
 
 La superaci\'on de las limitaciones del sistema Elo requiere un cambio de paradigma hacia un modelado de estado latente bayesiano. Glickman \cite{Glickman1995} postul\'o que la fuerza de un equipo no es un escalar fijo, sino una variable aleatoria.
 
@@ -411,8 +129,6 @@ Y los nuevos estados se calculan como:
 	RD^{(1)} &= \sqrt{\left(\frac{1}{RD^2} + \frac{1}{d^2}\right)^{-1}}, \\
 	R^{(1)} &= R + q \cdot (RD^{(1)})^2 \sum_{k=1}^{m} g(RD_k)\bigl(s_k - E_k\bigr).
 \end{align}
-
-\subsubsection{El sistema Glicko-2}
 
 El modelo Glicko-2 \cite{Glickman2022} extiende el marco bayesiano del 
 sistema Glicko introduciendo la volatilidad $\sigma$ como tercer 
@@ -527,10 +243,17 @@ resultados altamente improbables se recomienda $\tau=0{,}2$
 	$(s_j-E)$ ponderado por la precisi\'on relativa de cada oponente.
 \end{obs}
 
-\subsection{El modelo modificado de Shelopugin y Sirotkin: extensi\'on a tres resultados y ventaja de local\'ia}
+\subsection{Adaptaci\'on de Glicko-2 al f\'utbol: el modelo trinomial}
 \label{subsec:shelopugin}
 
-El n\'ucleo metodol\'ogico de la presente investigaci\'on se fundamenta en la arquitectura propuesta por Shelopugin y Sirotkin \cite{Glicko2Mod}, quienes adaptan el algoritmo Glicko-2 a las restricciones estructurales del f\'utbol asociaci\'on. El Glicko-2 can\'onico est\'a dise\~nado para resultados binarios (victoria/derrota), por lo que su aplicaci\'on directa al f\'utbol requiere dos extensiones fundamentales: (i) un marco de comparaci\'on trinomial que incorpore el empate como categor\'ia estoc\'astica independiente con probabilidad end\'ogena, y (ii) un par\'ametro de sesgo que capture la ventaja de local\'ia documentada emp\'iricamente.
+El n\'ucleo metodol\'ogico de este trabajo se fundamenta en la arquitectura propuesta por Shelopugin y Sirotkin \cite{Glicko2Mod}, quienes adaptan el Glicko-2 a las restricciones estructurales del f\'utbol. El Glicko-2 can\'onico est\'a dise\~nado para resultados binarios (victoria/derrota), por lo que su aplicaci\'on directa al f\'utbol requiere dos extensiones fundamentales: 
+
+\begin{itemize}
+	\item Un marco de comparaci\'on trinomial que incorpore el empate como categor\'ia estoc\'astica independiente con probabilidad end\'ogena.
+	\item Un par\'ametro de sesgo que capture la ventaja de local\'ia documentada emp\'iricamente.
+\end{itemize}
+
+Para ello se define:
 
 \begin{definition}[Funci\'on de expectativa modificada]
 	\label{def:expectativa_mod}
@@ -564,37 +287,26 @@ El n\'ucleo metodol\'ogico de la presente investigaci\'on se fundamenta en la ar
 
 \begin{proof}
 	
-Note que:
-
-\begin{itemize}
-	\item $\exp(g(\phi_j)(\tilde{\mu}-\mu_j))>0$
-	\item $\exp(d+s)>0$
-	\item $1>0$
-\end{itemize}
-
-En consecuencia $P_H\text{, }P_D\text{, }P_A$ son definidas positivas.
-
-Para la suma unitaria, basta notar que
-
-\begin{align*}
-	P_H + P_D + P_A &= \frac{\exp\bigl(g(\phi_j)(\tilde{\mu} - \mu_j)\bigr)}{1 + \exp\bigl(g(\phi_j)(\tilde{\mu} - \mu_j)\bigr) + \exp(d+s)} + \frac{\exp(d+s)}{1 + \exp\bigl(g(\phi_j)(\tilde{\mu} - \mu_j)\bigr) + \exp(d+s)} \\
-	&+ \frac{1}{1 + \exp\bigl(g(\phi_j)(\tilde{\mu} - \mu_j)\bigr) + \exp(d+s)}\\
-	&= \frac{1+\exp\bigl(g(\phi_j)(\tilde{\mu}-\mu_j)\bigr)+\exp(d+s)}{1 + \exp\bigl(g(\phi_j)(\tilde{\mu} - \mu_j)\bigr) + \exp(d+s)} = 1
-\end{align*}
+	Note que: $\exp(g(\phi_j)(\tilde{\mu}-\mu_j))>0$, $\exp(d+s)>0$ y $1>0$.
+	
+	En consecuencia $P_H\text{, }P_D\text{, }P_A$ son definidas positivas.
+	
+	Para la suma unitaria, basta notar que
+	
+	\begin{align*}
+		P_H + P_D + P_A &= \frac{\exp\bigl(g(\phi_j)(\tilde{\mu} - \mu_j)\bigr)}{1 + \exp\bigl(g(\phi_j)(\tilde{\mu} - \mu_j)\bigr) + \exp(d+s)} + \frac{\exp(d+s)}{1 + \exp\bigl(g(\phi_j)(\tilde{\mu} - \mu_j)\bigr) + \exp(d+s)} \\
+		&+ \frac{1}{1 + \exp\bigl(g(\phi_j)(\tilde{\mu} - \mu_j)\bigr) + \exp(d+s)}\\
+		&= \frac{1+\exp\bigl(g(\phi_j)(\tilde{\mu}-\mu_j)\bigr)+\exp(d+s)}{1 + \exp\bigl(g(\phi_j)(\tilde{\mu} - \mu_j)\bigr) + \exp(d+s)} = 1
+	\end{align*}
 \end{proof}
 
-\begin{obs}[Reparametrizaci\'on logit en la implementaci\'on propia]
-	\label{obs:logit_reparam}
-	En la implementaci\'on computacional del presente trabajo (m\'odulo \texttt{G2Av1513.py}), el par\'ametro $s\in(0,1)$ de la Definici\'on \ref{def:expectativa_mod} se reparametriza mediante la transformaci\'on logit
-	\begin{equation}
-		s_{\text{logit}} = \ln\!\left(\frac{s}{1-s}\right) \in \mathbb{R},
-	\end{equation}
-	de modo que el t\'ermino de empate en las Ecuaciones \eqref{eq:prob_victoria_local}--\eqref{eq:prob_victoria_visitante} se expresa como $\exp(d + s_{\text{logit}})$. Esta reparametrizaci\'on es un cambio de variable biyectivo sobre $(0,1)$ que preserva la estructura probabil\'istica del modelo trinomial (Proposici\'on \ref{prop:suma_unitaria_shelopugin}) mientras mejora la estabilidad num\'erica del optimizador L-BFGS-B al operar sobre el espacio no restringido $\mathbb{R}$ en lugar de $(0,1)$.
-\end{obs}
+Es importante notar que:
 
 \begin{obs}
 	La estructura trinomial \eqref{eq:prob_victoria_local}--\eqref{eq:prob_victoria_visitante} recobra una justificaci\'on probabil\'istica desde el modelo de goles de la Secci\'on \ref{subsec:prob_tres_resultados}, donde $P_D$ emerge de la distribuci\'on de Skellam evaluada en $k=0$. No obstante, la condici\'on de suma unitaria es puramente algebraica y no depende de los supuestos de conteo de goles.
 \end{obs}
+
+De manera analoga al modelo Glicko-2 se sigue una definici\'on b\'asica, esta se usa para actualizar el rating de los equipos como sigue:
 
 \begin{definition}[Operador de actualizaci\'on del equipo local]
 	\label{def:update_local}
@@ -615,8 +327,16 @@ La actualización del equipo visitante es análoga, utilizando su resultado $s_j
 \begin{obs}
 	\label{obs:lightgbm_vs_loglineal}
 	El modelo original de Shelopugin y Sirotkin emplea una arquitectura de Gradient Boosting (LightGBM) con funci\'on objetivo Poisson para estimar las medias de anotaci\'on $\lambda_H$ y $\lambda_A$, asumiendo goles independientes. Esta asunci\'on permite el uso de la distribuci\'on de Skellam para modelar la diferencia de goles, donde el valor en $k=0$ proporciona la probabilidad de empate $s$ requerida por el actualizador Glicko-2 modificado \cite{Glicko2Mod}. El par\'ametro $d$ se introduce adicionalmente para compensar la tendencia del modelo Poisson a subestimar la frecuencia de partidos de baja anotaci\'on, sesgo frecuentemente observado en datos deportivos reales.
-
+	
 \end{obs}
+
+
+En la implementaci\'on computacional del presente trabajo, a trav\'es del m\'odulo \texttt{G2Av1513.py}, el par\'ametro $s\in(0,1)$ de la Definici\'on \ref{def:expectativa_mod} se reparametriza mediante la transformaci\'on logit
+\begin{equation}
+	s_{\text{logit}} = \ln\!\left(\frac{s}{1-s}\right) \in \mathbb{R},
+\end{equation}
+de modo que el t\'ermino de empate en las Ecuaciones \eqref{eq:prob_victoria_local}--\eqref{eq:prob_victoria_visitante} se expresa como $\exp(d + s_{\text{logit}})$. Esta reparametrizaci\'on es un cambio de variable biyectivo sobre $(0,1)$ que preserva la estructura probabil\'istica del modelo trinomial (Proposici\'on \ref{prop:suma_unitaria_shelopugin}) mientras mejora la estabilidad num\'erica del optimizador L-BFGS-B al operar sobre el espacio no restringido $\mathbb{R}$ en lugar de $(0,1)$. La actualizaci\'on del estado de cada equipo tras observar un resultado sigue la misma l\'ogica bayesiana del Glicko-2, con la puntuaci\'on esperada modificada por la estructura trinomial. Estos cambios se ver\'an m\'as a profundidad en el Cap\'itulo~\ref{ch:metodologia}.
+
 
 % ============================================================
 % SECCION 2.3 -- Modelamiento probabilistico del resultado
@@ -625,115 +345,71 @@ La actualización del equipo visitante es análoga, utilizando su resultado $s_j
 \section{Modelamiento probabil\'istico del resultado}
 \label{sec:modelo_probabilistico}
 
-El n\'ucleo probabil\'istico del trabajo consiste en modelar el n\'umero de goles anotados por cada equipo como un proceso de conteo, para derivar posteriormente las probabilidades de los tres resultados posibles: victoria local, empate y victoria visitante. La elecci\'on de un modelo de conteo param\'etrico no es arbitraria: permite trasladar las covariables deportivas, econ\'omicas y ambientales del Cap\'itulo~\ref{sec:contexto} a una tasa de ocurrencia esperada $\lambda$, y desde all\'i construir una distribuci\'on de probabilidad sobre el espacio muestral $\{H,D,A\}$ que alimente tanto al sistema de rating din\'amico como al clasificador complementario.
+El n\'ucleo probabil\'istico del trabajo consiste en modelar el n\'umero de goles anotados por cada equipo como un proceso de conteo, para derivar las probabilidades de los tres resultados posibles: victoria local, empate, o victoria visitante. La elecci\'on de un modelo param\'etrico no es arbitraria, pues permite trasladar las covariables de la Secci\'on~\ref{sec:variables} a una tasa de ocurrencia esperada $\lambda$, y desde all\'i construir la distribuci\'on sobre $\{H, D, A\}$ que alimenta al sistema de rating y al refinador neuronal.
 
-En este cap\'itulo se desarrolla el aparato formal que justifica dicha construcci\'on. Se comienza con la distribuci\'on de Poisson como modelo can\'onico de conteo, se presenta la distribuci\'on de Skellam para la diferencia de goles y se obtienen las probabilidades de resultado mediante particiones del espacio muestral. Se cierra con un an\'alisis de buena definici\'on, estabilidad num\'erica y propiedades estructurales que garantizan la consistencia del modelo y la viabilidad de su estimaci\'on por m\'axima verosimilitud.
-
-\subsection{Distribuci\'on de Poisson para el n\'umero de goles}
+\subsection{Distribuciones base: Poisson y Skellam}
 \label{subsec:poisson}
+\label{subsec:skellam}
 
-La distribuci\'on de Poisson constituye el modelo can\'onico para variables de conteo en eventos raros e independientes. En el contexto del f\'utbol, el n\'umero de goles anotados por un equipo en un partido satisface razonablemente los supuestos de homogeneidad e independencia temporal de los eventos de anotaci\'on, siempre que se controle por el nivel relativo de los equipos mediante covariables apropiadas \cite{maher1982}.
+La distribuci\'on de Poisson constituye el modelo can\'onico para variables de conteo en eventos raros e independientes. En el f\'utbol, el n\'umero de goles anotados por un equipo en un partido satisface razonablemente estos supuestos, siempre que se controle por el nivel relativo de los equipos mediante covariables apropiadas \cite{maher1982}. Esta distribuci\'on se define como sigue:
 
 \begin{definition}[Distribuci\'on de Poisson]
-	Una variable aleatoria $X$ sigue una distribuci\'on de Poisson con par\'ametro $\lambda > 0$, denotado $X \sim \operatorname{Poisson}(\lambda)$, si su funci\'on de masa de probabilidad es:
+	Una variable aleatoria $X$ sigue una distribuci\'on de Poisson con par\'ametro $\lambda > 0$, denotado $X \sim \operatorname{Poisson}(\lambda)$, si su funci\'on de masa es
 	\begin{equation}\label{eq:poisson_pmf}
 		P(X = k) = \frac{e^{-\lambda} \lambda^{k}}{k!}, \qquad k = 0, 1, 2, \dots
 	\end{equation}
 \end{definition}
 
-Desde el punto de vista deportivo, $\lambda$ representa la potencia ofensiva esperada de un equipo en un partido dado. Para los rangos t\'ipicos del f\'utbol profesional ($\lambda \in [0{.}5,\,3{.}0]$), la moda de la distribuci\'on es $0$ o $1$ goles, lo cual refleja la escasez intr\'inseca del evento de anotaci\'on.
+En el contexto deportivo, $\lambda$ representa la potencia ofensiva esperada del equipo en un partido. Para los rangos t\'ipicos del f\'utbol profesional suele ocurrir que $\lambda \in [0{.}5,\,3{.}0]$, y la moda de la distribuci\'on es $0$ o $1$ goles, lo que refleja la escasez del evento. 
 
-La familia Poisson posee propiedades anal\'iticas que la hacen especialmente atractiva para el modelado deportivo. A continuaci\'on se recogen las indispensables para el desarrollo posterior.
+Una propiedad relevante para el desarrollo posterior es la aditividad 
+de la familia Poisson: si $X_1 \sim \operatorname{Poisson}(\lambda_1)$ y 
+$X_2 \sim \operatorname{Poisson}(\lambda_2)$ son independientes, entonces 
+$X_1 + X_2 \sim \operatorname{Poisson}(\lambda_1 + \lambda_2)$. Esta 
+propiedad se sigue directamente de la funci\'on generadora de momentos 
+y resulta \'util cuando se consideran dos mitades de un partido o dos competiciones 
+simult\'aneas como procesos independientes.
 
-\begin{prop}[Funci\'on generadora de momentos]\label{prop:fgm_poisson}
-	Sea $X \sim \operatorname{Poisson}(\lambda)$. Su funci\'on generadora de momentos est\'a dada por
-	\begin{equation}\label{eq:fgm_poisson}
-		M_X(t) = \mathbb{E}\bigl[e^{tX}\bigr] = \exp\!\bigl(\lambda(e^{t}-1)\bigr), \qquad t \in \mathbb{R}.
+Cabe se\~nalar que el supuesto de independencia temporal entre goles es una aproximaci\'on: la ocurrencia de un gol modifica transitoriamente la din\'amica del encuentro, introduciendo una correlaci\'on local d\'ebil. Como se\~nala Maher \cite{maher1982}, esta dependencia de corto alcance se amortigua en el agregado de una temporada, por lo que el modelo Poisson sigue siendo razonable como primera aproximaci\'on. Cuando se requiere modelar expl\'icitamente la correlaci\'on entre los goles del equipo local y visitante, una extensi\'on natural es el modelo bivariante de Poisson \cite{karlis2003}; sin embargo a trav\'es del vector de covariables $x_{ij}$ esta correlaci\'on se captura indirectamente a trav\'es de la modulaci\'on simult\'anea de $\lambda_H$ y $\lambda_A$.
+
+Sean $G_H \sim \operatorname{Poisson}(\lambda_H)$ y $G_A \sim \operatorname{Poisson}(\lambda_A)$ los goles del equipo local y del visitante, mutuamente independientes. La diferencia $D = G_H - G_A$ gobierna el signo del resultado. Su distribuci\'on fue estudiada por Skellam \cite{skellam1946} y aplicada al modelado deportivo por Karlis y Ntzoufras \cite{karlis2003}.
+
+A partir de esto se tiene la siguiente definici\'on
+
+\begin{definition}[Distribuci\'on de Skellam]\label{def:skellam}
+	La diferencia $D = G_H - G_A$ de dos variables de Poisson independientes con par\'ametros $\lambda_H\text{,}\lambda_A>0$ sigue una distribuci\'on de Skellam, cuya funci\'on de masa es
+	\begin{equation}\label{eq:skellam_pmf}
+		P(D=d) = e^{-(\lambda_H + \lambda_A)} \left(\frac{\lambda_H}{\lambda_A}\right)^{d/2} I_{|d|}\!\left(2\sqrt{\lambda_H \lambda_A}\right), \qquad d \in \mathbb{Z},
 	\end{equation}
-\end{prop}
-
-\begin{proof}
-	A partir de la definici\'on de valor esperado y de \eqref{eq:poisson_pmf}:
-	\[
-	M_X(t) = \sum_{k=0}^{\infty} e^{tk} \frac{e^{-\lambda}\lambda^{k}}{k!}
-	= e^{-\lambda} \sum_{k=0}^{\infty} \frac{(\lambda e^{t})^{k}}{k!}
-	= e^{-\lambda} e^{\lambda e^{t}}
-	= \exp\!\bigl(\lambda(e^{t}-1)\bigr). \qedhere
-	\]
-\end{proof}
-
-\begin{prop}[Aditividad]\label{prop:aditividad_poisson}
-	Sean $X_1 \sim \operatorname{Poisson}(\lambda_1)$ y $X_2 \sim \operatorname{Poisson}(\lambda_2)$ independientes. Entonces
-	\begin{equation}\label{eq:aditividad_poisson}
-		X_1 + X_2 \sim \operatorname{Poisson}(\lambda_1 + \lambda_2).
-	\end{equation}
-\end{prop}
-
-\begin{proof}
-	La funci\'on generadora de momentos de la suma es el producto de las generadoras individuales:
-	\[
-	M_{X_1+X_2}(t) = M_{X_1}(t)\,M_{X_2}(t) = \exp\!\bigl(\lambda_1(e^t-1)\bigr)\exp\!\bigl(\lambda_2(e^t-1)\bigr) = \exp\!\bigl((\lambda_1+\lambda_2)(e^t-1)\bigr),
-	\]
-	esto corresponde a la funci\'on generadora de una $\operatorname{Poisson}(\lambda_1+\lambda_2)$. Por el teorema de unicidad de funciones generadoras de momentos, se sigue el resultado.
-\end{proof}
-
-La propiedad de aditividad resulta relevante desde el punto de vista interpretativo: si un equipo disputa dos competiciones simult\'aneas (o si se consideran dos mitades de un partido como procesos independientes), los goles esperados se suman de manera natural. No obstante, el supuesto de independencia temporal entre goles debe tomarse con cautela. En la pr\'actica deportiva, la ocurrencia de un gol modifica transitoriamente la din\'amica t\'actica del encuentro, lo que introduce una correlaci\'on local d\'ebil. Como se\~nala Maher \cite{maher1982}, esta dependencia de corto alcance se amortigua r\'apidamente en el agregado de una temporada completa, por lo que el modelo Poisson sigue siendo una primera aproximaci\'on razonable. Cuando se requiere modelar expl\'icitamente la correlaci\'on entre los goles del local y del visitante, una extensi\'on natural es el modelo bivariante de Poisson \cite{karlis2003}; en el presente trabajo, dicha correlaci\'on se captura indirectamente a trav\'es del vector de covariables compartidas $\mathbf{x}_{ij}$ que modula simult\'aneamente $\lambda_H$ y $\lambda_A$.
-
-\subsection{Distribuci\'on de Skellam para la diferencia de goles}
-\label{subsec:skellam}
-
-Sean $G_H \sim \operatorname{Poisson}(\lambda_H)$ y $G_A \sim \operatorname{Poisson}(\lambda_A)$ los goles del equipo local y del visitante, respectivamente, mutuamente independientes. La diferencia de goles $D = G_H - G_A$ gobierna el signo del resultado del partido. La distribuci\'on de esta diferencia fue estudiada por Skellam \cite{skellam1946} y posteriormente aplicada al modelado de resultados deportivos por Karlis y Ntzoufras \cite{karlis2003}.
-
-La deducci\'on de la funci\'on de masa de $D$ a partir de la convoluci\'on de las dos distribuciones de Poisson conduce, tras manipulaci\'on algebraica, a una expresi\'on que involucra la funci\'on de Bessel modificada de primera especie. Dado que esta derivaci\'on es un resultado cl\'asico de la literatura probabil\'istica, se presenta aqu\'i la forma cerrada sin reproducir la serie completa; el lector interesado puede consultar la demostraci\'on original en Skellam \cite{skellam1946} o la exposici\'on aplicada en Karlis y Ntzoufras \cite{karlis2003}.
-
-\begin{definition}[Funci\'on de Bessel modificada de primera especie]
-	Para $r \in \mathbb{Z}$ y $x \in \mathbb{R}$, la funci\'on de Bessel modificada de primera especie de orden $r$ se define mediante la serie absolutamente convergente:
+	donde $I_r$ es la funci\'on de Bessel modificada de primera especie de orden $r$, definida por la serie absolutamente convergente
 	\begin{equation}\label{eq:bessel_series}
 		I_r(x) = \left(\frac{x}{2}\right)^{r} \sum_{k=0}^{\infty} \frac{(x^2/4)^{k}}{k!\,\Gamma(r + k + 1)}.
 	\end{equation}
 \end{definition}
 
-La convergencia absoluta de la serie \eqref{eq:bessel_series} para todo $x \in \mathbb{R}$ garantiza que $I_r(x)$ es una funci\'on entera de argumento real. Una propiedad \'util para la manipulaci\'on algebraica de la distribuci\'on de Skellam es la simetr\'ia de orden $I_{-r}(x) = I_r(x)$, v\'alida para todo $r \in \mathbb{Z}$.
-
-\begin{definition}[Distribuci\'on de Skellam]\label{def:skellam}
-	La diferencia $D = G_H - G_A$ de dos variables Poisson independientes con par\'ametros $\lambda_H, \lambda_A > 0$ sigue una distribuci\'on de Skellam, cuya funci\'on de masa es:
-	\begin{equation}\label{eq:skellam_pmf}
-		P(D=d) = e^{-(\lambda_H + \lambda_A)} \left(\frac{\lambda_H}{\lambda_A}\right)^{d/2} I_{|d|}\!\left(2\sqrt{\lambda_H \lambda_A}\right), \qquad d \in \mathbb{Z}.
+\begin{obs}[Momentos de la distribuci\'on de Skellam]
+	\label{obs:momentos_skellam}
+	La linealidad del valor esperado y debido a la independencia de $G_H$ y 
+	$G_A$, la diferencia $D = G_H - G_A$ satisface
+	\begin{equation}\label{eq:momentos_skellam}
+		\mathbb{E}[D] = \lambda_H - \lambda_A, \qquad
+		\operatorname{Var}(D) = \lambda_H + \lambda_A.
 	\end{equation}
-\end{definition}
+	La media tiene interpretaci\'on deportiva directa: si 
+	$\lambda_H > \lambda_A$, el modelo predice una diferencia de goles 
+	esperada positiva. La varianza cuantifica la incertidumbre agregada 
+	del marcador y es sim\'etrica en ambas tasas.
+\end{obs}
 
-La aparici\'on de la funci\'on de Bessel en \eqref{eq:skellam_pmf} no es circunstancial: refleja la estructura de convoluci\'on de dos procesos de conteo independientes. Para los rangos t\'ipicos de $\lambda$ en el f\'utbol profesional ($\lambda \in [0{.}5,\,3{.}0]$), el argumento $x = 2\sqrt{\lambda_H\lambda_A}$ satisface $x \in [1{.}0,\,6{.}0]$, por lo que $I_{|d|}(x)$ crece exponencialmente pero de manera controlada, y la serie \eqref{eq:bessel_series} converge r\'apidamente para $|d|$ peque\~no.
 
-\begin{prop}[Momentos de la distribuci\'on de Skellam]\label{prop:momentos_skellam}
-	Sea $D \sim \operatorname{Skellam}(\lambda_H,\lambda_A)$. Entonces
-	\begin{align}
-		\mathbb{E}[D] &= \lambda_H - \lambda_A, \label{eq:media_skellam} \\
-		\operatorname{Var}(D) &= \lambda_H + \lambda_A. \label{eq:varianza_skellam}
-	\end{align}
-\end{prop}
 
-\begin{proof}
-	Por linealidad del valor esperado y usando los momentos de la Poisson:
-	\[
-	\mathbb{E}[D] = \mathbb{E}[G_H] - \mathbb{E}[G_A] = \lambda_H - \lambda_A.
-	\]
-	Por independencia de $G_H$ y $G_A$, las varianzas se suman:
-	\[
-	\operatorname{Var}(D) = \operatorname{Var}(G_H) + \operatorname{Var}(G_A) = \lambda_H + \lambda_A. \qedhere
-	\]
-\end{proof}
-
-La media de la Skellam tiene una interpretaci\'on deportiva directa: si $\lambda_H > \lambda_A$, el modelo predice una diferencia de goles esperada positiva, es decir, una ventaja estructural del equipo local. La varianza, por su parte, cuantifica la incertidumbre agregada del marcador; n\'otese que es sim\'etrica en ambas tasas, lo que implica que la volatilidad del resultado crece tanto por la ofensiva del local como por la del visitante. Cuando $\lambda_H = \lambda_A$, la media es cero y la distribuci\'on es sim\'etrica alrededor del empate, reflejando la equidad estructural del enfrentamiento.
-
-\subsection{Derivaci\'on de las probabilidades de los tres resultados}
+\subsection{Derivaci\'on de las probabilidades trinomiales}
 \label{subsec:prob_tres_resultados}
 
-A partir de las distribuciones anteriores, las probabilidades de los tres resultados mutuamente excluyentes se obtienen por suma de probabilidades sobre regiones disjuntas del espacio muestral. La conexi\'on con el modelo de rating de la Secci\'on~\ref{subsec:shelopugin} se establece a trav\'es de la probabilidad de empate $s = P_D$, que alimenta el par\'ametro end\'ogeno del actualizador trinomial.
-
-\subsubsection{Formulaci\'on general}
+A partir de las distribuciones de Poisson y Skellam, las probabilidades de los tres resultados mutuamente excluyentes se obtienen por suma de probabilidades sobre regiones disjuntas del espacio muestral. La conexi\'on con el modelo de rating de la Secci\'on~\ref{subsec:shelopugin} se establece a trav\'es de la probabilidad de empate $s = P_D$.
 
 \begin{prop}[Probabilidades de resultado]\label{prop:prob_resultados}
-	Sean $G_H \sim \operatorname{Poisson}(\lambda_H)$ y $G_A \sim \operatorname{Poisson}(\lambda_A)$ independientes. Las probabilidades de victoria local ($P_H$), empate ($P_D$) y victoria visitante ($P_A$) son:
+	Sean $G_H \sim \operatorname{Poisson}(\lambda_H)$ y $G_A \sim \operatorname{Poisson}(\lambda_A)$ independientes. Las probabilidades de victoria local, empate y victoria visitante son
 	\begin{align}
 		P_H &= P(G_H > G_A) = \sum_{k=1}^{\infty} \sum_{j=0}^{k-1} \frac{e^{-\lambda_H} \lambda_H^{k}}{k!} \cdot \frac{e^{-\lambda_A} \lambda_A^{j}}{j!}, \label{eq:prob_H} \\
 		P_D &= P(G_H = G_A) = \sum_{k=0}^{\infty} \frac{e^{-(\lambda_H + \lambda_A)} (\lambda_H \lambda_A)^{k}}{(k!)^{2}}, \label{eq:prob_D} \\
@@ -746,139 +422,112 @@ A partir de las distribuciones anteriores, las probabilidades de los tres result
 \end{prop}
 
 \begin{proof}
-	Para la victoria local, se suman las probabilidades conjuntas sobre todos los pares $(k,j)$ tales que $k > j$:
+	Para la victoria local se suman las probabilidades conjuntas sobre todos los pares $(k,j)$ con $k > j$.
+	
 	\[
 	P_H = \sum_{k=1}^{\infty} \sum_{j=0}^{k-1} P(G_H = k)\,P(G_A = j)
 	= \sum_{k=1}^{\infty} \sum_{j=0}^{k-1} \frac{e^{-\lambda_H} \lambda_H^{k}}{k!} \cdot \frac{e^{-\lambda_A} \lambda_A^{j}}{j!}.
 	\]
-	Para el empate, los goles coinciden:
+		
+	Para el empate se igualan los goles como sigue. 
+	
 	\[
 	P_D = \sum_{k=0}^{\infty} P(G_H = k)\,P(G_A = k)
 	= \sum_{k=0}^{\infty} \frac{e^{-\lambda_H}\lambda_H^k}{k!}\cdot\frac{e^{-\lambda_A}\lambda_A^k}{k!}
 	= \sum_{k=0}^{\infty} \frac{e^{-(\lambda_H + \lambda_A)} (\lambda_H \lambda_A)^{k}}{(k!)^{2}}.
 	\]
-	La expresi\'on \eqref{eq:prob_D_bessel} se obtiene identificando la serie anterior con la funci\'on de Bessel $I_0$ evaluada en $2\sqrt{\lambda_H\lambda_A}$, seg\'un la Definici\'on~\ref{eq:bessel_series} con $r=0$ y $\Gamma(k+1)=k!$. La probabilidad de victoria visitante se obtiene por complemento, pues los tres eventos forman una partici\'on del espacio muestral.
+	
+	La expresi\'on \eqref{eq:prob_D_bessel} se obtiene identificando la serie con la funci\'on de Bessel $I_0$ evaluada en $2\sqrt{\lambda_H\lambda_A}$, seg\'un \eqref{eq:bessel_series} con $r=0$ y $\Gamma(k+1)=k!$. La probabilidad de victoria visitante se sigue por complemento, pues los tres eventos forman una partici\'on del espacio muestral.
 \end{proof}
 
-La equivalencia entre \eqref{eq:prob_D} y \eqref{eq:prob_D_bessel} no es meramente est\'etica: desde el punto de vista computacional, la evaluaci\'on de $I_0(x)$ mediante rutinas num\'ericas especializadas es considerablemente m\'as eficiente que la suma doble de \eqref{eq:prob_D}, especialmente cuando $\lambda_H\lambda_A$ es grande.
+La equivalencia entre \eqref{eq:prob_D} y \eqref{eq:prob_D_bessel} tiene valor computacional: la evaluaci\'on de $I_0$ mediante rutinas num\'ericas especializadas es m\'as eficiente que la suma doble, especialmente cuando $\lambda_H\lambda_A$ es grande.
 
-\subsubsection{Conexi\'on con el modelo trinomial de Shelopugin-Sirotkin}
+La estructura trinomial del modelo de Shelopugin y Sirotkin, presentada en la Secci\'on~\ref{subsec:shelopugin}, recobra aqu\'i una justificaci\'on probabil\'istica: el par\'ametro $s$ de probabilidad de empate no es un hiperpar\'ametro ex\'ogeno, pues emerge de la distribuci\'on de Skellam evaluada en $d=0$. El par\'ametro adicional $d\in\mathbb{R}$ introducido en la Definici\'on~\ref{def:expectativa_mod} act\'ua como t\'ermino de calibraci\'on que compensa desviaciones sistem\'aticas del modelo Poisson puro. Una vez estimadas $\lambda_H$ y $\lambda_A$, las probabilidades $(P_H, P_D, P_A)$ se inyectan en el sistema de rating como vector de expectativas trinomiales, acoplando los tres bloques del pipeline en un \'unico grafo de inferencia.
 
-\begin{obs}\label{obs:conexion_shelopugin}
-	La estructura trinomial del modelo modificado de Shelopugin y Sirotkin, definida por las ecuaciones \eqref{eq:prob_victoria_local}--\eqref{eq:prob_victoria_visitante} de la Secci\'on~\ref{subsec:shelopugin}, recobra una justificaci\'on probabil\'istica desde el presente formalismo: el par\'ametro $s$ de probabilidad de empate, necesario para el algoritmo de actualizacion del Glicko-2 modificado no es un hiperpar\'ametro ex\'ogeno, sino que emerge end\'ogenamente de la distribuci\'on de Skellam evaluada en $d=0$ \eqref{eq:prob_D_bessel}. El par\'ametro adicional $d \in \mathbb{R}$ introducido en la Definici\'on~\ref{def:expectativa_mod} act\'ua entonces como un t\'ermino de calibraci\'on que compensa posibles desviaciones sistem\'aticas del modelo Poisson puro (por ejemplo, la tendencia a subestimar la frecuencia de partidos de baja anotaci\'on documentada en la literatura deportiva), sin romper la coherencia probabil\'istica del marco.
+\begin{obs}[Simetr\'ia del modelo]
+	\label{obs:simetria_trinomial}
+	
+	El vector de probabilidades $\mathcal{P}(\lambda_H,\lambda_A) = 
+	(P_H, P_D, P_A)$ satisface
+	\begin{enumerate}
+		\item $P_D(\lambda_H, \lambda_A) = P_D(\lambda_A, \lambda_H)$;
+		\item $P_H(\lambda_H, \lambda_A) = P_A(\lambda_A, \lambda_H)$.
+	\end{enumerate}
+	La primera propiedad se sigue de que la expresi\'on 
+	\eqref{eq:prob_D_bessel} depende del producto $\lambda_H \lambda_A$, 
+	y la segunda propiedad se sigue de intercambiar los roles de local y visitante en la 
+	definici\'on de los eventos $\{G_H > G_A\}$ y $\{G_H < G_A\}$.
 \end{obs}
 
-La conexi\'on formal se establece as\'i: una vez estimadas las tasas $\lambda_H$ y $\lambda_A$ las probabilidades $(P_H, P_D, P_A)$ se inyectan en el sistema de rating como el vector de expectativas trinomiales. De este modo, el bloque deportivo, el bloque de conteo y el bloque de rating din\'amico quedan acoplados en un \'unico grafo de inferencia.
+A modo de ilustraci\'on num\'erica, consid\'erese un enfrentamiento t\'ipico de liga profesional con tasas esperadas $\lambda_H = 1{,}8$ y $\lambda_A = 1{,}2$. Estos valores corresponden a un equipo local ligeramente favorito, situaci\'on frecuente en competiciones de media tabla. Evaluando las f\'ormulas anteriores se obtiene $P_H \approx 0{,}514$, $P_D \approx 0{,}231$ y $P_A \approx 0{,}254$, con una diferencia de goles esperada de $0{,}6$ y una desviaci\'on t\'ipica de $\sqrt{3{,}0} \approx 1{,}73$ goles. La probabilidad de empate resulta sustancialmente mayor que la que asignar\'ia un modelo de dos resultados (victoria/derrota), lo que justifica la inclusi\'on expl\'icita del empate como categor\'ia estoc\'astica independiente en el sistema de rating.
 
-\subsubsection{Simetr\'ia y comportamiento l\'imite}
-
-\begin{prop}[Simetr\'ia del modelo]\label{prop:simetria}
-	Sea $\mathcal{P}(\lambda_H,\lambda_A) = (P_H,P_D,P_A)$ el vector de probabilidades definido por \eqref{eq:prob_H}--\eqref{eq:prob_A}. Entonces:
-	\begin{enumerate}
-		\item[(i)] $P_D(\lambda_H,\lambda_A) = P_D(\lambda_A,\lambda_H)$;
-		\item[(ii)] $P_H(\lambda_H,\lambda_A) = P_A(\lambda_A,\lambda_H)$.
-	\end{enumerate}
-\end{prop}
-
-\begin{proof}
-	\textit{(i)} La expresi\'on \eqref{eq:prob_D_bessel} es sim\'etrica en $\lambda_H$ y $\lambda_A$ pues $I_0$ depende del producto $\lambda_H\lambda_A$.
-	
-	\textit{(ii)} Intercambiando los roles de local y visitante, la condici\'on $G_H > G_A$ se transforma en $G_A > G_H$, que define la victoria visitante bajo la permutaci\'on de tasas. Formalmente,
-	\[
-	P_H(\lambda_A,\lambda_H) = \sum_{k=1}^{\infty}\sum_{j=0}^{k-1} \frac{e^{-\lambda_A}\lambda_A^k}{k!}\cdot\frac{e^{-\lambda_H}\lambda_H^j}{j!} = P(G_A > G_H \mid \lambda_H,\lambda_A) = P_A(\lambda_H,\lambda_A). \qedhere
-	\]
-\end{proof}
-
-\begin{prop}[Comportamiento l\'imite]\label{prop:limites}
-	El vector de probabilidades $\mathcal{P}(\lambda_H,\lambda_A)$ satisface los siguientes l\'imites:
-	\begin{enumerate}
-		\item[(i)] Si $\lambda_H \to \infty$ con $\lambda_A$ fijo, entonces $P_H \to 1$, $P_D \to 0$ y $P_A \to 0$;
-		\item[(ii)] Si $\lambda_H = \lambda_A = \lambda \to \infty$, entonces $P_H \to \tfrac{1}{2}$, $P_A \to \tfrac{1}{2}$ y $P_D \to 0$;
-		\item[(iii)] Si $\lambda_H,\lambda_A \to 0$, entonces $P_D \to 1$.
-	\end{enumerate}
-\end{prop}
-
-\begin{proof}
-	\textit{(i)} Cuando $\lambda_H \to \infty$, la diferencia de goles esperada $\mathbb{E}[D] = \lambda_H - \lambda_A$ diverge, mientras que su varianza $\lambda_H+\lambda_A$ crece a una tasa menor. Por la desigualdad de Chebyshev,
-	\[
-	P(D \leq 0) \leq P\bigl(|D-\mathbb{E}[D]| \geq \mathbb{E}[D]\bigr) \leq \frac{\lambda_H+\lambda_A}{(\lambda_H-\lambda_A)^2} \xrightarrow[\lambda_H\to\infty]{} 0,
-	\]
-	de donde $P_H = 1 - P(D \leq 0) \to 1$.
-	
-	\textit{(ii)} Si $\lambda_H=\lambda_A=\lambda$, la Proposici\'on~\ref{prop:simetria} garantiza $P_H=P_A$. Para establecer que $P_D \to 0$, se usa la aproximaci\'on normal de la distribuci\'on de Poisson: para $\lambda$ grande, $G_H \approx \mathcal{N}(\lambda,\lambda)$ y $G_A \approx \mathcal{N}(\lambda,\lambda)$ independientes, de modo que $D \approx \mathcal{N}(0,2\lambda)$. Por tanto,
-	\[
-	P_D = P(D=0) \approx P\!\left(|Z| < \frac{1}{2\sqrt{2\lambda}}\right) \xrightarrow[\lambda\to\infty]{} 0, \qquad Z \sim \mathcal{N}(0,1),
-	\]
-	y la masa restante se distribuye sim\'etricamente entre $P_H$ y $P_A$.
-	
-	\textit{(iii)} Si ambas tasas tienden a cero, $P(G_H=0,G_A=0) = e^{-\lambda_H}e^{-\lambda_A} \to 1$, luego $P_D \to 1$.
-\end{proof}
-
-El l\'imite \textit{(iii)} tiene una interpretaci\'on deportiva inmediata: cuando dos equipos de muy bajo poder ofensivo se enfrentan, el modelo predice dominancia abrumadora del empate a cero, fen\'omeno frecuente en ligas defensivas o en enfrentamientos de eliminatoria directa.
-
-A modo de ilustraci\'on num\'erica, consid\'erese un enfrentamiento t\'ipico de liga profesional con tasas esperadas $\lambda_H = 1{,}8$ y $\lambda_A = 1{,}2$. Estos valores corresponden a un equipo local ligeramente favorito, situaci\'on frecuente en competiciones de media tabla. Evaluando las f\'ormulas anteriores se obtiene $P_H \approx 0{,}514$, $P_D \approx 0{,}231$ y $P_A \approx 0{,}254$, con una diferencia de goles esperada de $0{,}6$ y una desviaci\'on t\'ipica de $\sqrt{3{,}0} \approx 1{,}73$ goles. La probabilidad de empate es sustancialmente mayor que la que asignar\'ia un modelo de dos resultados (victoria/derrota), lo que justifica la inclusi\'on expl\'icita del empate como categor\'ia estoc\'astica independiente en el sistema de rating.
-
-\subsection{Buena definici\'on y estabilidad num\'erica}
+\subsection{Estabilidad num\'erica y propiedades estructurales}
 \label{subsec:buena_definicion}
+\label{subsec:propiedades_estructurales}
 
-Es necesario verificar que las probabilidades asignadas por el modelo de conteo constituyen efectivamente una distribuci\'on de probabilidad v\'alida sobre el espacio de resultados $\{H, D, A\}$. Esta verificaci\'on no es tautol\'ogica: en implementaciones num\'ericas con aritm\'etica de punto flotante, la truncaci\'on de las sumas infinitas puede violar levemente la condici\'on de suma unitaria, por lo que resulta indispensable establecer las condiciones bajo las cuales el modelo est\'a bien definido en sentido estricto.
+Es necesario verificar que las probabilidades asignadas por el modelo 
+de conteo constituyen efectivamente una distribuci\'on de probabilidad 
+v\'alida sobre el espacio de resultados $\{H, D, A\}$.
 
-\subsubsection{No negatividad y suma unitaria}
-
-\begin{prop}[Buena definici\'on]\label{prop:buena_definicion}
-	Las probabilidades $(P_H, P_D, P_A)$ definidas en la Proposici\'on~\ref{prop:prob_resultados} satisfacen:
+\begin{prop}[Buena definici\'on]
+	\label{prop:buena_definicion}
+	Las probabilidades $(P_H, P_D, P_A)$ definidas en la 
+	Proposici\'on~\ref{prop:prob_resultados} satisfacen:
 	\begin{enumerate}
-		\item[(i)] No negatividad: $P_H \geq 0$, $P_D \geq 0$, $P_A \geq 0$;
+		\item[(i)] No negatividad: $P_H \geq 0$, $P_D \geq 0$, 
+		$P_A \geq 0$.
 		\item[(ii)] Suma unitaria: $P_H + P_D + P_A = 1$.
 	\end{enumerate}
 \end{prop}
 
 \begin{proof}
-	\textit{(i) No negatividad.} Cada t\'ermino en las sumas que definen $P_H$ y $P_D$ es producto de probabilidades de Poisson, las cuales son no negativas por definici\'on. Por tanto, $P_H \geq 0$ y $P_D \geq 0$. Como $P_A = 1 - P_H - P_D$, basta verificar que $P_H + P_D \leq 1$, lo cual se deduce inmediatamente de \textit{(ii)}.
+	\textit{(i)} Cada t\'ermino en las sumas que definen $P_H$ y $P_D$ 
+	es producto de probabilidades de Poisson, no negativas por 
+	definici\'on. Por tanto $P_H \geq 0$ y $P_D \geq 0$, y como 
+	$P_A = 1 - P_H - P_D$, la no negatividad de $P_A$ se sigue de 
+	\textit{(ii)}.
 	
-	\textit{(ii) Suma unitaria.} Los eventos $\{G_H > G_A\}$, $\{G_H = G_A\}$ y $\{G_H < G_A\}$ son disjuntos dos a dos y su uni\'on es el espacio muestral completo $\Omega$. Por el axioma de probabilidad para eventos mutuamente excluyentes:
+	\textit{(ii)} Los eventos $\{G_H > G_A\}$, $\{G_H = G_A\}$ y 
+	$\{G_H < G_A\}$ son disjuntos dos a dos y su uni\'on es el espacio 
+	muestral completo. Por el axioma de aditividad de la probabilidad 
+	para eventos mutuamente excluyentes,
 	\[
-	P(G_H > G_A) + P(G_H = G_A) + P(G_H < G_A) = P(\Omega) = 1,
+	P(G_H > G_A) + P(G_H = G_A) + P(G_H < G_A) = 1,
 	\]
 	es decir, $P_H + P_D + P_A = 1$.
 \end{proof}
 
-\begin{obs}[Dominio de los par\'ametros]
-	La buena definici\'on exige \'unicamente que $\lambda_H, \lambda_A > 0$. Si alguna tasa fuera nula, el modelo degenera (por ejemplo, si $\lambda_H = 0$, entonces $P(G_H=0)=1$ y $P_H=0$), pero la distribuci\'on sobre $\{H,D,A\}$ sigue siendo v\'alida. 
+En una implementaci\'on computacional, las sumas infinitas se truncan en un entero $K$. Para la cola de una distribuci\'on de Poisson, la cota de Chernoff \cite{casella2002} garantiza que si $k > \lambda$,
+\begin{equation}\label{eq:chernoff_poisson}
+	P(X \geq k) \leq \left(\frac{e\lambda}{k}\right)^k e^{-\lambda}.
+\end{equation}
+Para el rango t\'ipico $\lambda \in [0{.}5, 3{.}0]$, la elecci\'on $K = 16$ mantiene el error de truncamiento en cada cola por debajo de $10^{-6}$ en \ref{eq:chernoff_poisson}.
+
+\begin{obs}[Comportamiento l\'imite]
+	\label{obs:limites_modelo}
+	El vector de probabilidades $\mathcal{P}(\lambda_H,\lambda_A)$ 
+	satisface los siguientes l\'imites:
+	\begin{enumerate}
+		\item[(i)] Si $\lambda_H \to \infty$ con $\lambda_A$ fijo, 
+		entonces $P_H \to 1$, $P_D \to 0$ y $P_A \to 0$.
+		\item[(ii)] Si $\lambda_H = \lambda_A = \lambda \to \infty$, 
+		entonces $P_H \to \tfrac{1}{2}$, $P_A \to \tfrac{1}{2}$ y 
+		$P_D \to 0$.
+		\item[(iii)] Si $\lambda_H, \lambda_A \to 0$, entonces 
+		$P_D \to 1$.
+	\end{enumerate}
+	El l\'imite \textit{(iii)} tiene interpretaci\'on deportiva 
+	inmediata: cuando dos equipos de muy bajo poder ofensivo se 
+	enfrentan, el modelo predice dominancia del empate a cero, 
+	fen\'omeno frecuente en ligas defensivas o en eliminatorias 
+	directas.
 \end{obs}
 
-\subsubsection{Estabilidad num\'erica y truncamiento}
+Adicionalmente, se aplica una normalizaci\'on expl\'icita del vector $(P_H, P_D, P_A)$ para compensar posibles errores de redondeo en aritm\'etica de punto flotante que desv\'ien ligeramente el vector de probabilidades de la condicion $P+H+P_D+P_A=1$.
 
-En una implementaci\'on computacional, las sumas infinitas de las ecuaciones \eqref{eq:prob_H}--\eqref{eq:prob_D} deben truncarse a un entero $K$ suficientemente grande. Es necesario disponer de cotas deterministas para el error de truncamiento que permitan seleccionar $K$ de forma rigurosa.
+Dos propiedades estructurales complementan el an\'alisis. Primero, la monotonicidad cruzada: $P_H$ es estrictamente creciente en $\lambda_H$ y decreciente en $\lambda_A$, con comportamiento an\'alogo para $P_A$. La probabilidad de empate $P_D$ no es mon\'otona en general: crece cuando las tasas se aproximan entre s\'i y decrece cuando una domina a la otra, lo que refleja que el empate es m\'as probable entre equipos equilibrados, esto lleva a una interpretaci\'on interesante y relevante, pues sugiere que el empate es m\'as probable cuando ambos equipos tienen un nivel ofensivo similar, incluso si es alto. Segundo, para tasas elevadas ($\lambda_H, \lambda_A \gtrsim 5$), debido al costo computacional de las sumas \eqref{eq:prob_H} y \eqref{eq:prob_D}, la distribuci\'on de Skellam admite la aproximaci\'on normal $D \approx \mathcal{N}(\lambda_H - \lambda_A, \lambda_H + \lambda_A)$, \'util como validaci\'on te\'orica en casos extremos, aunque rara vez necesaria en el f\'utbol profesional.
 
-\begin{obs}[Cotas de error de truncamiento]\label{obs:truncamiento}
-	Sea $K \in \mathbb{N}$ el truncamiento de las sumas infinitas. Para la cola de una distribuci\'on de Poisson, la \emph{cota de Chernoff} \cite{casella2002} garantiza que si $k > \lambda$:
-	\begin{equation}\label{eq:chernoff_poisson}
-		P(X \geq k) \leq \exp\!\left(k - \lambda - k\ln\frac{k}{\lambda}\right) = \left(\frac{e\lambda}{k}\right)^k e^{-\lambda}.
-	\end{equation}
-	Dado que las tasas t\'ipicas del f\'utbol profesional se encuentran en el rango $\lambda \in [0{.}5,\,3{.}0]$, la elecci\'on $K = 16$ garantiza \eqref{eq:chernoff_poisson}, que el error de truncamiento en cada cola es inferior a $10^{-6}$. En efecto, para $\lambda = 3$ (el peor caso),
-	\[
-	P(G \geq 17) \leq \left(\frac{3e}{17}\right)^{17} e^{-3} \approx 3{,}8 \times 10^{-7} < 10^{-6}.
-	\]
-	Alternativamente, el uso de la representaci\'on \eqref{eq:prob_D_bessel} para el empate elimina por completo la suma infinita en $P_D$, reduciendo el problema a la evaluaci\'on de una \'unica funci\'on especial. Para $P_H$ y $P_A$, la reescritura como sumas univariadas sobre la distribuci\'on de Skellam permite aprovechar las rutinas optimizadas de evaluaci\'on de la CDF disponibles en bibliotecas num\'ericas est\'andar.
-\end{obs}
-
-Si bien la Proposici\'on~\ref{prop:buena_definicion} garantiza la suma unitaria en sentido anal\'itico, la evaluaci\'on num\'erica de las sumas truncadas en aritm\'etica de punto flotante puede introducir errores de redondeo que desv\'ien ligeramente el vector de probabilidades de la condici\'on $P_H+P_D+P_A=1$. En la implementaci\'on computacional se compensa esta desviaci\'on mediante normalizaci\'on expl\'icita del vector, asegurando as\'i la coherencia probabil\'istica del modelo en ejecuci\'on.
-
-\subsection{Propiedades estructurales}
-\label{subsec:propiedades_estructurales}
-
-Adem\'as de la buena definici\'on b\'asica, el modelo trinomial derivado de la Skellam satisface propiedades estructurales que reflejan intuiciones deportivas y que resultan \'utiles para la calibraci\'on.
-
-\begin{obs}[Monotonicidad cruzada]
-	Para $\lambda_H, \lambda_A > 0$, la probabilidad $P_H$ es estrictamente creciente en $\lambda_H$ y estrictamente decreciente en $\lambda_A$; an\'alogamente, $P_A$ es estrictamente decreciente en $\lambda_H$ y estrictamente creciente en $\lambda_A$. La probabilidad de empate $P_D$ no es mon\'otona en general: crece cuando $\lambda_H$ y $\lambda_A$ se aproximan entre s\'i (equipos equilibrados), y decrece cuando una tasa domina a la otra. Esta \'ultima propiedad tiene una interpretaci\'on t\'actica relevante: el empate es m\'as probable cuando los equipos tienen poder\'io ofensivo equilibrado, incluso si ese poder\'io es alto; por el contrario, un desequilibrio estructural (medido por $|\lambda_H - \lambda_A|$) reduce la probabilidad de empate a favor del equipo m\'as fuerte.
-\end{obs}
-
-\begin{obs}[Aproximaci\'on normal para tasas elevadas]
-	Cuando ambas tasas son moderadamente grandes ($\lambda_H, \lambda_A \gtrsim 5$), la evaluaci\'on directa de las sumas \eqref{eq:prob_H}--\eqref{eq:prob_D} resulta computacionalmente costosa. En tal caso, la distribuci\'on de Skellam admite la aproximaci\'on $D \;\dot{\sim}\; \mathcal{N}(\lambda_H - \lambda_A,\; \lambda_H + \lambda_A)$, de donde se obtienen estimaciones r\'apidas de $P_H$ y $P_D$ mediante la funci\'on de distribuci\'on acumulada normal con correcci\'on de continuidad. En el f\'utbol profesional, donde las tasas raramente exceden $3.0$, esta aproximaci\'on se usa como validaci\'on te\'orica m\'as que como rutina computacional.
-\end{obs}
-
-La buena definici\'on del modelo, junto con la estabilidad num\'erica verificada en la Observaci\'on~\ref{obs:truncamiento} y las propiedades estructurales anteriores, garantiza que el aparato probabil\'istico descrito en esta secci\'on puede integrarse de manera robusta con el sistema de rating din\'amico de la Secci\'on~\ref{sec:sistemas_rating} y con el procedimiento de estimaci\'on por m\'axima verosimilitud que se desarrolla en el cap\'itulo de metodolog\'ia emp\'irica.
+Con esto, el aparato probabil\'istico de la secci\'on queda integrado con el sistema de rating din\'amico de la Secci\'on~\ref{sec:rating} y con el procedimiento de estimaci\'on por m\'axima verosimilitud que se desarrolla en el Cap\'itulo~\ref{ch:metodologia}.
 
 % ============================================================
 % SECCION 2.4 -- Integracion de covariables y estimacion de parametros
@@ -887,123 +536,91 @@ La buena definici\'on del modelo, junto con la estabilidad num\'erica verificada
 \section{Integraci\'on de covariables y estimaci\'on de par\'ametros}
 \label{sec:regresion}
 
-El sistema de rating din\'amico desarrollado en la Secci\'on~\ref{subsec:shelopugin} proporciona una estimaci\'on secuencial de la fuerza latente de los equipos mediante el algoritmo Glicko-2 modificado, complementado con la probabilidad de empate derivada del modelo de conteo de la Secci\'on~\ref{sec:modelo_probabilistico}. No obstante, el estado $(R,RD,\sigma)$ de un equipo resume \'unicamente su trayectoria hist\'orica de resultados; no incorpora de manera expl\'icita el contexto espec\'ifico de cada enfrentamiento. 
+El sistema de rating din\'amico desarrollado en la Secci\'on~\ref{subsec:shelopugin} proporciona una estimaci\'on secuencial de la fuerza latente de los equipos mediante el algoritmo Glicko-2 modificado, complementada con la probabilidad de empate derivada del modelo de conteo de la Secci\'on~\ref{sec:modelo_probabilistico}. No obstante, el estado $(R,RD,\sigma)$ de un equipo resume \'unicamente su trayectoria hist\'orica de resultados; no incorpora el contexto espec\'ifico de cada enfrentamiento. En esta secci\'on se formaliza el mecanismo mediante el cual las covariables deportivas, econ\'omicas y ambientales descritas en la Secci\'on~\ref{sec:variables} se integran al sistema predictivo, y se establece el principio de estimaci\'on que gobierna la calibraci\'on de sus par\'ametros. Dado que la relaci\'on entre dichas variables y el resultado no es estrictamente lineal ni aditiva, la versi\'on final del modelo delega la correcci\'on no param\'etrica a un perceptr\'on multicapa (MLP), cuya arquitectura se desarrolla en la Secci\'on~\ref{sec:mlp}.
 
-En esta secci\'on se formaliza el mecanismo mediante el cual las covariables deportivas, econ\'omicas y ambientales, descritas cualitativamente en la Secci\'on~\ref{sec:contexto}, se integran al sistema predictivo. Dado que la relaci\'on entre dichas variables y el resultado no es estrictamente lineal ni aditiva, la versi\'on final del modelo delega la correcci\'on no param\'etrica a un perceptr\'on multicapa (MLP) que opera sobre el vector de probabilidades base generado por el rating. El desarrollo formal de la arquitectura de la red neuronal se reserva para la Secci\'on~\ref{sec:mlp}, donde se presenta junto con el modelo exploratorio basado en redes recurrentes.
-
-\subsection{Integraci\'on de covariables ex\'ogenas en el sistema predictivo}
+\subsection{Covariables ex\'ogenas y vector de entrada}
 \label{subsec:covariables}
 
-El modelo de Shelopugin y Sirotkin \cite{Glicko2Mod} introduce la ventaja de local\'ia como un par\'ametro estructural $h$ que se suma al rating transformado del equipo anfitri\'on (ecuaci\'on \eqref{eq:rating_efectivo}). En el marco original, la probabilidad de empate $s$ se obtiene de un modelo LightGBM con funci\'on objetivo Poisson, y el par\'ametro $d$ se calibra para compensar el sesgo de subestimaci\'on del empate. Esta arquitectura captura la din\'amica competitiva pura, pero no modela expl\'icitamente la asimetr\'ia econ\'omica, fisiol\'ogica o ambiental entre los contendientes.
+El modelo de Shelopugin y Sirotkin \cite{Glicko2Mod} introduce la ventaja de local\'ia como un par\'ametro estructural $h$ que se suma al rating transformado del equipo anfitri\'on. En el marco original, la probabilidad de empate $s$ se obtiene de un modelo LightGBM con funci\'on objetivo Poisson, y el par\'ametro $d$ se calibra para compensar el sesgo de subestimaci\'on del empate. Esta arquitectura captura la din\'amica competitiva pura, pero no modela expl\'icitamente la asimetr\'ia econ\'omica, fisiol\'ogica o ambiental entre los contendientes.
 
-En el presente trabajo, el vector de probabilidades base $(P_H, P_D, P_A)$, definido por las ecuaciones \eqref{eq:prob_victoria_local}--\eqref{eq:prob_victoria_visitante}, se enriquece con un conjunto de covariables ex\'ogenas que operan como descriptores del contexto del partido. Formalmente, sea $\mathbf{x}_{ij} \in \mathbb{R}^p$ el vector de covariables asociado al enfrentamiento entre el equipo local $i$ y el visitante $j$. Las componentes de $\mathbf{x}_{ij}$ se organizan en tres bloques:
+En el presente trabajo, el vector de probabilidades base $(P_H, P_D, P_A)$ definido por las ecuaciones \eqref{eq:prob_victoria_local}--\eqref{eq:prob_victoria_visitante} se enriquece con un conjunto de covariables ex\'ogenas que operan como descriptores del contexto del partido. Sea $\mathbf{x}_{ij} \in \mathbb{R}^p$ el vector de covariables asociado al enfrentamiento entre el equipo local $i$ y el visitante $j$. Sus componentes se organizan en tres bloques.
 
-\paragraph{Bloque econ\'omico.} Describe las asimetr\'ias financieras entre el equipo local y el visitante en:
-\begin{itemize}
-	\item Valor total de mercado del plantel: $\mathit{diff\_MarketValue}$.
-	\item Balance neto de transferencias (\textit{net spending}): $\mathit{diff\_NetSpending}$.
-	\item N\'umero de jugadores extranjeros: $\mathit{diff\_Foreign}$.
-	\item Asistencia al estadio del equipo local: $\mathit{home\_Assist}$.
-\end{itemize}
-Estas variables act\'uan como proxies de la profundidad de plantilla, la estabilidad institucional y la exposici\'on a estilos de juego variados \cite{SZYMAN1,SZYMAN2}.
+\paragraph{Bloque econ\'omico.} Describe las asimetr\'ias financieras entre local y visitante: el valor total de mercado del plantel ($\mathit{diff\_MarketValue}$), el balance neto de transferencias ($\mathit{diff\_NetSpending}$), el n\'umero de jugadores extranjeros ($\mathit{diff\_Foreign}$) y la asistencia al estadio del equipo local ($\mathit{home\_Assist}$). Estas variables act\'uan como proxies de la profundidad de plantilla, la estabilidad institucional y la exposici\'on a estilos de juego variados \cite{SZYMAN1,SZYMAN2}.
 
-\paragraph{Bloque ambiental.} Captura las asimetr\'ias fisiol\'ogicas y clim\'aticas:
-\begin{itemize}
-	\item Diferencia de temperatura ambiente entre la sede del local y la del visitante.
-	\item Diferencia de presi\'on parcial de ox\'igeno: $\mathit{diff\_PiO_2}$, derivada de la altitud de los estadios (v\'ease Secci\'on~\ref{subsec:barometrica}).
-\end{itemize}
+\paragraph{Bloque ambiental.} Captura las asimetr\'ias fisiol\'ogicas y clim\'aticas: la diferencia de temperatura ambiente entre ambas sedes y la diferencia de presi\'on parcial de ox\'igeno ($\mathit{diff\_PiO_2}$), derivada de la altitud de los estadios. La derivaci\'on de esta \'ultima se presenta en la Secci\'on~\ref{subsec:barometrica}.
 
-\paragraph{Bloque deportivo.} Comprende los \'indices compuestos de autor\'ia en ventana \textit{rolling}:
-\begin{itemize}
-	\item \'Indice de goles esperados te\'oricos: $\mathit{xG\_teo}$.
-	\item \'Indice de asistencias esperadas te\'oricas: $\mathit{xA\_teo}$.
-	\item \'Indice de eficiencia defensiva: $\mathit{DDI}$.
-\end{itemize}
+\paragraph{Bloque deportivo.} Comprende los \'indices compuestos de autor\'ia en ventana \textit{rolling}: el \'indice de goles esperados te\'oricos ($\mathit{xG\_teo}$), el \'indice de asistencias esperadas te\'oricas ($\mathit{xA\_teo}$) y el \'indice de eficiencia defensiva ($\mathit{DDI}$).
 
-El input completo del modelo de refinamiento se define como la concatenaci\'on del vector de probabilidades base y el vector de covariables ex\'ogenas:
+El input completo del modelo de refinamiento es la concatenaci\'on del vector de probabilidades base con el vector de covariables ex\'ogenas:
 \begin{equation}\label{eq:input_mlp}
 	\mathbf{z}_{ij} = \bigl(P_{H,ij},\, P_{D,ij},\, P_{A,ij},\, \mathbf{x}_{ij}\bigr) \in \mathbb{R}^{3+p}.
 \end{equation}
-
 La funci\'on de refinamiento no lineal se denota $f_{\boldsymbol{\theta}}: \mathbb{R}^{3+p} \to \mathbb{R}^3$, donde $\boldsymbol{\theta}$ representa el conjunto de pesos y sesgos del perceptr\'on multicapa. La salida refinada se obtiene mediante una capa \emph{softmax} que garantiza la coherencia probabil\'istica:
 \begin{equation}\label{eq:mlp_refinamiento}
 	(\tilde{P}_H, \tilde{P}_D, \tilde{P}_A) = \operatorname{softmax}\bigl(f_{\boldsymbol{\theta}}(\mathbf{z}_{ij})\bigr),
 \end{equation}
 de modo que $\tilde{P}_H + \tilde{P}_D + \tilde{P}_A = 1$ y $\tilde{P}_c \geq 0$ para todo $c \in \{H,D,A\}$.
 
-\begin{obs}
-	En una versi\'on preliminar del modelo se explor\'o una extensi\'on param\'etrica log-lineal de la ventaja de local\'ia, donde las covariables ingresaban directamente en la tasa de goles esperados $\lambda$ mediante una regresi\'on Poisson. Dicha formulaci\'on fue descartada en favor de la arquitectura actual, dado que la MLP ofrece mayor capacidad de aproximaci\'on funcional sin imponer una forma aditiva restrictiva, reduciendo simult\'aneamente los riesgos de sobreajuste y subajuste observados en la calibraci\'on preliminar.
-\end{obs}
+Cabe se\~nalar que en una versi\'on preliminar del modelo se explor\'o una extensi\'on param\'etrica log-lineal de la ventaja de local\'ia, donde las covariables ingresaban directamente en la tasa de goles esperados $\lambda$ mediante una regresi\'on Poisson. Dicha formulaci\'on fue descartada en favor de la arquitectura actual, dado que el MLP ofrece mayor capacidad de aproximaci\'on funcional sin imponer una forma aditiva restrictiva, reduciendo simult\'aneamente los riesgos de sobreajuste y subajuste observados en la calibraci\'on preliminar.
 
-\subsection{La f\'ormula barom\'etrica y la presi\'on parcial de ox\'igeno}
+\subsection{La presi\'on parcial de ox\'igeno como covariable ambiental}
 \label{subsec:barometrica}
 
-Una de las covariables ambientales de mayor relevancia fisiol\'ogica es la presi\'on parcial de ox\'igeno $\mathrm{P}_{\mathrm{O}_2}$ en la sede del partido, la cual decrece con la altitud y condiciona la capacidad aer\'obica de los jugadores no aclimatados \cite{West1996}. A continuaci\'on se deriva rigurosamente la ley barom\'etrica que fundamenta su c\'alculo.
+Una de las covariables ambientales de mayor relevancia fisiol\'ogica es la presi\'on parcial de ox\'igeno $\mathrm{P}_{\mathrm{O}_2}$ en la sede del partido, que decrece con la altitud y condiciona la capacidad aer\'obica de los jugadores no aclimatados \cite{West1996}. Su c\'alculo se fundamenta en la ley barom\'etrica, que se deriva a continuaci\'on.
 
-Consid\'erese una columna de aire en equilibrio hidrost\'atico. La presi\'on atmosf\'erica $P$ var\'ia con la altitud $h$ seg\'un la ecuaci\'on diferencial
-\begin{equation}\label{eq:hidrostatica}
-	\frac{\mathrm{d}P}{\mathrm{d}h} = -\rho(h)\,g,
+Consid\'erese una columna de aire en equilibrio hidrost\'atico. La presi\'on atmosf\'erica $P$ var\'ia con la altitud $h$ seg\'un la ecuaci\'on diferencial 
+
+\begin{equation}
+	\frac{\mathrm{d}P}{\mathrm{d}h} = -\rho(h)\,g
 \end{equation}
-donde $\rho(h)$ es la densidad del aire a altitud $h$ y $g \approx 9{,}80665\,\mathrm{m/s^2}$ es la aceleraci\'on gravitacional. Bajo el supuesto de gas ideal, la densidad satisface
-\begin{equation}\label{eq:gas_ideal}
-	\rho(h) = \frac{M\,P(h)}{R\,T},
+
+donde $\rho(h)$ es la densidad del aire y $g \approx 9{.}80665\,\mathrm{m/s^2}$ la aceleraci\'on gravitacional. Bajo el supuesto de gas ideal se satisface que 
+
+\begin{equation}
+	\rho(h) = \frac{MP(h)}{RT}
 \end{equation}
-donde $M \approx 0{,}0289644\,\mathrm{kg/mol}$ es la masa molar del aire seco, $R = 8{,}31446\,\mathrm{J/(mol\cdot K)}$ es la constante universal de los gases y $T$ es la temperatura absoluta (en kelvin), aqu\'i aproximada como constante para la capa atmosf\'erica relevante.
+
+con $M \approx 0{.}0289644\,\mathrm{kg/mol}$ la masa molar del aire seco, $R = 8{.}31446\,\mathrm{J/(mol\cdot K)}$ la constante universal de los gases y $T$ la temperatura absoluta en grados kelvin, aproximada como constante para la capa atmosf\'erica relevante.
 
 \begin{prop}[Ley barom\'etrica]\label{prop:barometrica}
-	La soluci\'on de la ecuaci\'on diferencial \eqref{eq:hidrostatica} con condici\'on inicial $P(0)=P_0$ (presi\'on al nivel del mar) est\'a dada por
+	La soluci\'on de la ecuaci\'on diferencial anterior con condici\'on inicial $P(0)=P_0$ est\'a dada por
 	\begin{equation}\label{eq:barometrica}
 		P(h) = P_0\,\exp\!\left(-\frac{Mgh}{RT}\right).
 	\end{equation}
 \end{prop}
 
 \begin{proof}
-	Sustituyendo \eqref{eq:gas_ideal} en \eqref{eq:hidrostatica} se obtiene una ecuaci\'on diferencial ordinaria lineal de primer orden con variables separables:
+	Sustituyendo la ley del gas ideal en la ecuaci\'on hidrost\'atica se obtiene una ecuaci\'on diferencial lineal de primer orden con variables separables:
 	\[
 	\frac{\mathrm{d}P}{\mathrm{d}h} = -\frac{Mg}{RT}\,P(h).
 	\]
-	Separamos variables e integramos desde el nivel del mar ($h=0$, $P=P_0$) hasta una altitud arbitraria $h$:
-	\[
-	\int_{P_0}^{P(h)} \frac{\mathrm{d}P'}{P'} = -\frac{Mg}{RT}\int_{0}^{h}\mathrm{d}h'.
-	\]
-	Evaluando las integrales resulta
-	\[
-	\ln\!\frac{P(h)}{P_0} = -\frac{Mgh}{RT},
-	\]
-	y exponenciando ambos miembros se llega a \eqref{eq:barometrica}.
+	Integrando desde el nivel del mar hasta una altitud arbitraria $h$ y exponenciando, resulta directamente en \eqref{eq:barometrica}.
 \end{proof}
 
 La fracci\'on molar del ox\'igeno en el aire seco es aproximadamente constante, $x_{\mathrm{O}_2} \approx 0{,}2095$. Por tanto, la presi\'on parcial de ox\'igeno a altitud $h$ es
 \begin{equation}\label{eq:pio2}
-	P_{\mathrm{O}_2}(h) = x_{\mathrm{O}_2}\,P(h) = x_{\mathrm{O}_2}\,P_0\,\exp\!\left(-\frac{Mgh}{RT}\right).
+	P_{\mathrm{O}_2}(h) = x_{\mathrm{O}_2}\,P_0\,\exp\!\left(-\frac{Mgh}{RT}\right).
 \end{equation}
-
-En el contexto del modelo predictivo, la asimetr\'ia fisiol\'ogica entre el equipo local (aclimatado a altitud $h_{\ell}$) y el visitante (habituado a altitud $h_{v}$) se cuantifica mediante la covariable
+En el modelo, la asimetr\'ia fisiol\'ogica entre el equipo local (aclimatado a altitud $h_{\ell}$) y el visitante (habituado a altitud $h_v$) se cuantifica mediante la covariable
 \begin{equation}\label{eq:diff_pio2}
-	\mathit{diff\_PiO_2} = P_{\mathrm{O}_2}(h_{\ell}) - P_{\mathrm{O}_2}(h_{v}),
+	\mathit{diff\_PiO_2} = P_{\mathrm{O}_2}(h_{\ell}) - P_{\mathrm{O}_2}(h_v),
 \end{equation}
-la cual ingresa al vector $\mathbf{x}_{ij}$ definido en la secci\'on anterior. Un valor positivo de esta diferencia indica una ventaja fisiol\'ogica estructural para el equipo local, consistente con la evidencia documentada sobre el rendimiento en altura \cite{West1996}.
+que ingresa al vector $\mathbf{x}_{ij}$ definido en la secci\'on anterior. Un valor positivo de esta diferencia indica una ventaja fisiol\'ogica estructural para el equipo local, consistente con la evidencia documentada sobre el rendimiento en altura \cite{West1996}.
 
-\subsection{Estimaci\'on por m\'axima verosimilitud: la verosimilitud del modelo multinomial}
-\label{subsec:verosimilitud}
+\subsection{Estimaci\'on por m\'axima verosimilitud y equivalencia con log-loss}
+\label{subsec:logloss}
 
-El modelo predictivo completo, comprendiendo el sistema de rating Glicko-2 modificado, la distribuci\'on de Skellam y el refinamiento por MLP, define para cada partido $i$ una distribuci\'on de probabilidad sobre el espacio muestral $\{H,D,A\}$. Formalmente, sea $Y_i$ la variable aleatoria que denota el resultado del $i$-\'esimo partido, y sea $\mathbf{y}=(y_1,\dots,y_N)$ la muestra observada de $N$ enfrentamientos independientes.
-
-Para un partido dado, el modelo asigna probabilidades $(P_{H,i}, P_{D,i}, P_{A,i})$. Si el resultado observado es $y_i \in \{H,D,A\}$, la funci\'on de masa de probabilidad multinomial para ese partido es
+El modelo predictivo completo, que comprende el sistema de rating Glicko-2 modificado, la distribuci\'on de Skellam y el refinamiento por MLP, define para cada partido $i$ una distribuci\'on de probabilidad sobre el espacio muestral $\{H,D,A\}$. Sea $Y_i$ la variable aleatoria que denota el resultado del $i$-\'esimo partido, y sea $\mathbf{y} = (y_1,\dots,y_N)$ la muestra observada de $N$ enfrentamientos independientes. Si el resultado observado es $y_i \in \{H,D,A\}$, la funci\'on de masa de probabilidad multinomial para ese partido es
 \begin{equation}\label{eq:multinomial_partido}
 	f(y_i \mid \mathbf{P}_i) = P_{H,i}^{\mathbb{I}(y_i=H)}\,P_{D,i}^{\mathbb{I}(y_i=D)}\,P_{A,i}^{\mathbb{I}(y_i=A)},
 \end{equation}
-donde $\mathbb{I}(\cdot)$ denota la funci\'on indicadora y $\mathbf{P}_i=(P_{H,i},P_{D,i},P_{A,i})$.
-
-Bajo el supuesto de independencia condicional entre partidos, la funci\'on de verosimilitud conjunta es el producto de las verosimilitudes individuales:
+donde $\mathbb{I}(\cdot)$ es la funci\'on indicadora y $\mathbf{P}_i = (P_{H,i},P_{D,i},P_{A,i})$. Bajo independencia condicional entre partidos, la verosimilitud conjunta es el producto de las verosimilitudes individuales:
 \begin{equation}\label{eq:verosimilitud_conjunta}
 	\mathcal{L}(\boldsymbol{\theta} \mid \mathbf{y}) = \prod_{i=1}^{N} \prod_{c\in\{H,D,A\}} P_{c,i}(\boldsymbol{\theta})^{\mathbb{I}(y_i=c)},
 \end{equation}
-donde $\boldsymbol{\theta}$ representa el vector de todos los par\'ametros del modelo: los estados del Glicko-2, los hiperpar\'ametros $(h,d,\tau)$ y los pesos de la MLP.
-
-Es matem\'aticamente conveniente trabajar con la log-verosimilitud, definida como el logaritmo natural de \eqref{eq:verosimilitud_conjunta}:
+donde $\boldsymbol{\theta}$ agrupa todos los par\'ametros del modelo: los estados del Glicko-2, los hiperpar\'ametros $(h,d,\tau)$ y los pesos del MLP. Es conveniente trabajar con la log-verosimilitud, definida como el logaritmo natural de \eqref{eq:verosimilitud_conjunta}:
 \begin{equation}\label{eq:log_verosimilitud}
-	\ell(\boldsymbol{\theta} \mid \mathbf{y}) = \sum_{i=1}^{N}\sum_{c\in\{H,D,A\}} \mathbb{I}(y_i=c)\,\log P_{c,i}(\boldsymbol{\theta}).
+	\ell(\boldsymbol{\theta} \mid \mathbf{y}) = \sum_{i=1}^{N}\sum_{c\in\{H,D,A\}} \mathbb{I}(y_i=c)\,\log P_{c,i}(\boldsymbol{\theta}),
 \end{equation}
 
 El principio de m\'axima verosimilitud consiste en estimar $\boldsymbol{\theta}$ como el valor que maximiza \eqref{eq:log_verosimilitud}, o equivalentemente, que maximiza \eqref{eq:verosimilitud_conjunta}:
@@ -1011,14 +628,7 @@ El principio de m\'axima verosimilitud consiste en estimar $\boldsymbol{\theta}$
 	\hat{\boldsymbol{\theta}}_{\mathrm{MV}} = \arg\max_{\boldsymbol{\theta}}\,\ell(\boldsymbol{\theta} \mid \mathbf{y}).
 \end{equation}
 
-\begin{obs}
-	En la implementaci\'on computacional del presente trabajo, la maximizaci\'on de \eqref{eq:log_verosimilitud} no se resuelve de forma cerrada mediante un sistema de ecuaciones de verosimilitud. En su lugar, los par\'ametros de la MLP se ajustan mediante optimizaci\'on num\'erica (descenso de gradiente estoc\'astico) minimizando la log-loss, la cual es, salvo una constante de escala, la log-verosimilitud negativa promedio. La equivalencia formal entre ambos criterios se establece en la Secci\'on~\ref{subsec:logloss}.
-\end{obs}
-
-\subsection{Equivalencia entre minimizaci\'on de log-loss y maximizaci\'on de verosimilitud}
-\label{subsec:logloss}
-
-En el contexto de aprendizaje autom\'atico, la funci\'on de p\'erdida est\'andar para clasificaci\'on multiclase es la \emph{log-loss} categ\'orica, tambi\'en denominada entrop\'ia cruzada. Para el modelo trinomial, se define como
+En el contexto de aprendizaje autom\'atico, la funci\'on de p\'erdida est\'andar para clasificaci\'on multiclase es la \emph{log-loss} categ\'orica, tambi\'en denominada entrop\'ia cruzada, definida para el modelo trinomial como
 \begin{equation}\label{eq:logloss}
 	\mathcal{L}_{\mathrm{log}}(\boldsymbol{\theta}) = -\frac{1}{N}\sum_{i=1}^{N}\sum_{c\in\{H,D,A\}} \mathbb{I}(y_i=c)\,\log P_{c,i}(\boldsymbol{\theta}).
 \end{equation}
@@ -1028,61 +638,37 @@ En el contexto de aprendizaje autom\'atico, la funci\'on de p\'erdida est\'andar
 \end{prop}
 
 \begin{proof}
-	Comparando las expresiones \eqref{eq:log_verosimilitud} y \eqref{eq:logloss}, se observa que
+	Comparando \eqref{eq:log_verosimilitud} y \eqref{eq:logloss} se observa que $\mathcal{L}_{\mathrm{log}}(\boldsymbol{\theta}) = -\ell(\boldsymbol{\theta} \mid \mathbf{y})/N$. El factor $-1/N$ es una constante negativa que no depende de $\boldsymbol{\theta}$, por lo que
 	\[
-	\mathcal{L}_{\mathrm{log}}(\boldsymbol{\theta}) = -\frac{1}{N}\,\ell(\boldsymbol{\theta} \mid \mathbf{y}).
+	\arg\min_{\boldsymbol{\theta}} \mathcal{L}_{\mathrm{log}}(\boldsymbol{\theta}) = \arg\max_{\boldsymbol{\theta}} \ell(\boldsymbol{\theta} \mid \mathbf{y}) = \hat{\boldsymbol{\theta}}_{\mathrm{MV}}.
 	\]
-	El factor $-1/N$ es una constante negativa que no depende de $\boldsymbol{\theta}$. Por tanto,
-	\[
-	\arg\min_{\boldsymbol{\theta}} \mathcal{L}_{\mathrm{log}}(\boldsymbol{\theta}) = \arg\min_{\boldsymbol{\theta}} \bigl[-\ell(\boldsymbol{\theta} \mid \mathbf{y})\bigr] = \arg\max_{\boldsymbol{\theta}} \ell(\boldsymbol{\theta} \mid \mathbf{y}) = \hat{\boldsymbol{\theta}}_{\mathrm{MV}}.
-	\]
-	As\'i, el estimador que minimiza la log-loss coincide exactamente con el estimador de m\'axima verosimilitud.
+	As\'i, el estimador que minimiza la log-loss coincide con el estimador de m\'axima verosimilitud.
 \end{proof}
 
-La Proposici\'on~\ref{prop:equivalencia} establece que, aunque el procedimiento de entrenamiento utilice un optimizador de primer orden (Adam) sobre mini-lotes en lugar de un m\'etodo de segundo orden sobre la muestra completa, la funci\'on objetivo que se minimiza es, en esencia, la verosimilitud negativa del modelo multinomial. Esto vincula la implementaci\'on computacional con la inferencia estad\'istica cl\'asica.
-
-\paragraph{Log-loss binaria versus log-loss categ\'orica.} En algunos contextos predictivos se emplea una log-loss binaria \emph{one-vs-rest}, donde cada resultado se trata como un problema de clasificaci\'on binaria independiente. Sin embargo, dado que los eventos $\{H,D,A\}$ son mutuamente excluyentes y exhaustivos, la formulaci\'on categ\'orica \eqref{eq:logloss} es estrictamente apropiada: impone la restricci\'on de suma unitaria sobre las probabilidades predichas (garantizada por la capa softmax) y utiliza una \'unica funci\'on de p\'erdida que respeta la estructura probabil\'istica conjunta del resultado.
+La Proposici\'on~\ref{prop:equivalencia} establece que, aunque el entrenamiento se realice con un optimizador de primer orden sobre mini-lotes en lugar de un m\'etodo de segundo orden sobre la muestra completa, la funci\'on objetivo que se minimiza es, en esencia, la verosimilitud negativa del modelo multinomial. Esto vincula la implementaci\'on computacional con la inferencia estad\'istica cl\'asica. La formulaci\'on categ\'orica \eqref{eq:logloss} es la m\'etrica principal de evaluaci\'on, pues impone la suma unitaria 
+sobre las probabilidades predichas y respeta la estructura probabil\'istica conjunta del resultado. Adicionalmente, en la Secci\'on~\ref{subsec:logloss_metricas} se introduce una log-loss binaria sobre la partici\'on $\{H, \neg H\}$ con fines de  comparabilidad directa con el trabajo base de Shelopugin y Sirotkin \cite{Glicko2Mod}.
 
 \subsection{Optimizaci\'on num\'erica}
 \label{subsec:optimizacion}
 
-La calibraci\'on del modelo se divide en dos escalas temporales y dos espacios de par\'ametros distintos, lo cual justifica el uso de dos algoritmos de optimizaci\'on diferentes.
+La calibraci\'on del modelo se divide en dos escalas y dos espacios de par\'ametros distintos, lo cual justifica el uso de dos algoritmos diferentes. Los par\'ametros estructurales del Glicko-2 modificado: la ventaja de local\'ia $h$, el t\'ermino de calibraci\'on del empate $d$, la constante de difusi\'on temporal $\tau$ y los par\'ametros del modelo de conteo que estima $\lambda_H$ y $\lambda_A$; se ajustan en una fase previa de calibraci\'on offline mediante el algoritmo L-BFGS-B \cite{byrd1995limited}, una variante cuasi-Newtoniana de memoria limitada que permite restricciones de caja. La elecci\'on de L-BFGS-B se justifica por tres razones: Primero, el espacio de hiperpar\'ametros es de baja dimensi\'on, es decir, menos de diez par\'ametros, por lo que el Hessiano aproximado por diferencias finitas es manejable computacionalmente. Segundo, par\'ametros como $\tau > 0$ o $h \geq 0$ requieren cotas inferiores que el algoritmo respeta expl\'icitamente. Tercero, al aproximar la matriz Hessiana mediante BFGS con memoria limitada, el m\'etodo exhibe convergencia superlineal en el entorno de los \'optimos locales sin requerir el c\'alculo expl\'icito de segundas derivadas.
 
-\subsubsection{Calibraci\'on de hiperpar\'ametros del sistema de rating: L-BFGS-B}
-
-Los par\'ametros estructurales del Glicko-2 modificado,la ventaja de local\'ia $h$, el t\'ermino de calibraci\'on del empate $d$, la constante de difusi\'on temporal $\tau$ y los par\'ametros del modelo LightGBM que estima las tasas $\lambda_H$ y $\lambda_A$, se ajustan en una fase previa de calibraci\'on offline. Para ello se utiliza el algoritmo L-BFGS-B \cite{casella2002}, una variante cuasi-Newton de memoria limitada que permite restricciones de caja (\emph{box constraints}).
-
-La elecci\'on de L-BFGS-B se justifica por tres razones:
-\begin{enumerate}
-	\item[(i)] \emph{Dimensionalidad moderada:} el espacio de hiperpar\'ametros es de baja dimensi\'on (menos de diez par\'ametros), por lo que el Hessiano aproximado por diferencias finitas es manejable computacionalmente.
-	\item[(ii)] \emph{Restricciones naturales:} par\'ametros como $\tau>0$ o $h\geq 0$ requieren cotas inferiores que el algoritmo respeta expl\'icitamente.
-	\item[(iii)] \emph{Convergencia robusta:} al aproximar la matriz Hessiana mediante el m\'etodo de Broyden-Fletcher-Goldfarb-Shanno (BFGS) con memoria limitada, el algoritmo exhibe convergencia superlineal en entorno de los \'optimos locales sin requerir el c\'alculo expl\'icito de segundas derivadas.
-\end{enumerate}
-
-\subsubsection{Entrenamiento del perceptr\'on multicapa: Adam}
-
-Los pesos y sesgos $\boldsymbol{\theta}$ de la MLP se entrenan mediante el algoritmo Adam \cite{cover2006}, un m\'etodo de descenso de gradiente estoc\'astico con tasas de aprendizaje adaptativas por par\'ametro.
-
-Adam mantiene estimaciones del primer momento (media) y segundo momento no centrado (varianza) del gradiente, denotados $\mathbf{m}_t$ y $\mathbf{v}_t$ respectivamente, actualizados en cada iteraci\'on $t$ como
+Por otra parte los pesos y sesgos del MLP, en cambio, se entrenan mediante el algoritmo Adam, un m\'etodo de descenso de gradiente estoc\'astico con tasas de aprendizaje adaptativas por par\'ametro. Adam mantiene estimaciones del primer y segundo momento del gradiente, denotados $\mathbf{m}_t$ y $\mathbf{v}_t$, actualizados en cada iteraci\'on $t$ como
 \begin{align}
-	\mathbf{m}_t &= \beta_1\mathbf{m}_{t-1} + (1-\beta_1)\mathbf{g}_t,\\
+	\mathbf{m}_t &= \beta_1\mathbf{m}_{t-1} + (1-\beta_1)\mathbf{g}_t, \\
 	\mathbf{v}_t &= \beta_2\mathbf{v}_{t-1} + (1-\beta_2)\mathbf{g}_t^2,
 \end{align}
-donde $\mathbf{g}_t$ es el gradiente estoc\'astico de la log-loss respecto a $\boldsymbol{\theta}$ en la iteraci\'on $t$, y $\beta_1,\beta_2 \in [0,1)$ son hiperpar\'ametros de decaimiento exponencial. Las estimaciones corregidas por sesgo son
+donde $\mathbf{g}_t$ es el gradiente estoc\'astico de la log-loss respecto a $\boldsymbol{\theta}$ en la iteraci\'on $t$ y $\beta_1,\beta_2 \in [0,1)$ son hiperpar\'ametros de decaimiento exponencial. Las estimaciones corregidas por sesgo son
 \begin{equation}
 	\hat{\mathbf{m}}_t = \frac{\mathbf{m}_t}{1-\beta_1^t}, \qquad \hat{\mathbf{v}}_t = \frac{\mathbf{v}_t}{1-\beta_2^t},
 \end{equation}
-y la regla de actualizaci\'on de los par\'ametros es
+y la regla de actualizaci\'on es
 \begin{equation}
 	\boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t - \eta\,\frac{\hat{\mathbf{m}}_t}{\sqrt{\hat{\mathbf{v}}_t}+\varepsilon},
 \end{equation}
-con $\eta$ la tasa de aprendizaje global y $\varepsilon>0$ una constante de estabilidad num\'erica.
+con $\eta$ la tasa de aprendizaje global y $\varepsilon > 0$ una constante de estabilidad num\'erica.
 
-La separaci\'on entre L-BFGS-B y Adam refleja la distinta naturaleza de los dos problemas de optimizaci\'on: el primero es un problema de calibraci\'on de mediana escala con restricciones, mientras que el segundo es un problema de alta dimensionalidad (potencialmente miles de pesos) sobre una superficie de p\'erdida no convexa, donde el c\'alculo exacto del Hessiano es prohibitivo y el descenso estoc\'astico por mini-lotes resulta computacionalmente eficiente.
-
-\begin{obs}
-	La ventaja de local\'ia $h$, una vez calibrada mediante L-BFGS-B en la fase de entrenamiento del sistema de rating, se mantiene fija durante el entrenamiento de la MLP. Esto garantiza que la se\~nal del Glicko-2 modificado sea estable mientras la red neuronal aprende a corregir las desviaciones sistem\'aticas no capturadas por el rating ni por el modelo de conteo.
-\end{obs}
+La separaci\'on entre L-BFGS-B y Adam refleja la distinta naturaleza de los dos problemas. El primero es una calibraci\'on de mediana escala con restricciones, mientras que el segundo es un problema de alta dimensionalidad (potencialmente miles de pesos) sobre una superficie de p\'erdida no convexa, donde el c\'alculo exacto del Hessiano es prohibitivo y el descenso estoc\'astico por mini-lotes resulta computacionalmente eficiente. Una vez calibrada la ventaja de local\'ia $h$ mediante L-BFGS-B, se mantiene fija durante el entrenamiento del MLP, garantizando que la se\~nal del Glicko-2 modificado permanezca estable mientras la red aprende a corregir las desviaciones sistem\'aticas no capturadas por el rating ni por el modelo de conteo.
 
 % ============================================================
 % SECCION 2.5 -- Modelo predictivo complementario (MLP)
@@ -1091,142 +677,79 @@ La separaci\'on entre L-BFGS-B y Adam refleja la distinta naturaleza de los dos 
 \section{Modelo predictivo complementario (MLP)}
 \label{sec:mlp}
 
-El sistema de rating Glicko-2 modificado, junto con el modelo de conteo de goles y la integraci\'on de covariables ex\'ogenas descritas en las secciones anteriores, proporciona un vector de probabilidades base $(P_H, P_D, P_A)$ que respeta la estructura probabil\'istica del enfrentamiento. No obstante, la relaci\'on entre las covariables deportivas, econ\'omicas y ambientales y el resultado final no es, en general, una funci\'on lineal ni aditiva. La hip\'otesis central de esta secci\'on es que existen interacciones no lineales y efectos de orden superior entre las covariables que no son capturables mediante una correcci\'on param\'etrica simple sobre las tasas de goles.
+El sistema de rating Glicko-2 modificado, junto con el modelo de conteo y la integraci\'on de covariables descritos en las secciones anteriores, proporciona un vector de probabilidades base $(P_H, P_D, P_A)$ que respeta la estructura probabil\'istica del enfrentamiento. No obstante, la relaci\'on entre las covariables y el resultado final no es, en general, lineal ni aditiva. La hip\'otesis central de esta secci\'on es que existen interacciones no lineales y efectos de orden superior entre las covariables que no son capturables mediante una correcci\'on param\'etrica simple sobre las tasas de goles.
 
-En consecuencia, se introduce un perceptr\'on multicapa (MLP, \emph{Multilayer Perceptron}) como refinador no param\'etrico del vector de probabilidades base. La red opera sobre el vector concatenado $\mathbf{z}_{ij}$ definido en \eqref{eq:input_mlp} y produce una distribuci\'on de probabilidad refinada $(\tilde{P}_H, \tilde{P}_D, \tilde{P}_A)$ que mantiene la coherencia probabil\'istica (no negatividad y suma unitaria) pero corrige las desviaciones sistem\'aticas no explicadas por el bloque param\'etrico previo.
+En consecuencia, se introduce un perceptr\'on multicapa (MLP, \emph{Multilayer Perceptron}) como refinador no param\'etrico del vector de probabilidades base. La red opera sobre el vector concatenado $\mathbf{z}_{ij}$ definido en \eqref{eq:input_mlp} y produce una distribuci\'on de probabilidad refinada que mantiene la coherencia probabil\'istica pero corrige las desviaciones sistem\'aticas no explicadas por el bloque param\'etrico previo.
 
-\subsection{De las probabilidades base al refinamiento no param\'etrico}
-\label{subsec:mlp_justificacion}
 
-Desde el punto de vista del an\'alisis de aproximaci\'on, la elecci\'on de una red feedforward se fundamenta en el Teorema de Aproximaci\'on Universal \cite{Cybenko1989} \cite{Hornik1989}. Este resultado cl\'asico de la teor\'ia de aproximaci\'on establece que una red neuronal feedforward con al menos una capa oculta con activaci\'on no lineal y un n\'umero suficiente de neuronas puede aproximar funciones continuas definidas sobre compactos de $\mathbb{R}^n$ con precisi\'on arbitraria. En el contexto del presente trabajo, si la funci\'on de correcci\'on \'optima
-\[
-C: \mathbb{R}^{3+p} \longrightarrow \mathbb{R}^3,
-\qquad
-\mathbf{z}_{ij} \longmapsto (\tilde{P}_{H,ij}, \tilde{P}_{D,ij}, \tilde{P}_{A,ij}),
-\]
-que mapea el vector de probabilidades base m\'as covariables ex\'ogenas hacia las probabilidades refinadas verdaderas, es continua, lo cual es razonable dado que peque\~nas perturbaciones en las covariables no deber\'ian producir saltos discontinuos en la predicci\'on, entonces existe una arquitectura MLP capaz de aproximar $C$ con error uniforme tan peque\~no como se desee.
 
-Esta propiedad justifica el uso del MLP no como una caja negra ad-hoc, sino como un aproximador funcional leg\'itimo dentro del marco de inferencia estad\'istica del trabajo: la red aprende la correcci\'on no lineal que el modelo param\'etrico (Glicko-2 + Skellam) no puede capturar por construcci\'on.
-
-\subsection{Arquitectura del perceptr\'on multicapa}
+\subsection{Formalizaci\'on de la red}
 \label{subsec:mlp_arquitectura}
 
-Sea $L$ el n\'umero total de capas de la red, indexadas por $\ell = 1, \dots, L$, donde $\ell = 1$ corresponde a la capa de entrada y $\ell = L$ a la capa de salida. Denotemos por $n_\ell$ el n\'umero de neuronas de la capa $\ell$. El vector de activaciones de la capa $\ell$ se denota $\mathbf{a}^{(\ell)} \in \mathbb{R}^{n_\ell}$, con $\mathbf{a}^{(0)} \equiv \mathbf{z}_{ij} \in \mathbb{R}^{3+p}$.
+Sea $L$ el n\'umero total de capas de la red, indexadas por $\ell = 1, \dots, L$, donde $\ell = 1$ corresponde a la capa de entrada y $\ell = L$ a la capa de salida. Denotemos por $n_\ell$ el n\'umero de neuronas de la capa $\ell$, y sea $\mathbf{a}^{(\ell)} \in \mathbb{R}^{n_\ell}$ el vector de activaciones de dicha capa, con $\mathbf{a}^{(0)} \equiv \mathbf{z}_{ij} \in \mathbb{R}^{3+p}$.
 
 \begin{definition}[Capa densa af\'in]
 	La pre-activaci\'on de la capa $\ell$ se define como la transformaci\'on af\'in
 	\begin{equation}\label{eq:mlp_preact}
 		\mathbf{z}^{(\ell)} = \boldsymbol{W}^{(\ell)} \mathbf{a}^{(\ell-1)} + \mathbf{b}^{(\ell)},
 	\end{equation}
-	donde $\boldsymbol{W}^{(\ell)} \in \mathbb{R}^{n_\ell \times n_{\ell-1}}$ es la matriz de pesos sin\'apticos y $\mathbf{b}^{(\ell)} \in \mathbb{R}^{n_\ell}$ es el vector de sesgos de la capa $\ell$.
+	donde $\boldsymbol{W}^{(\ell)} \in \mathbb{R}^{n_\ell \times n_{\ell-1}}$ es la matriz de pesos y $\mathbf{b}^{(\ell)} \in \mathbb{R}^{n_\ell}$ es el vector de sesgos.
 \end{definition}
 
-La activaci\'on de la capa oculta $\ell$ se obtiene aplicando una funci\'on no lineal $\sigma: \mathbb{R} \to \mathbb{R}$ coordenada a coordenada:
-\begin{equation}\label{eq:mlp_activation}
-	\mathbf{a}^{(\ell)} = \sigma\bigl(\mathbf{z}^{(\ell)}\bigr),
-	\qquad
-	a_j^{(\ell)} = \sigma\bigl(z_j^{(\ell)}\bigr), \quad j = 1, \dots, n_\ell.
+La activaci\'on de cada capa oculta se obtiene aplicando una funci\'on no lineal $\sigma: \mathbb{R} \to \mathbb{R}$ coordenada a coordenada, $\mathbf{a}^{(\ell)} = \sigma(\mathbf{z}^{(\ell)})$. En este trabajo, $\sigma$ es la unidad lineal rectificada, $\sigma_{\mathrm{ReLU}}(x) = \max\{0, x\}$. La elecci\'on es t\'ecnica: ReLU mitiga el problema del gradiente desvanecido y permite que la red aproxime funciones con quiebres sin suavizarlos.
+
+La red completa es entonces una composici\'on de funciones afines y no lineales:
+\begin{equation}\label{eq:mlp_composicion}
+	f_{\boldsymbol{\theta}} = f^{(L)} \circ \sigma \circ f^{(L-1)} \circ \cdots \circ \sigma \circ f^{(1)},
 \end{equation}
+donde $f^{(\ell)}(\mathbf{a}) = \boldsymbol{W}^{(\ell)} \mathbf{a} + \mathbf{b}^{(\ell)}$ y $\boldsymbol{\theta} = \{\boldsymbol{W}^{(\ell)}, \mathbf{b}^{(\ell)}\}_{\ell=1}^{L}$ agrupa todos los par\'ametros. La red es, por tanto, una funci\'on $f_{\boldsymbol{\theta}}: \mathbb{R}^{3+p} \to \mathbb{R}^3$ diferenciable casi en todas partes, donde las no derivabilidades provienen \'unicamente del punto $x=0$ en ReLU.
 
-En la implementaci\'on del presente trabajo, la funci\'on de activaci\'on de las capas ocultas es la unidad lineal rectificada (ReLU), definida por
-\begin{equation}\label{eq:relu}
-	\sigma_{\mathrm{ReLU}}(x) = \max\{0, x\}.
-\end{equation}
-La elecci\'on de ReLU se justifica porque mitiga el problema del gradiente desvaneciente en capas profundas respecto a activaciones sigmoidales, al proporcionar una derivada constante (1) para valores positivos, lo que acelera la convergencia del entrenamiento.
-
-Para regularizar el modelo y prevenir el sobreajuste, entre las capas ocultas se inserta una capa de \emph{dropout}, que durante el entrenamiento desactiva aleatoriamente una fracci\'on $p_{\mathrm{drop}}$ de las neuronas, forzando a la red a aprender representaciones redundantes y robustas. La arquitectura espec\'ifica implementada es la siguiente:
-
-\paragraph*{Capa de entrada.} Recibe el vector $\mathbf{z}_{ij} \in \mathbb{R}^{3+p}$ definido en \eqref{eq:input_mlp}, que concatena las tres probabilidades base $(P_H, P_D, P_A)$ con el vector de covariables ex\'ogenas $\mathbf{x}_{ij} \in \mathbb{R}^p$ previamente estandarizadas (media cero, varianza unitaria) mediante un escalador est\'andar sobre el conjunto de entrenamiento.
-
-\paragraph*{Primera capa oculta.} Densa con $n_1 = 64$ neuronas, activaci\'on ReLU \eqref{eq:relu}, seguida de dropout con tasa $p_{\mathrm{drop}} = 0{,}3$.
-
-\paragraph*{Segunda capa oculta.} Densa con $n_2 = 64$ neuronas, activaci\'on ReLU, seguida de dropout con tasa $p_{\mathrm{drop}} = 0{,}3$.
-
-\paragraph*{Capa de salida.} Densa con $n_L = 3$ neuronas (una por clase de resultado: $H$, $D$, $A$), sin activaci\'on no lineal intermedia. La salida cruda $\mathbf{z}^{(L)} \in \mathbb{R}^3$ se transforma mediante la funci\'on \emph{softmax} para garantizar que el output constituya una distribuci\'on de probabilidad v\'alida.
+La capa de salida se transforma mediante la funci\'on softmax para garantizar que la salida viva en el simplex de probabilidad.
 
 \begin{definition}[Capa softmax]
 	Sea $\mathbf{z}^{(L)} = (z_1, z_2, z_3)^\top$ el vector de pre-activaciones de la capa de salida. La funci\'on softmax $\mathcal{S}: \mathbb{R}^3 \to \Delta^2$ se define como
 	\begin{equation}\label{eq:softmax}
-		\mathcal{S}(\mathbf{z}^{(L)})_j = \frac{\exp(z_j)}{\sum_{k=1}^{3} \exp(z_k)},
-		\qquad j = 1, 2, 3,
+		\mathcal{S}(\mathbf{z}^{(L)})_j = \frac{\exp(z_j)}{\sum_{k=1}^{3} \exp(z_k)}, \qquad j = 1, 2, 3,
 	\end{equation}
 	donde $\Delta^2 = \{(p_1,p_2,p_3) \in \mathbb{R}^3 : p_j \geq 0,\; \sum_j p_j = 1\}$ es el simplex de probabilidad de dimensi\'on 2.
 \end{definition}
 
-La salida refinada del modelo se denota
-\begin{equation}\label{eq:mlp_output}
-	\tilde{\mathbf{P}}_{ij} = \bigl(\tilde{P}_{H,ij}, \tilde{P}_{D,ij}, \tilde{P}_{A,ij}\bigr)^\top
-	= \mathcal{S}\bigl(\mathbf{z}^{(L)}\bigr).
-\end{equation}
+La salida refinada del modelo se denota $\tilde{\mathbf{P}}_{ij} = \mathcal{S}(f_{\boldsymbol{\theta}}(\mathbf{z}_{ij}))$.
 
 \begin{prop}[Coherencia probabil\'istica de la salida]
-	El vector $\tilde{\mathbf{P}}_{ij}$ definido por \eqref{eq:mlp_output} satisface $\tilde{P}_{c,ij} \geq 0$ para todo $c \in \{H,D,A\}$ y $\tilde{P}_{H,ij} + \tilde{P}_{D,ij} + \tilde{P}_{A,ij} = 1$.
+	Para todo $\mathbf{z}^{(L)} \in \mathbb{R}^3$, el vector $\mathcal{S}(\mathbf{z}^{(L)})$ satisface $\mathcal{S}(\mathbf{z}^{(L)})_j \geq 0$ para $j = 1, 2, 3$ y $\sum_{j=1}^{3} \mathcal{S}(\mathbf{z}^{(L)})_j = 1$.
 \end{prop}
+
 \begin{proof}
-	La no negatividad es inmediata de \eqref{eq:softmax} pues la exponencial es estrictamente positiva. Para la suma unitaria:
+	La no negatividad es inmediata de \eqref{eq:softmax}, pues la exponencial es estrictamente positiva. Para la suma unitaria,
 	\[
 	\sum_{j=1}^{3} \mathcal{S}(\mathbf{z}^{(L)})_j
-	= \sum_{j=1}^{3} \frac{\exp(z_j)}{\sum_{k=1}^{3} \exp(z_k)}
 	= \frac{\sum_{j=1}^{3} \exp(z_j)}{\sum_{k=1}^{3} \exp(z_k)} = 1. \qedhere
 	\]
 \end{proof}
 
-\begin{obs}
-	La arquitectura descrita constituye una red \emph{feedforward} densa: la informaci\'on fluye \'unicamente en direcci\'on entrada-salida, sin ciclos ni conexiones laterales. Esta simplicidad estructural es deliberada: dado que el vector de entrada $\mathbf{z}_{ij}$ ya condensa informaci\'on temporal mediante los promedios m\'oviles \textit{rolling} y el estado del Glicko-2, no es necesario modelar dependencias secuenciales expl\'icitas dentro de la red de refinamiento.
-\end{obs}
+La proposici\'on anterior garantiza que la salida refinada del modelo es siempre una distribuci\'on de probabilidad v\'alida sobre $\{H,D,A\}$, cualquiera sea el valor de los par\'ametros $\boldsymbol{\theta}$. Esta propiedad estructural es la que permite entrenar la red minimizando la log-loss sin necesidad de imponer restricciones sobre los pesos.
 
-\subsection{Entrenamiento: retropropagaci\'on y descenso de gradiente}
+\subsection{Justificaci\'on te\'orica del refinamiento no param\'etrico}
+\label{subsec:mlp_justificacion}
+
+La elecci\'on de un MLP como refinador se fundamenta en el siguiente resultado cl\'asico del an\'alisis funcional.
+
+\begin{teo}[Aproximaci\'on Universal]\label{teo:universal}
+	Sea $K \subset \mathbb{R}^n$ un subconjunto compacto y $g: K \to \mathbb{R}^m$ una funci\'on continua. Entonces, para todo $\varepsilon > 0$ existe una red neuronal feedforward con una capa oculta y activaci\'on no lineal tal que
+	\[
+	\sup_{\mathbf{x} \in K} \| g(\mathbf{x}) - f_{\boldsymbol{\theta}}(\mathbf{x}) \| < \varepsilon.
+	\]
+\end{teo}
+
+El resultado fue establecido por Cybenko \cite{Cybenko1989} para activaciones sigmoidales y generalizado por Hornik \cite{Hornik1989}. En el contexto del presente trabajo, se aplica del siguiente modo. Sea $C: \mathbb{R}^{3+p} \to \Delta^2$ la funci\'on de correcci\'on \'optima que mapea el vector de probabilidades base m\'as covariables hacia las probabilidades refinadas verdaderas. Si $C$ es continua sobre un compacto que contenga el rango operativo de $\mathbf{z}_{ij}$, lo cual es razonable suponiendo que peque\~nas perturbaciones en las covariables no producen saltos discontinuos en la predicci\'on, entonces existe una arquitectura MLP capaz de aproximar $C$ con error uniforme tan peque\~no como se desee.
+
+Esta propiedad justifica el uso del MLP no como una caja negra ad-hoc, sino como un aproximador funcional leg\'itimo dentro del marco de inferencia estad\'istica del trabajo. La red aprende la correcci\'on no lineal que el modelo param\'etrico (Glicko-2 + Skellam) no puede capturar por construcci\'on.
+
+\subsection{Entrenamiento y funci\'on de p\'erdida}
 \label{subsec:mlp_entrenamiento}
 
-El entrenamiento del MLP consiste en ajustar los par\'ametros $\boldsymbol{\theta} = \{\boldsymbol{W}^{(\ell)}, \mathbf{b}^{(\ell)}\}_{\ell=1}^{L}$ para minimizar una funci\'on de p\'erdida sobre el conjunto de entrenamiento. Desde el punto de vista matem\'atico, la red es una composici\'on de funciones diferenciables
-\[
-\tilde{\mathbf{P}}_{ij} = \bigl(\mathcal{S} \circ f^{(L)} \circ \sigma \circ f^{(L-1)} \circ \cdots \circ \sigma \circ f^{(1)}\bigr)(\mathbf{z}_{ij}),
-\]
-donde $f^{(\ell)}(\mathbf{a}) = \boldsymbol{W}^{(\ell)}\mathbf{a} + \mathbf{b}^{(\ell)}$ es la transformaci\'on af\'in de la capa $\ell$. La diferenciabilidad de cada componente permite el c\'alculo sistem\'atico del gradiente de la p\'erdida respecto a todos los pesos mediante la \emph{regla de la cadena}.
-
-\paragraph{Retropropagaci\'on para una capa densa.} Sea $\mathcal{L}$ la funci\'on de p\'erdida (definida en la siguiente subsecci\'on). Para una capa oculta $\ell$, definimos el vector de errores localizados $\boldsymbol{\delta}^{(\ell)} \in \mathbb{R}^{n_\ell}$ como la derivada de la p\'erdida respecto a la pre-activaci\'on:
-\begin{equation}\label{eq:backprop_delta}
-	\delta_j^{(\ell)} = \frac{\partial \mathcal{L}}{\partial z_j^{(\ell)}}.
-\end{equation}
-Aplicando la regla de la cadena a la composici\'on \eqref{eq:mlp_preact}--\eqref{eq:mlp_activation}, los gradientes de los par\'ametros de la capa $\ell$ son
-\begin{align}
-	\frac{\partial \mathcal{L}}{\partial w_{jk}^{(\ell)}} &= \delta_j^{(\ell)} \cdot a_k^{(\ell-1)}, \label{eq:grad_W}\\
-	\frac{\partial \mathcal{L}}{\partial b_j^{(\ell)}} &= \delta_j^{(\ell)}. \label{eq:grad_b}
-\end{align}
-El vector $\boldsymbol{\delta}^{(\ell)}$ se propaga hacia la capa anterior mediante
-\begin{equation}\label{eq:backprop_recursion}
-	\boldsymbol{\delta}^{(\ell-1)} = \bigl(\boldsymbol{W}^{(\ell)\top} \boldsymbol{\delta}^{(\ell)}\bigr) \odot \sigma'\bigl(\mathbf{z}^{(\ell-1)}\bigr),
-\end{equation}
-donde $\odot$ denota el producto de Hadamard (elemento a elemento) y $\sigma'$ es la derivada de la funci\'on de activaci\'on. Para ReLU, $\sigma'(x) = \mathbb{I}(x > 0)$.
-
-Las ecuaciones \eqref{eq:grad_W}--\eqref{eq:backprop_recursion} constituyen el algoritmo de retropropagaci\'on (\emph{backpropagation}): primero se eval\'ua la red hacia adelante (\emph{forward pass}) para obtener todas las activaciones, y luego se propagan los errores $\boldsymbol{\delta}^{(\ell)}$ hacia atr\'as desde la capa de salida hasta la entrada, calculando los gradientes de todos los par\'ametros en el camino.
-
-\paragraph{Optimizador Adam.} Los pesos se actualizan mediante el algoritmo Adam, un m\'etodo de descenso de gradiente estoc\'astico con tasas de aprendizaje adaptativas por par\'ametro. Adam mantiene estimaciones del primer momento (media) $\mathbf{m}_t$ y del segundo momento no centrado (varianza) $\mathbf{v}_t$ del gradiente estoc\'astico $\mathbf{g}_t$ en cada iteraci\'on $t$:
-\begin{align}
-	\mathbf{m}_t &= \beta_1 \mathbf{m}_{t-1} + (1-\beta_1)\mathbf{g}_t,\\
-	\mathbf{v}_t &= \beta_2 \mathbf{v}_{t-1} + (1-\beta_2)\mathbf{g}_t^2,
-\end{align}
-con $\beta_1, \beta_2 \in [0,1)$ hiperpar\'ametros de decaimiento exponencial. Las estimaciones corregidas por sesgo son
-\begin{equation}
-	\hat{\mathbf{m}}_t = \frac{\mathbf{m}_t}{1-\beta_1^t},
-	\qquad
-	\hat{\mathbf{v}}_t = \frac{\mathbf{v}_t}{1-\beta_2^t},
-\end{equation}
-y la regla de actualizaci\'on de los par\'ametros resulta
-\begin{equation}\label{eq:adam_update}
-	\boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t - \eta \frac{\hat{\mathbf{m}}_t}{\sqrt{\hat{\mathbf{v}}_t} + \varepsilon},
-\end{equation}
-donde $\eta > 0$ es la tasa de aprendizaje global y $\varepsilon > 0$ es una constante de estabilidad num\'erica que evita la divisi\'on por cero.
-
-En el contexto del MLP, Adam resulta particularmente efectivo porque las magnitudes de los gradientes pueden variar dr\'asticamente entre las capas iniciales (cercanas al input de alta dimensionalidad) y las capas finales (cercanas al output de dimensi\'on 3). La adaptaci\'on por momento de segundo momento normaliza estas escalas autom\'aticamente, acelerando la convergencia.
-
-Adicionalmente, se emplea un planificador de la tasa de aprendizaje adaptativo que reduce la tasa de aprendizaje $\eta$ por un factor de $0{.}5$ cuando la p\'erdida de validaci\'on no decrece durante 3 \'epocas consecutivas (\emph{ReduceLROnPlateau}). Este mecanismo permite refinamientos finos de los pesos una vez que el entrenamiento alcanza una entorno de convergencia cercano al m\'inimo de la funci\'on de p\'erdida.
-
-\subsection{Funci\'on de p\'erdida y coherencia probabil\'istica}
-\label{subsec:mlp_perdida}
-
-La funci\'on objetivo que gu\'ia el entrenamiento del MLP es la \emph{log-loss} categ\'orica, tambi\'en denominada entrop\'ia cruzada entre la distribuci\'on emp\'irica (codificada como one-hot) y la distribuci\'on predicha por la red.
-
+El entrenamiento del MLP consiste en estimar los par\'ametros $\boldsymbol{\theta}$ que mejor explican los resultados observados. Como se estableci\'o en la Secci\'on~\ref{subsec:logloss}, la funci\'on objetivo es la \emph{log-loss} categ\'orica, definida como sigue,
 \begin{definition}[Log-loss categ\'orica]
 	Sea $\mathbf{y}_i \in \{0,1\}^3$ el vector indicador one-hot del resultado observado del partido $i$, donde $y_{i,c} = 1$ si el resultado es $c \in \{H,D,A\}$ y $0$ en caso contrario. Sea $\tilde{\mathbf{P}}_i = (\tilde{P}_{H,i}, \tilde{P}_{D,i}, \tilde{P}_{A,i})^\top$ la salida softmax del modelo para dicho partido. La log-loss categ\'orica sobre una muestra de $N$ partidos es
 	\begin{equation}\label{eq:mlp_logloss}
@@ -1234,175 +757,138 @@ La funci\'on objetivo que gu\'ia el entrenamiento del MLP es la \emph{log-loss} 
 	\end{equation}
 \end{definition}
 
-\begin{obs}
-	La expresi\'on \eqref{eq:mlp_logloss} coincide, salvo una constante de escala $-1/N$, con la log-verosimilitud del modelo multinomial definida en \eqref{eq:log_verosimilitud}. En consecuencia, minimizar la log-loss durante el entrenamiento del MLP es estad\'isticamente equivalente a maximizar la verosimilitud del modelo, como se demostr\'o formalmente en la Proposici\'on~\ref{prop:equivalencia}. Esta conexi\'on es fundamental: aunque el MLP es un aproximador no param\'etrico, su criterio de optimizaci\'on permanece anclado en el principio de inferencia por m\'axima verosimilitud.
-\end{obs}
+Por la Proposici\'on~\ref{prop:equivalencia}, minimizar \eqref{eq:mlp_logloss} respecto a $\boldsymbol{\theta}$ es equivalente a maximizar la log-verosimilitud del modelo multinomial. En consecuencia, el estimador $\hat{\boldsymbol{\theta}}$ que se obtiene al entrenar la red coincide con el estimador de m\'axima verosimilitud del modelo completo. Este hecho vincula la arquitectura neuronal con el principio de inferencia estad\'istica cl\'asica y evita que el MLP funcione como un cuerpo extra\~no dentro del trabajo.
 
-La combinaci\'on de la capa softmax \eqref{eq:softmax} con la log-loss \eqref{eq:mlp_logloss} posee una propiedad estructural deseable: el gradiente de la p\'erdida respecto a la pre-activaci\'on de salida $z_c^{(L)}$ adopta una forma particularmente simple:
-\[
-\frac{\partial \mathcal{L}_{\mathrm{log}}}{\partial z_c^{(L)}} = \tilde{P}_{c} - y_c,
-\]
-es decir, el error propagado hacia atr\'as desde la \'ultima capa es simplemente la diferencia entre la probabilidad predicha y la etiqueta verdadera. Esta forma elegante del gradiente facilita el aprendizaje, pues la magnitud de la correcci\'on es directamente proporcional al error de predicci\'on.
+La estimaci\'on num\'erica de $\hat{\boldsymbol{\theta}}$ se realiza por descenso de gradiente estoc\'astico con el optimizador Adam, descrito en la Secci\'on~\ref{subsec:optimizacion}. La diferenciabilidad de la composici\'on \eqref{eq:mlp_composicion} permite calcular el gradiente de $\mathcal{L}_{\mathrm{log}}$ respecto a cada par\'ametro mediante la regla de la cadena, procedimiento conocido como retropropagaci\'on (\emph{backpropagation}).
 
-\begin{obs}[Estandarizaci\'on de covariables]
-	Las componentes del vector de covariables ex\'ogenas $\mathbf{x}_{ij}$ poseen escalas heterog\'eneas (por ejemplo, el valor de mercado se mide en millones de euros mientras que la diferencia de temperatura se mide en grados Celsius). Para evitar que las magnitudes de los pesos asociados a cada variable est\'en dominadas por su escala natural, las covariables se estandarizan previo al entrenamiento: se resta la media muestral y se divide por la desviaci\'on est\'andar muestral, obteniendo variables de media nula y varianza unitaria. Las probabilidades base $(P_H, P_D, P_A)$ no se estandarizan, pues ya son adimensionales y comparten el rango $[0,1]$.
-\end{obs}
-
-% ============================================================
-% SECCION 2.6 -- Metricas de evaluacion
-% ============================================================
+Una propiedad estructural del par softmax + log-loss merece destacarse. El gradiente de la p\'erdida respecto a la pre-activaci\'on de la capa de salida adopta la forma
+\begin{equation}\label{eq:gradiente_salida}
+	\frac{\partial \mathcal{L}_{\mathrm{log}}}{\partial z_c^{(L)}} = \tilde{P}_c - y_c,
+\end{equation}
+es decir, el error propagado hacia atr\'as desde la \'ultima capa es simplemente la diferencia entre la probabilidad predicha y la etiqueta verdadera. Esta simplicidad del gradiente es la raz\'on principal por la cual la combinaci\'on softmax + log-loss es el est\'andar de facto en problemas de clasificaci\'on probabil\'istica: la magnitud de la correcci\'on aplicada a cada par\'ametro es directamente proporcional al error de predicci\'on.
 
 \section{M\'etricas de evaluaci\'on}
 \label{sec:metricas}
 
-Este cap\'itulo cierra el marco te\'orico dotando de fundamento matem\'atico a la forma en que se mide el desempe\~no del sistema predictivo. Se mantiene la notaci\'on de las secciones anteriores: $\tilde{\mathbf{P}}_i=(\tilde{P}_{H,i},\tilde{P}_{D,i},\tilde{P}_{A,i})^\top$ denota el vector de probabilidades refinadas para el partido $i$, e $\mathbf{y}_i\in\{0,1\}^3$ es su etiqueta \emph{one-hot}. La presente secci\'on est\'a construida sobre los resultados experimentales de los cuatro m\'odulos del sistema: el modelo de conteo Skellam/LGBM, el sistema de rating Glicko-2 modificado, el perceptr\'on multicapa (MLP).
+Esta secci\'on cierra el marco te\'orico dotando de fundamento matem\'atico a la forma en que se mide el desempe\~no del sistema predictivo. Se mantiene la notaci\'on de las secciones anteriores: $\tilde{\mathbf{P}}_i = (\tilde{P}_{H,i}, \tilde{P}_{D,i}, \tilde{P}_{A,i})^\top$ denota el vector de probabilidades refinadas para el partido $i$, e $\mathbf{y}_i \in \{0,1\}^3$ es su etiqueta \emph{one-hot}. La evaluaci\'on distingue entre calibraci\'on probabil\'istica y clasificaci\'on dura. La primera se apoya en la propiedad de \emph{regla de puntuaci\'on estrictamente propia} de la log-loss, que garantiza que el modelo est\'a incentivado a reportar la probabilidad verdadera de cada resultado. Ambas dimensiones se formalizan a continuaci\'on.
 
-\subsection{La log-loss explicada matem\'aticamente: verosimilitud negativa y entrop\'ia cruzada}
+\subsection{M\'etricas probabil\'isticas}
 \label{subsec:logloss_metricas}
 
-Como se demostr\'o en la Proposici\'on \ref{prop:equivalencia}, minimizar la funci\'on de p\'erdida del modelo equivale a maximizar la log-verosimilitud del modelo multinomial. Desde la teor\'ia de la informaci\'on, esa misma funci\'on recibe una interpretaci\'on adicional que resulta fundamental para comprender qu\'e se est\'a optimizando.
+Como se demostr\'o en la Proposici\'on~\ref{prop:equivalencia}, minimizar la funci\'on de p\'erdida del modelo equivale a maximizar la log-verosimilitud del modelo multinomial. Desde la teor\'ia de la informaci\'on, esa misma funci\'on admite una interpretaci\'on adicional que resulta fundamental para comprender qu\'e se est\'a optimizando.
 
 \begin{definition}[Entrop\'ia cruzada]
-	Sean $\mathbf{p},\mathbf{q}\in\Delta^2$ dos distribuciones de probabilidad sobre el espacio muestral $\{H,D,A\}$. La \emph{entrop\'ia cruzada} de $\mathbf{q}$ respecto a $\mathbf{p}$ se define como
+	Sean $\mathbf{p}, \mathbf{q} \in \Delta^2$ dos distribuciones de probabilidad sobre $\{H,D,A\}$. La \emph{entrop\'ia cruzada} de $\mathbf{q}$ respecto a $\mathbf{p}$ se define como
 	\begin{equation}\label{eq:entropia_cruzada}
-		H(\mathbf{p},\mathbf{q}) = -\sum_{c\in\{H,D,A\}} p_c\,\log q_c.
+		H(\mathbf{p}, \mathbf{q}) = -\sum_{c\in\{H,D,A\}} p_c \log q_c.
 	\end{equation}
 \end{definition}
 
-Si $\mathbf{p}$ es la distribuci\'on emp\'irica (la etiqueta one-hot $\mathbf{y}_i$) y $\mathbf{q}$ es la distribuci\'on predicha $\tilde{\mathbf{P}}_i$, la entrop\'ia cruzada $H(\mathbf{y}_i,\tilde{\mathbf{P}}_i)$ coincide exactamente con el t\'ermino de la sumatoria en la log-loss categ\'orica definida en \eqref{eq:mlp_logloss}. En consecuencia, la log-loss promedio no es sino la entrop\'ia cruzada promedio entre la distribuci\'on real y la predicha:
+Si $\mathbf{p}$ es la distribuci\'on emp\'irica (la etiqueta one-hot $\mathbf{y}_i$) y $\mathbf{q}$ es la distribuci\'on predicha $\tilde{\mathbf{P}}_i$, la entrop\'ia cruzada $H(\mathbf{y}_i, \tilde{\mathbf{P}}_i)$ coincide con el t\'ermino de la sumatoria en la log-loss categ\'orica \eqref{eq:mlp_logloss}. En consecuencia, la log-loss promedio es la entrop\'ia cruzada promedio entre la distribuci\'on real y la predicha:
 \begin{equation}\label{eq:logloss_entropia}
-	\mathcal{L}_{\mathrm{log}}(\boldsymbol{\theta}) = \frac{1}{N}\sum_{i=1}^{N} H(\mathbf{y}_i,\tilde{\mathbf{P}}_i).
+	\mathcal{L}_{\mathrm{log}}(\boldsymbol{\theta}) = \frac{1}{N}\sum_{i=1}^{N} H(\mathbf{y}_i, \tilde{\mathbf{P}}_i).
 \end{equation}
-
 Esta interpretaci\'on pone de relieve que el entrenamiento del MLP no busca \'unicamente acertar la clase m\'as probable, sino ajustar toda la masa de probabilidad asignada a cada resultado.
 
-\paragraph{Log-loss binaria versus categ\'orica.} Dado que el modelo predice tres clases mutuamente excluyentes, la formulaci\'on categ\'orica \eqref{eq:logloss_entropia} respeta la estructura probabil\'istica conjunta del resultado e impone la restricci\'on de suma unitaria mediante la capa \emph{softmax} \eqref{eq:softmax}. No obstante, para mantener comparabilidad directa con el trabajo base de Shelopugin y Sirotkin \cite{Glicko2Mod}, quienes reportan log-loss binaria, definida sobre la partici\'on $\{H, \neg H\}$ (victoria local \emph{versus} no victoria local):
-\begin{equation}\label{eq:logloss_binaria}
-	\mathcal{L}_{\mathrm{log}}^{\mathrm{bin}}(\boldsymbol{\theta}) = -\frac{1}{N}\sum_{i=1}^{N}\Bigl[ y_{i,H}\log \tilde{P}_{H,i} + (1-y_{i,H})\log(1-\tilde{P}_{H,i})\Bigr].
-\end{equation}
-La m\'etrica principal de evaluaci\'on probabil\'istica permanece siendo la categ\'orica \eqref{eq:logloss_entropia}; la binaria \eqref{eq:logloss_binaria} se usa como referencia cruzada entre arquitecturas.
-
-\paragraph{M\'etricas del bloque de conteo.} El m\'odulo Skellam/LGBM, que estima las tasas de goles $(\lambda_H, \lambda_A)$, se eval\'ua mediante el \emph{error absoluto medio} (MAE) sobre los goles observados, adem\'as de la log-loss de la probabilidad de empate $P_D$ derivada de la distribuci\'on de Skellam. El MAE cuantifica la calibraci\'on del predictor de conteo en la escala original de los datos, mientras que la log-loss de $P_D$ verifica la coherencia probabil\'istica del par\'ametro $s$ que alimenta al actualizador Glicko-2.
-
-\subsection{Conexi\'on con la divergencia de Kullback-Leibler y reglas de puntuaci\'on propias}
-\label{subsec:kl}
-
-La entrop\'ia cruzada admite una descomposici\'on cl\'asica que vincula la log-loss con la divergencia de Kullback-Leibler y justifica por qu\'e su minimizaci\'on conduce a predicados probabil\'isticamente coherentes.
+Para justificar formalmente por qu\'e la log-loss es la m\'etrica adecuada, se introduce la divergencia de Kullback-Leibler y el concepto de regla de puntuaci\'on propia.
 
 \begin{definition}[Divergencia de Kullback-Leibler]
-	Sean $\mathbf{p},\mathbf{q}\in\Delta^2$. La \emph{divergencia de Kullback-Leibler} (entrop\'ia relativa) de $\mathbf{q}$ respecto a $\mathbf{p}$ es
+	Sean $\mathbf{p}, \mathbf{q} \in \Delta^2$. La \emph{divergencia de Kullback-Leibler} (entrop\'ia relativa) de $\mathbf{q}$ respecto a $\mathbf{p}$ es
 	\begin{equation}\label{eq:kl}
-		D_{\mathrm{KL}}(\mathbf{p}\,\|\,\mathbf{q}) = \sum_{c\in\{H,D,A\}} p_c\,\log\frac{p_c}{q_c}.
+		D_{\mathrm{KL}}(\mathbf{p} \,\|\, \mathbf{q}) = \sum_{c\in\{H,D,A\}} p_c \log\frac{p_c}{q_c}.
 	\end{equation}
 \end{definition}
 
 \begin{prop}[Descomposici\'on de la entrop\'ia cruzada]\label{prop:descomposicion}
-	Para cualesquiera $\mathbf{p},\mathbf{q}\in\Delta^2$ se cumple
+	Para cualesquiera $\mathbf{p}, \mathbf{q} \in \Delta^2$ se cumple
 	\begin{equation}\label{eq:descomposicion}
-		H(\mathbf{p},\mathbf{q}) = H(\mathbf{p}) + D_{\mathrm{KL}}(\mathbf{p}\,\|\,\mathbf{q}),
+		H(\mathbf{p}, \mathbf{q}) = H(\mathbf{p}) + D_{\mathrm{KL}}(\mathbf{p} \,\|\, \mathbf{q}),
 	\end{equation}
-	donde $H(\mathbf{p})=-\sum_c p_c\log p_c$ es la entrop\'ia de Shannon de $\mathbf{p}$.
+	donde $H(\mathbf{p}) = -\sum_c p_c \log p_c$ es la entrop\'ia de Shannon de $\mathbf{p}$.
 \end{prop}
+
 \begin{proof}
 	Desarrollando el lado derecho de \eqref{eq:descomposicion}:
 	\[
-	H(\mathbf{p}) + D_{\mathrm{KL}}(\mathbf{p}\,\|\,\mathbf{q})
-	= -\sum_c p_c\log p_c + \sum_c p_c\log\frac{p_c}{q_c}
-	= -\sum_c p_c\log q_c
-	= H(\mathbf{p},\mathbf{q}). \qedhere
+	H(\mathbf{p}) + D_{\mathrm{KL}}(\mathbf{p} \,\|\, \mathbf{q})
+	= -\sum_c p_c \log p_c + \sum_c p_c \log\frac{p_c}{q_c}
+	= -\sum_c p_c \log q_c
+	= H(\mathbf{p}, \mathbf{q}). \qedhere
 	\]
 \end{proof}
 
-La Proposici\'on \ref{prop:descomposicion} revela que minimizar $H(\mathbf{p},\mathbf{q})$ respecto a $\mathbf{q}$ equivale a minimizar $D_{\mathrm{KL}}(\mathbf{p}\,\|\,\mathbf{q})$, pues $H(\mathbf{p})$ no depende de $\mathbf{q}$. La no-negatividad de la divergencia KL, que se sigue de la convexidad de $-\log$ y la desigualdad de Jensen \cite{cover2006}, garantiza que $H(\mathbf{p},\mathbf{q})\ge H(\mathbf{p})$, con igualdad si y s\'olo si $\mathbf{q}=\mathbf{p}$. Este hecho se formaliza mediante el concepto de \emph{scoring rule} propia.
+La Proposici\'on~\ref{prop:descomposicion} revela que minimizar $H(\mathbf{p}, \mathbf{q})$ respecto a $\mathbf{q}$ equivale a minimizar $D_{\mathrm{KL}}(\mathbf{p} \,\|\, \mathbf{q})$, pues $H(\mathbf{p})$ no depende de $\mathbf{q}$. La no negatividad de la divergencia KL, que se sigue de la convexidad de $-\log$ y la desigualdad de Jensen \cite{cover2006}, garantiza que $H(\mathbf{p}, \mathbf{q}) \geq H(\mathbf{p})$, con igualdad si y s\'olo si $\mathbf{q} = \mathbf{p}$. Este hecho se formaliza mediante el concepto de regla de puntuaci\'on propia.
 
-\begin{definition}[Scoring rule prop]
-Una \emph{scoring rule} es una funci\'on $S:\Delta^2\times\{H,D,A\}\to\mathbb{R}$ que asigna una penalizaci\'on $S(\mathbf{q},c)$ cuando se predice la distribuci\'on $\mathbf{q}$ y se observa la clase $c$. Se dice que $S{S}$ es propia si para toda distribuci\'on verdadera $\mathbf{p}$ se cumple
-\[
-\mathbb{E}_{C\sim\mathbf{p}}\bigl[S(\mathbf{p},C)\bigr] \le \mathbb{E}_{C\sim\mathbf{p}}\bigl[S(\mathbf{q},C)\bigr],\qquad\forall\,\mathbf{q}\in\Delta^2.
-\]
-Es \emph{estrictamente propia} si la desigualdad es estricta para $\mathbf{q}\neq\mathbf{p}$.
+\begin{definition}[Regla de puntuaci\'on propia]
+	Una \emph{regla de puntuaci\'on} es una funci\'on $S: \Delta^2 \times \{H,D,A\} \to \mathbb{R}$ que asigna una penalizaci\'on $S(\mathbf{q}, c)$ cuando se predice la distribuci\'on $\mathbf{q}$ y se observa la clase $c$. Se dice que $S$ es \emph{propia} si para toda distribuci\'on verdadera $\mathbf{p}$ se cumple
+	\[
+	\mathbb{E}_{C \sim \mathbf{p}}\bigl[S(\mathbf{p}, C)\bigr] \leq \mathbb{E}_{C \sim \mathbf{p}}\bigl[S(\mathbf{q}, C)\bigr], \qquad \forall\, \mathbf{q} \in \Delta^2.
+	\]
+	Es \emph{estrictamente propia} si la desigualdad es estricta para $\mathbf{q} \neq \mathbf{p}$.
 \end{definition}
 
 \begin{prop}[La log-loss es estrictamente propia]\label{prop:proper}
-La log-loss categ\'orica $S(\mathbf{q},c)=-\log q_c$ es una strictly proper scoring rule.
+	La log-loss categ\'orica $S(\mathbf{q}, c) = -\log q_c$ es una regla de puntuaci\'on estrictamente propia.
 \end{prop}
+
 \begin{proof}
-Sea $\mathbf{p}$ la distribuci\'on verdadera. El valor esperado de la penalizaci\'on bajo $\mathbf{q}$ es
-\[
-\mathbb{E}_{\mathbf{p}}[S(\mathbf{q})] = -\sum_c p_c\log q_c = H(\mathbf{p},\mathbf{q}) = H(\mathbf{p}) + D_{\mathrm{KL}}(\mathbf{p}\,\|\,\mathbf{q}).
-\]
-Como $D_{\mathrm{KL}}(\mathbf{p}\,\|\,\mathbf{q})\ge 0$ y $D_{\mathrm{KL}}(\mathbf{p}\,\|\,\mathbf{q})=0\iff\mathbf{p}=\mathbf{q}$ \cite{cover2006}, se tiene $\mathbb{E}_{\mathbf{p}}[S(\mathbf{q})]\ge\mathbb{E}_{\mathbf{p}}[S(\mathbf{p})]$, con igualdad \'unicamente cuando $\mathbf{q}=\mathbf{p}$. Por tanto, la log-loss es estrictamente propia.
+	Sea $\mathbf{p}$ la distribuci\'on verdadera. El valor esperado de la penalizaci\'on bajo $\mathbf{q}$ es
+	\[
+	\mathbb{E}_{\mathbf{p}}[S(\mathbf{q})] = -\sum_c p_c \log q_c = H(\mathbf{p}, \mathbf{q}) = H(\mathbf{p}) + D_{\mathrm{KL}}(\mathbf{p} \,\|\, \mathbf{q}).
+	\]
+	Como $D_{\mathrm{KL}}(\mathbf{p} \,\|\, \mathbf{q}) \geq 0$ y $D_{\mathrm{KL}}(\mathbf{p} \,\|\, \mathbf{q}) = 0 \iff \mathbf{p} = \mathbf{q}$ \cite{cover2006}, se tiene $\mathbb{E}_{\mathbf{p}}[S(\mathbf{q})] \geq \mathbb{E}_{\mathbf{p}}[S(\mathbf{p})]$, con igualdad \'unicamente cuando $\mathbf{q} = \mathbf{p}$. Por tanto, la log-loss es estrictamente propia.
 \end{proof}
 
-El corolario inmediato es que un modelo que minimice la log-loss est\'a incentivado a reportar la probabilidad verdadera; cualquier desviaci\'on sistem\'atica (sobreconfianza o subconfianza en alguna clase) se traduce en un incremento estricto de la p\'erdida esperada. Esta propiedad cierra el arco te\'orico que comenz\'o con la verosimilitud multinomial en la Secci\'on \ref{subsec:verosimilitud} y justifica la elecci\'on de la log-loss como funci\'on objetivo central \cite{gneiting2007}.
+En t\'erminos pr\'acticos, la propiedad de regla estrictamente propia es la que permite afirmar que el sistema no puede mejorar su desempe\~no declarando probabilidades infladas o deflactadas: la \'unica estrategia \'optima bajo log-loss es reportar la distribuci\'on verdadera. Este es el fundamento te\'orico que justifica el uso de la log-loss como m\'etrica central del trabajo \cite{gneiting2007}.
 
-\begin{obs}[Log-loss binaria como scoring rule restringida]
-La log-loss binaria \eqref{eq:logloss_binaria} es, asimismo, una strictly proper scoring rule sobre el simplex de dimensi\'on 1 (la probabilidad de victoria local). Su uso en la literatura base \cite{Glicko2Mod}.
+El corolario inmediato es que un modelo que minimice la log-loss est\'a incentivado a reportar la probabilidad verdadera: cualquier desviaci\'on sistem\'atica se traduce en un incremento estricto de la p\'erdida esperada. Esta propiedad cierra el arco te\'orico iniciado con la verosimilitud multinomial en la Secci\'on~\ref{subsec:logloss} y justifica la elecci\'on de la log-loss como funci\'on objetivo central del trabajo \cite{gneiting2007}.
 
-\end{obs}
+\paragraph*{Log-loss binaria como referencia cruzada.}
+Para mantener comparabilidad directa con el trabajo base de Shelopugin 
+y Sirotkin \cite{Glicko2Mod}, quienes reportan log-loss binaria sobre 
+la partici\'on $\{H, \neg H\}$ (victoria local \emph{versus} no 
+victoria local), se define
+\begin{equation}\label{eq:logloss_binaria}
+	\mathcal{L}_{\mathrm{log}}^{\mathrm{bin}}(\boldsymbol{\theta}) 
+	= -\frac{1}{N}\sum_{i=1}^{N}\Bigl[ y_{i,H}\log \tilde{P}_{H,i} 
+	+ (1-y_{i,H})\log(1-\tilde{P}_{H,i})\Bigr].
+\end{equation}
+Al igual que su contraparte categ\'orica, esta funci\'on es una regla 
+de puntuaci\'on estrictamente propia sobre el simplex de dimensi\'on 1, 
+por lo que su minimizaci\'on incentiva al modelo a reportar la 
+probabilidad verdadera de victoria local. La m\'etrica principal de 
+evaluaci\'on probabil\'istica del presente trabajo es la categ\'orica 
+\eqref{eq:logloss}; la binaria \eqref{eq:logloss_binaria} se usa 
+como referencia cruzada con la literatura base.
 
-\subsection{M\'etricas de clasificaci\'on}
+\subsection{M\'etricas de clasificaci\'on y el colapso del empate}
 \label{subsec:clasificacion}
 
-Las m\'etricas probabil\'isticas anteriores eval\'uan la calidad de la distribuci\'on predicha en su conjunto. Para complementar el an\'alisis, es necesario introducir una \emph{regla de decisi\'on dura} que transforme el vector de probabilidades en una etiqueta \'unica. La regla adoptada en todos los m\'odulos es la de m\'axima probabilidad a posteriori:
+Las m\'etricas probabil\'isticas anteriores eval\'uan la calidad de la distribuci\'on predicha en su conjunto. Para complementar el an\'alisis, se introduce una \emph{regla de decisi\'on dura} que transforma el vector de probabilidades en una etiqueta \'unica. La regla adoptada es la de m\'axima probabilidad a posteriori:
 \begin{equation}\label{eq:argmax}
-\hat{y}_i = \arg\max_{c\in\{H,D,A\}} \tilde{P}_{c,i}
+	\hat{y}_i = \arg\max_{c\in\{H,D,A\}} \tilde{P}_{c,i}.
 \end{equation}
 
-A partir de \eqref{eq:argmax} se construye la matriz de confusi\'on $\mathbf{M}\in\mathbb{N}^{3\times 3}$, donde $M_{rc}$ cuenta los partidos cuya clase verdadera es $r$ y cuya clase predicha es $c$. Sobre esta matriz se definen las m\'etricas por clase:
-
-\begin{definition}[M\'etricas de clasificaci\'on por clase]
-Para cada clase $c\in\{H,D,A\}$ se definen:
+A partir de \eqref{eq:argmax} se construye la matriz de confusi\'on $\mathbf{M} \in \mathbb{N}^{3\times 3}$, donde $M_{rc}$ cuenta los partidos cuya clase verdadera es $r$ y cuya clase predicha es $c$. Sobre esta matriz se definen las m\'etricas por clase:
 \begin{align}
-\text{Precision}_c &= \frac{M_{cc}}{\sum_{r} M_{rc}}, \label{eq:precision}\\
-\text{Recall}_c &= \frac{M_{cc}}{\sum_{c'} M_{cc'}}, \label{eq:recall}\\
-F1_c &= 2\cdot\frac{\text{Precision}_c\cdot\text{Recall}_c}{\text{Precision}_c+\text{Recall}_c}. \label{eq:f1}
+	\mathrm{Precision}_c &= \frac{M_{cc}}{\sum_{r} M_{rc}}, \label{eq:precision}\\
+	\mathrm{Recall}_c &= \frac{M_{cc}}{\sum_{c'} M_{cc'}}, \label{eq:recall}\\
+	F1_c &= 2 \cdot \frac{\mathrm{Precision}_c \cdot \mathrm{Recall}_c}{\mathrm{Precision}_c + \mathrm{Recall}_c}, \label{eq:f1}
 \end{align}
-\end{definition}
-
-La \emph{accuracy} global mide la fracci\'on de aciertos:
+y la accuracy global, que mide la fracci\'on de aciertos:
 \begin{equation}\label{eq:accuracy}
-\mathrm{Acc} = \frac{\sum_{c} M_{cc}}{\sum_{r,c} M_{rc}} = \frac{1}{N}\sum_{i=1}^{N} \mathbb{I}(\hat{y}_i = y_i).
+	\mathrm{Acc} = \frac{\sum_c M_{cc}}{\sum_{r,c} M_{rc}} = \frac{1}{N}\sum_{i=1}^{N} \mathbb{I}(\hat{y}_i = y_i).
 \end{equation}
 
-En la implementaci\'on computacional, las m\'etricas \eqref{eq:precision}--\eqref{eq:f1} se obtienen mediante la rutina \texttt{precision\_recall\_fscore\_support} de scikit-learn, con el par\'ametro \texttt{zero\_division=0} para garantizar estabilidad num\'erica cuando una clase no es predicha en absoluto.
+En la implementaci\'on computacional, las m\'etricas por clase \eqref{eq:precision}--\eqref{eq:f1} y la accuracy \eqref{eq:accuracy} se obtienen mediante la rutina \texttt{precision\_recall\_fscore\_support} de \texttt{scikit-learn}, con el par\'ametro \texttt{zero\_division=0} para garantizar estabilidad num\'erica cuando una clase no es predicha en absoluto. Este caso es particularmente relevante para la clase empate, cuya frecuencia de predicci\'on puede ser nula en algunas configuraciones del modelo. 
 
-Dado que las tres clases no son equiprobables en el f\'utbol real (la frecuencia de empateses se ubica alrededor del 26\%), el $F1$ agregado se define bajo dos esquemas est\'andar:
-
-\begin{definition}[Agregaci\'on del F1-score]
-Sea $n_c=\sum_{c'}M_{cc'}$ el soporte (n\'umero de observaciones reales) de la clase $c$. Se definen:
+Por otra parte, dado que las tres clases no son equiprobables en el f\'utbol real, pues la frecuencia de empates se ubica alrededor del $26\%$, el $F1$ agregado se define bajo dos esquemas est\'andar. Sea $n_c = \sum_{c'} M_{cc'}$ el soporte de la clase $c$. Se definen
 \begin{align}
-\mathrm{F1}_{\mathrm{macro}} &= \frac{1}{3}\sum_{c\in\{H,D,A\}} F1_c, \label{eq:f1_macro}\\
-\mathrm{F1}_{\mathrm{weighted}} &= \sum_{c\in\{H,D,A\}} \frac{n_c}{N}\,F1_c. \label{eq:f1_weighted}
+	\mathrm{F1}_{\mathrm{macro}} &= \frac{1}{3}\sum_{c\in\{H,D,A\}} F1_c, \label{eq:f1_macro}\\
+	\mathrm{F1}_{\mathrm{weighted}} &= \sum_{c\in\{H,D,A\}} \frac{n_c}{N}\, F1_c. \label{eq:f1_weighted}
 \end{align}
-\end{definition}
+El F1-macro trata por igual a las tres clases y es sensible al desempe\~no en la clase minoritaria (el empate); el F1-weighted pondera seg\'un la frecuencia emp\'irica de cada resultado.
 
-El F1-macro trata por igual a las tres clases, por lo que es sensible al desempe\~no en la clase minoritaria (el empate). El F1-weighted, en cambio, pondera seg\'un la frecuencia emp\'irica de cada resultado. 
+Un fen\'omeno recurrente en la predicci\'on de resultados de f\'utbol es la dificultad de clasificar correctamente la clase empate bajo la regla $\arg\max$. En el marco del presente trabajo, este comportamiento no es una anomal\'ia de implementaci\'on, sino una propiedad estructural del modelo de conteo. En la Secci\'on~\ref{sec:modelo_probabilistico}, el empate no es una categor\'ia nativa del espacio muestral, sino el evento puntual $\{G_H = G_A\}$ en la diferencia de goles. Su probabilidad $P_D$ depende de la simetr\'ia y magnitud conjuntas de las tasas $\lambda_H$ y $\lambda_A$, y puede alcanzar valores no despreciables. Sin embargo, la regi\'on del simplex $\Delta^2$ donde $P_D > \max\{P_H, P_A\}$ es estrecha: en la mayor\'ia de los partidos existe alg\'un grado de asimetr\'ia estructural (ventaja de local\'ia, diferencias de nivel, condiciones ambientales) que desplaza la masa probabil\'istica hacia $H$ o hacia $A$, dejando a $D$ como segunda opci\'on frecuente pero raramente dominante.
 
-
-\subsection{Discusi\'on del empate: un hallazgo estructural}
-\label{subsec:empate}
-
-Un fen\'omeno recurrente en la predicci\'on de resultados de f\'utbol es la dificultad de clasificar correctamente la clase empate bajo una regla de decisi\'on dura. En el marco del presente trabajo, este comportamiento no es una anomal\'ia de implementaci\'on, sino una propiedad estructural derivable del modelo de conteo y de la geometr\'ia del espacio de probabilidades. A continuaci\'on se expone su fundamento te\'orico.
-
-\paragraph{El empate como evento puntual en un modelo de conteo.}
-
-En el aparato probabil\'istico desarrollado en la Secci\'on~\ref{sec:modelo_probabilistico}, el empate no es una categor\'ia nativa del espacio muestral, sino el evento puntual $\{G_H = G_A\}$ en la diferencia de goles $D = G_H - G_A$. Bajo el supuesto de independencia entre los procesos de anotaci\'on, $D$ sigue una distribuci\'on de Skellam cuya funci\'on de masa en $d=0$ viene dada por la expresi\'on \eqref{eq:prob_D_bessel}. Desde esta perspectiva, el empate emerge como una coincidencia exacta entre dos variables de Poisson independientes, lo cual impone una estructura particular sobre su probabilidad relativa respecto a las victorias. Como se\~nalan Karlis y Ntzoufras \cite{karlis2003}, la modelaci\'on de la diferencia de goles mediante la distribuci\'on de Skellam captura adecuadamente la din\'amica del resultado, pero el valor en cero depende de la simetr\'ia y magnitud conjuntas de las tasas $\lambda_H$ y $\lambda_A$.
-
-\paragraph{Geometr\'ia de la decisi\'on en el simplex.}
-
-Aunque la probabilidad de empate $P_D$ puede alcanzar valores no despreciables,frecuencia t\'ipica en ligas profesionales, la regla de clasificaci\'on dura $\arg\max$ definida en \eqref{eq:argmax} colapsa sistem\'aticamente esta clase. Ello no constituye un fallo del estimador, sino una propiedad geom\'etrica del simplex de probabilidades $\Delta^2$: la regi\'on donde $P_D > \max\{P_H, P_A\}$ corresponde a enfrentamientos en los que las tasas esperadas $\lambda_H$ y $\lambda_A$ son simult\'aneamente cercanas y moderadas. En la pr\'actica deportiva, la mayor\'ia de los partidos exhibe alg\'un grado de asimetr\'ia estructural, ventaja de local\'ia, diferencias de nivel t\'ecnico o condiciones ambientales desfavorables al visitante, que desplaza la masa probabil\'istica hacia $H$ o hacia $A$, dejando a $D$ como segunda opci\'on frecuente pero raramente dominante. En consecuencia, el vector t\'ipico de probabilidades tiene la forma $(P_H, P_D, P_A)$ con $P_D$ sustancial pero estrictamente menor que el m\'aximo de las otras dos componentes.
-
-\paragraph{Calibraci\'on versus clasificaci\'on.}
-
-Esta observaci\'on pone de relieve una distinci\'on fundamental del marco te\'orico: un modelo puede estar perfectamente calibrado en sentido probabil\'istico ---la media de las predicciones $\tilde{P}_D$ coincide con la frecuencia relativa observada de empates--- y, no obstante, exhibir un \emph{recall} nulo bajo una regla de decisi\'on dura. La calibraci\'on es una propiedad de la distribuci\'on predicha en su conjunto, mientras que la clasificaci\'on $\arg\max$ impone una partici\'on del simplex que ignora la magnitud de las probabilidades asignadas a las clases no elegidas.
-
-Desde el punto de vista de la teor\'ia de la informaci\'on, este fen\'omeno justifica el uso de la log-loss categ\'orica como m\'etrica central de evaluaci\'on. Como se estableci\'o en la Proposici\'on~\ref{prop:proper}, la log-loss es una \emph{strictly proper scoring rule}: incentiva al modelo a reportar la probabilidad verdadera de cada resultado, incluido el empate, sin forzar una apuesta binaria. Un modelo que minimice la entrop\'ia cruzada entre la distribuci\'on predicha y la emp\'irica mantendr\'a masa significativa en $P_D$ aun cuando la regla de m\'axima probabilidad a posteriori nunca seleccione la clase $D$. Esta propiedad, demostrada formalmente en la Proposici\'on~\ref{prop:equivalencia}, vincula el criterio de entrenamiento con el principio de inferencia por m\'axima verosimilitud.
-
-\paragraph{Implicaciones metodol\'ogicas.}
-
-La dificultad estructural para clasificar el empate explica por qu\'e en la literatura de predicci\'on deportiva es com\'un reportar m\'etricas probabil\'isticas globales en paralelo con m\'etricas de clasificaci\'on dura \cite{gneiting2007}. En el contexto del presente trabajo, el sistema Glicko-2 modificado proporciona una probabilidad base de empate end\'ogena a trav\'es de la distribuci\'on de Skellam, mientras que el perceptr\'on multicapa (Secci\'on~\ref{sec:mlp}) refina esta distribuci\'on preservando la coherencia probabil\'istica mediante la capa softmax. La escasa representaci\'on de la clase $D$ bajo $\arg\max$ no invalida el modelo; por el contrario, evidencia que el empate en el f\'utbol asociaci\'on es un evento inherentemente difuso cuya predicci\'on \'optima requiere una evaluaci\'on distributiva m\'as que una etiqueta categ\'orica.
-
-\begin{obs}
-	La tensi\'on entre calibraci\'on probabil\'istica y clasificaci\'on dura no es exclusiva del f\'utbol. En cualquier problema de inferencia con clases desbalanceadas o con probabilidades de transici\'on cercanas, la regla $\arg\max$ puede producir colapsos de clase similares. El marco te\'orico aqu\'i expuesto, anclado en la distribuci\'on de Skellam y en las propiedades de las \emph{scoring rules}, proporciona el lenguaje formal para diagnosticar y reportar este fen\'omeno sin recurrir a artificios de modelado.
-\end{obs}
+Esta observaci\'on revela una distinci\'on fundamental: un modelo puede estar perfectamente calibrado en sentido probabil\'istico (la media de las predicciones $\tilde{P}_D$ coincide con la frecuencia observada de empates) y, no obstante, exhibir un \emph{recall} nulo bajo la regla $\arg\max$. La calibraci\'on es una propiedad de la distribuci\'on predicha en su conjunto, mientras que la clasificaci\'on impone una partici\'on del simplex que ignora la magnitud de las probabilidades asignadas a las clases no elegidas. Esta tensi\'on justifica el uso de la log-loss como m\'etrica central de evaluaci\'on: al ser una regla de puntuaci\'on estrictamente propia (Proposici\'on~\ref{prop:proper}), incentiva al modelo a mantener masa significativa en $P_D$ aun cuando $\arg\max$ nunca seleccione la clase $D$. La escasa representaci\'on de la clase empate bajo clasificaci\'on dura no invalida el modelo; evidencia, m\'as bien, que el empate en el f\'utbol es un evento inherentemente difuso cuya predicci\'on \'optima requiere una evaluaci\'on distributiva m\'as que una etiqueta categ\'orica.

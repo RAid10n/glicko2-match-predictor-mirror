@@ -686,10 +686,9 @@ Se introducen funciones de \emph{clamping} en tres puntos cr\'iticos:
 \begin{enumerate}
 	\item Acotamiento de $\delta_{\mu} = g(\phi_j)(\tilde{\mu}-\mu_j)$ al intervalo $[-50,50]$ para evitar desbordamiento del exponente.
 	\item Restricci\'on de la puntuaci\'on esperada al rango $[10^{-12}, 1-10^{-12}]$ previo al c\'alculo de la varianza $v$.
-	\item rotecci\'on contra divisiones por cero en la funci\'on de varianza mediante un valor de retorno de emergencia ($10^{12}$).
+	\item Protecci\'on contra divisiones por cero en la funci\'on de varianza mediante un valor de retorno de emergencia ($10^{12}$).
 	\item Acotamiento final de las probabilidasdes $(P_H,P_D,P_A)$ al intervalo $[0,1]$ despu\'es de su c\'omputo, garantizando que el vector de probabilidades permanezca dentro del simplex $\Delta^2$ incluso en condiciones num\'ericamente extremas.
 \end{enumerate}
-(i)~a; (ii)~re; y (iii)~p
 
 \paragraph{Manejo de contextos excepcionales.} 
 La implementaci\'on propia incorpora un multiplicador de atenuaci\'on para partidos disputados durante la pandemia de COVID-19, que reduce la ventaja de local\'ia efectiva cuando la variable indicadora \texttt{pandemic} est\'a activa. Esta extensi\'on est\'a presente en el c\'odigo fuente, aunque no se activa en el pipeline principal del presente trabjo, ya que la variable indicadora se incorpora con valor $0.0$ en todas las ejecuciones. Su permanencia en el repositorio queda como una extensi\'on disponible para futuros an\'alisis que requieran modelar expl\'icitamente el efecto de restricciones sanitarias sobre la ventaja de local\'ia.

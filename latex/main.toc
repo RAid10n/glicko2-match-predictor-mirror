@@ -3,294 +3,245 @@
 \contentsline {chapter}{\numberline {1}Antecedentes}{3}{chapter.1}%
 \contentsline {section}{\numberline {1.1}El f\'utbol como campo de estudio}{3}{section.1.1}%
 \contentsline {section}{\numberline {1.2}Sistemas de rating y comparaci\'on probabil\'istica}{3}{section.1.2}%
-\contentsline {subsection}{\numberline {1.2.1}Modelo de Bradley-Terry}{3}{subsection.1.2.1}%
-\contentsline {subsection}{\numberline {1.2.2}Sistema Elo}{4}{subsection.1.2.2}%
-\contentsline {subsection}{\numberline {1.2.3}Sistemas Glicko y Glicko-2}{4}{subsection.1.2.3}%
-\contentsline {subsection}{\numberline {1.2.4}Modelo modificado de Shelopugin y Sirotkin}{4}{subsection.1.2.4}%
 \contentsline {section}{\numberline {1.3}Modelamiento probabil\'istico del resultado}{4}{section.1.3}%
-\contentsline {subsection}{\numberline {1.3.1}Distribuci\'on de Poisson}{4}{subsection.1.3.1}%
-\contentsline {subsection}{\numberline {1.3.2}Distribuci\'on de Skellam}{5}{subsection.1.3.2}%
-\contentsline {subsection}{\numberline {1.3.3}M\'etricas de evaluaci\'on}{5}{subsection.1.3.3}%
 \contentsline {section}{\numberline {1.4}Brecha metodol\'ogica}{5}{section.1.4}%
-\contentsline {chapter}{\numberline {2}Marco Te\'orico}{6}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Contexto y motivaci\'on}{6}{section.2.1}%
-\contentsline {subsection}{\numberline {2.1.1}El f\'utbol como dominio de estudio}{6}{subsection.2.1.1}%
-\contentsline {subsection}{\numberline {2.1.2}M\'etricas deportivas}{7}{subsection.2.1.2}%
-\contentsline {subsubsection}{M\'etricas de producci\'on ofensiva}{7}{subsubsection*.3}%
-\contentsline {subsubsection}{M\'etricas de recuperaci\'on y disciplina}{7}{subsubsection*.4}%
-\contentsline {subsubsection}{Variables de contexto y normalizaci\'on}{8}{subsubsection*.5}%
-\contentsline {subsubsection}{De m\'etricas primarias a \'indices compuestos}{8}{subsubsection*.6}%
-\contentsline {subsection}{\numberline {2.1.3}Factores externos: econ\'omicos y ambientales}{8}{subsection.2.1.3}%
-\contentsline {subsubsection}{Factores ambientales}{8}{subsubsection*.7}%
-\contentsline {paragraph}{Variables meteorol\'ogicas instant\'aneas.}{9}{paragraph*.8}%
-\contentsline {paragraph}{Variables geogr\'aficas y fisiol\'ogicas.}{9}{paragraph*.9}%
-\contentsline {paragraph}{Ventaja de local\'ia.}{9}{paragraph*.10}%
-\contentsline {subsubsection}{Factores econ\'omicos}{9}{subsubsection*.11}%
-\contentsline {paragraph}{Indicadores microecon\'omicos de mercado}{9}{paragraph*.12}%
-\contentsline {paragraph}{M\'etricas de composici\'on de plantilla}{10}{paragraph*.13}%
-\contentsline {paragraph}{Indicadores macroecon\'omicos}{10}{paragraph*.14}%
-\contentsline {subsection}{\numberline {2.1.4}Rankings institucionales y la medici\'on del poder}{10}{subsection.2.1.4}%
-\contentsline {subsubsection}{Ranking FIFA}{11}{subsubsection*.15}%
-\contentsline {subsubsection}{UEFA, CONMEBOL y AFC: l\'ogicas contables}{11}{subsubsection*.16}%
-\contentsline {subsubsection}{CONCACAF: Elo pragm\'atico}{11}{subsubsection*.17}%
-\contentsline {subsubsection}{IFFHS: arbitrariedad de factores multiplicativos}{11}{subsubsection*.18}%
-\contentsline {subsubsection}{S\'intesis de la brecha metodol\'ogica}{11}{subsubsection*.19}%
-\contentsline {section}{\numberline {2.2}Sistemas de rating y comparaci\'on probabil\'istica}{12}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Comparaciones pareadas: el modelo de Bradley-Terry}{12}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}El sistema Elo y la funci\'on log\'istica de comparaci\'on}{13}{subsection.2.2.2}%
-\contentsline {subsection}{\numberline {2.2.3}Modelos Glicko y Glicko-2: fuerza como variable aleatoria}{14}{subsection.2.2.3}%
-\contentsline {subsubsection}{El sistema Glicko-2}{15}{subsubsection*.20}%
-\contentsline {subsection}{\numberline {2.2.4}El modelo modificado de Shelopugin y Sirotkin: extensi\'on a tres resultados y ventaja de local\'ia}{17}{subsection.2.2.4}%
-\contentsline {section}{\numberline {2.3}Modelamiento probabil\'istico del resultado}{19}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Distribuci\'on de Poisson para el n\'umero de goles}{20}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}Distribuci\'on de Skellam para la diferencia de goles}{21}{subsection.2.3.2}%
-\contentsline {subsection}{\numberline {2.3.3}Derivaci\'on de las probabilidades de los tres resultados}{23}{subsection.2.3.3}%
-\contentsline {subsubsection}{Formulaci\'on general}{23}{subsubsection*.21}%
-\contentsline {subsubsection}{Conexi\'on con el modelo trinomial de Shelopugin-Sirotkin}{24}{subsubsection*.22}%
-\contentsline {subsubsection}{Simetr\'ia y comportamiento l\'imite}{24}{subsubsection*.23}%
-\contentsline {subsection}{\numberline {2.3.4}Buena definici\'on y estabilidad num\'erica}{25}{subsection.2.3.4}%
-\contentsline {subsubsection}{No negatividad y suma unitaria}{26}{subsubsection*.24}%
-\contentsline {subsubsection}{Estabilidad num\'erica y truncamiento}{26}{subsubsection*.25}%
-\contentsline {subsection}{\numberline {2.3.5}Propiedades estructurales}{27}{subsection.2.3.5}%
-\contentsline {section}{\numberline {2.4}Integraci\'on de covariables y estimaci\'on de par\'ametros}{28}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Integraci\'on de covariables ex\'ogenas en el sistema predictivo}{28}{subsection.2.4.1}%
-\contentsline {paragraph}{Bloque econ\'omico.}{28}{paragraph*.26}%
-\contentsline {paragraph}{Bloque ambiental.}{29}{paragraph*.27}%
-\contentsline {paragraph}{Bloque deportivo.}{29}{paragraph*.28}%
-\contentsline {subsection}{\numberline {2.4.2}La f\'ormula barom\'etrica y la presi\'on parcial de ox\'igeno}{30}{subsection.2.4.2}%
-\contentsline {subsection}{\numberline {2.4.3}Estimaci\'on por m\'axima verosimilitud: la verosimilitud del modelo multinomial}{31}{subsection.2.4.3}%
-\contentsline {subsection}{\numberline {2.4.4}Equivalencia entre minimizaci\'on de log-loss y maximizaci\'on de verosimilitud}{32}{subsection.2.4.4}%
-\contentsline {paragraph}{Log-loss binaria versus log-loss categ\'orica.}{33}{paragraph*.29}%
-\contentsline {subsection}{\numberline {2.4.5}Optimizaci\'on num\'erica}{33}{subsection.2.4.5}%
-\contentsline {subsubsection}{Calibraci\'on de hiperpar\'ametros del sistema de rating: L-BFGS-B}{33}{subsubsection*.30}%
-\contentsline {subsubsection}{Entrenamiento del perceptr\'on multicapa: Adam}{34}{subsubsection*.31}%
-\contentsline {section}{\numberline {2.5}Modelo predictivo complementario (MLP)}{34}{section.2.5}%
-\contentsline {subsection}{\numberline {2.5.1}De las probabilidades base al refinamiento no param\'etrico}{35}{subsection.2.5.1}%
-\contentsline {subsection}{\numberline {2.5.2}Arquitectura del perceptr\'on multicapa}{35}{subsection.2.5.2}%
-\contentsline {subsection}{\numberline {2.5.3}Entrenamiento: retropropagaci\'on y descenso de gradiente}{37}{subsection.2.5.3}%
-\contentsline {paragraph}{Retropropagaci\'on para una capa densa.}{38}{paragraph*.32}%
-\contentsline {paragraph}{Optimizador Adam.}{38}{paragraph*.33}%
-\contentsline {subsection}{\numberline {2.5.4}Funci\'on de p\'erdida y coherencia probabil\'istica}{39}{subsection.2.5.4}%
-\contentsline {section}{\numberline {2.6}M\'etricas de evaluaci\'on}{40}{section.2.6}%
-\contentsline {subsection}{\numberline {2.6.1}La log-loss explicada matem\'aticamente: verosimilitud negativa y entrop\'ia cruzada}{40}{subsection.2.6.1}%
-\contentsline {paragraph}{Log-loss binaria versus categ\'orica.}{41}{paragraph*.34}%
-\contentsline {paragraph}{M\'etricas del bloque de conteo.}{41}{paragraph*.35}%
-\contentsline {subsection}{\numberline {2.6.2}Conexi\'on con la divergencia de Kullback-Leibler y reglas de puntuaci\'on propias}{42}{subsection.2.6.2}%
-\contentsline {subsection}{\numberline {2.6.3}M\'etricas de clasificaci\'on}{43}{subsection.2.6.3}%
-\contentsline {subsection}{\numberline {2.6.4}Discusi\'on del empate: un hallazgo estructural}{44}{subsection.2.6.4}%
-\contentsline {paragraph}{El empate como evento puntual en un modelo de conteo.}{44}{paragraph*.36}%
-\contentsline {paragraph}{Geometr\'ia de la decisi\'on en el simplex.}{45}{paragraph*.37}%
-\contentsline {paragraph}{Calibraci\'on versus clasificaci\'on.}{45}{paragraph*.38}%
-\contentsline {paragraph}{Implicaciones metodol\'ogicas.}{45}{paragraph*.39}%
-\contentsline {chapter}{\numberline {3}Metodolog\'ia}{47}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Fuentes de datos}{47}{section.3.1}%
-\contentsline {subsection}{\numberline {3.1.1}Datos deportivos: FBRef}{47}{subsection.3.1.1}%
-\contentsline {paragraph}{Navegaci\'on por \'indice diario.}{48}{paragraph*.40}%
-\contentsline {paragraph}{Detecci\'on y bypass de bloqueos.}{48}{paragraph*.41}%
-\contentsline {paragraph}{Filtrado por competici\'on.}{48}{paragraph*.42}%
-\contentsline {paragraph}{Control de frecuencia.}{49}{paragraph*.43}%
-\contentsline {paragraph}{Descarga de estad\'isticas detalladas.}{49}{paragraph*.44}%
-\contentsline {paragraph}{Construcci\'on del dataset maestro.}{49}{paragraph*.45}%
-\contentsline {paragraph}{Variables extra\'idas.}{49}{paragraph*.46}%
-\contentsline {subsection}{\numberline {3.1.2}Datos econ\'omicos de clubes: Transfermarkt}{50}{subsection.3.1.2}%
-\contentsline {subsection}{\numberline {3.1.3}Datos meteorol\'ogicos: Open-Meteo}{50}{subsection.3.1.3}%
-\contentsline {subsection}{\numberline {3.1.4}Datos macroecon\'omicos de pa\'ises: Datosmacro}{51}{subsection.3.1.4}%
-\contentsline {subsection}{\numberline {3.1.5}Datos de estadios}{52}{subsection.3.1.5}%
-\contentsline {subsection}{\numberline {3.1.6}S\'intesis de los conjuntos de datos generados}{52}{subsection.3.1.6}%
-\contentsline {section}{\numberline {3.2}Procesamiento y limpieza de datos}{53}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Consolidaci\'on y aplanamiento de registros deportivos}{53}{subsection.3.2.1}%
-\contentsline {paragraph}{Normalizaci\'on de esquemas.}{53}{paragraph*.47}%
-\contentsline {paragraph}{Aplanamiento y agregaci\'on.}{53}{paragraph*.48}%
-\contentsline {paragraph}{Generaci\'on de claves sint\'eticas.}{54}{paragraph*.49}%
-\contentsline {subsection}{\numberline {3.2.2}Normalizaci\'on de identidades y control de calidad}{54}{subsection.3.2.2}%
-\contentsline {paragraph}{Mapeo autom\'atico.}{54}{paragraph*.50}%
-\contentsline {paragraph}{Overrides manuales.}{54}{paragraph*.51}%
-\contentsline {paragraph}{Verificaci\'on de cobertura.}{54}{paragraph*.52}%
-\contentsline {subsection}{\numberline {3.2.3}Integraci\'on de fuentes auxiliares}{55}{subsection.3.2.3}%
-\contentsline {paragraph}{Datos clim\'aticos.}{55}{paragraph*.53}%
-\contentsline {paragraph}{Datos de estadios.}{56}{paragraph*.54}%
-\contentsline {paragraph}{Datos econ\'omicos micro.}{56}{paragraph*.55}%
-\contentsline {paragraph}{Datos macroecon\'omicos.}{56}{paragraph*.56}%
-\contentsline {paragraph}{Distancia de viaje.}{57}{paragraph*.57}%
-\contentsline {subsection}{\numberline {3.2.4}Construcci\'on de m\'etricas compuestas y ventanas de forma}{58}{subsection.3.2.4}%
-\contentsline {paragraph}{\'indices compuestos.}{58}{paragraph*.58}%
-\contentsline {paragraph}{Promedios m\'oviles y reglas de inactividad.}{58}{paragraph*.59}%
-\contentsline {paragraph}{Diferenciaci\'on por condici\'on.}{59}{paragraph*.60}%
-\contentsline {subsection}{\numberline {3.2.5}Filtrado temporal y por competici\'on}{59}{subsection.3.2.5}%
-\contentsline {paragraph}{Recorte temporal del dataset Full.}{59}{paragraph*.61}%
-\contentsline {paragraph}{Exclusi\'on de ligas sin m\'etricas b\'asicas.}{59}{paragraph*.62}%
-\contentsline {paragraph}{Correcci\'on de identidades duplicadas.}{59}{paragraph*.63}%
-\contentsline {paragraph}{Incorporaci\'on de partidos manuales.}{60}{paragraph*.64}%
-\contentsline {subsection}{\numberline {3.2.6}Imputaci\'on de valores faltantes y estandarizaci\'on}{60}{subsection.3.2.6}%
-\contentsline {paragraph}{Diferencias econ\'omicas.}{60}{paragraph*.65}%
-\contentsline {paragraph}{Variables clim\'aticas.}{60}{paragraph*.66}%
-\contentsline {paragraph}{Ratio de ocupaci\'on.}{60}{paragraph*.67}%
-\contentsline {paragraph}{Distancia de viaje.}{60}{paragraph*.68}%
-\contentsline {paragraph}{Estandarizaci\'on.}{60}{paragraph*.69}%
-\contentsline {subsection}{\numberline {3.2.7}Generaci\'on de los conjuntos de datos finales}{60}{subsection.3.2.7}%
-\contentsline {section}{\numberline {3.3}Selecci\'on de covariables}{61}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}Primer Random Forest: diagn\'ostico sobre el universo completo}{61}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Segundo Random Forest: filtrado y selecci\'on manual}{63}{subsection.3.3.2}%
-\contentsline {paragraph}{Variables de mayor importancia relativa.}{64}{paragraph*.73}%
-\contentsline {paragraph}{M\'etricas compuestas de autor\'ia.}{65}{paragraph*.74}%
-\contentsline {paragraph}{Variable de composici\'on de plantilla.}{65}{paragraph*.75}%
-\contentsline {subsection}{\numberline {3.3.3}An\'alisis de correlaci\'on de covariables}{65}{subsection.3.3.3}%
-\contentsline {subsection}{\numberline {3.3.4}Conjunto final de covariables ex\'ogenas}{67}{subsection.3.3.4}%
-\contentsline {section}{\numberline {3.4}Arquitectura del sistema predictivo}{67}{section.3.4}%
-\contentsline {subsection}{\numberline {3.4.1}Variable dependiente y codificaci\'on}{68}{subsection.3.4.1}%
-\contentsline {subsection}{\numberline {3.4.2}Bloque de conteo: estimaci\'on de tasas y probabilidad de empate}{68}{subsection.3.4.2}%
-\contentsline {paragraph}{Conjunto de entrenamiento y partici\'on temporal.}{68}{paragraph*.77}%
-\contentsline {paragraph}{Variables de entrada.}{68}{paragraph*.78}%
-\contentsline {paragraph}{Hiperpar\'ametros y salida.}{69}{paragraph*.79}%
-\contentsline {subsection}{\numberline {3.4.3}Bloque de rating din\'amico: Glicko-2 modificado}{69}{subsection.3.4.3}%
-\contentsline {paragraph}{Estado y actualizaci\'on.}{69}{paragraph*.80}%
-\contentsline {paragraph}{Ventaja de local\'ia y calibraci\'on del empate.}{69}{paragraph*.81}%
-\contentsline {paragraph}{Generaci\'on de probabilidades base.}{70}{paragraph*.82}%
-\contentsline {paragraph}{Observaci\'on sobre la ventaja de local\'ia.}{70}{paragraph*.83}%
-\contentsline {subsection}{\numberline {3.4.4}Bloque de refinamiento: perceptr\'on multicapa}{70}{subsection.3.4.4}%
-\contentsline {paragraph}{Vector de entrada.}{71}{paragraph*.84}%
-\contentsline {paragraph}{Arquitectura e hiperpar\'ametros.}{71}{paragraph*.85}%
-\contentsline {paragraph}{Entrenamiento.}{71}{paragraph*.86}%
-\contentsline {paragraph}{Protocolo de evaluaci\'on: corridas pareadas.}{71}{paragraph*.87}%
-\contentsline {subsection}{\numberline {3.4.5}Flujo de inferencia en cascada}{72}{subsection.3.4.5}%
-\contentsline {section}{\numberline {3.5}Entrenamiento y calibraci\'on}{72}{section.3.5}%
-\contentsline {subsection}{\numberline {3.5.1}Calibraci\'on del bloque de conteo}{72}{subsection.3.5.1}%
-\contentsline {paragraph}{Partici\'on temporal.}{72}{paragraph*.88}%
-\contentsline {paragraph}{Conjunto de caracter\'isticas.}{73}{paragraph*.89}%
-\contentsline {paragraph}{Hiperpar\'ametros y criterio de parada.}{73}{paragraph*.90}%
-\contentsline {paragraph}{Derivaci\'on de la probabilidad de empate.}{73}{paragraph*.91}%
-\contentsline {subsection}{\numberline {3.5.2}Calibraci\'on del bloque de rating}{73}{subsection.3.5.2}%
-\contentsline {subsubsection}{Mejoras de la implementaci\'on propia sobre el motor de referencia}{74}{subsubsection*.92}%
-\contentsline {paragraph}{Correcci\'on algebraica del denominador trinomial.}{74}{paragraph*.93}%
-\contentsline {paragraph}{Reparametrizaci\'on logit del par\'ametro de empate.}{74}{paragraph*.94}%
-\contentsline {paragraph}{Heur\'istica de escala $g$.}{74}{paragraph*.95}%
-\contentsline {paragraph}{Sistema de ventaja parametrizada.}{74}{paragraph*.96}%
-\contentsline {paragraph}{Mecanismos de estabilidad num\'erica.}{75}{paragraph*.97}%
-\contentsline {paragraph}{Manejo de contextos excepcionales.}{75}{paragraph*.98}%
-\contentsline {paragraph}{Estado y actualizaci\'on.}{76}{paragraph*.99}%
-\contentsline {paragraph}{Funci\'on objetivo.}{76}{paragraph*.100}%
-\contentsline {paragraph}{Espacio de par\'ametros y cotas.}{76}{paragraph*.101}%
-\contentsline {paragraph}{Convergencia y par\'ametros calibrados.}{76}{paragraph*.102}%
-\contentsline {paragraph}{Evaluaci\'on aislada del bloque de rating.}{77}{paragraph*.103}%
-\contentsline {subsection}{\numberline {3.5.3}Entrenamiento del bloque de refinamiento}{77}{subsection.3.5.3}%
-\contentsline {paragraph}{Vector de entrada y estandarizaci\'on.}{77}{paragraph*.104}%
-\contentsline {paragraph}{Arquitectura e hiperpar\'ametros de entrenamiento.}{77}{paragraph*.105}%
-\contentsline {paragraph}{Protocolo de evaluaci\'on: corridas pareadas.}{77}{paragraph*.106}%
-\contentsline {paragraph}{M\'etricas de evaluaci\'on del protocolo.}{78}{paragraph*.107}%
-\contentsline {paragraph}{Observaci\'on sobre el colapso de la clase empate.}{78}{paragraph*.108}%
-\contentsline {section}{\numberline {3.6}M\'etricas de evaluaci\'on}{78}{section.3.6}%
-\contentsline {subsection}{\numberline {3.6.1}M\'etricas probabil\'isticas}{79}{subsection.3.6.1}%
-\contentsline {paragraph}{Log-loss categ\'orica.}{79}{paragraph*.109}%
-\contentsline {paragraph}{Log-loss binaria.}{79}{paragraph*.110}%
-\contentsline {paragraph}{Divergencia de Kullback-Leibler y calibraci\'on.}{80}{paragraph*.111}%
-\contentsline {subsection}{\numberline {3.6.2}M\'etricas de clasificaci\'on}{80}{subsection.3.6.2}%
-\contentsline {subsection}{\numberline {3.6.3}Protocolo de inferencia estad\'istica}{81}{subsection.3.6.3}%
-\contentsline {subsection}{\numberline {3.6.4}Evaluaci\'on por bloque funcional}{81}{subsection.3.6.4}%
-\contentsline {paragraph}{Bloque de conteo (Skellam/LightGBM).}{81}{paragraph*.112}%
-\contentsline {paragraph}{Bloque de rating (Glicko-2 modificado).}{82}{paragraph*.113}%
-\contentsline {paragraph}{Bloque de refinamiento (MLP).}{82}{paragraph*.114}%
-\contentsline {subsection}{\numberline {3.6.5}Discusi\'on metodol\'ogica sobre el empate}{82}{subsection.3.6.5}%
-\contentsline {chapter}{\numberline {4}Resultados y discusi\'on}{84}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Resultados del bloque de conteo}{84}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}Calibraci\'on de las tasas de goles}{85}{subsection.4.1.1}%
-\contentsline {subsection}{\numberline {4.1.2}Diagn\'ostico de residuos}{86}{subsection.4.1.2}%
-\contentsline {section}{\numberline {4.2}Resultados del bloque de rating din\'amico}{89}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Convergencia y par\'ametros calibrados}{89}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}Evaluaci\'on aislada del sistema Glicko-2 modificado}{92}{subsection.4.2.2}%
-\contentsline {section}{\numberline {4.3}Resultados del bloque de refinamiento neuronal}{92}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}M\'etricas probabil\'isticas}{92}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}El colapso de la clase empate y su recuperaci\'on parcial}{95}{subsection.4.3.2}%
-\contentsline {subsection}{\numberline {4.3.3}Inferencia estad\'istica: test $t$ pareado}{96}{subsection.4.3.3}%
-\contentsline {subsection}{\numberline {4.3.4}Estructura de correlaci\'on entre las covariables seleccionadas}{97}{subsection.4.3.4}%
-\contentsline {section}{\numberline {4.4}Discusi\'on integrada}{98}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}Jerarqu\'ia de aporte predictivo por bloque}{98}{subsection.4.4.1}%
-\contentsline {subsection}{\numberline {4.4.2}El rol de las m\'etricas deportivas avanzadas}{99}{subsection.4.4.2}%
-\contentsline {subsection}{\numberline {4.4.3}Limitaciones emergentes de los resultados}{100}{subsection.4.4.3}%
-\contentsline {paragraph}{Colapso persistente del empate.}{100}{paragraph*.128}%
-\contentsline {paragraph}{Sensibilidad del MLP a la composici\'on de features.}{100}{paragraph*.129}%
-\contentsline {paragraph}{Generalizaci\'on geogr\'afica.}{100}{paragraph*.130}%
-\contentsline {subsection}{\numberline {4.4.4}Recapitulaci\'on de hallazgos}{100}{subsection.4.4.4}%
-\contentsline {chapter}{\numberline {5}Conclusiones, limitaciones y l\'ineas futuras}{102}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Conclusiones}{102}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Limitaciones del estudio}{103}{section.5.2}%
-\contentsline {section}{\numberline {5.3}L\'ineas de investigaci\'on futuras}{105}{section.5.3}%
-\contentsline {chapter}{\numberline {A}Componente exploratorio: red neuronal recurrente}{107}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Motivaci\'on y formalismo}{107}{section.A.1}%
-\contentsline {section}{\numberline {A.2}Arquitectura de datos e implementaci\'on}{108}{section.A.2}%
-\contentsline {subsection}{\numberline {A.2.1}Construcci\'on de secuencias hist\'oricas}{109}{subsection.A.2.1}%
-\contentsline {subsection}{\numberline {A.2.2}Clase \texttt {RRNN} en \texttt {PyTorch}}{109}{subsection.A.2.2}%
-\contentsline {section}{\numberline {A.3}Protocolo de entrenamiento}{110}{section.A.3}%
-\contentsline {section}{\numberline {A.4}Resultados emp\'iricos}{111}{section.A.4}%
-\contentsline {subsection}{\numberline {A.4.1}Evoluci\'on por \'epoca y diagn\'ostico de sobreajuste}{111}{subsection.A.4.1}%
-\contentsline {subsection}{\numberline {A.4.2}M\'etricas de evaluaci\'on sobre el conjunto de prueba}{111}{subsection.A.4.2}%
-\contentsline {section}{\numberline {A.5}Discusi\'on del componente}{112}{section.A.5}%
-\contentsline {paragraph}{Sobreajuste estructural.}{112}{paragraph*.134}%
-\contentsline {paragraph}{Rendimiento predictivo inferior.}{113}{paragraph*.135}%
-\contentsline {paragraph}{Complejidad operativa del pipeline.}{113}{paragraph*.136}%
-\contentsline {paragraph}{Observación sobre la eficiencia computacional.}{113}{paragraph*.137}%
-\contentsline {chapter}{\numberline {B}Componente validatorio: Glicko-2 Trinomial vs Glicko-2 con Covariables Ex\'ogenas}{114}{appendix.B}%
-\contentsline {section}{\numberline {B.1}Filosof\'ia del baseline \textit {naive}: el motor Shelopugin-Sirotkin puro}{115}{section.B.1}%
-\contentsline {subsection}{\numberline {B.1.1}Par\'ametros can\'onicos fijos}{115}{subsection.B.1.1}%
-\contentsline {section}{\numberline {B.2}El motor calibrado: G2Av1513.py}{117}{section.B.2}%
-\contentsline {subsection}{\numberline {B.2.1}Mecanismos de estabilidad num\'erica y manejo de contextos excepcionales}{117}{subsection.B.2.1}%
-\contentsline {section}{\numberline {B.3}Comparativa de hiperpar\'ametros y mejora estructural}{118}{section.B.3}%
-\contentsline {section}{\numberline {B.4}Comparaci\'on emp\'irica: del \textit {naive} al calibrado}{119}{section.B.4}%
-\contentsline {subsection}{\numberline {B.4.1}An\'alisis de discrepancias: Top 10 global y por liga}{119}{subsection.B.4.1}%
-\contentsline {subsection}{\numberline {B.4.2}Top 10 de la \'elite seg\'un el modelo calibrado}{121}{subsection.B.4.2}%
-\contentsline {section}{\numberline {B.5}S\'intesis: el aporte diferencial de la calibraci\'on}{123}{section.B.5}%
-\contentsline {subsection}{\numberline {B.5.1}El algoritmo como infraestructura, la calibraci\'on como se\~nal}{123}{subsection.B.5.1}%
-\contentsline {subsection}{\numberline {B.5.2}Los casos extremos de discrepancia}{123}{subsection.B.5.2}%
-\contentsline {subsection}{\numberline {B.5.3}La \'elite global permanece estable}{123}{subsection.B.5.3}%
-\contentsline {subsection}{\numberline {B.5.4}Las mejoras num\'ericas como habilitadores de la optimizaci\'on}{124}{subsection.B.5.4}%
-\contentsline {subsection}{\numberline {B.5.5}La transferibilidad del conocimiento calibrado}{124}{subsection.B.5.5}%
-\contentsline {chapter}{\numberline {C}Proyecci\'on temporal de ratings: modelos ARIMA y LSTM}{125}{appendix.C}%
-\contentsline {section}{\numberline {C.1}Justificaci\'on de la agregaci\'on semanal}{125}{section.C.1}%
-\contentsline {section}{\numberline {C.2}Fundamentos te\'oricos de los modelos de proyecci\'on}{126}{section.C.2}%
-\contentsline {subsection}{\numberline {C.2.1}Modelos ARIMA: fundamentos y aplicaci\'on univariada}{126}{subsection.C.2.1}%
-\contentsline {subsection}{\numberline {C.2.2}Redes LSTM: modelado de dependencias secuenciales a largo plazo}{127}{subsection.C.2.2}%
-\contentsline {subsection}{\numberline {C.2.3}Complementariedad y justificaci\'on de la comparaci\'on}{128}{subsection.C.2.3}%
-\contentsline {section}{\numberline {C.3}Construcci\'on del panel semanal}{128}{section.C.3}%
-\contentsline {section}{\numberline {C.4}Modelo ARIMA univariado por equipo}{129}{section.C.4}%
-\contentsline {paragraph}{Control de tiempo de ejecuci\'on.}{129}{paragraph*.147}%
-\contentsline {paragraph}{Predicci\'on recursiva con actualizaci\'on.}{129}{paragraph*.148}%
-\contentsline {section}{\numberline {C.5}Modelo LSTM global}{130}{section.C.5}%
-\contentsline {paragraph}{Arquitectura.}{130}{paragraph*.150}%
-\contentsline {paragraph}{Escalado por equipo.}{130}{paragraph*.151}%
-\contentsline {paragraph}{Generaci\'on de secuencias y entrenamiento.}{131}{paragraph*.152}%
-\contentsline {paragraph}{Desescalado de predicciones.}{131}{paragraph*.153}%
-\contentsline {section}{\numberline {C.6}Evaluaci\'on comparativa}{132}{section.C.6}%
-\contentsline {subsection}{\numberline {C.6.1}M\'etricas globales}{132}{subsection.C.6.1}%
-\contentsline {paragraph}{Spearman \(\rho \): preservaci\'on del ranking.}{132}{paragraph*.156}%
-\contentsline {subsection}{\numberline {C.6.2}Desempe\~no por equipo}{132}{subsection.C.6.2}%
-\contentsline {subsection}{\numberline {C.6.3}Visualizaciones descriptivas}{133}{subsection.C.6.3}%
-\contentsline {paragraph}{An\'alisis general.}{133}{paragraph*.161}%
-\contentsline {paragraph}{An\'alisis diferenciado por dataset.}{133}{paragraph*.162}%
-\contentsline {section}{\numberline {C.7}Ranking proyectado: \'ultima semana de test}{136}{section.C.7}%
-\contentsline {section}{\numberline {C.8}Limitaciones y observaciones finales}{137}{section.C.8}%
-\contentsline {chapter}{\numberline {D}Validaci\'on contra rankings institucionales}{140}{appendix.D}%
-\contentsline {section}{\numberline {D.1}Fuentes de datos externos}{141}{section.D.1}%
-\contentsline {subsection}{\numberline {D.1.1}Ranking UEFA}{141}{subsection.D.1.1}%
-\contentsline {subsection}{\numberline {D.1.2}Ranking AFC}{141}{subsection.D.1.2}%
-\contentsline {subsection}{\numberline {D.1.3}Ranking CONMEBOL}{141}{subsection.D.1.3}%
-\contentsline {subsection}{\numberline {D.1.4}Ranking ClubElo}{142}{subsection.D.1.4}%
-\contentsline {subsection}{\numberline {D.1.5}G2A y LSTM}{142}{subsection.D.1.5}%
-\contentsline {subsection}{\numberline {D.1.6}Cobertura geogr\'afica}{142}{subsection.D.1.6}%
-\contentsline {section}{\numberline {D.2}Armonizaci\'on de nombres y filtrado}{143}{section.D.2}%
-\contentsline {section}{\numberline {D.3}Metodolog\'ia de comparaci\'on por instant\'aneas}{143}{section.D.3}%
-\contentsline {subsection}{\numberline {D.3.1}Enfoque est\'atico y escenario de validaci\'on}{144}{subsection.D.3.1}%
-\contentsline {section}{\numberline {D.4}M\'etricas de concordancia}{144}{section.D.4}%
-\contentsline {subsection}{\numberline {D.4.1}Coeficiente de correlaci\'on de Spearman (\(\rho \))}{145}{subsection.D.4.1}%
-\contentsline {subsection}{\numberline {D.4.2}Coeficiente \(\tau \) de Kendall}{145}{subsection.D.4.2}%
-\contentsline {subsection}{\numberline {D.4.3}\textit {Overlap} en los primeros \(K\) puestos}{146}{subsection.D.4.3}%
-\contentsline {subsection}{\numberline {D.4.4}Error absoluto medio de posici\'on (MAE)}{146}{subsection.D.4.4}%
-\contentsline {subsection}{\numberline {D.4.5}Complementariedad de las m\'etricas}{147}{subsection.D.4.5}%
-\contentsline {section}{\numberline {D.5}Resultados e interpretaci\'on}{147}{section.D.5}%
-\contentsline {subsection}{\numberline {D.5.1}Concordancia cuantitativa}{147}{subsection.D.5.1}%
-\contentsline {subsection}{\numberline {D.5.2}Comparaci\'on tangible: Top 10 global}{150}{subsection.D.5.2}%
-\contentsline {subsection}{\numberline {D.5.3}Modelos de nivel de poder}{151}{subsection.D.5.3}%
-\contentsline {subsection}{\numberline {D.5.4}Resumen de los resultados}{159}{subsection.D.5.4}%
-\contentsline {section}{\numberline {D.6}Discusi\'on y limitaciones}{160}{section.D.6}%
-\contentsline {subsection}{\numberline {D.6.1}Resumen de hallazgos}{160}{subsection.D.6.1}%
-\contentsline {subsection}{\numberline {D.6.2}Limitaciones}{161}{subsection.D.6.2}%
-\contentsline {chapter}{Bibliograf\'ia}{163}{appendix*.175}%
+\contentsline {chapter}{\numberline {2}Marco Te\'orico}{7}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Variables del modelo}{7}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}M\'etricas deportivas}{7}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Factores ambientales}{8}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Factores econ\'omicos}{9}{subsection.2.1.3}%
+\contentsline {section}{\numberline {2.2}Sistemas de rating y comparaci\'on probabil\'istica}{9}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Modelos fundacionales: Bradley-Terry y Elo}{10}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Glicko y Glicko-2}{11}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Adaptaci\'on de Glicko-2 al f\'utbol: el modelo trinomial}{14}{subsection.2.2.3}%
+\contentsline {section}{\numberline {2.3}Modelamiento probabil\'istico del resultado}{17}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Distribuciones base: Poisson y Skellam}{17}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Derivaci\'on de las probabilidades trinomiales}{18}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Estabilidad num\'erica y propiedades estructurales}{20}{subsection.2.3.3}%
+\contentsline {section}{\numberline {2.4}Integraci\'on de covariables y estimaci\'on de par\'ametros}{22}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Covariables ex\'ogenas y vector de entrada}{22}{subsection.2.4.1}%
+\contentsline {paragraph}{Bloque econ\'omico.}{22}{paragraph*.3}%
+\contentsline {paragraph}{Bloque ambiental.}{22}{paragraph*.4}%
+\contentsline {paragraph}{Bloque deportivo.}{23}{paragraph*.5}%
+\contentsline {subsection}{\numberline {2.4.2}La presi\'on parcial de ox\'igeno como covariable ambiental}{23}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Estimaci\'on por m\'axima verosimilitud y equivalencia con log-loss}{24}{subsection.2.4.3}%
+\contentsline {subsection}{\numberline {2.4.4}Optimizaci\'on num\'erica}{26}{subsection.2.4.4}%
+\contentsline {section}{\numberline {2.5}Modelo predictivo complementario (MLP)}{27}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Formalizaci\'on de la red}{27}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Justificaci\'on te\'orica del refinamiento no param\'etrico}{28}{subsection.2.5.2}%
+\contentsline {subsection}{\numberline {2.5.3}Entrenamiento y funci\'on de p\'erdida}{29}{subsection.2.5.3}%
+\contentsline {section}{\numberline {2.6}M\'etricas de evaluaci\'on}{30}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}M\'etricas probabil\'isticas}{30}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}M\'etricas de clasificaci\'on y el colapso del empate}{32}{subsection.2.6.2}%
+\contentsline {chapter}{\numberline {3}Metodolog\'ia}{35}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Fuentes de datos}{35}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Datos deportivos: FBRef}{35}{subsection.3.1.1}%
+\contentsline {paragraph}{Navegaci\'on por \'indice diario.}{36}{paragraph*.6}%
+\contentsline {paragraph}{Detecci\'on y bypass de bloqueos.}{36}{paragraph*.7}%
+\contentsline {paragraph}{Filtrado por competici\'on.}{36}{paragraph*.8}%
+\contentsline {paragraph}{Control de frecuencia.}{37}{paragraph*.9}%
+\contentsline {paragraph}{Descarga de estad\'isticas detalladas.}{37}{paragraph*.10}%
+\contentsline {paragraph}{Construcci\'on del dataset maestro.}{37}{paragraph*.11}%
+\contentsline {paragraph}{Variables extra\'idas.}{37}{paragraph*.12}%
+\contentsline {subsection}{\numberline {3.1.2}Datos econ\'omicos de clubes: Transfermarkt}{38}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}Datos meteorol\'ogicos: Open-Meteo}{38}{subsection.3.1.3}%
+\contentsline {subsection}{\numberline {3.1.4}Datos macroecon\'omicos de pa\'ises: Datosmacro}{39}{subsection.3.1.4}%
+\contentsline {subsection}{\numberline {3.1.5}Datos de estadios}{40}{subsection.3.1.5}%
+\contentsline {subsection}{\numberline {3.1.6}S\'intesis de los conjuntos de datos generados}{40}{subsection.3.1.6}%
+\contentsline {section}{\numberline {3.2}Procesamiento y limpieza de datos}{41}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Consolidaci\'on y aplanamiento de registros deportivos}{41}{subsection.3.2.1}%
+\contentsline {paragraph}{Normalizaci\'on de esquemas.}{41}{paragraph*.13}%
+\contentsline {paragraph}{Aplanamiento y agregaci\'on.}{41}{paragraph*.14}%
+\contentsline {paragraph}{Generaci\'on de claves sint\'eticas.}{42}{paragraph*.15}%
+\contentsline {subsection}{\numberline {3.2.2}Normalizaci\'on de identidades y control de calidad}{42}{subsection.3.2.2}%
+\contentsline {paragraph}{Mapeo autom\'atico.}{42}{paragraph*.16}%
+\contentsline {paragraph}{Overrides manuales.}{42}{paragraph*.17}%
+\contentsline {paragraph}{Verificaci\'on de cobertura.}{42}{paragraph*.18}%
+\contentsline {subsection}{\numberline {3.2.3}Integraci\'on de fuentes auxiliares}{43}{subsection.3.2.3}%
+\contentsline {paragraph}{Datos clim\'aticos.}{43}{paragraph*.19}%
+\contentsline {paragraph}{Datos de estadios.}{44}{paragraph*.20}%
+\contentsline {paragraph}{Datos econ\'omicos micro.}{44}{paragraph*.21}%
+\contentsline {paragraph}{Datos macroecon\'omicos.}{44}{paragraph*.22}%
+\contentsline {paragraph}{Distancia de viaje.}{45}{paragraph*.23}%
+\contentsline {subsection}{\numberline {3.2.4}Construcci\'on de m\'etricas compuestas y ventanas de forma}{46}{subsection.3.2.4}%
+\contentsline {paragraph}{\'indices compuestos.}{46}{paragraph*.24}%
+\contentsline {paragraph}{Promedios m\'oviles y reglas de inactividad.}{46}{paragraph*.25}%
+\contentsline {paragraph}{Diferenciaci\'on por condici\'on.}{47}{paragraph*.26}%
+\contentsline {subsection}{\numberline {3.2.5}Filtrado temporal y por competici\'on}{47}{subsection.3.2.5}%
+\contentsline {paragraph}{Recorte temporal del dataset Full.}{47}{paragraph*.27}%
+\contentsline {paragraph}{Exclusi\'on de ligas sin m\'etricas b\'asicas.}{47}{paragraph*.28}%
+\contentsline {paragraph}{Correcci\'on de identidades duplicadas.}{47}{paragraph*.29}%
+\contentsline {paragraph}{Incorporaci\'on de partidos manuales.}{48}{paragraph*.30}%
+\contentsline {subsection}{\numberline {3.2.6}Imputaci\'on de valores faltantes y estandarizaci\'on}{48}{subsection.3.2.6}%
+\contentsline {paragraph}{Diferencias econ\'omicas.}{48}{paragraph*.31}%
+\contentsline {paragraph}{Variables clim\'aticas.}{48}{paragraph*.32}%
+\contentsline {paragraph}{Ratio de ocupaci\'on.}{48}{paragraph*.33}%
+\contentsline {paragraph}{Distancia de viaje.}{48}{paragraph*.34}%
+\contentsline {paragraph}{Estandarizaci\'on.}{48}{paragraph*.35}%
+\contentsline {subsection}{\numberline {3.2.7}Generaci\'on de los conjuntos de datos finales}{48}{subsection.3.2.7}%
+\contentsline {section}{\numberline {3.3}Selecci\'on de covariables}{49}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Primer Random Forest: diagn\'ostico sobre el universo completo}{49}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Segundo Random Forest: filtrado y selecci\'on manual}{51}{subsection.3.3.2}%
+\contentsline {paragraph}{Variables de mayor importancia relativa.}{52}{paragraph*.39}%
+\contentsline {paragraph}{M\'etricas compuestas de autor\'ia.}{53}{paragraph*.40}%
+\contentsline {paragraph}{Variable de composici\'on de plantilla.}{53}{paragraph*.41}%
+\contentsline {subsection}{\numberline {3.3.3}An\'alisis de correlaci\'on de covariables}{53}{subsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.3.4}Conjunto final de covariables ex\'ogenas}{55}{subsection.3.3.4}%
+\contentsline {section}{\numberline {3.4}Arquitectura del sistema predictivo}{55}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Variable dependiente y codificaci\'on}{56}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Bloque de conteo: estimaci\'on de tasas y probabilidad de empate}{56}{subsection.3.4.2}%
+\contentsline {paragraph}{Conjunto de entrenamiento y partici\'on temporal.}{56}{paragraph*.43}%
+\contentsline {paragraph}{Variables de entrada.}{56}{paragraph*.44}%
+\contentsline {paragraph}{Hiperpar\'ametros y salida.}{57}{paragraph*.45}%
+\contentsline {subsection}{\numberline {3.4.3}Bloque de rating din\'amico: Glicko-2 modificado}{57}{subsection.3.4.3}%
+\contentsline {paragraph}{Estado y actualizaci\'on.}{57}{paragraph*.46}%
+\contentsline {paragraph}{Ventaja de local\'ia y calibraci\'on del empate.}{57}{paragraph*.47}%
+\contentsline {paragraph}{Generaci\'on de probabilidades base.}{58}{paragraph*.48}%
+\contentsline {paragraph}{Observaci\'on sobre la ventaja de local\'ia.}{58}{paragraph*.49}%
+\contentsline {subsection}{\numberline {3.4.4}Bloque de refinamiento: perceptr\'on multicapa}{58}{subsection.3.4.4}%
+\contentsline {paragraph}{Vector de entrada.}{59}{paragraph*.50}%
+\contentsline {paragraph}{Arquitectura e hiperpar\'ametros.}{59}{paragraph*.51}%
+\contentsline {paragraph}{Entrenamiento.}{59}{paragraph*.52}%
+\contentsline {paragraph}{Protocolo de evaluaci\'on: corridas pareadas.}{59}{paragraph*.53}%
+\contentsline {subsection}{\numberline {3.4.5}Flujo de inferencia en cascada}{60}{subsection.3.4.5}%
+\contentsline {section}{\numberline {3.5}Entrenamiento y calibraci\'on}{60}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Calibraci\'on del bloque de conteo}{60}{subsection.3.5.1}%
+\contentsline {paragraph}{Partici\'on temporal.}{60}{paragraph*.54}%
+\contentsline {paragraph}{Conjunto de caracter\'isticas.}{61}{paragraph*.55}%
+\contentsline {paragraph}{Hiperpar\'ametros y criterio de parada.}{61}{paragraph*.56}%
+\contentsline {paragraph}{Derivaci\'on de la probabilidad de empate.}{61}{paragraph*.57}%
+\contentsline {subsection}{\numberline {3.5.2}Calibraci\'on del bloque de rating}{61}{subsection.3.5.2}%
+\contentsline {subsubsection}{Mejoras de la implementaci\'on propia sobre el motor de referencia}{62}{subsubsection*.58}%
+\contentsline {paragraph}{Correcci\'on algebraica del denominador trinomial.}{62}{paragraph*.59}%
+\contentsline {paragraph}{Reparametrizaci\'on logit del par\'ametro de empate.}{62}{paragraph*.60}%
+\contentsline {paragraph}{Heur\'istica de escala $g$.}{62}{paragraph*.61}%
+\contentsline {paragraph}{Sistema de ventaja parametrizada.}{62}{paragraph*.62}%
+\contentsline {paragraph}{Mecanismos de estabilidad num\'erica.}{63}{paragraph*.63}%
+\contentsline {paragraph}{Manejo de contextos excepcionales.}{63}{paragraph*.64}%
+\contentsline {paragraph}{Estado y actualizaci\'on.}{64}{paragraph*.65}%
+\contentsline {paragraph}{Funci\'on objetivo.}{64}{paragraph*.66}%
+\contentsline {paragraph}{Espacio de par\'ametros y cotas.}{64}{paragraph*.67}%
+\contentsline {paragraph}{Convergencia y par\'ametros calibrados.}{64}{paragraph*.68}%
+\contentsline {paragraph}{Evaluaci\'on aislada del bloque de rating.}{64}{paragraph*.69}%
+\contentsline {subsection}{\numberline {3.5.3}Entrenamiento del bloque de refinamiento}{65}{subsection.3.5.3}%
+\contentsline {paragraph}{Vector de entrada y estandarizaci\'on.}{65}{paragraph*.70}%
+\contentsline {paragraph}{Arquitectura e hiperpar\'ametros de entrenamiento.}{65}{paragraph*.71}%
+\contentsline {paragraph}{Protocolo de evaluaci\'on: corridas pareadas.}{65}{paragraph*.72}%
+\contentsline {paragraph}{M\'etricas de evaluaci\'on del protocolo.}{66}{paragraph*.73}%
+\contentsline {paragraph}{Observaci\'on sobre el colapso de la clase empate.}{66}{paragraph*.74}%
+\contentsline {section}{\numberline {3.6}M\'etricas de evaluaci\'on}{66}{section.3.6}%
+\contentsline {subsection}{\numberline {3.6.1}M\'etricas probabil\'isticas}{67}{subsection.3.6.1}%
+\contentsline {paragraph}{Log-loss categ\'orica.}{67}{paragraph*.75}%
+\contentsline {paragraph}{Log-loss binaria.}{67}{paragraph*.76}%
+\contentsline {paragraph}{Divergencia de Kullback-Leibler y calibraci\'on.}{67}{paragraph*.77}%
+\contentsline {subsection}{\numberline {3.6.2}M\'etricas de clasificaci\'on}{68}{subsection.3.6.2}%
+\contentsline {subsection}{\numberline {3.6.3}Protocolo de inferencia estad\'istica}{69}{subsection.3.6.3}%
+\contentsline {subsection}{\numberline {3.6.4}Evaluaci\'on por bloque funcional}{69}{subsection.3.6.4}%
+\contentsline {paragraph}{Bloque de conteo (Skellam/LightGBM).}{69}{paragraph*.78}%
+\contentsline {paragraph}{Bloque de rating (Glicko-2 modificado).}{70}{paragraph*.79}%
+\contentsline {paragraph}{Bloque de refinamiento (MLP).}{70}{paragraph*.80}%
+\contentsline {subsection}{\numberline {3.6.5}Discusi\'on metodol\'ogica sobre el empate}{70}{subsection.3.6.5}%
+\contentsline {chapter}{\numberline {4}Resultados y discusi\'on}{72}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Resultados del bloque de conteo}{72}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Calibraci\'on de las tasas de goles}{73}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Diagn\'ostico de residuos}{74}{subsection.4.1.2}%
+\contentsline {section}{\numberline {4.2}Resultados del bloque de rating din\'amico}{77}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Convergencia y par\'ametros calibrados}{77}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Evaluaci\'on aislada del sistema Glicko-2 modificado}{79}{subsection.4.2.2}%
+\contentsline {section}{\numberline {4.3}Resultados del bloque de refinamiento neuronal}{79}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}M\'etricas probabil\'isticas}{80}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}El colapso de la clase empate y su recuperaci\'on parcial}{82}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Inferencia estad\'istica: test $t$ pareado}{83}{subsection.4.3.3}%
+\contentsline {subsection}{\numberline {4.3.4}Estructura de correlaci\'on entre las covariables seleccionadas}{84}{subsection.4.3.4}%
+\contentsline {section}{\numberline {4.4}Discusi\'on integrada}{85}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Jerarqu\'ia de aporte predictivo por bloque}{85}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}El rol de las m\'etricas deportivas avanzadas}{86}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}Limitaciones emergentes de los resultados}{87}{subsection.4.4.3}%
+\contentsline {paragraph}{Colapso persistente del empate.}{87}{paragraph*.94}%
+\contentsline {paragraph}{Sensibilidad del MLP a la composici\'on de features.}{87}{paragraph*.95}%
+\contentsline {paragraph}{Generalizaci\'on geogr\'afica.}{87}{paragraph*.96}%
+\contentsline {subsection}{\numberline {4.4.4}Recapitulaci\'on de hallazgos}{87}{subsection.4.4.4}%
+\contentsline {chapter}{\numberline {5}Conclusiones, limitaciones y l\'ineas futuras}{89}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Conclusiones}{89}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Limitaciones del estudio}{90}{section.5.2}%
+\contentsline {section}{\numberline {5.3}L\'ineas de investigaci\'on futuras}{92}{section.5.3}%
+\contentsline {chapter}{\numberline {A}Componente exploratorio: red neuronal recurrente}{94}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Motivaci\'on y formalismo}{94}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Arquitectura de datos e implementaci\'on}{95}{section.A.2}%
+\contentsline {subsection}{\numberline {A.2.1}Construcci\'on de secuencias hist\'oricas}{96}{subsection.A.2.1}%
+\contentsline {subsection}{\numberline {A.2.2}Clase \texttt {RRNN} en \texttt {PyTorch}}{96}{subsection.A.2.2}%
+\contentsline {section}{\numberline {A.3}Protocolo de entrenamiento}{97}{section.A.3}%
+\contentsline {section}{\numberline {A.4}Resultados emp\'iricos}{98}{section.A.4}%
+\contentsline {subsection}{\numberline {A.4.1}Evoluci\'on por \'epoca y diagn\'ostico de sobreajuste}{98}{subsection.A.4.1}%
+\contentsline {subsection}{\numberline {A.4.2}M\'etricas de evaluaci\'on sobre el conjunto de prueba}{98}{subsection.A.4.2}%
+\contentsline {section}{\numberline {A.5}Discusi\'on del componente}{99}{section.A.5}%
+\contentsline {paragraph}{Sobreajuste estructural.}{99}{paragraph*.100}%
+\contentsline {paragraph}{Rendimiento predictivo inferior.}{100}{paragraph*.101}%
+\contentsline {paragraph}{Complejidad operativa del pipeline.}{100}{paragraph*.102}%
+\contentsline {paragraph}{Observación sobre la eficiencia computacional.}{100}{paragraph*.103}%
+\contentsline {chapter}{\numberline {B}Componente validatorio: Glicko-2 Trinomial vs Glicko-2 con Covariables Ex\'ogenas}{101}{appendix.B}%
+\contentsline {section}{\numberline {B.1}Filosof\'ia del baseline \textit {naive}: el motor Shelopugin-Sirotkin puro}{102}{section.B.1}%
+\contentsline {subsection}{\numberline {B.1.1}Par\'ametros can\'onicos fijos}{102}{subsection.B.1.1}%
+\contentsline {section}{\numberline {B.2}El motor calibrado: G2Av1513.py}{104}{section.B.2}%
+\contentsline {subsection}{\numberline {B.2.1}Mecanismos de estabilidad num\'erica y manejo de contextos excepcionales}{105}{subsection.B.2.1}%
+\contentsline {section}{\numberline {B.3}Comparativa de hiperpar\'ametros y mejora estructural}{105}{section.B.3}%
+\contentsline {section}{\numberline {B.4}Comparaci\'on emp\'irica: del \textit {naive} al calibrado}{105}{section.B.4}%
+\contentsline {subsection}{\numberline {B.4.1}An\'alisis de discrepancias: Top 10 global y por liga}{107}{subsection.B.4.1}%
+\contentsline {subsection}{\numberline {B.4.2}Top 10 de la \'elite seg\'un el modelo calibrado}{109}{subsection.B.4.2}%
+\contentsline {section}{\numberline {B.5}S\'intesis: el aporte diferencial de la calibraci\'on}{110}{section.B.5}%
+\contentsline {subsection}{\numberline {B.5.1}El algoritmo como infraestructura, la calibraci\'on como se\~nal}{110}{subsection.B.5.1}%
+\contentsline {subsection}{\numberline {B.5.2}Los casos extremos de discrepancia}{110}{subsection.B.5.2}%
+\contentsline {subsection}{\numberline {B.5.3}La \'elite global permanece estable}{111}{subsection.B.5.3}%
+\contentsline {subsection}{\numberline {B.5.4}Las mejoras num\'ericas como habilitadores de la optimizaci\'on}{111}{subsection.B.5.4}%
+\contentsline {subsection}{\numberline {B.5.5}La transferibilidad del conocimiento calibrado}{111}{subsection.B.5.5}%
+\contentsline {chapter}{\numberline {C}Proyecci\'on temporal de ratings: modelos ARIMA y LSTM}{113}{appendix.C}%
+\contentsline {section}{\numberline {C.1}Justificaci\'on de la agregaci\'on semanal}{113}{section.C.1}%
+\contentsline {section}{\numberline {C.2}Fundamentos te\'oricos de los modelos de proyecci\'on}{114}{section.C.2}%
+\contentsline {subsection}{\numberline {C.2.1}Modelos ARIMA: fundamentos y aplicaci\'on univariada}{114}{subsection.C.2.1}%
+\contentsline {subsection}{\numberline {C.2.2}Redes LSTM: modelado de dependencias secuenciales a largo plazo}{115}{subsection.C.2.2}%
+\contentsline {subsection}{\numberline {C.2.3}Complementariedad y justificaci\'on de la comparaci\'on}{116}{subsection.C.2.3}%
+\contentsline {section}{\numberline {C.3}Construcci\'on del panel semanal}{116}{section.C.3}%
+\contentsline {section}{\numberline {C.4}Modelo ARIMA univariado por equipo}{117}{section.C.4}%
+\contentsline {paragraph}{Control de tiempo de ejecuci\'on.}{117}{paragraph*.113}%
+\contentsline {paragraph}{Predicci\'on recursiva con actualizaci\'on.}{117}{paragraph*.114}%
+\contentsline {section}{\numberline {C.5}Modelo LSTM global}{118}{section.C.5}%
+\contentsline {paragraph}{Arquitectura.}{118}{paragraph*.116}%
+\contentsline {paragraph}{Escalado por equipo.}{118}{paragraph*.117}%
+\contentsline {paragraph}{Generaci\'on de secuencias y entrenamiento.}{119}{paragraph*.118}%
+\contentsline {paragraph}{Desescalado de predicciones.}{119}{paragraph*.119}%
+\contentsline {section}{\numberline {C.6}Evaluaci\'on comparativa}{120}{section.C.6}%
+\contentsline {subsection}{\numberline {C.6.1}M\'etricas globales}{120}{subsection.C.6.1}%
+\contentsline {paragraph}{Spearman \(\rho \): preservaci\'on del ranking.}{120}{paragraph*.122}%
+\contentsline {subsection}{\numberline {C.6.2}Desempe\~no por equipo}{120}{subsection.C.6.2}%
+\contentsline {subsection}{\numberline {C.6.3}Visualizaciones descriptivas}{121}{subsection.C.6.3}%
+\contentsline {paragraph}{An\'alisis general.}{121}{paragraph*.127}%
+\contentsline {paragraph}{An\'alisis diferenciado por dataset.}{121}{paragraph*.128}%
+\contentsline {section}{\numberline {C.7}Ranking proyectado: \'ultima semana de test}{124}{section.C.7}%
+\contentsline {section}{\numberline {C.8}Limitaciones y observaciones finales}{126}{section.C.8}%
+\contentsline {chapter}{\numberline {D}Validaci\'on contra rankings institucionales}{128}{appendix.D}%
+\contentsline {section}{\numberline {D.1}Fuentes de datos externos}{129}{section.D.1}%
+\contentsline {subsection}{\numberline {D.1.1}Ranking UEFA}{129}{subsection.D.1.1}%
+\contentsline {subsection}{\numberline {D.1.2}Ranking AFC}{129}{subsection.D.1.2}%
+\contentsline {subsection}{\numberline {D.1.3}Ranking CONMEBOL}{129}{subsection.D.1.3}%
+\contentsline {subsection}{\numberline {D.1.4}Ranking ClubElo}{130}{subsection.D.1.4}%
+\contentsline {subsection}{\numberline {D.1.5}G2A y LSTM}{130}{subsection.D.1.5}%
+\contentsline {subsection}{\numberline {D.1.6}Cobertura geogr\'afica}{130}{subsection.D.1.6}%
+\contentsline {section}{\numberline {D.2}Armonizaci\'on de nombres y filtrado}{131}{section.D.2}%
+\contentsline {section}{\numberline {D.3}Metodolog\'ia de comparaci\'on por instant\'aneas}{131}{section.D.3}%
+\contentsline {subsection}{\numberline {D.3.1}Enfoque est\'atico y escenario de validaci\'on}{132}{subsection.D.3.1}%
+\contentsline {section}{\numberline {D.4}M\'etricas de concordancia}{132}{section.D.4}%
+\contentsline {subsection}{\numberline {D.4.1}Coeficiente de correlaci\'on de Spearman (\(\rho \))}{133}{subsection.D.4.1}%
+\contentsline {subsection}{\numberline {D.4.2}Coeficiente \(\tau \) de Kendall}{133}{subsection.D.4.2}%
+\contentsline {subsection}{\numberline {D.4.3}\textit {Overlap} en los primeros \(K\) puestos}{134}{subsection.D.4.3}%
+\contentsline {subsection}{\numberline {D.4.4}Error absoluto medio de posici\'on (MAE)}{134}{subsection.D.4.4}%
+\contentsline {subsection}{\numberline {D.4.5}Complementariedad de las m\'etricas}{135}{subsection.D.4.5}%
+\contentsline {section}{\numberline {D.5}Resultados e interpretaci\'on}{135}{section.D.5}%
+\contentsline {subsection}{\numberline {D.5.1}Concordancia cuantitativa}{135}{subsection.D.5.1}%
+\contentsline {subsection}{\numberline {D.5.2}Comparaci\'on tangible: Top 10 global}{138}{subsection.D.5.2}%
+\contentsline {subsection}{\numberline {D.5.3}Modelos de nivel de poder}{139}{subsection.D.5.3}%
+\contentsline {subsection}{\numberline {D.5.4}Resumen de los resultados}{146}{subsection.D.5.4}%
+\contentsline {section}{\numberline {D.6}Discusi\'on y limitaciones}{147}{section.D.6}%
+\contentsline {subsection}{\numberline {D.6.1}Resumen de hallazgos}{147}{subsection.D.6.1}%
+\contentsline {subsection}{\numberline {D.6.2}Limitaciones}{148}{subsection.D.6.2}%
+\contentsline {chapter}{Bibliograf\'ia}{150}{appendix*.141}%
 \contentsfinish 

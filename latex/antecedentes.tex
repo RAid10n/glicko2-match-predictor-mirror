@@ -1,67 +1,93 @@
 \chapter{Antecedentes}
 \label{ch:antecedentes}
 
+El f\'utbol, como varios deportes, constituye un sistema din\'amico de naturaleza estoc\'astica. A pesar de la percepci\'on de imprevisibilidad que le rodea, este deporte posee un volumen de datos hist\'oricos disponibles que le posicionan como un dominio apropiado para el modelado probabil\'istico \cite{Fonseca}.
+
 \section{El f\'utbol como campo de estudio}
 
-El f\'utbol constituye un sistema din\'amico cuya naturaleza estoc\'astica y el volumen de datos hist\'oricos disponibles lo posicionan como un dominio apropiado para el modelado probabil\'istico \cite{Fonseca}. Desde una perspectiva formal, el problema central radica en estimar la fuerza relativa de los equipos para predecir la distribuci\'on de resultados de manera coherente. Aunque el desenlace individual de un partido presenta varianza residual considerable, el rendimiento agregado en ligas profesionales muestra estabilidad que puede explicarse mediante covariables de alta correlaci\'on \cite{SZYMAN1}. La digitalizaci\'on masiva de eventos ha permitido la transici\'on de m\'etricas de conteo simple hacia variables probabil\'isticas como los goles esperados (xG), que eval\'uan la calidad de las oportunidades creadas en lugar de los resultados brutos \cite{xG,MetricasBase}. En consecuencia, el f\'utbol ofrece un entorno donde la inferencia multivariante puede aplicarse para optimizar la predicci\'on de resultados \cite{VanPutten2023}.
+Desde una perspectiva formal, el problema central radica en estimar la fuerza relativa de los equipos para predecir la distribuci\'on de resultados de manera coherente. Aunque el desenlace individual de un partido presenta varianza residual considerable, el rendimiento agregado en ligas profesionales muestra estabilidad que puede explicarse mediante covariables de alta correlaci\'on \cite{SZYMAN1}. Como consecuencia de la digitalizaci\'on masiva y el avance de la tecnolog\'ia y pensamiento, actualmente el f\'utbol ofrece un entorno donde la inferencia multivariante puede aplicarse para optimizar la predicci\'on de resultados \cite{VanPutten2023}.
 
 \section{Sistemas de rating y comparaci\'on probabil\'istica}
-
-\subsection{Modelo de Bradley-Terry}
+\label{sec:sistemas_rating}
 
 El fundamento probabil\'istico de todo sistema de rating moderno radica en el modelo de comparaciones pareadas propuesto por Bradley y Terry \cite{bradley1952}. Este modelo postula que la probabilidad de que una entidad \(i\) venza a una entidad \(j\) depende de la proporci\'on de sus fuerzas latentes relativas:
 \[
 P(i \succ j) = \frac{\pi_i}{\pi_i + \pi_j}.
 \]
+
 Aunque este modelo captura la esencia de la comparaci\'on binaria, no incorpora la incertidumbre sobre la estimaci\'on de las fuerzas latentes ni permite la actualizaci\'on secuencial.
 
-\subsection{Sistema Elo}
-
-La transici\'on hacia un esquema de implementaci\'on din\'amica se materializa en el sistema de calificaci\'on desarrollado por Elo \cite{Elo1978}. La probabilidad esperada de victoria se modela mediante una funci\'on log\'istica:
+En consecuencia, la transici\'on hacia un esquema de implementaci\'on din\'amica se materializa en el sistema de calificaci\'on desarrollado por Elo \cite{Elo1978}. La probabilidad esperada de victoria se modela mediante una funci\'on log\'istica:
 \[
 P_{ij} = \frac{1}{1 + 10^{-(R_i - R_j)/400}}.
 \]
-El sistema Elo presenta limitaciones estructurales: trata el rating como un escalar determinista, omite una medida de incertidumbre asociada a la calificaci\'on y utiliza una constante \(K\) uniforme que no distingue entre la volatilidad de un equipo en transici\'on y la estabilidad de una escuadra consolidada \cite{Glickman1995}.
+Sin embargo, el sistema Elo presenta limitaciones estructurales: trata el rating como un escalar determinista, omite una medida de incertidumbre asociada a la calificaci\'on y utiliza una constante \(K\) uniforme que no distingue entre la volatilidad de un equipo en transici\'on y la estabilidad de una escuadra consolidada \cite{Glickman1995}. 
 
-\subsection{Sistemas Glicko y Glicko-2}
-
-Glickman \cite{Glickman1995} super\'o las limitaciones del sistema Elo al modelar la fuerza de un equipo como una variable aleatoria normal:
+Por su parte, Glickman \cite{Glickman1995} super\'o las limitaciones del sistema Elo al modelar la fuerza de un equipo como una variable aleatoria normal:
 \[
 \Theta_i \sim \mathcal{N}\bigl(R_i, RD_i^2\bigr),
 \]
 donde \(RD_i\) es la desviaci\'on de rating que cuantifica la incertidumbre estad\'istica. El sistema Glicko-2 \cite{Glickman2022} extiende este marco introduciendo la volatilidad \(\sigma\) como tercer par\'ametro de estado, que cuantifica el grado de fluctuaci\'on esperada en el rendimiento de un equipo.
 
-\subsection{Modelo modificado de Shelopugin y Sirotkin}
+No obstante, todos estos modelos comparten una limitaci\'on com\'un: tratan al resultado como una comparaci\'on binaria, es decir, el empate no es contemplado como categor\'ia estoc\'astica.
 
-El n\'ucleo metodol\'ogico de la presente investigaci\'on se fundamenta en la arquitectura propuesta por Shelopugin y Sirotkin \cite{Glicko2Mod}, quienes adaptan el algoritmo Glicko-2 a las restricciones estructurales del f\'utbol profesional. Las extensiones fundamentales son: 
+Esta limitaci\'on motiva la adaptaci\'on que se sigue en el presente trabajo. El n\'ucleo metodol\'ogico de la presente investigaci\'on se fundamenta en la arquitectura propuesta por Shelopugin y Sirotkin \cite{Glicko2Mod}, quienes adaptan el algoritmo Glicko-2 a las restricciones estructurales del f\'utbol profesional. Las extensiones fundamentales son: 
 
 \begin{enumerate}
-	\item n marco de comparaci\'on trinomial que incorpora el empate como categor\'ia estoc\'astica independiente con probabilidad end\'ogena.
-	\item n par\'ametro de sesgo que captura la ventaja de local\'ia documentada emp\'iricamente.
+	\item Un marco de comparaci\'on trinomial que incorpora el empate como categor\'ia estoc\'astica independiente con probabilidad end\'ogena.
+	\item Un par\'ametro de sesgo que captura la ventaja de local\'ia documentada emp\'iricamente.
 \end{enumerate}
 
 \section{Modelamiento probabil\'istico del resultado}
-
-\subsection{Distribuci\'on de Poisson}
+\label{sec:modelo_probabilistico_ant}
 
 La distribuci\'on de Poisson constituye el modelo can\'onico para variables de conteo en eventos raros e independientes \cite{maher1982}. En el contexto del f\'utbol, el n\'umero de goles anotados por un equipo en un partido satisface razonablemente los supuestos de homogeneidad e independencia temporal de los eventos de anotaci\'on, siempre que se controle por el nivel relativo de los equipos mediante covariables apropiadas.
 
-\subsection{Distribuci\'on de Skellam}
-
 La diferencia de goles \(D = G_H - G_A\) entre dos variables Poisson independientes sigue una distribuci\'on de Skellam \cite{skellam1946}. Karlis y Ntzoufras \cite{karlis2003} aplicaron esta distribuci\'on al modelado de resultados deportivos, demostrando que el valor en \(d=0\) proporciona la probabilidad de empate y captura adecuadamente la din\'amica del resultado.
 
-\subsection{M\'etricas de evaluaci\'on}
-
-La log-loss categ\'orica constituye la m\'etrica central de evaluaci\'on por ser una \emph{strictly proper scoring rule} \cite{gneiting2007}: incentiva al modelo a reportar la probabilidad verdadera de cada resultado sin forzar una apuesta binaria. Complementariamente, se utilizan m\'etricas de clasificaci\'on como accuracy, precisi\'on, recall y F1-score para evaluar el desempeño bajo una regla de decisi\'on dura.
+La p\'erdida logar\'itmica categ\'orica, o log-loss categ\'orica, constituye la m\'etrica central de evaluaci\'on por ser una \emph{strictly proper scoring rule} \cite{gneiting2007}; es decir, incentiva al modelo a reportar la probabilidad verdadera de cada resultado sin forzar una apuesta binaria. Complementariamente, se utilizan m\'etricas de clasificaci\'on como accuracy, precisi\'on, recall y F1-score para evaluar el desempe\~no bajo una regla de decisi\'on dura.
 
 \section{Brecha metodol\'ogica}
+\label{sec:brecha}
 
-Ninguno de los esquemas revisados: FIFA, UEFA, CONMEBOL, AFC, CONCACAF, IFFHS; modela simult\'aneamente:
+Los sistemas de clasificaci\'on institucionales mencionados en la  Introducci\'on (FIFA \cite{FIFARanking2024}, UEFA \cite{UEFARanking2024}, CONMEBOL \cite{CONMEBOLRanking2021}, AFC 
+\cite{AFCRanking2024}, CONCACAF \cite{CONCACAFRanking2023} e IFFHS  \cite{IFFHSRanking2021}) comparten una limitaci\'on estructural: tratan la fuerza de los equipos como un escalar determinista, sin 
+cuantificar la incertidumbre estad\'istica asociada a la estimaci\'on. Esta carencia no es accidental, sino consecuencia de su l\'ogica de c\'alculo. El ranking FIFA adopta una variante del m\'etodo Elo con escala $600$ pero sin medida de dispersi\'on \cite{FIFARanking2024}. La UEFA y la CONMEBOL acumulan puntos sobre ventanas de varias 
+temporadas sin ponderar la fuerza del oponente 
+\cite{UEFARanking2024,CONMEBOLRanking2021}. La CONCACAF, pese a adoptar un esquema Elo con actualizaci\'on cero-sumatoria, codifica 
+el empate como una ausencia de se\~nal ($0$) en lugar de modelarlo como categor\'ia estoc\'astica independiente \cite{CONCACAFRanking2023}. En los cuatro casos, el resultado del ranking es un n\'umero \'unico que no admite lectura probabil\'istica.
+
+Los sistemas probabil\'isticos de rating revisados en la 
+Secci\'on~\ref{sec:sistemas_rating} corrigieron parcialmente esta 
+carencia. Glicko-2 \cite{Glickman2022} incorpora la incertidumbre 
+mediante la desviaci\'on de rating $RD$, de modo que la fuerza 
+latente de un equipo se modela como una distribuci\'on normal 
+$\Theta_i \sim \mathcal{N}(R_i, RD_i^2)$ en lugar de un escalar. 
+Shelopugin y Sirotkin \cite{Glicko2Mod} extienden este marco para 
+contemplar el empate como categor\'ia estoc\'astica independiente 
+con probabilidad end\'ogena, superando as\'i la restricci\'on 
+binaria del Glicko-2 can\'onico. Sin embargo, ninguno de estos 
+desarrollos integra covariables contextuales de naturaleza 
+deportiva, econ\'omica o ambiental en la estimaci\'on de la 
+probabilidad del resultado. El estado $(R, RD, \sigma)$ de un 
+equipo resume su trayectoria hist\'orica de resultados, pero no 
+incorpora el contexto espec\'ifico de cada enfrentamiento.
+
+Por otra parte, los modelos de conteo basados en la distribuci\'on de Poisson \cite{maher1982} y en la diferencia de goles a trav\'es de la distribuci\'on de Skellam \cite{skellam1946,karlis2003}, revisados en la Secci\'on~\ref{sec:modelo_probabilistico_ant}, ofrecen una formulaci\'on adecuada para derivar la probabilidad de empate a partir de las tasas de anotaci\'on esperadas. Karlis y Ntzoufras \cite{karlis2003} demostraron que el valor en $d=0$ de la distribuci\'on de Skellam proporciona la probabilidad de empate y captura adecuadamente la din\'amica del resultado. No obstante, estos modelos operan de forma est\'atica: las tasas $\lambda_H$ y 
+$\lambda_A$ se estiman a partir de covariables observadas del partido y no incorporan un estado latente que evolucione secuencialmente conforme se dispone de nuevos resultados. Esta 
+ausencia de actualizaci\'on din\'amica limita su capacidad para reflejar cambios en la forma competitiva de los equipos a lo largo de una temporada.
+
+La brecha que motiva el presente trabajo no es, entonces, la ausencia individual de cada componente, sino la falta de integraci\'on entre ellos. Los trabajos revisados abordan, a lo sumo, uno o dos de los siguientes elementos:
 
 \begin{itemize}
-	\item El empate como categor\'ia estoc\'astica independiente con probabilidad end\'ogena.
-	\item La incertidumbre sobre la fuerza de cada equipo.
-	\item La influencia de covariables deportivas, econ\'omicas y ambientales en la probabilidad del resultado.
+	\item Un modelo de conteo que estime tasas de goles y derive probabilidades por resultado.
+	\item Un sistema de rating din\'amico que actualice la fuerza latente y su incertidumbre de forma secuencial.
+	\item Un mecanismo que incorpore covariables ex\'ogenas sobre las probabilidades base.
 \end{itemize}
 
-Esta triple ausencia constituye la motivaci\'on central del presente trabajo.
+Ninguno los articula como un pipeline coherente donde cada bloque cubra las limitaciones del anterior. En particular, la 
+combinaci\'on no es trivial: el rating produce una fuerza latente en una escala arbitraria, el modelo de conteo produce tasas en goles por partido, y el refinador neuronal necesita un vector de entrada homog\'eneo. La traducci\'on entre estos espacios es parte del aporte del presente trabajo.
+
+El sistema propuesto no busca sustituir a los modelos revisados: los articula en una arquitectura en cascada donde el modelo de 
+conteo aporta la estimaci\'on base, el sistema de rating introduce la din\'amica temporal y un refinador neuronal incorpora el contexto ex\'ogeno. El Cap\'itulo~\ref{ch:marco} desarrolla el aparato formal que sustenta cada bloque; el Cap\'itulo~\ref{ch:metodologia} describe la implementaci\'on y la evaluaci\'on emp\'irica; y el Cap\'itulo~\ref{ch:resultados} 
+presenta los resultados obtenidos sobre los tres conjuntos de datos considerados.
