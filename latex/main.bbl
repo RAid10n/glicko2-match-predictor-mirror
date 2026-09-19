@@ -21,29 +21,29 @@
   \datalist[entry]{nyt/global//global/global/global}
     \entry{Charu2018}{book}{}{}
       \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=020c70dc5cad67c05e0b5981f0dd4b1e}{%
-           family={Aggarwa},
+        {{un=0,uniquepart=base,hash=86d11a07b1bfeac58dc68f7a419b3039}{%
+           family={Aggarwal},
            familyi={A\bibinitperiod},
-           given={Charu},
-           giveni={C\bibinitperiod},
+           given={Charu\bibnamedelima C.},
+           giveni={C\bibinitperiod\bibinitdelim C\bibinitperiod},
            givenun=0}}%
       }
       \list{publisher}{1}{%
         {Springer}%
       }
-      \strng{namehash}{020c70dc5cad67c05e0b5981f0dd4b1e}
-      \strng{fullhash}{020c70dc5cad67c05e0b5981f0dd4b1e}
-      \strng{fullhashraw}{020c70dc5cad67c05e0b5981f0dd4b1e}
-      \strng{bibnamehash}{020c70dc5cad67c05e0b5981f0dd4b1e}
-      \strng{authorbibnamehash}{020c70dc5cad67c05e0b5981f0dd4b1e}
-      \strng{authornamehash}{020c70dc5cad67c05e0b5981f0dd4b1e}
-      \strng{authorfullhash}{020c70dc5cad67c05e0b5981f0dd4b1e}
-      \strng{authorfullhashraw}{020c70dc5cad67c05e0b5981f0dd4b1e}
+      \strng{namehash}{86d11a07b1bfeac58dc68f7a419b3039}
+      \strng{fullhash}{86d11a07b1bfeac58dc68f7a419b3039}
+      \strng{fullhashraw}{86d11a07b1bfeac58dc68f7a419b3039}
+      \strng{bibnamehash}{86d11a07b1bfeac58dc68f7a419b3039}
+      \strng{authorbibnamehash}{86d11a07b1bfeac58dc68f7a419b3039}
+      \strng{authornamehash}{86d11a07b1bfeac58dc68f7a419b3039}
+      \strng{authorfullhash}{86d11a07b1bfeac58dc68f7a419b3039}
+      \strng{authorfullhashraw}{86d11a07b1bfeac58dc68f7a419b3039}
       \field{sortinit}{A}
       \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{Neural Newtworks and Deep Learning}
+      \field{title}{Neural Networks and Deep Learning}
       \field{year}{2018}
     \endentry
     \entry{AFCRanking2024}{misc}{}{}
@@ -588,7 +588,7 @@
       \field{title}{AFC Club Competitions Ranking 2026}
       \field{year}{2026}
     \endentry
-    \entry{Glickman1995}{article}{}{}
+    \entry{Glickman1995}{misc}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=4fcda38858c83369e122fa60b42ae410}{%
            family={Glickman},
@@ -610,11 +610,11 @@
       \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{journaltitle}{Harvard University}
+      \field{note}{Harvard University}
       \field{title}{The Glicko system}
       \field{year}{1995}
     \endentry
-    \entry{Glickman1999}{article}{}{}
+    \entry{Glickman1999}{misc}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=4fcda38858c83369e122fa60b42ae410}{%
            family={Glickman},
@@ -636,11 +636,11 @@
       \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{journaltitle}{Boston University}
+      \field{note}{Boston University}
       \field{title}{Parameter estimation in large dynamic paired comparison experiments}
       \field{year}{1999}
     \endentry
-    \entry{Glickman2022}{article}{}{}
+    \entry{Glickman2022}{misc}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=4fcda38858c83369e122fa60b42ae410}{%
            family={Glickman},
@@ -662,7 +662,7 @@
       \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{journaltitle}{Boston University}
+      \field{note}{Boston University}
       \field{title}{Example of the Glicko-2 system}
       \field{year}{2022}
     \endentry
@@ -699,6 +699,52 @@
       \verb{doi}
       \verb 10.1198/016214506000001437
       \endverb
+    \endentry
+    \entry{gumusdag2011aggression}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=c3b872473469e322184e1b42bce70ccb}{%
+           family={Gümüşdağ},
+           familyi={G\bibinitperiod},
+           given={Hayrettin},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=78a6342f61e07f51805913499de6655c}{%
+           family={Yildiran},
+           familyi={Y\bibinitperiod},
+           given={Ibrahim},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0cbc7168e498e979eaaff225b321fe0e}{%
+           family={Yamaner},
+           familyi={Y\bibinitperiod},
+           given={Faruk},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7c29448e5aff6690c455e9b9bd0fe26d}{%
+           family={Kartal},
+           familyi={K\bibinitperiod},
+           given={Alparslan},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {University of Physical Education, Warsaw, Poland}%
+      }
+      \strng{namehash}{007557d69e6524692d2e5a2573750a93}
+      \strng{fullhash}{a046e19be23f761fbb450e160c985bcb}
+      \strng{fullhashraw}{a046e19be23f761fbb450e160c985bcb}
+      \strng{bibnamehash}{007557d69e6524692d2e5a2573750a93}
+      \strng{authorbibnamehash}{007557d69e6524692d2e5a2573750a93}
+      \strng{authornamehash}{007557d69e6524692d2e5a2573750a93}
+      \strng{authorfullhash}{a046e19be23f761fbb450e160c985bcb}
+      \strng{authorfullhashraw}{a046e19be23f761fbb450e160c985bcb}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Biomedical Human Kinetics}
+      \field{title}{Aggression and fouls in professional football}
+      \field{year}{2011}
     \endentry
     \entry{HernandezColina}{unpublished}{}{}
       \name{author}{2}{}{%
@@ -1195,7 +1241,7 @@
       \verb https://www.liacs.leidenuniv.nl/
       \endverb
     \endentry
-    \entry{EloModelConvergenceFinal}{article}{}{}
+    \entry{EloModelConvergenceFinal}{misc}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=0bd76a84a73582925612fd27877bbbec}{%
            family={Robbins},
@@ -1216,7 +1262,7 @@
       \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{journaltitle}{East Carolina University}
+      \field{note}{East Carolina University}
       \field{title}{Assessing the Convergence of the Elo Ranking Model}
       \field{year}{2025}
     \endentry
@@ -1455,37 +1501,6 @@
       \field{labeltitlesource}{title}
       \field{title}{SOCCERNOMICS - Why European Men and American Women Win and Billionaire Owners Are Destined to Lose}
       \field{year}{2022}
-    \endentry
-    \entry{thurstone1927}{article}{}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=b8dcc68e31c2419d785890fb67be433b}{%
-           family={Thurstone},
-           familyi={T\bibinitperiod},
-           given={Louis\bibnamedelima Leon},
-           giveni={L\bibinitperiod\bibinitdelim L\bibinitperiod},
-           givenun=0}}%
-      }
-      \list{publisher}{1}{%
-        {American Psychological Association}%
-      }
-      \strng{namehash}{b8dcc68e31c2419d785890fb67be433b}
-      \strng{fullhash}{b8dcc68e31c2419d785890fb67be433b}
-      \strng{fullhashraw}{b8dcc68e31c2419d785890fb67be433b}
-      \strng{bibnamehash}{b8dcc68e31c2419d785890fb67be433b}
-      \strng{authorbibnamehash}{b8dcc68e31c2419d785890fb67be433b}
-      \strng{authornamehash}{b8dcc68e31c2419d785890fb67be433b}
-      \strng{authorfullhash}{b8dcc68e31c2419d785890fb67be433b}
-      \strng{authorfullhashraw}{b8dcc68e31c2419d785890fb67be433b}
-      \field{sortinit}{T}
-      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Psychological Review}
-      \field{title}{A Law of Comparative Judgment}
-      \field{year}{1927}
-      \verb{doi}
-      \verb 10.1037/h0070288
-      \endverb
     \endentry
     \entry{Transfermarkt}{online}{}{}
       \name{author}{1}{}{%

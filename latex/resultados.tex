@@ -1,17 +1,7 @@
 \chapter{Resultados y discusi\'on}
 \label{ch:resultados}
 
-Este cap\'itulo presenta los hallazgos emp\'iricos % obtenidos tras la ejecuci\'on
-derivados del pipeline predictivo descrito en el Cap\'itulo~\ref{ch:metodologia}. La exposici\'on respeta la arquitectura en cascada del sistema, dividiedose as\'i tres secciones: 
-
-\begin{itemize}
-	\item Bloque de conteo (Skellam/LGBM).
-	\item Sistema de rating din\'amico (Glicko-2 modificado \texttt{G2Av1513.py}).
-	\item Refinador neuronal (Perpectr\'on multicapa/MLP)
-\end{itemize}
-%se comienza con el bloque de conteo (Skellam/LightGBM), se contin\'ua con el sistema de rating din\'amico (Glicko-2 modificado \texttt{G2Av1513.py}) y se cierra con el refinador neuronal (perceptr\'on multicapa).
-
-Cada bloque se eval\'ua tanto de manera aislada como en interacci\'on con los dem\'as, de modo que el lector pueda cuantificar el aporte incremental de cada componente. El an\'alisis se estructura en torno a tres conjuntos de datos: \textbf{Full} (26\,960 partidos, 2019--2025, con m\'etricas deportivas detalladas), \textbf{Lite} (37\,712 partidos, 2017--2025, sin m\'etricas compuestas de autor\'ia) y \textbf{Lite Recortado} (26\,960 partidos, 2019--2025, sin m\'etricas compuestas de autor\'ia). La comparaci\'on sistem\'atica entre Full y Lite Recortado, que comparten id\'entica ventana temporal pero difieren en la inclusi\'on de \'indices compuestos de autor\'ia, permite aislar el efecto predictivo de las m\'etricas deportivas avanzadas.
+Este cap\'itulo presenta los resultados emp\'iricos obtenidos al ejecutar el sistema predictivo en cascada descrito en el Cap\'itulo~\ref{ch:metodologia} sobre los tres conjuntos de datos definidos en la Secci\'on~\ref{subsec:datasets_finales}. Se sigue el orden de dependencias del flujo establecido: se eval\'ua primero el bloque de conteo, que produce las tasas de goles y la probabilidad de empate que alimentan al sistema de rating; en segundo lugar el Glicko-2 modificado, que actualiza secuencialmente la fuerza latente de cada equipo y emite el vector de probabilidades base; y finalmente el perceptr\'on multicapa, que refina dichas probabilidades incorporando covariables ex\'ogenas. Cada bloque se eval\'ua tanto de forma aislada como en interacci\'on con los anteriores, de modo que el lector pueda cuantificar el aporte incremental de cada componente. El an\'alisis se estructura en torno a tres conjuntos de datos: \textbf{Full} (27\,067 partidos, 2019--2025, con m\'etricas deportivas detalladas), \textbf{Lite} (37\,819 partidos, 2017--2025, sin m\'etricas compuestas de autor\'ia) y \textbf{Lite Recortado} (27\,067 partidos, 2019--2025, sin m\'etricas compuestas de autor\'ia). La comparaci\'on entre Full y Lite Recortado, que comparten id\'entica ventana temporal y difieren \'unicamente en la inclusi\'on de los \'indices compuestos de autor\'ia, permite aislar el efecto predictivo de las m\'etricas deportivas avanzadas. El cap\'itulo cierra con una discusi\'on integrada que articula los hallazgos de los tres bloques y anticipa las limitaciones que se retoman en las conclusiones.
 
 % ============================================================
 % SECCION 4.1 -- Bloque de conteo

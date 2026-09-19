@@ -34,11 +34,7 @@ En cuanto a la composici\'on de plantilla, la proporci\'on de jugadores extranje
 
 A nivel macroecon\'omico, los indicadores como el Producto Interno Bruto, la tasa de inflaci\'on, la Inversi\'on Extranjera Directa, el coeficiente de Gini del pa\'is, el gasto p\'ublico y la deuda soberana del pa\'is de origen de cada liga podr\'ian tambi\'en explicar estas asimetr\'ias dado el contexto pol\'itico, econ\'omico y social de la regi\'on.
 
-Los tres bloques anteriores describen el contexto del partido. Sin embargo, 
-para predecir el resultado no basta con caracterizar las condiciones del 
-enfrentamiento: es necesario estimar la fuerza relativa de los equipos. Esa 
-estimaci\'on es el problema central de los sistemas de rating usuales, que se revisan 
-en la secci\'on~\ref{sec:rating}.
+Los tres bloques anteriores describen el contexto del partido. Sin embargo, para predecir el resultado no basta con caracterizar las condiciones del enfrentamiento: es necesario estimar la fuerza relativa de los equipos. Esa estimaci\'on es el problema central de los sistemas de rating usuales, que se revisan en la secci\'on~\ref{sec:rating}.
 
 \section{Sistemas de rating y comparaci\'on probabil\'istica}
 \label{sec:rating}
@@ -130,47 +126,26 @@ Y los nuevos estados se calculan como:
 	R^{(1)} &= R + q \cdot (RD^{(1)})^2 \sum_{k=1}^{m} g(RD_k)\bigl(s_k - E_k\bigr).
 \end{align}
 
-El modelo Glicko-2 \cite{Glickman2022} extiende el marco bayesiano del 
-sistema Glicko introduciendo la volatilidad $\sigma$ como tercer 
-par\'ametro de estado. Este par\'ametro cuantifica el grado de 
-fluctuaci\'on esperada en el rendimiento de un equipo: valores altos 
-indican trayectorias err\'aticas, mientras que valores bajos reflejan 
-consistencia. Como en el sistema original, la incertidumbre sobre la 
-fuerza relativa puede resumirse mediante un intervalo de confianza del 
-$95\%$, definido por $[R-2\cdot RD,\; R+2\cdot RD]$.
+El modelo Glicko-2 \cite{Glickman2022} extiende el marco bayesiano del sistema Glicko introduciendo la volatilidad $\sigma$ como tercer par\'ametro de estado. Este par\'ametro cuantifica el grado de fluctuaci\'on esperada en el rendimiento de un equipo: valores altos indican trayectorias err\'aticas, mientras que valores bajos reflejan consistencia. Como en el sistema original, la incertidumbre sobre la fuerza relativa puede resumirse mediante un intervalo de confianza del $95\%$, definido por $[R-2\cdot RD,\; R+2\cdot RD]$.
 
-El algoritmo opera sobre \emph{per\'iodos de rating}, dentro de los 
-cuales todos los partidos se consideran simult\'aneos. El 
-administrador del sistema fija, adem\'as, la constante $\tau>0$, que 
-restringe la magnitud del cambio de volatilidad entre per\'iodos; 
-valores razonables se ubican en $[0{.}3,\,1{.}2]$; para conjuntos de 
-resultados altamente improbables se recomienda $\tau=0{,}2$ 
-\cite{Glickman2022}.
+El algoritmo opera sobre \emph{per\'iodos de rating}, dentro de los cuales todos los partidos se consideran simult\'aneos. El administrador del sistema fija, adem\'as, la constante $\tau>0$, que restringe la magnitud del cambio de volatilidad entre per\'iodos; valores razonables se ubican en $[0{.}3,\,1{.}2]$; para conjuntos de resultados altamente improbables se recomienda $\tau=0{,}2$ \cite{Glickman2022}.
 
 \begin{definition}[Sistema Glicko-2]
-	Sea un equipo con estado $(R,RD,\sigma)$ al inicio de un per\'iodo de 
-	rating. La actualizaci\'on bayesiana del estado tras observar $m$ 
-	resultados contra oponentes con estados $(R_j,RD_j)$, $j=1,\dots,m$, 
+	Sea un equipo con estado $(R,RD,\sigma)$ al inicio de un per\'iodo de rating. La actualizaci\'on bayesiana del estado tras observar $m$ resultados contra oponentes con estados $(R_j,RD_j)$, $j=1,\dots,m$, 
 	se realiza mediante los siguientes ocho pasos:
 	
-	\paragraph*{Paso 1: Inicializaci\'on} Si el equipo es nuevo, se asigna 
-	$R_0=1500$, $RD_0=350$ y $\sigma_0=0{,}06$. De lo contrario, se toman 
-	los valores del per\'iodo anterior.
+	\paragraph*{Paso 1: Inicializaci\'on} Si el equipo es nuevo, se asigna $R_0=1500$, $RD_0=350$ y $\sigma_0=0{,}06$. De lo contrario, se toman los valores del per\'iodo anterior.
 	
-	\paragraph*{Paso 2: Cambio de escala} Se transforman el rating y la 
-	desviaci\'on al espacio Glicko-2 mediante
+	\paragraph*{Paso 2: Cambio de escala} Se transforman el rating y la desviaci\'on al espacio Glicko-2 mediante 
+	
 	\begin{equation}\label{eq:glicko2_scale}
 		\mu=\frac{R-1500}{173{,}7178},\qquad 
 		\phi=\frac{RD}{173{,}7178},
 	\end{equation}
-	donde $173{,}7178\approx 400/\ln 10$. La volatilidad $\sigma$ no se 
-	transforma.
+	donde $173{,}7178\approx 400/\ln 10$. La volatilidad $\sigma$ no se transforma.
 	
-	\paragraph*{Paso 3: Varianza del sistema} Sean $\mu_1,\dots,\mu_m$ y 
-	$\phi_1,\dots,\phi_m$ los par\'ametros transformados de los 
-	oponentes, y $s_j\in\{0,0{.}5,1\}$ el resultado observado contra el 
-	oponente $j$ (derrota, empate, victoria). Se define la funci\'on de 
-	escala
+	\paragraph*{Paso 3: Varianza del sistema} Sean $\mu_1,\dots,\mu_m$ y $\phi_1,\dots,\phi_m$ los par\'ametros transformados de los oponentes, y $s_j\in\{0,0{.}5,1\}$ el resultado observado contra el oponente $j$ (derrota, empate, victoria). Se define la funci\'on de escala
+	
 	\begin{equation}\label{eq:glicko2_g}
 		g(\phi_j)=\frac{1}{\sqrt{1+\dfrac{3\phi_j^{2}}{\pi^{2}}}},
 	\end{equation}
@@ -178,46 +153,37 @@ resultados altamente improbables se recomienda $\tau=0{,}2$
 	\begin{equation}\label{eq:glicko2_E}
 		E(\mu,\mu_j,\phi_j)=\frac{1}{1+\exp\!\bigl(-g(\phi_j)(\mu-\mu_j)\bigr)}.
 	\end{equation}
-	La varianza del sistema, que mide la precisi\'on de la informaci\'on 
-	aportada por los resultados del per\'iodo, es
+	La varianza del sistema, que mide la precisi\'on de la informaci\'on aportada por los resultados del per\'iodo, es
 	\begin{equation}\label{eq:glicko2_v}
 		v=\left[\sum_{j=1}^{m}g(\phi_j)^{2}\,
 		E(\mu,\mu_j,\phi_j)\bigl(1-E(\mu,\mu_j,\phi_j)\bigr)\right]^{-1}.
 	\end{equation}
 	
-	\paragraph*{Paso 4: Cambio ponderado} La estimaci\'on de la mejora en 
-	el rating, comparando el rendimiento observado con el esperado, es
+	\paragraph*{Paso 4: Cambio ponderado} La estimaci\'on de la mejora en el rating, comparando el rendimiento observado con el esperado, es
 	\begin{equation}\label{eq:glicko2_delta}
 		\Delta=v\sum_{j=1}^{m}g(\phi_j)\bigl(s_j-E(\mu,\mu_j,\phi_j)\bigr).
 	\end{equation}
 	
-	\paragraph*{Paso 5: Optimizaci\'on de la volatilidad.} Se determina 
-	$\sigma'$ resolviendo num\'ericamente el punto estacionario de la 
-	funci\'on
+	\paragraph*{Paso 5: Optimizaci\'on de la volatilidad.} Se determina $\sigma'$ resolviendo num\'ericamente el punto estacionario de la funci\'on
 	\begin{equation}\label{eq:glicko2_f}
 		f(x)=\frac{e^{x}\bigl(\Delta^{2}-\phi^{2}-v-e^{x}\bigr)}
 		{2\bigl(\phi^{2}+v+e^{x}\bigr)^{2}}-\frac{x-a}{\tau^{2}},
 		\qquad a=\ln(\sigma^{2}),
 	\end{equation}
-	mediante el \emph{m\'etodo de Illinois} (variante estable de la 
-	regula falsi). El procedimiento itera hasta que $|B-A|\leq\varepsilon$ 
-	(con $\varepsilon=10^{-6}$) y devuelve
+	mediante el \emph{m\'etodo de Illinois} (variante estable de la regula falsi que Glickman adopt\'o tras descartar el m\'etodo Newton-Raphson debido a problemas de convergencia \cite{Glickman2022}). El procedimiento itera hasta que $|B-A|\leq\varepsilon$ (con $\varepsilon=10^{-6}$) y devuelve
+	
 	\begin{equation}\label{eq:glicko2_sigma_prime}
 		\sigma'=\exp(A/2).
 	\end{equation}
 	
-	\paragraph*{Paso 6: Difusi\'on temporal de la incertidumbre} Antes de 
-	incorporar los nuevos resultados, se actualiza la desviaci\'on 
-	efectiva del per\'iodo como
+	\paragraph*{Paso 6: Difusi\'on temporal de la incertidumbre} Antes de incorporar los nuevos resultados, se actualiza la desviaci\'on efectiva del per\'iodo como
 	\begin{equation}\label{eq:glicko2_phi_star}
 		\phi^{*}=\sqrt{\phi^{2}+\sigma'^{2}}.
 	\end{equation}
-	Si el equipo no compite durante el per\'iodo, \'unicamente se aplica 
-	este paso con $\phi^{*}=\sqrt{\phi^{2}+\sigma^{2}}$, manteniendo 
-	$\mu$ y $\sigma$ inalterados.
+	Si el equipo no compite durante el per\'iodo, \'unicamente se aplica este paso con $\phi^{*}=\sqrt{\phi^{2}+\sigma^{2}}$, manteniendo $\mu$ y $\sigma$ inalterados.
 	
-	\paragraph*{Paso 7: Actualizaci\'on del estado} Los nuevos par\'ametros 
-	en escala Glicko-2 son
+	\paragraph*{Paso 7: Actualizaci\'on del estado} Los nuevos par\'ametros en escala Glicko-2 son
+	
 	\begin{align}
 		\phi' &=\frac{1}{\sqrt{\dfrac{1}{\phi^{*2}}+\dfrac{1}{v}}},
 		\label{eq:glicko2_phi_prime}\\[6pt]
@@ -226,21 +192,15 @@ resultados altamente improbables se recomienda $\tau=0{,}2$
 		\label{eq:glicko2_mu_prime}
 	\end{align}
 	
-	\paragraph*{Paso 8: Reversi\'on de escala} Finalmente, se transforman 
-	los par\'ametros actualizados a la escala nominal original:
+	\paragraph*{Paso 8: Reversi\'on de escala} Finalmente, se transforman los par\'ametros actualizados a la escala nominal original:
+	
 	\begin{equation}\label{eq:glicko2_revert}
 		R'=173{.}7178\,\mu'+1500,\qquad RD'=173{.}7178\,\phi'.
 	\end{equation}
 \end{definition}
 
 \begin{obs}
-	La estructura de actualizaci\'on \eqref{eq:glicko2_phi_prime}--%
-	\eqref{eq:glicko2_mu_prime} evidencia el car\'acter bayesiano del 
-	algoritmo: $\phi'$ es la desviaci\'on a posteriori resultante de 
-	combinar el prior difundido $\phi^{*}$ con la verosimilitud del 
-	per\'iodo (cuantificada por $v$), mientras que $\mu'$ desplaza el 
-	rating prior en proporci\'on al error de predicci\'on 
-	$(s_j-E)$ ponderado por la precisi\'on relativa de cada oponente.
+	La estructura de actualizaci\'on \eqref{eq:glicko2_phi_prime}--	\eqref{eq:glicko2_mu_prime} evidencia el car\'acter bayesiano del algoritmo: $\phi'$ es la desviaci\'on a posteriori resultante de combinar el priori difundido $\phi^{*}$ con la verosimilitud del per\'iodo (cuantificada por $v$), mientras que $\mu'$ desplaza el rating priori en proporci\'on al error de predicci\'on $(s_j-E)$ ponderado por la precisi\'on relativa de cada oponente.
 \end{obs}
 
 \subsection{Adaptaci\'on de Glicko-2 al f\'utbol: el modelo trinomial}
@@ -362,13 +322,7 @@ La distribuci\'on de Poisson constituye el modelo can\'onico para variables de c
 
 En el contexto deportivo, $\lambda$ representa la potencia ofensiva esperada del equipo en un partido. Para los rangos t\'ipicos del f\'utbol profesional suele ocurrir que $\lambda \in [0{.}5,\,3{.}0]$, y la moda de la distribuci\'on es $0$ o $1$ goles, lo que refleja la escasez del evento. 
 
-Una propiedad relevante para el desarrollo posterior es la aditividad 
-de la familia Poisson: si $X_1 \sim \operatorname{Poisson}(\lambda_1)$ y 
-$X_2 \sim \operatorname{Poisson}(\lambda_2)$ son independientes, entonces 
-$X_1 + X_2 \sim \operatorname{Poisson}(\lambda_1 + \lambda_2)$. Esta 
-propiedad se sigue directamente de la funci\'on generadora de momentos 
-y resulta \'util cuando se consideran dos mitades de un partido o dos competiciones 
-simult\'aneas como procesos independientes.
+Una propiedad relevante para el desarrollo posterior es la aditividad de la familia Poisson: si $X_1 \sim \operatorname{Poisson}(\lambda_1)$ y $X_2 \sim \operatorname{Poisson}(\lambda_2)$ son independientes, entonces $X_1 + X_2 \sim \operatorname{Poisson}(\lambda_1 + \lambda_2)$. Esta propiedad se sigue directamente de la funci\'on generadora de momentos y resulta \'util cuando se consideran dos mitades de un partido o dos competiciones simult\'aneas como procesos independientes.
 
 Cabe se\~nalar que el supuesto de independencia temporal entre goles es una aproximaci\'on: la ocurrencia de un gol modifica transitoriamente la din\'amica del encuentro, introduciendo una correlaci\'on local d\'ebil. Como se\~nala Maher \cite{maher1982}, esta dependencia de corto alcance se amortigua en el agregado de una temporada, por lo que el modelo Poisson sigue siendo razonable como primera aproximaci\'on. Cuando se requiere modelar expl\'icitamente la correlaci\'on entre los goles del equipo local y visitante, una extensi\'on natural es el modelo bivariante de Poisson \cite{karlis2003}; sin embargo a trav\'es del vector de covariables $x_{ij}$ esta correlaci\'on se captura indirectamente a trav\'es de la modulaci\'on simult\'anea de $\lambda_H$ y $\lambda_A$.
 
@@ -389,18 +343,13 @@ A partir de esto se tiene la siguiente definici\'on
 
 \begin{obs}[Momentos de la distribuci\'on de Skellam]
 	\label{obs:momentos_skellam}
-	La linealidad del valor esperado y debido a la independencia de $G_H$ y 
-	$G_A$, la diferencia $D = G_H - G_A$ satisface
+	La linealidad del valor esperado y debido a la independencia de $G_H$ y $G_A$, la diferencia $D = G_H - G_A$ satisface
 	\begin{equation}\label{eq:momentos_skellam}
 		\mathbb{E}[D] = \lambda_H - \lambda_A, \qquad
 		\operatorname{Var}(D) = \lambda_H + \lambda_A.
 	\end{equation}
-	La media tiene interpretaci\'on deportiva directa: si 
-	$\lambda_H > \lambda_A$, el modelo predice una diferencia de goles 
-	esperada positiva. La varianza cuantifica la incertidumbre agregada 
-	del marcador y es sim\'etrica en ambas tasas.
+	La media tiene interpretaci\'on deportiva directa: si $\lambda_H > \lambda_A$, el modelo predice una diferencia de goles esperada positiva. La varianza cuantifica la incertidumbre agregada del marcador y es sim\'etrica en ambas tasas.
 \end{obs}
-
 
 
 \subsection{Derivaci\'on de las probabilidades trinomiales}
@@ -447,16 +396,12 @@ La estructura trinomial del modelo de Shelopugin y Sirotkin, presentada en la Se
 \begin{obs}[Simetr\'ia del modelo]
 	\label{obs:simetria_trinomial}
 	
-	El vector de probabilidades $\mathcal{P}(\lambda_H,\lambda_A) = 
-	(P_H, P_D, P_A)$ satisface
+	El vector de probabilidades $\mathcal{P}(\lambda_H,\lambda_A) = (P_H, P_D, P_A)$ satisface
 	\begin{enumerate}
 		\item $P_D(\lambda_H, \lambda_A) = P_D(\lambda_A, \lambda_H)$;
 		\item $P_H(\lambda_H, \lambda_A) = P_A(\lambda_A, \lambda_H)$.
 	\end{enumerate}
-	La primera propiedad se sigue de que la expresi\'on 
-	\eqref{eq:prob_D_bessel} depende del producto $\lambda_H \lambda_A$, 
-	y la segunda propiedad se sigue de intercambiar los roles de local y visitante en la 
-	definici\'on de los eventos $\{G_H > G_A\}$ y $\{G_H < G_A\}$.
+	La primera propiedad se sigue de que la expresi\'on \eqref{eq:prob_D_bessel} depende del producto $\lambda_H \lambda_A$, y la segunda propiedad se sigue de intercambiar los roles de local y visitante en la definici\'on de los eventos $\{G_H > G_A\}$ y $\{G_H < G_A\}$.
 \end{obs}
 
 A modo de ilustraci\'on num\'erica, consid\'erese un enfrentamiento t\'ipico de liga profesional con tasas esperadas $\lambda_H = 1{,}8$ y $\lambda_A = 1{,}2$. Estos valores corresponden a un equipo local ligeramente favorito, situaci\'on frecuente en competiciones de media tabla. Evaluando las f\'ormulas anteriores se obtiene $P_H \approx 0{,}514$, $P_D \approx 0{,}231$ y $P_A \approx 0{,}254$, con una diferencia de goles esperada de $0{,}6$ y una desviaci\'on t\'ipica de $\sqrt{3{,}0} \approx 1{,}73$ goles. La probabilidad de empate resulta sustancialmente mayor que la que asignar\'ia un modelo de dos resultados (victoria/derrota), lo que justifica la inclusi\'on expl\'icita del empate como categor\'ia estoc\'astica independiente en el sistema de rating.
@@ -465,32 +410,21 @@ A modo de ilustraci\'on num\'erica, consid\'erese un enfrentamiento t\'ipico de 
 \label{subsec:buena_definicion}
 \label{subsec:propiedades_estructurales}
 
-Es necesario verificar que las probabilidades asignadas por el modelo 
-de conteo constituyen efectivamente una distribuci\'on de probabilidad 
-v\'alida sobre el espacio de resultados $\{H, D, A\}$.
+Es necesario verificar que las probabilidades asignadas por el modelo de conteo constituyen efectivamente una distribuci\'on de probabilidad v\'alida sobre el espacio de resultados $\{H, D, A\}$.
 
 \begin{prop}[Buena definici\'on]
 	\label{prop:buena_definicion}
-	Las probabilidades $(P_H, P_D, P_A)$ definidas en la 
-	Proposici\'on~\ref{prop:prob_resultados} satisfacen:
+	Las probabilidades $(P_H, P_D, P_A)$ definidas en la 	Proposici\'on~\ref{prop:prob_resultados} satisfacen:
 	\begin{enumerate}
-		\item[(i)] No negatividad: $P_H \geq 0$, $P_D \geq 0$, 
-		$P_A \geq 0$.
+		\item[(i)] No negatividad: $P_H \geq 0$, $P_D \geq 0$, $P_A \geq 0$.
 		\item[(ii)] Suma unitaria: $P_H + P_D + P_A = 1$.
 	\end{enumerate}
 \end{prop}
 
 \begin{proof}
-	\textit{(i)} Cada t\'ermino en las sumas que definen $P_H$ y $P_D$ 
-	es producto de probabilidades de Poisson, no negativas por 
-	definici\'on. Por tanto $P_H \geq 0$ y $P_D \geq 0$, y como 
-	$P_A = 1 - P_H - P_D$, la no negatividad de $P_A$ se sigue de 
-	\textit{(ii)}.
+	\textit{(i)} Cada t\'ermino en las sumas que definen $P_H$ y $P_D$ es producto de probabilidades de Poisson, no negativas por definici\'on. Por tanto $P_H \geq 0$ y $P_D \geq 0$, y como $P_A = 1 - P_H - P_D$, la no negatividad de $P_A$ se sigue de \textit{(ii)}.
 	
-	\textit{(ii)} Los eventos $\{G_H > G_A\}$, $\{G_H = G_A\}$ y 
-	$\{G_H < G_A\}$ son disjuntos dos a dos y su uni\'on es el espacio 
-	muestral completo. Por el axioma de aditividad de la probabilidad 
-	para eventos mutuamente excluyentes,
+	\textit{(ii)} Los eventos $\{G_H > G_A\}$, $\{G_H = G_A\}$ y $\{G_H < G_A\}$ son disjuntos dos a dos y su uni\'on es el espacio muestral completo. Por el axioma de aditividad de la probabilidad para eventos mutuamente excluyentes,
 	\[
 	P(G_H > G_A) + P(G_H = G_A) + P(G_H < G_A) = 1,
 	\]
@@ -505,22 +439,13 @@ Para el rango t\'ipico $\lambda \in [0{.}5, 3{.}0]$, la elecci\'on $K = 16$ mant
 
 \begin{obs}[Comportamiento l\'imite]
 	\label{obs:limites_modelo}
-	El vector de probabilidades $\mathcal{P}(\lambda_H,\lambda_A)$ 
-	satisface los siguientes l\'imites:
+	El vector de probabilidades $\mathcal{P}(\lambda_H,\lambda_A)$ satisface los siguientes l\'imites:
 	\begin{enumerate}
-		\item[(i)] Si $\lambda_H \to \infty$ con $\lambda_A$ fijo, 
-		entonces $P_H \to 1$, $P_D \to 0$ y $P_A \to 0$.
-		\item[(ii)] Si $\lambda_H = \lambda_A = \lambda \to \infty$, 
-		entonces $P_H \to \tfrac{1}{2}$, $P_A \to \tfrac{1}{2}$ y 
-		$P_D \to 0$.
-		\item[(iii)] Si $\lambda_H, \lambda_A \to 0$, entonces 
-		$P_D \to 1$.
+		\item[(i)] Si $\lambda_H \to \infty$ con $\lambda_A$ fijo, entonces $P_H \to 1$, $P_D \to 0$ y $P_A \to 0$.
+		\item[(ii)] Si $\lambda_H = \lambda_A = \lambda \to \infty$, entonces $P_H \to \tfrac{1}{2}$, $P_A \to \tfrac{1}{2}$ y $P_D \to 0$.
+		\item[(iii)] Si $\lambda_H, \lambda_A \to 0$, entonces $P_D \to 1$.
 	\end{enumerate}
-	El l\'imite \textit{(iii)} tiene interpretaci\'on deportiva 
-	inmediata: cuando dos equipos de muy bajo poder ofensivo se 
-	enfrentan, el modelo predice dominancia del empate a cero, 
-	fen\'omeno frecuente en ligas defensivas o en eliminatorias 
-	directas.
+	El l\'imite \textit{(iii)} tiene interpretaci\'on deportiva inmediata: cuando dos equipos de muy bajo poder ofensivo se enfrentan, el modelo predice dominancia del empate a cero, fen\'omeno frecuente en ligas defensivas o en eliminatorias directas.
 \end{obs}
 
 Adicionalmente, se aplica una normalizaci\'on expl\'icita del vector $(P_H, P_D, P_A)$ para compensar posibles errores de redondeo en aritm\'etica de punto flotante que desv\'ien ligeramente el vector de probabilidades de la condicion $P+H+P_D+P_A=1$.
@@ -645,8 +570,7 @@ En el contexto de aprendizaje autom\'atico, la funci\'on de p\'erdida est\'andar
 	As\'i, el estimador que minimiza la log-loss coincide con el estimador de m\'axima verosimilitud.
 \end{proof}
 
-La Proposici\'on~\ref{prop:equivalencia} establece que, aunque el entrenamiento se realice con un optimizador de primer orden sobre mini-lotes en lugar de un m\'etodo de segundo orden sobre la muestra completa, la funci\'on objetivo que se minimiza es, en esencia, la verosimilitud negativa del modelo multinomial. Esto vincula la implementaci\'on computacional con la inferencia estad\'istica cl\'asica. La formulaci\'on categ\'orica \eqref{eq:logloss} es la m\'etrica principal de evaluaci\'on, pues impone la suma unitaria 
-sobre las probabilidades predichas y respeta la estructura probabil\'istica conjunta del resultado. Adicionalmente, en la Secci\'on~\ref{subsec:logloss_metricas} se introduce una log-loss binaria sobre la partici\'on $\{H, \neg H\}$ con fines de  comparabilidad directa con el trabajo base de Shelopugin y Sirotkin \cite{Glicko2Mod}.
+La Proposici\'on~\ref{prop:equivalencia} establece que, aunque el entrenamiento se realice con un optimizador de primer orden sobre mini-lotes en lugar de un m\'etodo de segundo orden sobre la muestra completa, la funci\'on objetivo que se minimiza es, en esencia, la verosimilitud negativa del modelo multinomial. Esto vincula la implementaci\'on computacional con la inferencia estad\'istica cl\'asica. La formulaci\'on categ\'orica \eqref{eq:logloss} es la m\'etrica principal de evaluaci\'on, pues impone la suma unitaria sobre las probabilidades predichas y respeta la estructura probabil\'istica conjunta del resultado. Adicionalmente, en la Secci\'on~\ref{subsec:logloss_metricas} se introduce una log-loss binaria sobre la partici\'on $\{H, \neg H\}$ con fines de  comparabilidad directa con el trabajo base de Shelopugin y Sirotkin \cite{Glicko2Mod}.
 
 \subsection{Optimizaci\'on num\'erica}
 \label{subsec:optimizacion}
@@ -680,7 +604,6 @@ La separaci\'on entre L-BFGS-B y Adam refleja la distinta naturaleza de los dos 
 El sistema de rating Glicko-2 modificado, junto con el modelo de conteo y la integraci\'on de covariables descritos en las secciones anteriores, proporciona un vector de probabilidades base $(P_H, P_D, P_A)$ que respeta la estructura probabil\'istica del enfrentamiento. No obstante, la relaci\'on entre las covariables y el resultado final no es, en general, lineal ni aditiva. La hip\'otesis central de esta secci\'on es que existen interacciones no lineales y efectos de orden superior entre las covariables que no son capturables mediante una correcci\'on param\'etrica simple sobre las tasas de goles.
 
 En consecuencia, se introduce un perceptr\'on multicapa (MLP, \emph{Multilayer Perceptron}) como refinador no param\'etrico del vector de probabilidades base. La red opera sobre el vector concatenado $\mathbf{z}_{ij}$ definido en \eqref{eq:input_mlp} y produce una distribuci\'on de probabilidad refinada que mantiene la coherencia probabil\'istica pero corrige las desviaciones sistem\'aticas no explicadas por el bloque param\'etrico previo.
-
 
 
 \subsection{Formalizaci\'on de la red}
@@ -844,22 +767,14 @@ En t\'erminos pr\'acticos, la propiedad de regla estrictamente propia es la que 
 El corolario inmediato es que un modelo que minimice la log-loss est\'a incentivado a reportar la probabilidad verdadera: cualquier desviaci\'on sistem\'atica se traduce en un incremento estricto de la p\'erdida esperada. Esta propiedad cierra el arco te\'orico iniciado con la verosimilitud multinomial en la Secci\'on~\ref{subsec:logloss} y justifica la elecci\'on de la log-loss como funci\'on objetivo central del trabajo \cite{gneiting2007}.
 
 \paragraph*{Log-loss binaria como referencia cruzada.}
-Para mantener comparabilidad directa con el trabajo base de Shelopugin 
-y Sirotkin \cite{Glicko2Mod}, quienes reportan log-loss binaria sobre 
-la partici\'on $\{H, \neg H\}$ (victoria local \emph{versus} no 
-victoria local), se define
+Para mantener comparabilidad directa con el trabajo base de Shelopugin y Sirotkin \cite{Glicko2Mod}, quienes reportan log-loss binaria sobre la partici\'on $\{H, \neg H\}$ (victoria local \emph{versus} no victoria local), se define
+
 \begin{equation}\label{eq:logloss_binaria}
 	\mathcal{L}_{\mathrm{log}}^{\mathrm{bin}}(\boldsymbol{\theta}) 
 	= -\frac{1}{N}\sum_{i=1}^{N}\Bigl[ y_{i,H}\log \tilde{P}_{H,i} 
 	+ (1-y_{i,H})\log(1-\tilde{P}_{H,i})\Bigr].
 \end{equation}
-Al igual que su contraparte categ\'orica, esta funci\'on es una regla 
-de puntuaci\'on estrictamente propia sobre el simplex de dimensi\'on 1, 
-por lo que su minimizaci\'on incentiva al modelo a reportar la 
-probabilidad verdadera de victoria local. La m\'etrica principal de 
-evaluaci\'on probabil\'istica del presente trabajo es la categ\'orica 
-\eqref{eq:logloss}; la binaria \eqref{eq:logloss_binaria} se usa 
-como referencia cruzada con la literatura base.
+Al igual que su contraparte categ\'orica, esta funci\'on es una regla de puntuaci\'on estrictamente propia sobre el simplex de dimensi\'on 1, por lo que su minimizaci\'on incentiva al modelo a reportar la probabilidad verdadera de victoria local. La m\'etrica principal de evaluaci\'on probabil\'istica del presente trabajo es la categ\'orica \eqref{eq:logloss}; la binaria \eqref{eq:logloss_binaria} se usa como referencia cruzada con la literatura base.
 
 \subsection{M\'etricas de clasificaci\'on y el colapso del empate}
 \label{subsec:clasificacion}

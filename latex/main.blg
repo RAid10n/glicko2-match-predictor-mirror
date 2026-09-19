@@ -1,16 +1,14 @@
 [2] Config.pm:308> INFO - This is Biber 2.20
-[3] Config.pm:311> INFO - Logfile is 'main.blg'
-[810] biber-MSWIN64:340> INFO - === 
-[1081] Biber.pm:420> INFO - Reading 'main.bcf'
-[1647] Biber.pm:994> INFO - Found 52 citekeys in bib section 0
-[1723] Biber.pm:4463> INFO - Processing section 0
-[1817] Biber.pm:4654> INFO - Looking for bibtex file 'references.bib' for section 0
-[2099] bibtex.pm:1713> INFO - LaTeX decoding ...
-[2358] bibtex.pm:1519> INFO - Found BibTeX data source 'references.bib'
-[3406] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'variable = shifted' with 'variable = non-ignorable'
-[3407] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[3407] Biber.pm:4283> INFO - Sorting list 'nyt/global//global/global/global' of type 'entry' with template 'nyt' and locale 'es-ES'
-[3671] bbl.pm:676> INFO - Writing 'main.bbl' with encoding 'UTF-8'
-[3755] bbl.pm:779> INFO - Output to main.bbl
-[3764] Biber.pm:131> WARN - Duplicate entry key: 'maher1982' in file 'references.bib', skipping ...
-[3764] Biber.pm:133> INFO - WARNINGS: 1
+[4] Config.pm:311> INFO - Logfile is 'main.blg'
+[798] biber-MSWIN64:340> INFO - === 
+[1098] Biber.pm:420> INFO - Reading 'main.bcf'
+[1670] Biber.pm:994> INFO - Found 52 citekeys in bib section 0
+[1755] Biber.pm:4463> INFO - Processing section 0
+[1856] Biber.pm:4654> INFO - Looking for bibtex file 'references.bib' for section 0
+[2075] bibtex.pm:1713> INFO - LaTeX decoding ...
+[2374] bibtex.pm:1519> INFO - Found BibTeX data source 'references.bib'
+[3434] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'variable = shifted' with 'variable = non-ignorable'
+[3435] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[3435] Biber.pm:4283> INFO - Sorting list 'nyt/global//global/global/global' of type 'entry' with template 'nyt' and locale 'es-ES'
+[3771] bbl.pm:676> INFO - Writing 'main.bbl' with encoding 'UTF-8'
+[3860] bbl.pm:779> INFO - Output to main.bbl
