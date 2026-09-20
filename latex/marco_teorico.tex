@@ -766,15 +766,21 @@ En t\'erminos pr\'acticos, la propiedad de regla estrictamente propia es la que 
 
 El corolario inmediato es que un modelo que minimice la log-loss est\'a incentivado a reportar la probabilidad verdadera: cualquier desviaci\'on sistem\'atica se traduce en un incremento estricto de la p\'erdida esperada. Esta propiedad cierra el arco te\'orico iniciado con la verosimilitud multinomial en la Secci\'on~\ref{subsec:logloss} y justifica la elecci\'on de la log-loss como funci\'on objetivo central del trabajo \cite{gneiting2007}.
 
-\paragraph*{Log-loss binaria como referencia cruzada.}
-Para mantener comparabilidad directa con el trabajo base de Shelopugin y Sirotkin \cite{Glicko2Mod}, quienes reportan log-loss binaria sobre la partici\'on $\{H, \neg H\}$ (victoria local \emph{versus} no victoria local), se define
-
+\paragraph*{Log-loss binaria sobre la partici\'on $\{H, \neg H\}$.}
+Para evaluar espec\'ificamente la calibraci\'on del modelo sobre la clase mayoritaria, la victoria local, se reporta la log-loss binaria sobre la partici\'on $\{H, \neg H\}$, definida como
 \begin{equation}\label{eq:logloss_binaria}
 	\mathcal{L}_{\mathrm{log}}^{\mathrm{bin}}(\boldsymbol{\theta}) 
 	= -\frac{1}{N}\sum_{i=1}^{N}\Bigl[ y_{i,H}\log \tilde{P}_{H,i} 
 	+ (1-y_{i,H})\log(1-\tilde{P}_{H,i})\Bigr].
 \end{equation}
-Al igual que su contraparte categ\'orica, esta funci\'on es una regla de puntuaci\'on estrictamente propia sobre el simplex de dimensi\'on 1, por lo que su minimizaci\'on incentiva al modelo a reportar la probabilidad verdadera de victoria local. La m\'etrica principal de evaluaci\'on probabil\'istica del presente trabajo es la categ\'orica \eqref{eq:logloss}; la binaria \eqref{eq:logloss_binaria} se usa como referencia cruzada con la literatura base.
+Al igual que su contraparte categ\'orica, esta funci\'on es una regla de puntuaci\'on estrictamente propia sobre el simplex de dimensi\'on 1, por lo que su minimizaci\'on incentiva al modelo a reportar la probabilidad verdadera de victoria local. Su uso es complementario: no eval\'ua la coherencia conjunta de $(P_H, P_D, P_A)$ y por tanto no sustituye a la m\'etrica categ\'orica \eqref{eq:logloss}.
+
+\paragraph*{Promedio de log-loss binarias one-vs-rest.}
+El trabajo base de Shelopugin y Sirotkin \cite{Glicko2Mod} reporta su desempe\~no en una m\'etrica que no coincide con la log-loss categ\'orica ni con la binaria sobre $\{H, \neg H\}$. Se trata del promedio de las tres log-loss binarias, una por clase, en las que cada categor\'ia se eval\'ua contra la uni\'on de las otras dos:
+\begin{equation}\label{eq:logloss_ovr}
+	\mathcal{L}_{\mathrm{log}}^{\mathrm{OVR}}(\boldsymbol{\theta}) = \frac{1}{3}\sum_{c\in\{H,D,A\}} \left[ -\mathbb{I}(y=c)\log \tilde{P}_c - \mathbb{I}(y\neq c)\log(1-\tilde{P}_c) \right].
+\end{equation}
+Al ser promedio de reglas de puntuaci\'on estrictamente propias, esta cantidad tambi\'en es una regla estrictamente propia, aunque no impone la suma unitaria sobre las tres probabilidades como s\'i lo hace la formulaci\'on categ\'orica \eqref{eq:logloss}. Su uso en este trabajo se restringe a la comparaci\'on num\'erica con el trabajo base; la m\'etrica central de evaluaci\'on sigue siendo la categ\'orica.
 
 \subsection{M\'etricas de clasificaci\'on y el colapso del empate}
 \label{subsec:clasificacion}

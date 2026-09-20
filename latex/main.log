@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.18.1 (MiKTeX 24.4) (format=lualatex 2026.8.10)  19 SEP 2026 11:24
+This is LuaHBTeX, Version 1.18.1 (MiKTeX 24.4) (format=lualatex 2026.8.10)  19 SEP 2026 21:55
  restricted system commands enabled.
 **main.tex
 (./main.tex
@@ -1191,7 +1191,7 @@ Package biblatex Info: Reference section=0 on input line 54.
 Package biblatex Info: Reference segment=0 on input line 54.
 
 (./portada.tex
-<logo_UCV.jpg, id=571, 224.84pt x 225.84375pt>
+<logo_UCV.jpg, id=555, 224.84pt x 225.84375pt>
 File: logo_UCV.jpg Graphic file (type jpg)
 <use logo_UCV.jpg>
 Package luatex.def Info: logo_UCV.jpg  used on input line 16.
@@ -1256,30 +1256,24 @@ LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <10.5> not available
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <10.5> not available
 (Font)              size <10.95> substituted on input line 128.
 
+LaTeX Font Info:    Font shape `TU/LatinModernMono(0)/m/n' will be
+(Font)              scaled to size 11.5pt on input line 159.
+LaTeX Font Info:    Font shape `TU/LatinModernMono(0)/m/n' will be
+(Font)              scaled to size 10.5pt on input line 159.
 
 
 [5]
-LaTeX Font Info:    Font shape `TU/LatinModernMono(0)/m/n' will be
-(Font)              scaled to size 11.5pt on input line 146.
-LaTeX Font Info:    Font shape `TU/LatinModernMono(0)/m/n' will be
-(Font)              scaled to size 10.5pt on input line 146.
-
-Overfull \hbox (1.54796pt too wide) detected at line 171
- \TU/LatinModernRoman(0)/b/n/11.5 
- []
-
-
 
 [6]
-Overfull \hbox (0.74295pt too wide) detected at line 195
- \TU/LatinModernRoman(0)/b/n/11.5 
+Overfull \hbox (1.12245pt too wide) detected at line 208
+ \TU/LatinModernRoman(0)/b/n/11.5 
  []
 
 
 
 [7]
-Overfull \hbox (0.88095pt too wide) detected at line 220
- \TU/LatinModernRoman(0)/b/n/11.5 
+Overfull \hbox (0.11046pt too wide) detected at line 233
+ \TU/LatinModernRoman(0)/b/n/11.5 
  []
 
 )
@@ -1531,7 +1525,7 @@ com-ple-to --
 [50]
 
 [51]
-<figures/primerforest.png, id=1579, 823.1553pt x 491.436pt>
+<figures/primerforest.png, id=1557, 823.1553pt x 491.436pt>
 File: figures/primerforest.png Graphic file (type png)
 <use figures/primerforest.png>
 Package luatex.def Info: figures/primerforest.png  used on input line 374.
@@ -1539,12 +1533,12 @@ Package luatex.def Info: figures/primerforest.png  used on input line 374.
 
 
 [52<./figures/primerforest.png>]
-<figures/matrizconfusion2.png, id=1589, 396.0396pt x 327.3831pt>
+<figures/matrizconfusion2.png, id=1567, 396.0396pt x 327.3831pt>
 File: figures/matrizconfusion2.png Graphic file (type png)
 <use figures/matrizconfusion2.png>
 Package luatex.def Info: figures/matrizconfusion2.png  used on input line 392.
 (luatex.def)             Requested size: 412.02156pt x 340.60027pt.
-<figures/segundoforest.png, id=1593, 823.1553pt x 491.436pt>
+<figures/segundoforest.png, id=1571, 823.1553pt x 491.436pt>
 File: figures/segundoforest.png Graphic file (type png)
 <use figures/segundoforest.png>
 Package luatex.def Info: figures/segundoforest.png  used on input line 411.
@@ -1563,12 +1557,15 @@ LaTeX Font Warning: Font shape `TU/LatinModernMono(0)/b/n' undefined
 (Font)              using `TU/LatinModernMono(0)/m/n' instead on input line 494
 .
 
-LaTeX Font Info:    Font shape `TU/LatinModernMono(0)/b/n' will be
-(Font)              scaled to size 11.5pt on input line 497.
+LaTeX Font Info:    Font shape `TU/LatinModernMono(0)/m/n' will be
+(Font)              scaled to size 12.0pt on input line 499.
 
 
 [57]
-Overfull \hbox (33.72083pt too wide) in paragraph at lines 506--507
+LaTeX Font Info:    Font shape `TU/LatinModernMono(0)/b/n' will be
+(Font)              scaled to size 11.5pt on input line 517.
+
+Overfull \hbox (33.72083pt too wide) in paragraph at lines 526--527
 []\TU/LatinModernRoman(0)/b/n/11.5 Blo-que de-por-ti-vo \TU/LatinModernRoman(0)
 /m/n/11.5 (so-lo en el da-ta-set Full): \TU/LatinModernMono(0)/b/n/11.5 diff_xG_
 teo_r5\TU/LatinModernRoman(0)/m/n/11.5 , \TU/LatinModernMono(0)/b/n/11.5 diff_xA
@@ -1583,11 +1580,21 @@ DI_r5\TU/LatinModernRoman(0)/m/n/11.5 .
 [59]
 
 [60]
+Overfull \hbox (26.33736pt too wide) in paragraph at lines 575--576
+\TU/LatinModernRoman(0)/m/n/11.5 El mo-tor \TU/LatinModernMono(0)/b/n/11.5 G2Av1
+513.py \TU/LatinModernRoman(0)/m/n/11.5 se cons-tru-yó so-bre el có-di-go ca-n
+ó-ni-co de She-lo-pu-gin y Si-rot-kin (\TU/LatinModernMono(0)/b/n/11.5 glicko2.
+py\TU/LatinModernRoman(0)/m/n/11.5 ),
+ []
+
+
 
 [61]
 
 [62]
-Overfull \hbox (4.52611pt too wide) in paragraph at lines 618--619
+
+[63]
+Overfull \hbox (4.52611pt too wide) in paragraph at lines 630--631
 \TU/LatinModernRoman(0)/m/n/11.5 mis-mas sie-te más las tres mé-tri-cas de-por
 -ti-vas \TU/LatinModernRoman(0)/m/it/11.5 ro-lling \TU/LatinModernRoman(0)/m/n/
 11.5 (\TU/LatinModernMono(0)/b/n/11.5 diff_xG_teo_r5\TU/LatinModernRoman(0)/m/n
@@ -1597,224 +1604,168 @@ Overfull \hbox (4.52611pt too wide) in paragraph at lines 618--619
 
 
 
-[63]
-
 [64]
 
 [65]
 
-[66])
+[66]
 
-[67]
+[67])
+
+[68]
 \openout2 = resultados.aux
  (./resultados.tex
 \bbl@ensure@spanish {Capítulo} 4.
 
 
-[68
+[69
 
 
 
 
-]
+] (./figures/tabla_skellam_mae.tex)
 
-[69]
-<figures/drawfullratio.png, id=1794, 433.62pt x 361.35pt>
+[70] (./figures/tabla_skellam_draw.tex)
+<figures/drawfullratio.png, id=1772, 433.62pt x 361.35pt>
 File: figures/drawfullratio.png Graphic file (type png)
 <use figures/drawfullratio.png>
-Package luatex.def Info: figures/drawfullratio.png  used on input line 57.
+Package luatex.def Info: figures/drawfullratio.png  used on input line 31.
 (luatex.def)             Requested size: 183.11914pt x 152.59854pt.
-<figures/drawliteratio.png, id=1795, 433.62pt x 361.35pt>
+<figures/drawliteratio.png, id=1773, 433.62pt x 361.35pt>
 File: figures/drawliteratio.png Graphic file (type png)
 <use figures/drawliteratio.png>
-Package luatex.def Info: figures/drawliteratio.png  used on input line 62.
+Package luatex.def Info: figures/drawliteratio.png  used on input line 36.
 (luatex.def)             Requested size: 183.11914pt x 152.59854pt.
-<figures/drawliterecortado.png, id=1796, 433.62pt x 361.35pt>
+<figures/drawliterecortado.png, id=1774, 433.62pt x 361.35pt>
 File: figures/drawliterecortado.png Graphic file (type png)
 <use figures/drawliterecortado.png>
-Package luatex.def Info: figures/drawliterecortado.png  used on input line 67.
+Package luatex.def Info: figures/drawliterecortado.png  used on input line 41.
 (luatex.def)             Requested size: 183.11914pt x 152.59854pt.
-
-
-[70<./figures/drawfullratio.png><./figures/drawliteratio.png><./figures/drawlite
-recortado.png>]
-<figures/residuosfull.png, id=1809, 867.24pt x 289.08pt>
-File: figures/residuosfull.png Graphic file (type png)
-<use figures/residuosfull.png>
-Package luatex.def Info: figures/residuosfull.png  used on input line 100.
-(luatex.def)             Requested size: 412.02156pt x 137.34088pt.
-<figures/residuoslite.png, id=1810, 867.24pt x 289.08pt>
-File: figures/residuoslite.png Graphic file (type png)
-<use figures/residuoslite.png>
-Package luatex.def Info: figures/residuoslite.png  used on input line 106.
-(luatex.def)             Requested size: 412.02156pt x 137.34088pt.
-<figures/residuosliterecortado.png, id=1811, 867.24pt x 289.08pt>
-File: figures/residuosliterecortado.png Graphic file (type png)
-<use figures/residuosliterecortado.png>
-Package luatex.def Info: figures/residuosliterecortado.png  used on input line 
-112.
-(luatex.def)             Requested size: 412.02156pt x 137.34088pt.
-
+ (./figures/tabla_skellam_resid.tex)
 
 [71]
 
-[72<./figures/residuosfull.png><./figures/residuoslite.png><./figures/residuosli
-terecortado.png>]
+[72<./figures/drawfullratio.png><./figures/drawliteratio.png><./figures/drawlite
+recortado.png>]
+<figures/residuosfull.png, id=1792, 867.24pt x 289.08pt>
+File: figures/residuosfull.png Graphic file (type png)
+<use figures/residuosfull.png>
+Package luatex.def Info: figures/residuosfull.png  used on input line 63.
+(luatex.def)             Requested size: 343.35364pt x 114.45221pt.
+<figures/residuoslite.png, id=1793, 867.24pt x 289.08pt>
+File: figures/residuoslite.png Graphic file (type png)
+<use figures/residuoslite.png>
+Package luatex.def Info: figures/residuoslite.png  used on input line 69.
+(luatex.def)             Requested size: 343.35364pt x 114.45221pt.
+<figures/residuosliterecortado.png, id=1794, 867.24pt x 289.08pt>
+File: figures/residuosliterecortado.png Graphic file (type png)
+<use figures/residuosliterecortado.png>
+Package luatex.def Info: figures/residuosliterecortado.png  used on input line 
+75.
+(luatex.def)             Requested size: 343.35364pt x 114.45221pt.
 
-LaTeX Warning: Reference `subsec:train_rating' on page 73 undefined on input li
-ne 130.
 
-
-
-[73]
+[73<./figures/residuosfull.png><./figures/residuoslite.png><./figures/residuosli
+terecortado.png>] (./figures/tabla_glicko_convergencia.tex)
 
 [74]
 
-LaTeX Warning: Reference `subsec:train_mlp' on page 75 undefined on input line 
-230.
+[75] (./figures/tabla_glicko_aislado.tex)
 
+[76] (./figures/tabla_stage2_resumen.tex)
 
-
-[75]
-
-[76]
-
-[77]
-
-LaTeX Warning: Reference `subsec:empate' on page 78 undefined on input line 272
-.
-
-
-LaTeX Warning: Reference `prop:limites' on page 78 undefined on input line 299.
-
-
-
-LaTeX Warning: Reference `subsec:empate' on page 78 undefined on input line 299
-.
-
-
+[77] (./figures/tabla_stage2_f1d.tex)
 
 [78]
 
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 307.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 307.
-
-
-
 [79]
-<figures/correlacionlite.png, id=1875, 578.16pt x 505.89pt>
-File: figures/correlacionlite.png Graphic file (type png)
-<use figures/correlacionlite.png>
-Package luatex.def Info: figures/correlacionlite.png  used on input line 338.
-(luatex.def)             Requested size: 206.01077pt x 180.25992pt.
-<figures/correlacionfull.png, id=1876, 578.16pt x 505.89pt>
-File: figures/correlacionfull.png Graphic file (type png)
-<use figures/correlacionfull.png>
-Package luatex.def Info: figures/correlacionfull.png  used on input line 344.
-(luatex.def)             Requested size: 206.01077pt x 180.25992pt.
-LaTeX Font Info:    Font shape `TU/LatinModernMono(0)/m/n' will be
-(Font)              scaled to size 12.0pt on input line 348.
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 191.
 
 
-[80<./figures/correlacionlite.png><./figures/correlacionfull.png>]
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 191.
 
-LaTeX Warning: Reference `subsec:analisis_correlacion' on page 81 undefined on 
-input line 355.
+(./figures/tabla_test_t.tex)
 
-
-LaTeX Warning: Reference `subsec:analisis_correlacion' on page 81 undefined on 
-input line 355.
-
-
+[80]
 
 [81]
 
-[82]
+[82])
 
-[83])
-
-[84]
+[83]
 \openout2 = conclusiones.aux
  (./conclusiones.tex
 \bbl@ensure@spanish {Capítulo} 5.
 
-Overfull \hbox (0.38982pt too wide) in paragraph at lines 11--12
-[]\TU/LatinModernRoman(0)/m/n/11.5 Un per-cep-trón mul-ti-ca-pa que re-fi-na la
-s pro-ba-bi-li-da-des ba-se in-te-gran-do co-va-ria-bles exóge-
- []
 
-
-
-[85
+[84
 
 
 
 
 ]
 
-LaTeX Warning: Reference `subsec:analisis_correlacion' on page 86 undefined on 
-input line 23.
-
-
+[85]
 
 [86]
 
 [87]
 
-[88])
+[88]
 
-[89]
+[89])
+
+[90]
 \openout2 = appendix.aux
  (./appendix.tex
 \bbl@ensure@spanish {Apéndice} A.
 
-LaTeX Warning: Reference `subsec:covariables_finales' on page 90 undefined on i
+LaTeX Warning: Reference `subsec:covariables_finales' on page 91 undefined on i
 nput line 17.
 
 
 
-[90
+[91
 
 
 
 
 ]
 
-[91]
+[92]
 LaTeX Font Info:    Font shape `TU/LatinModernMono(0)/b/n' will be
 (Font)              scaled to size 12.0pt on input line 64.
 
 
-[92]
-
 [93]
+
+[94]
 Overfull \hbox (29.9027pt too wide) in paragraph at lines 130--141
  [][] 
  []
 
 
 
-[94]
-
 [95]
 
 [96]
+
+[97]
 \bbl@ensure@spanish {Apéndice} B.
 
 
-[97
+[98
 
 ]
-
-[98]
 
 [99]
 
 [100]
+
+[101]
 Underfull \hbox (badness 10000) in paragraph at lines 343--343
 []|\TU/LatinModernRoman(0)/b/n/11.5 Trans-for-ma-ción
  []
@@ -1825,8 +1776,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 345--346
  []
 
 
-
-[101]
 
 [102]
 
@@ -1841,21 +1790,23 @@ Underfull \hbox (badness 10000) in paragraph at lines 345--346
 [107]
 
 [108]
+
+[109]
 \bbl@ensure@spanish {Apéndice} C.
 
 
-[109
+[110
 
 ]
 
-[110]
+[111]
 
-LaTeX Warning: Reference `evaluacion_comparativa' on page 111 undefined on inpu
+LaTeX Warning: Reference `evaluacion_comparativa' on page 112 undefined on inpu
 t line 658.
 
 
 
-[111]
+[112]
 Overfull \hbox (2.08765pt too wide) in paragraph at lines 668--669
 \TU/LatinModernRoman(0)/m/sc/11.5 El pun-to de par-ti-da son los ar-chi-vos his-
 tó-ri-cos de ra-tings ge-ne-ra-dos por el mó-du-lo \TU/LatinModernMono(0)/b/n
@@ -1864,8 +1815,6 @@ tó-ri-cos de ra-tings ge-ne-ra-dos por el mó-du-lo \TU/LatinModernMono(0)/b/n
 
 
 
-[112]
-
 [113]
 
 [114]
@@ -1873,35 +1822,37 @@ tó-ri-cos de ra-tings ge-ne-ra-dos por el mó-du-lo \TU/LatinModernMono(0)/b/n
 [115]
 
 [116]
-<figures/ARIMAvsLSTMfull.png, id=2237, 1146.9249pt x 964.0818pt>
+
+[117]
+<figures/ARIMAvsLSTMfull.png, id=2229, 1146.9249pt x 964.0818pt>
 File: figures/ARIMAvsLSTMfull.png Graphic file (type png)
 <use figures/ARIMAvsLSTMfull.png>
 Package luatex.def Info: figures/ARIMAvsLSTMfull.png  used on input line 835.
 (luatex.def)             Requested size: 389.13692pt x 327.09207pt.
-<figures/ARIMAvsLSTMlite.png, id=2238, 1146.2022pt x 964.0818pt>
+<figures/ARIMAvsLSTMlite.png, id=2230, 1146.2022pt x 964.0818pt>
 File: figures/ARIMAvsLSTMlite.png Graphic file (type png)
 <use figures/ARIMAvsLSTMlite.png>
 Package luatex.def Info: figures/ARIMAvsLSTMlite.png  used on input line 841.
 (luatex.def)             Requested size: 389.13692pt x 327.29802pt.
-<figures/ScatterARIMALSTMfull.png, id=2239, 1003.8303pt x 354.123pt>
+<figures/ScatterARIMALSTMfull.png, id=2231, 1003.8303pt x 354.123pt>
 File: figures/ScatterARIMALSTMfull.png Graphic file (type png)
 <use figures/ScatterARIMALSTMfull.png>
 Package luatex.def Info: figures/ScatterARIMALSTMfull.png  used on input line 8
 49.
 (luatex.def)             Requested size: 274.6857pt x 96.9005pt.
-<figures/ScatterARIMALSTMlite.png, id=2240, 1003.8303pt x 354.123pt>
+<figures/ScatterARIMALSTMlite.png, id=2232, 1003.8303pt x 354.123pt>
 File: figures/ScatterARIMALSTMlite.png Graphic file (type png)
 <use figures/ScatterARIMALSTMlite.png>
 Package luatex.def Info: figures/ScatterARIMALSTMlite.png  used on input line 8
 55.
 (luatex.def)             Requested size: 274.6857pt x 96.9005pt.
-<figures/ErrorARIMALSTMfull.png, id=2241, 1003.8303pt x 281.853pt>
+<figures/ErrorARIMALSTMfull.png, id=2233, 1003.8303pt x 281.853pt>
 File: figures/ErrorARIMALSTMfull.png Graphic file (type png)
 <use figures/ErrorARIMALSTMfull.png>
 Package luatex.def Info: figures/ErrorARIMALSTMfull.png  used on input line 866
 .
 (luatex.def)             Requested size: 274.6857pt x 77.1249pt.
-<figures/ErrorARIMALSTMlite.png, id=2242, 1003.8303pt x 281.853pt>
+<figures/ErrorARIMALSTMlite.png, id=2234, 1003.8303pt x 281.853pt>
 File: figures/ErrorARIMALSTMlite.png Graphic file (type png)
 <use figures/ErrorARIMALSTMlite.png>
 Package luatex.def Info: figures/ErrorARIMALSTMlite.png  used on input line 872
@@ -1909,24 +1860,24 @@ Package luatex.def Info: figures/ErrorARIMALSTMlite.png  used on input line 872
 (luatex.def)             Requested size: 274.6857pt x 77.1249pt.
 
 
-[117]
+[118]
 
-[118<./figures/ARIMAvsLSTMfull.png>]
+[119<./figures/ARIMAvsLSTMfull.png>]
 
-[119<./figures/ARIMAvsLSTMlite.png><./figures/ScatterARIMALSTMfull.png><./figure
+[120<./figures/ARIMAvsLSTMlite.png><./figures/ScatterARIMALSTMfull.png><./figure
 s/ScatterARIMALSTMlite.png>]
 
-[120<./figures/ErrorARIMALSTMfull.png><./figures/ErrorARIMALSTMlite.png>]
-
-[121]
+[121<./figures/ErrorARIMALSTMfull.png><./figures/ErrorARIMALSTMlite.png>]
 
 [122]
 
 [123]
+
+[124]
 \bbl@ensure@spanish {Apéndice} D.
 
 
-[124
+[125
 
 ]
 Overfull \hbox (5.8483pt too wide) in paragraph at lines 1045--1046
@@ -1937,13 +1888,13 @@ n \TU/LatinModernMono(0)/b/n/11.5 tabula-py \TU/LatinModernRoman(0)/m/sc/11.5 y 
 
 
 
-[125]
-
 [126]
 
 [127]
 
 [128]
+
+[129]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1134.
@@ -1962,43 +1913,43 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 
 
-[129]
+[130]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1158.
 
 
 
-[130]
-
 [131]
 
 [132]
-<figures/scatter_ELO_Ago_2025.png, id=2368, 433.62pt x 433.62pt>
+
+[133]
+<figures/scatter_ELO_Ago_2025.png, id=2361, 433.62pt x 433.62pt>
 File: figures/scatter_ELO_Ago_2025.png Graphic file (type png)
 <use figures/scatter_ELO_Ago_2025.png>
 Package luatex.def Info: figures/scatter_ELO_Ago_2025.png  used on input line 1
 228.
 (luatex.def)             Requested size: 146.5009pt x 146.50253pt.
-<figures/scatter_UEFA_2025.png, id=2369, 433.62pt x 433.62pt>
+<figures/scatter_UEFA_2025.png, id=2362, 433.62pt x 433.62pt>
 File: figures/scatter_UEFA_2025.png Graphic file (type png)
 <use figures/scatter_UEFA_2025.png>
 Package luatex.def Info: figures/scatter_UEFA_2025.png  used on input line 1234
 .
 (luatex.def)             Requested size: 146.5009pt x 146.50253pt.
-<figures/scatter_CONMEBOL_2026.png, id=2370, 433.62pt x 433.62pt>
+<figures/scatter_CONMEBOL_2026.png, id=2363, 433.62pt x 433.62pt>
 File: figures/scatter_CONMEBOL_2026.png Graphic file (type png)
 <use figures/scatter_CONMEBOL_2026.png>
 Package luatex.def Info: figures/scatter_CONMEBOL_2026.png  used on input line 
 1240.
 (luatex.def)             Requested size: 146.5009pt x 146.50253pt.
-<figures/scatter_LSTM_vs_UEFA_2026.png, id=2371, 433.62pt x 433.62pt>
+<figures/scatter_LSTM_vs_UEFA_2026.png, id=2364, 433.62pt x 433.62pt>
 File: figures/scatter_LSTM_vs_UEFA_2026.png Graphic file (type png)
 <use figures/scatter_LSTM_vs_UEFA_2026.png>
 Package luatex.def Info: figures/scatter_LSTM_vs_UEFA_2026.png  used on input l
 ine 1248.
 (luatex.def)             Requested size: 146.5009pt x 146.50253pt.
-<figures/scatter_LSTM_vs_ELO_Sep_2026.png, id=2372, 433.62pt x 433.62pt>
+<figures/scatter_LSTM_vs_ELO_Sep_2026.png, id=2365, 433.62pt x 433.62pt>
 File: figures/scatter_LSTM_vs_ELO_Sep_2026.png Graphic file (type png)
 <use figures/scatter_LSTM_vs_ELO_Sep_2026.png>
 Package luatex.def Info: figures/scatter_LSTM_vs_ELO_Sep_2026.png  used on inpu
@@ -2006,11 +1957,9 @@ t line 1254.
 (luatex.def)             Requested size: 146.5009pt x 146.50253pt.
 
 
-[133<./figures/scatter_ELO_Ago_2025.png><./figures/scatter_UEFA_2025.png><./figu
+[134<./figures/scatter_ELO_Ago_2025.png><./figures/scatter_UEFA_2025.png><./figu
 res/scatter_CONMEBOL_2026.png><./figures/scatter_LSTM_vs_UEFA_2026.png><./figure
 s/scatter_LSTM_vs_ELO_Sep_2026.png>]
-
-[134]
 
 [135]
 
@@ -2019,14 +1968,14 @@ s/scatter_LSTM_vs_ELO_Sep_2026.png>]
 [137]
 
 [138]
+
+[139]
 Overfull \hbox (2.48378pt too wide) in paragraph at lines 1420--1421
 []\TU/LatinModernRoman(0)/m/sc/11.5 El mo-de-lo LSTM Li-te pre-sen-ta la com-pre
 -sión más pro-nun-cia-da. La Pre-mier Lea-gue (.)
  []
 
 
-
-[139]
 
 [140]
 
@@ -2036,11 +1985,13 @@ Overfull \hbox (2.48378pt too wide) in paragraph at lines 1420--1421
 
 [143]
 
-[144])
+[144]
 
-[145]
+[145])
 
-[146
+[146]
+
+[147
 
 
 
@@ -2051,7 +2002,7 @@ Package biblatex Warning: No driver for 'masterthesis'.
 
 
 
-[147]
+[148]
 Overfull \hbox (0.36661pt too wide) in paragraph at lines 84--84
 \TU/LatinModernRoman(0)/m/sc/11.5 gues Ba-sed on Glicko- with Mo-di-fi-ca-tio
 ns''. En: \TU/LatinModernRoman(0)/m/it/11.5 ar-Xiv pre-print ar-Xiv:
@@ -2060,9 +2011,9 @@ ns''. En: \TU/LatinModernRoman(0)/m/it/11.5 ar-Xiv pre-print ar-Xiv:
 
 
 
-[148]
+[149]
 
-[149] (./main.aux (./introduccion.aux) (./antecedentes.aux)
+[150] (./main.aux (./introduccion.aux) (./antecedentes.aux)
 (./marco_teorico.aux) (./metodologia.aux) (./resultados.aux)
 (./conclusiones.aux) (./appendix.aux))
  ***********
@@ -2081,23 +2032,23 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: CCE43CA865F918BB525F86B446F2FCCB;34969.
+(rerunfilecheck)             Checksum: 488551213B1DAEAE8480D380D81F9E63;33743.
 Package logreq Info: Writing requests to 'main.run.xml'.
 
 \openout1 = main.run.xml
 )
 
 Here is how much of LuaTeX's memory you used:
- 26989 strings out of 475664
+ 27011 strings out of 475664
  156463,1648299 words of node,token memory allocated
- 2405 words of node memory still in use:
-   7 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 2 sub_mlist, 1 glyph, 575 attribute
-, 72 glue_spec, 289 attribute_list, 1 write, 17 pdf_action nodes
-   avail lists: 1:4,2:3219,3:443,4:578,5:534,6:102,7:12953,8:94,9:1138,10:38,11:
+ 2417 words of node memory still in use:
+   7 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 2 sub_mlist, 1 glyph, 579 attribute
+, 72 glue_spec, 291 attribute_list, 1 write, 17 pdf_action nodes
+   avail lists: 1:3,2:3219,3:441,4:574,5:534,6:104,7:12953,8:94,9:1138,10:38,11:
 1422
- 48545 multiletter control sequences out of 65536+600000
+ 48536 multiletter control sequences out of 65536+600000
  158 fonts using 14272991 bytes
- 94i,16n,135p,2128b,2426s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 94i,16n,135p,2515b,2400s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Program Files/MiKTeX/fonts/opentype/public/lm/lmroman7-regular.otf><C:/Progr
 am Files/MiKTeX/fonts/opentype/public/lm/lmroman10-bolditalic.otf><C:/Program Fi
 les/MiKTeX/fonts/opentype/public/lm/lmroman10-bold.otf><C:/Program Files/MiKTeX/
@@ -2127,9 +2078,9 @@ fonts/cm/cmr8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10
 am Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTe
 X/fonts/type1/public/amsfonts/symbols/msam10.pfb><C:/Program Files/MiKTeX/fonts/
 type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (157 pages, 2799827 bytes).
+Output written on main.pdf (158 pages, 2517781 bytes).
 
-PDF statistics: 2696 PDF objects out of 2984 (max. 8388607)
- 699 named destinations out of 1000 (max. 131072)
- 1137 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 2688 PDF objects out of 2984 (max. 8388607)
+ 688 named destinations out of 1000 (max. 131072)
+ 1105 words of extra memory for PDF output out of 10000 (max. 100000000)
 

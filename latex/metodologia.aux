@@ -99,54 +99,56 @@
 \@writefile{lot}{\contentsline {table}{\numberline {3.5}{\ignorespaces An\'alisis de ablaci\'on por validaci\'on cruzada con 10 particiones. Media $\pm $ desviaci\'on est\'andar y $p$-valor del test $t$ pareado contra la configuraci\'on completa.}}{57}{table.caption.48}\protected@file@percent }
 \newlabel{tab:ablacion}{{3.5}{57}{An\'alisis de ablaci\'on por validaci\'on cruzada con 10 particiones. Media $\pm $ desviaci\'on est\'andar y $p$-valor del test $t$ pareado contra la configuraci\'on completa}{table.caption.48}{}}
 \@writefile{toc}{\contentsline {paragraph}{Decisi\'on sobre \texttt  {home\_OccRat}.}{57}{paragraph*.49}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Decisi\'on sobre \texttt  {travel\_km}.}{57}{paragraph*.50}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Conjunto final de covariables ex\'ogenas.}{58}{paragraph*.51}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.4}Arquitectura y calibraci\'on del sistema predictivo}{58}{section.3.4}\protected@file@percent }
-\newlabel{sec:arquitectura}{{3.4}{58}{Arquitectura y calibraci\'on del sistema predictivo}{section.3.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.6}{\ignorespaces Coeficientes de correlaci\'on de Spearman entre las covariables del bloque ex\'ogeno, para los pares con $|\rho | > 0{.}10$. La matriz se calcul\'o sobre las covariables disponibles al momento del an\'alisis de selecci\'on; no incluye \texttt  {diff\_NetSpending} ni \texttt  {travel\_km}, incorporadas al conjunto final con posterioridad.}}{58}{table.caption.50}\protected@file@percent }
+\newlabel{tab:correlacion_spearman}{{3.6}{58}{Coeficientes de correlaci\'on de Spearman entre las covariables del bloque ex\'ogeno, para los pares con $|\rho | > 0{.}10$. La matriz se calcul\'o sobre las covariables disponibles al momento del an\'alisis de selecci\'on; no incluye \texttt {diff\_NetSpending} ni \texttt {travel\_km}, incorporadas al conjunto final con posterioridad}{table.caption.50}{}}
+\@writefile{toc}{\contentsline {paragraph}{Decisi\'on sobre \texttt  {travel\_km}.}{58}{paragraph*.51}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Conjunto final de covariables ex\'ogenas.}{58}{paragraph*.52}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}Arquitectura y calibraci\'on del sistema predictivo}{59}{section.3.4}\protected@file@percent }
+\newlabel{sec:arquitectura}{{3.4}{59}{Arquitectura y calibraci\'on del sistema predictivo}{section.3.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Bloque de conteo: estimaci\'on de tasas y probabilidad de empate}{59}{subsection.3.4.1}\protected@file@percent }
 \newlabel{subsec:conteo}{{3.4.1}{59}{Bloque de conteo: estimaci\'on de tasas y probabilidad de empate}{subsection.3.4.1}{}}
-\@writefile{toc}{\contentsline {paragraph}{Partici\'on temporal.}{59}{paragraph*.52}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Variables de entrada.}{59}{paragraph*.53}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Hiperpar\'ametros.}{59}{paragraph*.54}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Derivaci\'on de la probabilidad de empate.}{60}{paragraph*.55}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Bloque de rating: Glicko-2 modificado}{60}{subsection.3.4.2}\protected@file@percent }
-\newlabel{subsec:rating}{{3.4.2}{60}{Bloque de rating: Glicko-2 modificado}{subsection.3.4.2}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Mejoras de la implementaci\'on propia sobre el motor de referencia}{60}{subsubsection*.56}\protected@file@percent }
-\newlabel{subsubsec:mejoras_g2av1513}{{3.4.2}{60}{Mejoras de la implementaci\'on propia sobre el motor de referencia}{subsubsection*.56}{}}
-\@writefile{toc}{\contentsline {paragraph}{Correcci\'on algebraica del denominador trinomial.}{60}{paragraph*.57}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Reparametrizaci\'on logit del par\'ametro de empate.}{60}{paragraph*.58}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Heur\'istica de escala $g$.}{61}{paragraph*.59}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Sistema de ventaja parametrizada.}{61}{paragraph*.60}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Mecanismos de atenuaci\'on y estabilidad num\'erica.}{61}{paragraph*.61}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Calibraci\'on por m\'axima verosimilitud}{62}{subsubsection*.62}\protected@file@percent }
-\newlabel{subsubsec:calibracion_glicko}{{3.4.2}{62}{Calibraci\'on por m\'axima verosimilitud}{subsubsection*.62}{}}
-\@writefile{toc}{\contentsline {paragraph}{Espacio de par\'ametros y cotas.}{62}{paragraph*.63}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Estado e inicializaci\'on.}{63}{paragraph*.64}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.3}Bloque de refinamiento: perceptr\'on multicapa}{63}{subsection.3.4.3}\protected@file@percent }
-\newlabel{subsec:mlp}{{3.4.3}{63}{Bloque de refinamiento: perceptr\'on multicapa}{subsection.3.4.3}{}}
-\@writefile{toc}{\contentsline {paragraph}{Vector de entrada.}{63}{paragraph*.65}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Arquitectura e hiperpar\'ametros.}{64}{paragraph*.66}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Funci\'on de p\'erdida y optimizador.}{64}{paragraph*.67}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Protocolo de corridas pareadas.}{64}{paragraph*.68}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Partici\'on temporal.}{60}{paragraph*.53}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Variables de entrada.}{60}{paragraph*.54}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Hiperpar\'ametros.}{60}{paragraph*.55}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Derivaci\'on de la probabilidad de empate.}{60}{paragraph*.56}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Bloque de rating: Glicko-2 modificado}{61}{subsection.3.4.2}\protected@file@percent }
+\newlabel{subsec:rating}{{3.4.2}{61}{Bloque de rating: Glicko-2 modificado}{subsection.3.4.2}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Diferencias frente al motor de referencia}{61}{subsubsection*.57}\protected@file@percent }
+\newlabel{subsubsec:mejoras_g2av1513}{{3.4.2}{61}{Diferencias frente al motor de referencia}{subsubsection*.57}{}}
+\@writefile{toc}{\contentsline {paragraph}{Correcci\'on del denominador trinomial.}{61}{paragraph*.58}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Reparametrizaci\'on logit del par\'ametro de empate.}{61}{paragraph*.59}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Calibraci\'on emp\'irica de la constante de atenuaci\'on y la volatilidad.}{62}{paragraph*.60}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Mecanismos de estabilidad num\'erica.}{62}{paragraph*.61}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Extensiones funcionales no activadas.}{62}{paragraph*.62}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Calibraci\'on por m\'axima verosimilitud}{63}{subsubsection*.63}\protected@file@percent }
+\newlabel{subsubsec:calibracion_glicko}{{3.4.2}{63}{Calibraci\'on por m\'axima verosimilitud}{subsubsection*.63}{}}
+\@writefile{toc}{\contentsline {paragraph}{Espacio de par\'ametros y cotas.}{63}{paragraph*.64}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Estado e inicializaci\'on.}{64}{paragraph*.65}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.3}Bloque de refinamiento: perceptr\'on multicapa}{64}{subsection.3.4.3}\protected@file@percent }
+\newlabel{subsec:mlp}{{3.4.3}{64}{Bloque de refinamiento: perceptr\'on multicapa}{subsection.3.4.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{Vector de entrada.}{64}{paragraph*.66}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Arquitectura e hiperpar\'ametros.}{64}{paragraph*.67}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Funci\'on de p\'erdida y optimizador.}{65}{paragraph*.68}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Protocolo de corridas pareadas.}{65}{paragraph*.69}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.4.4}Flujo de inferencia en cascada}{65}{subsection.3.4.4}\protected@file@percent }
 \newlabel{subsec:cascada}{{3.4.4}{65}{Flujo de inferencia en cascada}{subsection.3.4.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.5}M\'etricas de evaluaci\'on}{65}{section.3.5}\protected@file@percent }
-\newlabel{sec:metricas_eval}{{3.5}{65}{M\'etricas de evaluaci\'on}{section.3.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.1}M\'etricas de evaluaci\'on del sistema}{65}{subsection.3.5.1}\protected@file@percent }
-\newlabel{subsec:metricas_prob}{{3.5.1}{65}{M\'etricas de evaluaci\'on del sistema}{subsection.3.5.1}{}}
-\newlabel{subsec:metricas_clas}{{3.5.1}{65}{M\'etricas de evaluaci\'on del sistema}{subsection.3.5.1}{}}
-\@writefile{toc}{\contentsline {paragraph}{M\'etricas probabil\'isticas.}{66}{paragraph*.69}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{M\'etricas de clasificaci\'on.}{66}{paragraph*.70}\protected@file@percent }
-\newlabel{eq:argmax_impl}{{3.18}{66}{M\'etricas de clasificaci\'on}{equation.3.18}{}}
-\@writefile{toc}{\contentsline {paragraph}{M\'etricas del bloque de conteo.}{67}{paragraph*.71}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.2}Protocolo de inferencia estad\'istica}{67}{subsection.3.5.2}\protected@file@percent }
-\newlabel{subsec:test_t}{{3.5.2}{67}{Protocolo de inferencia estad\'istica}{subsection.3.5.2}{}}
-\newlabel{obs:sin_correccion}{{3.4}{67}{Sobre la correcci\'on por comparaciones m\'ultiples}{obs.3.4}{}}
-\newlabel{obs:f1d_varianza}{{3.5}{67}{Sobre la validez del test sobre $F1_D$}{obs.3.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.5}M\'etricas de evaluaci\'on}{66}{section.3.5}\protected@file@percent }
+\newlabel{sec:metricas_eval}{{3.5}{66}{M\'etricas de evaluaci\'on}{section.3.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.1}M\'etricas de evaluaci\'on del sistema}{66}{subsection.3.5.1}\protected@file@percent }
+\newlabel{subsec:metricas_prob}{{3.5.1}{66}{M\'etricas de evaluaci\'on del sistema}{subsection.3.5.1}{}}
+\newlabel{subsec:metricas_clas}{{3.5.1}{66}{M\'etricas de evaluaci\'on del sistema}{subsection.3.5.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{M\'etricas probabil\'isticas.}{66}{paragraph*.70}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{M\'etricas de clasificaci\'on.}{67}{paragraph*.71}\protected@file@percent }
+\newlabel{eq:argmax_impl}{{3.18}{67}{M\'etricas de clasificaci\'on}{equation.3.18}{}}
+\@writefile{toc}{\contentsline {paragraph}{M\'etricas del bloque de conteo.}{67}{paragraph*.72}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.2}Protocolo de inferencia estad\'istica}{68}{subsection.3.5.2}\protected@file@percent }
+\newlabel{subsec:test_t}{{3.5.2}{68}{Protocolo de inferencia estad\'istica}{subsection.3.5.2}{}}
+\newlabel{obs:sin_correccion}{{3.4}{68}{Sobre la correcci\'on por comparaciones m\'ultiples}{obs.3.4}{}}
+\newlabel{obs:f1d_varianza}{{3.5}{68}{Sobre la validez del test sobre $F1_D$}{obs.3.5}{}}
 \@setckpt{metodologia}{
-\setcounter{page}{68}
+\setcounter{page}{69}
 \setcounter{equation}{20}
-\setcounter{enumi}{5}
+\setcounter{enumi}{4}
 \setcounter{enumii}{0}
 \setcounter{enumiii}{0}
 \setcounter{enumiv}{0}
@@ -160,14 +162,14 @@
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
 \setcounter{figure}{3}
-\setcounter{table}{5}
+\setcounter{table}{6}
 \setcounter{caption@flags}{2}
 \setcounter{continuedfloat}{0}
 \setcounter{subfigure}{0}
 \setcounter{subtable}{0}
 \setcounter{parentequation}{0}
 \setcounter{section@level}{0}
-\setcounter{Item}{15}
+\setcounter{Item}{10}
 \setcounter{Hfootnote}{0}
 \setcounter{bookmark@seq@number}{55}
 \setcounter{nlinenum}{0}
