@@ -10,7 +10,7 @@ Este cap\'itulo presenta los resultados emp\'iricos obtenidos al ejecutar el sis
 \section{Resultados del bloque de conteo}
 \label{sec:res_conteo}
 
-El primer bloque del sistema estima las tasas esperadas de anotaci\'on $\lambda_H$ y $\lambda_A$ mediante dos regresores LightGBM con funci\'on objetivo Poisson, entrenados \'unicamente sobre promedios m\'oviles de goles en ventanas de 5, 10, 20 y 30 partidos. A partir de estas tasas se deriva la probabilidad de empate $\hat{P}_D^{(\text{Skellam})}$ mediante la funci\'on de masa de la distribuci\'on de Skellam evaluada en $k=0$ (Ecuaci\'on~\eqref{eq:prob_D_bessel} del Cap\'itulo~\ref{ch:marco}). Este bloque no se compara contra los posteriores: opera en el espacio de conteo de goles y su funci\'on dentro del sistema es alimentar al bloque de rating con la probabilidad de empate. Su evaluaci\'on se limita a verificar que las tasas estimadas y la probabilidad derivada sean internamente coherentes con los datos observados.
+El primer bloque del sistema estima las tasas esperadas de anotaci\'on $\lambda_H$ y $\lambda_A$ mediante dos regresores LightGBM con funci\'on objetivo Poisson, entrenados \'unicamente sobre promedios m\'oviles de goles en ventanas de 5, 10, 20 y 30 partidos. A partir de estas tasas se deriva la probabilidad de empate $\hat{P}_D^{(S)}$ mediante la funci\'on de masa de la distribuci\'on de Skellam evaluada en $k=0$ (Ecuaci\'on~\eqref{eq:prob_D_bessel} del Cap\'itulo~\ref{ch:marco}). Este bloque no se compara contra los posteriores: opera en el espacio de conteo de goles y su funci\'on dentro del sistema es alimentar al bloque de rating con la probabilidad de empate. Su evaluaci\'on se limita a verificar que las tasas estimadas y la probabilidad derivada sean internamente coherentes con los datos observados.
 
 \subsection{Calibraci\'on de las tasas de goles}
 \label{subsec:res_calibracion_goals}
@@ -19,7 +19,7 @@ La Tabla~\ref{tab:skellam_mae} resume el error absoluto medio (MAE) de las predi
 
 \input{figures/tabla_skellam_mae.tex}
 
-La calibraci\'on marginal de la probabilidad de empate se reporta en la Tabla~\ref{tab:skellam_draw}. La media de las predicciones $\hat{P}_D^{(\text{Skellam})}$ sobre el conjunto de prueba difiere de la frecuencia observada en alrededor de $0{.}8$ puntos porcentuales para el conjunto Lite y en $0{.}6$ puntos porcentuales para Full y Lite Recortado, lo que indica una calibraci\'on marginal adecuada del m\'odulo de conteo. La p\'erdida logar\'itmica binaria asociada a la predicci\'on de empate se mantiene en el intervalo $[0{.}572,\,0{.}576]$. Este valor es pr\'acticamente id\'entico a la entrop\'ia binaria de la clase empate bajo su prevalencia marginal ($\approx 0{.}573$ para $p \approx 0{.}26$), lo que indica que el bloque de conteo reproduce la frecuencia agregada de empates sin discriminaci\'on espec\'ifica entre partidos. Su funci\'on dentro del sistema no es predecir empates por s\'i solo, sino alimentar al Glicko-2 con una probabilidad de empate calibrada en agregado.
+La calibraci\'on marginal de la probabilidad de empate se reporta en la Tabla~\ref{tab:skellam_draw}. La media de las predicciones $\hat{P}_D^{(\text{S})}$ sobre el conjunto de prueba difiere de la frecuencia observada en alrededor de $0{.}8$ puntos porcentuales para el conjunto Lite y en $0{.}6$ puntos porcentuales para Full y Lite Recortado, lo que indica una calibraci\'on marginal adecuada del m\'odulo de conteo. La p\'erdida logar\'itmica binaria asociada a la predicci\'on de empate se mantiene en el intervalo $[0{.}572,\,0{.}576]$. Este valor es pr\'acticamente id\'entico a la entrop\'ia binaria de la clase empate bajo su prevalencia marginal ($\approx 0{.}573$ para $p \approx 0{.}26$), lo que indica que el bloque de conteo reproduce la frecuencia agregada de empates sin discriminaci\'on espec\'ifica entre partidos. Su funci\'on dentro del sistema no es predecir empates por s\'i solo, sino alimentar al Glicko-2 con una probabilidad de empate calibrada en agregado.
 
 \input{figures/tabla_skellam_draw.tex}
 
@@ -42,11 +42,11 @@ La Figura~\ref{fig:draw_calibration} presenta la calibraci\'on de la probabilida
 		\caption{Lite Recortado}
 		\label{fig:draw_lite_rec}
 	\end{subfigure}
-	\caption{Calibraci\'on de la probabilidad de empate (\(\hat{P}_D^{(\text{Skellam})}\)) frente a la frecuencia real observada, para los tres conjuntos de datos. La l\'inea diagonal representa una calibraci\'on perfecta.}
+	\caption{Calibraci\'on de la probabilidad de empate (\(\hat{P}_D^{(S)}\)) frente a la frecuencia real observada, para los tres conjuntos de datos. La l\'inea diagonal representa una calibraci\'on perfecta.}
 	\label{fig:draw_calibration}
 \end{figure}
 
-La calibraci\'on marginal describe el comportamiento agregado de $\hat{P}_D^{(\text{Skellam})}$, pero no dice nada sobre la distribuci\'on de los errores del modelo en la escala original de conteo. Ese an\'alisis se aborda a continuaci\'on mediante el diagn\'ostico de residuos de las tasas estimadas.
+La calibraci\'on marginal describe el comportamiento agregado de $\hat{P}_D^{(S)}$, pero no dice nada sobre la distribuci\'on de los errores del modelo en la escala original de conteo. Ese an\'alisis se aborda a continuaci\'on mediante el diagn\'ostico de residuos de las tasas estimadas.
 
 \subsection{Diagn\'ostico de residuos}
 \label{subsec:res_residuos}
@@ -138,9 +138,12 @@ El rango final de ratings $\Delta_\mu=\mu_\text{max}-\mu_\text{min}\in [635{.}1,
 		J1 League & 1499.98 & 19.04 & 1500.00 & 14.55 \\
 		\bottomrule
 	\end{tabular}
+	\begin{flushleft}
+		\small \textit{Nota:} Liga Profesional Argentina y Superliga Argentina corresponden a la misma competici\'on: Primera Divisi\'on de Argentina, bajo regimenes de calendario diferentes en distintos periodos temporales. Se reportan por separado debido a que el flujo de datos propuesto requiere que las competiciones permanezcan con un r\'egimen de calendario invariante.
+	\end{flushleft}
 \end{table}
 
-Los ratings iniciales por liga permanecen pr\'oximos a $1500$ en todos los casos, con desplazamientos $|\mu_\text{init}-1500|<0{.}05$ para cada competencia, lo que indica que la estimaci\'on por m\'axima verosimilitud no encontr\'o evidencia suficiente para desplazar el anclaje inicial medio de forma sustancial. Este comportamiento es consistente con la estructura del panel: la mayor\'ia de los partidos son entre equipos de su misma liga, donde el anclaje inicial se cancela en la comparaci\'on de ratings relativos, y los enfrentamientos entre equipos de distintas ligas que informar\'ian sobre la calibraci\'on del anclaje son una fracci\'on menor del total. Este resultado no implica equivalencia entre las competiciones del panel,  si no indeterminaci\'on del par\'ametro bajo la estructura de datos disponibles.
+Los ratings iniciales por liga permanecen pr\'oximos a $1500$ en todos los casos, con desplazamientos $|\mu_\text{init}-1500|<0{.}06$ para cada competencia, lo que indica que la estimaci\'on por m\'axima verosimilitud no encontr\'o evidencia suficiente para desplazar el anclaje inicial medio de forma sustancial. Este comportamiento es consistente con la estructura del panel: la mayor\'ia de los partidos son entre equipos de su misma liga, donde el anclaje inicial se cancela en la comparaci\'on de ratings relativos, y los enfrentamientos entre equipos de distintas ligas que informar\'ian sobre la calibraci\'on del anclaje son una fracci\'on menor del total. Este resultado no implica equivalencia entre las competiciones del panel,  si no indeterminaci\'on del par\'ametro bajo la estructura de datos disponibles.
 
 \subsection{Evaluaci\'on aislada del sistema Glicko-2 modificado}
 \label{subsec:res_glicko_eval}
@@ -167,7 +170,7 @@ La Tabla~\ref{tab:stage2_resumen} condensa las medias de las m\'etricas principa
 
 \input{figures/tabla_stage2_resumen.tex}
 
-El efecto del refinamiento neuronal se mide comparando el Glicko-2 aislado con el MLP en su configuraci\'on base, aquella que recibe \'unicamente las tres probabilidades del rating. En los tres conjuntos de datos la p\'erdida logar\'itmica categ\'orica desciende entre $0{.}0152$ y $0{.}0195$ y la binaria entre $0{.}0040$ y $0{.}0076$, lo que confirma que la red corrige desviaciones sistem\'aticas que el modelo de rating no captura por s\'i solo. Este efecto es consistente con el papel del MLP como aproximador funcional descrito en la Secci\'on~\ref{subsec:mlp_justificacion} del Cap\'itulo~\ref{ch:marco}: las probabilidades base del Glicko-2 dependen de una diferencia de ratings escalar, y la red aprende a ajustarlas cuando esa diferencia no refleja la asimetr\'ia estructural completa del enfrentamiento.
+El efecto del refinamiento neuronal se mide comparando el Glicko-2 aislado con el MLP en su configuraci\'on base, aquella que recibe \'unicamente las tres probabilidades del rating. En los tres conjuntos de datos la p\'erdida logar\'itmica categ\'orica desciende entre $0{.}0152$ y $0{.}0190$ y la binaria entre $0{.}0040$ y $0{.}0076$, lo que confirma que la red corrige desviaciones sistem\'aticas que el modelo de rating no captura por s\'i solo. Este efecto es consistente con el papel del MLP como aproximador funcional descrito en la Secci\'on~\ref{subsec:mlp_justificacion} del Cap\'itulo~\ref{ch:marco}: las probabilidades base del Glicko-2 dependen de una diferencia de ratings escalar, y la red aprende a ajustarlas cuando esa diferencia no refleja la asimetr\'ia estructural completa del enfrentamiento.
 
 El efecto de las covariables ex\'ogenas se mide comparando la configuraci\'on base con la configuraci\'on completa dentro del mismo conjunto de datos. En \textbf{Lite} ambas p\'erdidas logar\'itmicas mejoran: la categ\'orica desciende de $1{.}0230$ a $1{.}0224$ ($\Delta = -0{.}0006$, $p=0{.}0292$) y la binaria de $0{.}6417$ a $0{.}6402$ ($p<0{.}0001$). En \textbf{Full} el efecto se invierte parcialmente: la categ\'orica empeora de $1{.}0247$ a $1{.}0261$ ($\Delta = +0{.}0014$, $p<0{.}0001$) mientras la binaria mejora de $0{.}6449$ a $0{.}6445$ ($p=0{.}0057$). En \textbf{Lite Recortado} ambas m\'etricas se deterioran: la categ\'orica sube de $1{.}0247$ a $1{.}0273$ y la binaria de $0{.}6449$ a $0{.}6460$, con $p<0{.}0001$ en los dos casos.
 
@@ -223,7 +226,7 @@ La Tabla~\ref{tab:comparativa_bloques} consolida las m\'etricas principales por 
 		\toprule
 		\textbf{Bloque} & \textbf{LL Cat.} & \textbf{LL Bin.} & \textbf{Accuracy} & \textbf{OVR LL} \\
 		\midrule
-		Skellam/LGBM (draw only) & -- & 0.5716 & -- & -- \\
+		Skellam/LGBM (draw only) & -- & 0.5722 & -- & -- \\
 		Glicko-2 modificado (aislado) & 1.0425 & 0.6500 & -- & 0.6064 \\
 		MLP base (prob. Glicko-2 solas) & 1.0247 & 0.6449 & 0.486 & 0.5975 \\
 		MLP completo (prob. + ex\'ogenas) & 1.0261 & 0.6445 & 0.489 & 0.5978 \\

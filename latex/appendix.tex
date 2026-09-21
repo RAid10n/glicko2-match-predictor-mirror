@@ -14,7 +14,7 @@ En el Cap\'itulo~\ref{ch:metodologia} se desarroll\'o el \textit{pipeline} princ
 \section{Motivaci\'on y formalismo}
 \label{sec:app_gru_formalismo}
 
-Mientras que el perceptr\'on multicapa (MLP) descrito en el cuerpo del trabajo opera sobre un vector de estado fijo $\mathbf{z}_{ij}\in\mathbb{R}^{n}$ con $n=10$ o $n=13$ seg\'un el \textit{dataset} (ver Secci\'on~\ref{subsec:conjunto_final}) que condensa la informaci\'on hist\'orica mediante promedios m\'oviles \textit{rolling} y el estado $(R,RD,\sigma)$ del sistema Glicko-2, una red recurrente modela expl\'icitamente la dependencia temporal en la secuencia de partidos de cada equipo. La hip\'otesis exploratoria es que el orden temporal de los resultados contiene patrones din\'amicos, rachas de forma, fatiga acumulada, adaptaci\'on t\'actica, entre otras, que no son capturables por agregaciones est\'aticas.
+Mientras que el perceptr\'on multicapa (MLP) descrito en el cuerpo del trabajo opera sobre un vector de estado fijo $\mathbf{z}_{ij}\in\mathbb{R}^{d}$ con $d=10$ o $d=13$ seg\'un el \textit{dataset} (ver Secci\'on~\ref{subsec:conjunto_final}) que condensa la informaci\'on hist\'orica mediante promedios m\'oviles \textit{rolling} y el estado $(R,RD,\sigma)$ del sistema Glicko-2, una red recurrente modela expl\'icitamente la dependencia temporal en la secuencia de partidos de cada equipo. La hip\'otesis exploratoria es que el orden temporal de los resultados contiene patrones din\'amicos, rachas de forma, fatiga acumulada, adaptaci\'on t\'actica, entre otras, que no son capturables por agregaciones est\'aticas.
 
 La arquitectura explorada utiliza unidades recurrentes cerradas (GRU, \emph{Gated Recurrent Unit}) \cite{Charu2018}, una variante de la RNN cl\'asica que aborda la problem\'atica del gradiente desvaneciente mediante compuertas de actualizaci\'on y reinicio. El estado oculto $\mathbf{h}_t\in\mathbb{R}^{h}$ en el paso temporal $t$ se actualiza como
 \begin{align}
@@ -226,13 +226,13 @@ El motor \textit{naive} opera con los valores por defecto del algoritmo Glicko-2
 
 \begin{align}
 	\mu_0 &= 1500, &
-	\phi_0 &= 350, &
+	RD_0 &= 350, &
 	\tau &= 0.8, &
 	\varepsilon &= 10^{-6}, &
 	\text{draw\_correction} &= 0.0.
 \end{align}
 
-La desviaci\'on est\'andar inicial $\phi_0 = 350$ corresponde al valor original propuesto por Glickman para conjuntos de datos de alta incertidumbre inicial \cite{Glickman2022}. El par\'ametro de correcci\'on del empate se anula expl\'icitamente (\texttt{draw\_correction} = 0.0), de modo que la probabilidad de empate se determina exclusivamente por la estimaci\'on externa provista por el bloque de conteo \texttt{Skellam}. La ventaja de local\'ia, representada por el par\'ametro \texttt{advantage}, se fija id\'enticamente a cero, eliminando cualquier asimetr\'ia estructural en la actualizaci\'on de los ratings.
+La desviaci\'on est\'andar inicial $RD_0 = 350$ corresponde al valor original propuesto por Glickman para conjuntos de datos de alta incertidumbre inicial \cite{Glickman2022}. El par\'ametro de correcci\'on del empate se anula expl\'icitamente (\texttt{draw\_correction} = 0.0), de modo que la probabilidad de empate se determina exclusivamente por la estimaci\'on externa provista por el bloque de conteo \texttt{Skellam}. La ventaja de local\'ia, representada por el par\'ametro \texttt{advantage}, se fija id\'enticamente a cero, eliminando cualquier asimetr\'ia estructural en la actualizaci\'on de los ratings.
 
 \subsection{Probabilidad de empate mediante Skellam externo}
 
@@ -254,7 +254,7 @@ donde $I_0$ es la funci\'on de Bessel modificada de primera especie de orden cer
 
 \subsection{Actualizaci\'on secuencial sin optimizaci\'on}
 
-El motor \textit{naive} itera cronol\'ogicamente partido a partido, manteniendo un diccionario de estados $(R, \phi, \sigma)$ para cada equipo. En cada actualizaci\'on, el motor:
+El motor \textit{naive} itera cronol\'ogicamente partido a partido, manteniendo un diccionario de estados $(R, RD, \sigma)$ para cada equipo. En cada actualizaci\'on, el motor:
 \begin{enumerate}
 	\item Convierte los ratings a la escala Glicko-2 mediante las transformaciones can\'onicas \cite{Glickman2022}.
 	\item Calcula el factor de atenuaci\'on $g(\phi)$ con la constante est\'andar $g_{\text{const}} = 1.5/\pi^2$.
@@ -263,7 +263,7 @@ El motor \textit{naive} itera cronol\'ogicamente partido a partido, manteniendo 
 	\item Computa los nuevos valores de $\mu'$ y $\phi'$ seg\'un las ecuaciones de Glickman.
 \end{enumerate}
 
-No se realiza ning\'un proceso de optimizaci\'on de hiperpar\'ametros: $\tau$, $\phi_0$ y $\mu_0$ permanecen invariantes en toda la ejecuci\'on. El algoritmo no distingue entre ligas, contextos temporales o condiciones excepcionales.
+No se realiza ning\'un proceso de optimizaci\'on de hiperpar\'ametros: $\tau$, $RD_0$ y $\mu_0$ permanecen invariantes en toda la ejecuci\'on. El algoritmo no distingue entre ligas, contextos temporales o condiciones excepcionales.
 
 \subsection{Procesamiento multi-dataset}
 
@@ -303,7 +303,7 @@ El motor \texttt{G2Av1513.py} es una reimplementaci\'on integral del algoritmo G
 	\item \textbf{Mecanismos de estabilidad num\'erica:} clamping, restricci\'on de $E$, divisi\'on protegida, y atenuaci\'on pand\'emica.
 \end{enumerate}
 
-Estas modificaciones, junto con la reducci\'on de $\phi_0$ de $350$ a $80$, permiten una calibraci\'on conjunta por m\'axima verosimilitud que ajusta $d$, $\mu_{\text{init},\ell}$ y $h_\ell$ de manera robusta. La Tabla~\ref{tab:hiperparam_comparativa_app} contrasta los par\'ametros de ambos motores.
+Estas modificaciones, junto con la reducci\'on de $RD_0$ de $350$ a $80$, permiten una calibraci\'on conjunta por m\'axima verosimilitud que ajusta $d$, $\mu_{\text{init},\ell}$ y $h_\ell$ de manera robusta. La Tabla~\ref{tab:hiperparam_comparativa_app} contrasta los par\'ametros de ambos motores.
 
 \subsection{Mecanismos de estabilidad num\'erica y manejo de contextos excepcionales}
 \label{subsec:naive_vs_g2a_estabilidad_numerica}
@@ -333,7 +333,7 @@ La Tabla~\ref{tab:hiperparam_comparativa_app} sistematiza las diferencias entre 
 		\toprule
 		\textbf{Componente} & \textbf{Motor \textit{naive}} & \textbf{Motor G2Av1513}\\
 		\midrule
-		$\phi_0$ (RD inicial) & 350 & 80 \\
+		$RD_0$ & 350 & 80 \\
 		$g_{\text{const}}$ & $1.5/\pi^2 \approx 0.152$ & $3.0/\pi^2 \approx 0.304$ \\
 		Denominador trinomial & Asim\'etrico ($P_A$ inducido por $\delta$) & Sim\'etrico ($1+e^\delta+e^{d+s_{\text{logit}}}$) \\
 		\textbf{Transformaci\'on de $P_D$} & \textbf{Cruda $(0,1)$ al exponente} & \textbf{$\operatorname{logit}(P_D)$} \\
@@ -572,7 +572,7 @@ Este patr\'on confirma que la calibraci\'on act\'ua selectivamente sobre los ses
 
 Las modificaciones algebraicas del motor \texttt{G2Av1513}, mencionadas en las Secci\'on~\ref{subsec:naive_vs_g2a_estabilidad_numerica}, no son meros refinamientos de estilo, sino condiciones necesarias para que la calibraci\'on por \texttt{L-BFGS-B} funcione en la pr\'actica:
 \begin{enumerate}
-	\item La \textbf{correcci\'on del denominador trinomial} garantiza que el optimizador explore un espacio de probabilidades consistente, evitando regiones del simplex donde $P_H + P_D + P_A \neq 1$.
+	\item La \textbf{correcci\'on del denominador trinomial} garantiza que el optimizador explore un espacio de probabilidades consistente, evitando regiones del simplex donde $P_H + P_D + P_A \ngeq 1$.
 	\item La \textbf{reparametrizaci\'on logit} elimina las restricciones de caja sobre el par\'ametro de empate $d$, permitiendo que el optimizador se mueva libremente por $\mathbb{R}$.
 	\item La \textbf{heur\'istica $g_{\text{const}} = 3.0/\pi^2$} suaviza la superficie de p\'erdida, reduciendo la rugosidad que el \texttt{L-BFGS-B} encuentra en regiones de alta curvatura.
 \end{enumerate}
@@ -581,7 +581,7 @@ Sin estas mejoras, la optimizaci\'on conjunta de $\{d, \mu_{\text{init},\ell}, h
 
 \subsection{La transferibilidad del conocimiento calibrado}
 
-Un hallazgo relevante de la comparaci\'on entre el \textit{dataset Full} y el \textit{dataset Lite Recortado} es que la calibraci\'on por liga y la reducci\'on de $\phi_0$ son transferibles entre configuraciones con y sin m\'etricas deportivas avanzadas. Los valores calibrados de $h_\ell$ en el \textit{dataset Full} y el \textit{dataset Lite Recortado} son pr\'acticamente id\'enticos (Tabla~\ref{tab:glicko_h_league_comparison} del Cap\'itulo~\ref{ch:resultados}), lo que indica que la ventaja de local\'ia es una propiedad estructural de cada competici\'on, independiente de la granularidad de las estad\'isticas de juego.
+Un hallazgo relevante de la comparaci\'on entre el \textit{dataset Full} y el \textit{dataset Lite Recortado} es que la calibraci\'on por liga y la reducci\'on de $RD_0$ son transferibles entre configuraciones con y sin m\'etricas deportivas avanzadas. Los valores calibrados de $h_\ell$ en el \textit{dataset Full} y el \textit{dataset Lite Recortado} son pr\'acticamente id\'enticos (Tabla~\ref{tab:glicko_h_league_comparison} del Cap\'itulo~\ref{ch:resultados}), lo que indica que la ventaja de local\'ia es una propiedad estructural de cada competici\'on, independiente de la granularidad de las estad\'isticas de juego.
 
 Esto sugiere que el sistema de calibraci\'on del motor \texttt{G2Av1513} captura informaci\'on contextual que trasciende el conjunto de caracter\'isticas utilizado en cada \textit{dataset}, constituyendo un conocimiento estable sobre la estructura competitiva del f\'utbol profesional.
 
@@ -653,7 +653,7 @@ Las redes LSTM \cite{hochreiter1997} son una variante de las redes neuronales re
 
 donde $\mathbf{i}_t$, $\mathbf{f}_t$ y $\mathbf{o}_t$ son las compuertas de entrada, olvido y salida; $\mathbf{g}_t$ es la activaci\'on candidata; $\mathbf{c}_t$ es el estado de la celda; $\mathbf{h}_t$ es el estado oculto; $\sigma$ es la funci\'on sigmoide; $\odot$ denota el producto de Hadamard; y $\mathbf{W}_{(\cdot)}$, $\mathbf{b}_{(\cdot)}$ son matrices de pesos y sesgos aprendibles \cite{brockwell2002}. La compuerta de olvido permite descartar informaci\'on irrelevante, mientras que la de entrada decide qu\'e nueva informaci\'on almacenar, otorgando a la red la capacidad de retener patrones a lo largo de m\'ultiples pasos temporales.
 
-En el contexto del presente ap\'endice, la LSTM se entrena de forma global sobre las secuencias de $\mu$ de todos los equipos, compartiendo par\'ametros a trav\'es de las diferentes trayectorias. Este enfoque asume que las din\'amicas subyacentes del rating son transferibles entre equipos, una hip\'otesis que se contrasta emp\'iricamente en la Secci\'on~\ref{evaluacion_comparativa}. Cada serie se escala individualmente con un \texttt{StandardScaler} ajustado sobre los datos de entrenamiento para evitar \textit{data leakage}, y se generan secuencias de longitud fija $T=8$ semanas \cite{shumway2006}. La funci\'on de p\'erdida es el error cuadr\'atico medio (MSE), y el optimizador Adam con \textit{early stopping} previene el sobreajuste \cite{hochreiter1997}.
+En el contexto del presente ap\'endice, la LSTM se entrena de forma global sobre las secuencias de $\mu$ de todos los equipos, compartiendo par\'ametros a trav\'es de las diferentes trayectorias. Este enfoque asume que las din\'amicas subyacentes del rating son transferibles entre equipos, una hip\'otesis que se contrasta emp\'iricamente en la Secci\'on~\ref{ap:evaluacion_comparativa}. Cada serie se escala individualmente con un \texttt{StandardScaler} ajustado sobre los datos de entrenamiento para evitar \textit{data leakage}, y se generan secuencias de longitud fija $T=8$ semanas \cite{shumway2006}. La funci\'on de p\'erdida es el error cuadr\'atico medio (MSE), y el optimizador Adam con \textit{early stopping} previene el sobreajuste \cite{hochreiter1997}.
 
 \subsection{Complementariedad y justificaci\'on de la comparaci\'on}
 \label{ap:comparacion_teorica}
@@ -686,7 +686,7 @@ La Tabla~\ref{tab:panel_dimensiones} resume las dimensiones resultantes para cad
 			\textbf{Dataset} & \textbf{Sem.} & \textbf{Equ. ini.} & \textbf{Elim. std=0} & \textbf{Elim. obs<20} & \textbf{Eq. fin.} & \textbf{Fecha split} & \textbf{Train / Test} \\
 			\midrule
 			Full            & 346 & 337 & 0 & 3 & 334 & 2023-12-19 & 242 / 104 \\
-			Lite            & 425 & 415 & 0 & 3 & 412 & 2023-07-04 & 296 / 128 \\
+			Lite            & 424 & 415 & 0 & 3 & 412 & 2023-07-04 & 296 / 128 \\
 			\bottomrule
 			\end{tabular}}%
 \end{table}
@@ -771,7 +771,7 @@ El entrenamiento se realiza con:
 \paragraph{Desescalado de predicciones.}
 Una vez obtenidas las predicciones en el espacio escalado, se aplica la transformaci\'on inversa de cada escalador para devolver los valores a la escala original de \(\mu\), utilizando el operador \texttt{scaler.inverse\_transform}.
 
-La Tabla~\ref{tab:lstm_dimensiones} muestra el n\'umero de secuencias generadas y los equipos con predicci\'on exitosa. El mayor volumen de datos en el \textsc{dataset Lite} resulta en un conjunto de entrenamiento de casi 70\,000 secuencias, que permite una convergencia estable del optimizador.
+La Tabla~\ref{tab:lstm_dimensiones} muestra el n\'umero de secuencias generadas y los equipos con predicci\'on exitosa. El mayor volumen de datos en el \textsc{dataset Lite} resulta en un conjunto de entrenamiento de casi 76\,000 secuencias, que permite una convergencia estable del optimizador.
 
 \begin{table}[htbp]
 	\centering
@@ -787,7 +787,7 @@ La Tabla~\ref{tab:lstm_dimensiones} muestra el n\'umero de secuencias generadas 
 	\end{tabular}
 \end{table}
 
-Los equipos exclu\'idos de la LSTM fueron 19 en el \textit{dataset Full} y 30 en el \textit{dataset Lite}, estos son aquellos con menos de \(T+1 = 9\) observaciones en el panel, insuficientes para formar al menos una secuencia completa.
+De los 334 equipos cargados en el \textit{dataset Full}, 19 fueron descartados por no alcanzar el m\'inimo de \(T+1 = 9\) observaciones en el panel. Del resto, solo aquellos con actividad posterior a la fecha de corte generan secuencias de prueba, lo que deja 284 equipos con predicci\'on. En el \textit{dataset Lite}, 30 equipos fueron descartados por insuficiencia de observaciones, resultando en 313 equipos con predicci\'on.
 
 \section{Evaluaci\'on comparativa}
 \label{ap:evaluacion_comparativa}
@@ -804,7 +804,7 @@ La Tabla~\ref{tab:metricas_globales} consolida los resultados para los tres data
 	\label{tab:metricas_globales}
 	\begin{tabular}{lccccc}
 		\toprule
-		\textbf{Dataset} & \textbf{Modelo} & \textbf{RMSE} & \textbf{MAE} & \textbf{Spearman \(\rho\)} & \textbf{LSTM wins} \\
+		\textbf{Dataset} & \textbf{Modelo} & \textbf{RMSE} & \textbf{MAE} & \textbf{Spearman \(\rho\)} & \textbf{Gana LSTM} \\
 		\midrule
 		\multirow{2}{*}{Full} & ARIMA & 6.8819 & 4.4250 & 0.9975 \(\pm\) 0.0013 & \multirow{2}{*}{19.2\%} \\
 		& LSTM  & 9.9615 & 7.1723 & 0.9966 \(\pm\) 0.0012 & \\
@@ -885,9 +885,9 @@ En los dos \textit{datasets}, ambos modelos siguen la tendencia general del rati
 \paragraph{An\'alisis diferenciado por dataset.}
 
 \begin{itemize}
-	\item \textbf{Dataset Full (Figura~\ref{fig:ARIMAvsLSTMfull}):} ARIMA y LSTM se comportan de manera consistente. Las series temporales muestran que ambos modelos capturan las fluctuaciones estacionales y los cambios de forma de los equipos, con la LSTM siendo m\'as estable en los per\'iodos de inactividad, sin divergencias significativas entre ambos.El scatter y los histogramas confirman la superioridad de ARIMA en error absoluto, coherente con los RMSE reportados (\(6.88\) vs \(9.96\)).
+	\item \textbf{Dataset Full (Figura~\ref{fig:ARIMAvsLSTMfull}):} ARIMA y LSTM se comportan de manera consistente. Las series temporales muestran que ambos modelos capturan las fluctuaciones estacionales y los cambios de forma de los equipos, con la LSTM siendo m\'as estable en los per\'iodos de inactividad, sin divergencias significativas entre ambos. El scatter y los histogramas confirman la superioridad de ARIMA en error absoluto, coherente con los RMSE reportados (\(6.88\) vs \(9.96\)).
 	
-	\item \textbf{Dataset Lite (Figura~\ref{fig:ARIMAvsLSTMlite}):} Este dataset presenta un hallazgo estructural que no se observa en el \textit{dataset Full}: en equipos pertenecientes a torneos de calendario interanual (Manchester City, Bayern M\:unchen y Sepahan), ARIMA exhibe picos oscilatorios durante los per\'iodos de inactividad prolongada y durante ca\'idas bruscas de (\(\mu\)), esto \'ultimo queda en evidencia cuando el modelo autorregresivo, al actualizar secuencialmente con valores planos, genera efectos de rebote que se amortiguan lentamente. En contraste, LSTM se mantiene estable, moderando tanto las ca\'idas bruscas como los rebotes posteriores. Este fen\'omeno no ocurre en equipos de calendario anual, donde los parones son m\'as cortos y distribuidos, ni en el \textit{dataset Full}, donde la ventana temporal m\'as reducida (2019--2025) contiene menos ciclos completos de inactividad.
+	\item \textbf{Dataset Lite (Figura~\ref{fig:ARIMAvsLSTMlite}):} Este dataset presenta un hallazgo estructural que no se observa en el \textit{dataset Full}: en equipos pertenecientes a torneos de calendario interanual (Manchester City, Bayern M\"unchen y Sepahan), ARIMA exhibe picos oscilatorios durante los per\'iodos de inactividad prolongada y durante ca\'idas bruscas de (\(\mu\)), esto \'ultimo queda en evidencia cuando el modelo autorregresivo, al actualizar secuencialmente con valores planos, genera efectos de rebote que se amortiguan lentamente. En contraste, LSTM se mantiene estable, moderando tanto las ca\'idas bruscas como los rebotes posteriores. Este fen\'omeno no ocurre en equipos de calendario anual, donde los parones son m\'as cortos y distribuidos, ni en el \textit{dataset Full}, donde la ventana temporal m\'as reducida (2019--2025) contiene menos ciclos completos de inactividad.
 	
 	Un caso adicional merece menci\'on: en Inter Barinas, la LSTM diverge del rating real y de la predicci\'on ARIMA en aproximadamente 60 puntos, sobrevalorando sistem\'aticamente la trayectoria del equipo. Se trata de un equipo con pocas observaciones en el panel y una serie de $\mu$ con alta volatilidad, situaci\'on donde la LSTM global tiene dificultades para generalizar el patr\'on autorregresivo espec\'ifico.
 	
@@ -1063,8 +1063,8 @@ Se extraen el rating Elo y el ranking derivado.
 
 El motor Glicko‑2 modificado \texttt{G2Av1513} produce rankings para dos versiones del dataset:
 \begin{itemize}
-	\item \textbf{dataset Full}: 364 equipos.
-	\item \textbf{dataset Lite}: 426 equipos.
+	\item \textbf{dataset Full}: 337 equipos.
+	\item \textbf{dataset Lite}: 415 equipos.
 \end{itemize}
 
 El modelo LSTM genera proyecciones para:
@@ -1081,12 +1081,12 @@ Los modelos ARIMA y LSTM se incluyen ambos en las comparaciones cuantitativas co
 Una propiedad deseable de cualquier sistema de \textit{rating} que aspire a tener validez global es su capacidad de generalizaci\'on a distintos contextos competitivos. Para que el sistema sea aceptado, es mandatorio que el ordenamiento sea consistente con los resultados a nivel local y regional. Cuanto m\'as amplia sea la cobertura del ranking, mayor ser\'a la evidencia de que el sistema de rating captura la fuerza latente de los equipos de forma objetiva y no est\'a sobreajustado a las particularidades de una regi\'on en concreto. Debido a esto, en el presente ap\'endice se contrasta el \textit{ranking} generado por el motor Glicko‑2 modificado \texttt{G2Av1513}, as\'i como las proyecciones LSTM, con fuentes externas que cubren Europa, Asia, Sudam\'erica y el sistema global de ClubElo, asegurando as\'i una validaci\'on multicontinental que pone a prueba la generalizaci\'on del modelo. A continuaci\'on se detalla la cobertura geogr\'afica resultante tras los filtros de pa\'ises y el mapeo de nombres.
 
 \begin{itemize}	
-	\item \item \textbf{UEFA} filtrado a las ligas europeas consideradas en el estudio (Inglaterra, Espa\~na, Alemania, Italia, Francia, Grecia), con 44 equipos para 2025 y 47 para 2026.
-	\item \textbf{ClubElo} mismo filtro geogr\'afico anterior, con 79 equipos en agosto de 2025 y 276 en septiembre de 2026.
+	\item \textbf{UEFA} filtrado a las ligas europeas consideradas en el estudio (Inglaterra, Espa\~na, Alemania, Italia, Francia, Grecia), con 44 equipos para 2025 y 47 para 2026.
+	\item \textbf{ClubElo} mismo filtro geogr\'afico anterior, con 79 equipos en agosto de 2025 y 273 en septiembre de 2026.
 	\item \textbf{AFC} cubre exclusivamente equipos asi\'aticos: Arabia Saudita, Jap\'on, Corea del Sur, Ir\'an. Con 16 y 15 equipos respectivamente.
 	\item \textbf{CONMEBOL} cubre Argentina, Brasil y Venezuela, con 77 equipos tras el filtrado.
 	\item \textbf{ELO Agosto 2025}: 79 equipos.
-	\item \textbf{ELO Septiembre 2026}: 276 equipos europeos, sudamericanos, norteamericanos y asi\'aticos.
+	\item \textbf{ELO Septiembre 2026}: 273 equipos europeos, sudamericanos, norteamericanos y asi\'aticos.
 \end{itemize}
 
 \section{Armonizaci\'on de nombres y filtrado}
@@ -1198,7 +1198,7 @@ Las cuatro m\'etricas descritas no son redundantes, sino que ofrecen perspectiva
 
 \section{Resultados e interpretaci\'on}
 
-Antes de presentar los resultados, es necesario se\~nalar una limitaci\'on estructural que condiciona cualquier comparaci\'on de \textit{rankings} entre regiones. El conjunto de datos utilizado en este estudio, si bien es extenso y cubre m\'ultiples continentes, presenta lo que en la literatura se denomina \emph{islas de datos}: conjuntos de equipos que compiten intensamente dentro de su propia regi\'on pero que tienen escasos o nulos enfrentamientos con equipos de otras regiones. Esta falta de conectividad intercontinental implica que los \textit{ratings} de equipos de distintas confederaciones no son directamente comparables en t\'erminos absolutos: un equipo con \(\mu = 1700\) en Europa y un equipo con \(\mu = 1700\) en Asia pueden no tener el mismo nivel de poder real, porque sus ratings se han construido en universos competitivos casi independientes. Las comparaciones num\'ericas entre regiones deben, por tanto, interpretarse con cautela, y las diferencias observadas en las tablas de nivel de poder reflejan m\'as una jerarqu\'ia relativa dentro de cada regi\'on que una medida absoluta de fuerza global.
+Antes de presentar los resultados, es necesario se\~nalar una limitaci\'on estructural que condiciona cualquier comparaci\'on de \textit{rankings} entre regiones. El conjunto de datos utilizado en este estudio, si bien es extenso y cubre m\'ultiples continentes, presenta lo que en la literatura se denomina \emph{islas de datos}: conjuntos de equipos que compiten intensamente dentro de su propia regi\'on pero que tienen escasos o nulos enfrentamientos con equipos de otras regiones. Esta falta de conectividad intercontinental implica que los \textit{ratings} de equipos de distintas confederaciones no son directamente comparables en t\'erminos absolutos: un equipo con \(\mu = 1700\) en Europa y un equipo con \(\mu = 1700\) en Asia pueden no necesariamente tener el mismo nivel de poder real, porque sus ratings se han construido en universos competitivos casi independientes. Las comparaciones num\'ericas entre regiones deben, por tanto, interpretarse con cautela, y las diferencias observadas en las tablas de nivel de poder reflejan m\'as una jerarqu\'ia relativa dentro de cada regi\'on que una medida absoluta de fuerza global.
 
 \subsection{Concordancia cuantitativa}
 
@@ -1231,7 +1231,7 @@ Los resultados permiten extraer varias conclusiones inmediatas. En primer lugar,
 
 En segundo lugar, la comparaci\'on con AFC 2025 (\(\rho = 0.079\)) es notablemente baja. Sin embargo, este resultado debe interpretarse con cautela: el tama\~no muestral es muy reducido (\(n = 16\)) y el ranking AFC se construye \'unicamente a partir del rendimiento en competiciones asi\'aticas, mientras que Glicko‑2 incluye tambi\'en el desempe\~no en ligas dom\'esticas de cada pa\'is. La baja concordancia refleja, m\'as que una deficiencia del modelo, la naturaleza regional y especializada del la fuente.
 
-En tercer lugar, los modelos ARIMA y LSTM proyectadso a 2026 mantiene una concordancia aceptable con las fuentes externas. LSTM Lite alcanza $\rho=0.708$ y $\tau=0.543$ contra UEFA 2026 y $\rho=0.472$ y $\tau=0.332$ contra ELO de Septiembre 2026, mientras que ARIMA Lite obtiene valores ligeramente inferiores ($\rho=0.680$ y $\rho=0.473$ respectivamente). Una diferencia peque\~na, pero que sugiere que la LSTM preserva ligeramente mejor la estructura original en horizontes de un a\~no que ARIMA. No obstante, ambos modelos muestran una ca\'ida frente a ELO Septiembre 2026 ($\rho=0.472$ para la LSTM y $\rho=0.473$ para ARIMA), lo que refleja la incertidumbre inherente a las proyecciones a largo plazo y las diferencias metodol\'ogicas entre sistemas de \textit{rating}. Los Overlap 20 de $0.65$ para la LSTM y $0.60$ para ARIMA indican que, aunque el orden global se pueda degradar, la identificaci\'on de la \'elite competitiva se mantiene en al menos un $60\%$.
+En tercer lugar, los modelos ARIMA y LSTM proyectados a 2026 mantiene una concordancia aceptable con las fuentes externas. LSTM Lite alcanza $\rho=0.708$ y $\tau=0.543$ contra UEFA 2026 y $\rho=0.472$ y $\tau=0.332$ contra ELO de Septiembre 2026, mientras que ARIMA Lite obtiene valores ligeramente inferiores ($\rho=0.680$ y $\rho=0.473$ respectivamente). Una diferencia peque\~na, pero que sugiere que la LSTM preserva ligeramente mejor la estructura original en horizontes de un a\~no que ARIMA. No obstante, ambos modelos muestran una ca\'ida frente a ELO Septiembre 2026 ($\rho=0.472$ para la LSTM y $\rho=0.473$ para ARIMA), lo que refleja la incertidumbre inherente a las proyecciones a largo plazo y las diferencias metodol\'ogicas entre sistemas de \textit{rating}. Los Overlap 20 de $0.65$ para la LSTM y $0.60$ para ARIMA indican que, aunque el orden global se pueda degradar, la identificaci\'on de la \'elite competitiva se mantiene en al menos un $60\%$.
 
 Por ultimo, no se incluyen en la tabla las comparaciones entre ARIMA/LSTM y Glicko-2 Lite, pues ARIMA y LSTM son proyecciones del mismo sistema de rating que se entrenan sobre las series hist\'oricas generadas por Glicko-2 modificado, y sus concordancias internas (\(\rho > 0.98\)) son matem\'aticamente esperadas y no constituyen una validaci\'on externa.
 
@@ -1339,7 +1339,7 @@ El concepto de \emph{nivel de poder} se introduce como una herramienta para cuan
 	\end{tabular}}%
 \end{table}
 
-En el modelo G2A Full, la Premier League encabeza claramente el nivel de poder con una media de 1690.2, superando en 13.2 puntos a la Saudi Pro League (1677.0), que ocupa el segundo lugar. Este resultado es notable: la liga saud\'i, impulsada por inversiones masivas en fichajes de primer nivel, aparece por delante de Serie A, LaLiga y Bundesliga. La Serie A y LaLiga se sit\'uan muy pr\'oximas, con una diferencia de apenas 0.2 puntos, lo que refleja el equilibrio competitivo entre ambas. La Bundesliga, a pesar de contar con Bayern, queda rezagada debido a la menor profundidad de su \'elite. Por otro lado, Las ligas no europeas ocupan posiciones intermedias, mientras que la Liga Profesional Argentina, la MLS y la K League 1 se sit\'uan en la cola, con diferencias superiores a los 120 puntos respecto a la Premier League.
+En el modelo G2A Full, la Premier League encabeza claramente el nivel de poder con una media de 1690.3, superando en 13.2 puntos a la Saudi Pro League (1677.1), que ocupa el segundo lugar. Este resultado es notable: la liga saud\'i, impulsada por inversiones masivas en fichajes de primer nivel, aparece por delante de Serie A (1674.4) y LaLiga (1667.9). La Serie A y LaLiga se sit\'uan muy pr\'oximas, con una diferencia de 6.5 puntos entre ambas, lo que refleja el equilibrio competitivo entre ambas., cierra el top 5 la Ligue 1 (1652.2). La Bundesliga, a pesar de contar con Bayern, queda rezagada debido a la menor profundidad de su \'elite. Por otro lado, Las ligas no europeas ocupan posiciones intermedias, mientras que la Liga Profesional Argentina, la MLS y la K League 1 se sit\'uan en la cola, con diferencias superiores a los 120 puntos respecto a la Premier League.
 
 \begin{table}[htbp]
 	\centering
@@ -1370,7 +1370,7 @@ En el modelo G2A Full, la Premier League encabeza claramente el nivel de poder c
 	\end{tabular}}%
 \end{table}
 
-En el modelo G2A Lite, que incluye el per\'iodo 2017--2025 y ligas adicionales, el panorama se ampl\'ia. La Persian Gulf Pro League de Ir\'an aparece con una media de 1656.6, superando a Ligue 1 y Bundesliga, un indicativo de que los equipos iran\'ies tienen un nivel competitivo m\'as alto de lo que se podr\'ia pensar en primera instancia. Esto valida la inclusi\'on de esta liga en el estudio y sugiere que el sistema Glicko‑2 captura adecuadamente el rendimiento en competiciones perif\'ericas. Por otra parte, la liga venezolana (FutVe) aparece con el nivel de poder m\'as bajo (1586.1), coherente con su posici\'on hist\'orica en el contexto sudamericano.
+En el modelo G2A Lite, que incluye el per\'iodo 2017--2025 y ligas adicionales, el panorama se ampl\'ia. La Persian Gulf Pro League de Ir\'an aparece con una media de 1656.6, superando a Ligue 1 y Bundesliga, un indicativo de que los equipos iran\'ies tienen un nivel competitivo m\'as alto de lo que se podr\'ia pensar en primera instancia. Esto valida la inclusi\'on de esta liga en el estudio y sugiere que el sistema Glicko‑2 captura adecuadamente el rendimiento en competiciones perif\'ericas. Por otra parte, la liga venezolana (FutVe) se sit\'ua entre las de menor nivel de poder del panel, con 1586.0, por encima de la Major League Soccer (1535.2) y la K League 1 (1539.3), las cuales ocupan los \'ultimos puestos.
 
 \begin{table}[htbp]
 	\centering
@@ -1399,7 +1399,7 @@ En el modelo G2A Lite, que incluye el per\'iodo 2017--2025 y ligas adicionales, 
 	\end{tabular}}%
 \end{table}
 
-El modelo LSTM Full, que proyecta ratings a 2026, mantiene la Premier League en cabeza (1677.0), pero reduce las diferencias con las dem\'as ligas. La Saudi Pro League (1656.3) y Ligue 1 (1649.3) se acercan, mientras que Serie A cae a la octava posici\'on (1593.8), muy por debajo de su posici\'on en los modelos Glicko‑2. Esto refleja que las proyecciones LSTM tienden a comprimir las diferencias entre ligas, posiblemente debido a la naturaleza suavizadora de los modelos de series temporales, que aten\'uan las fluctuaciones extremas. La Bundesliga (1616.1) y el Brasileirao (1612.7) mantienen posiciones intermedias.
+El modelo LSTM Full, que proyecta ratings a 2026, mantiene a la Premier League en cabeza (1658.3). Le siguen LaLiga (1645.3), la Saudi Pro League (1642.2) y, muy pr\'oximas entre s\'i, Ligue 1 (1632.3) y Serie A (1632.3), con la Super League de Grecia (1632.0) a unas d\'ecimas. La Bundesliga (1630.3) y el Brasileir\~ao (1597.7) mantienen posiiones intermedias. La compresi\'on de diferencias entre ligas sigue siendo visible en las proyecciones, con las siete primeras separadas por menos de 30 puntos.
 
 \begin{table}[htbp]
 	\centering
@@ -1415,22 +1415,22 @@ El modelo LSTM Full, que proyecta ratings a 2026, mantiene la Premier League en 
 		LaLiga & \makecell[l]{Real Madrid Barcelona \\ Atl. Madrid Villarreal Ath. Bilbao} & 1646.2 & -10.4 \\
 		Saudi Pro League & \makecell[l]{Al Hilal Al Nassr \\ Al Ittihad Al Ahli Al Shabab} & 1645.6 & -11.0 \\
 		Serie A & \makecell[l]{Inter de Milan Napoli \\ Juventus Atalanta Roma} & 1635.2 & -21.4 \\
-		Super League Greece & \makecell[l]{Olympiacos PAOK \\ AEK Panathinaikos Aris} & 1625.4 & -31.2 \\
-		Bundesliga & \makecell[l]{Bayern Leverkusen \\ Dortmund Leipzig E. Frankfurt} & 1626.8 & -29.8 \\
-		Ligue 1 & \makecell[l]{PSG Monaco \\ O. Marseille O. Lyon Lille} & 1624.8 & -31.8 \\
 		Persian Gulf Pro League & \makecell[l]{Persepolis Sepahan \\ Esteghlal Tractor Foolad} & 1630.8 & -25.8 \\
+		Bundesliga & \makecell[l]{Bayern Leverkusen \\ Dortmund Leipzig E. Frankfurt} & 1626.8 & -29.8 \\
+		Super League Greece & \makecell[l]{Olympiacos PAOK \\ AEK Panathinaikos Aris} & 1625.4 & -31.2 \\
+		Ligue 1 & \makecell[l]{PSG Monaco \\ O. Marseille O. Lyon Lille} & 1624.8 & -31.8 \\
 		Brasileir\~ao & \makecell[l]{Palmeiras Flamengo \\ Botafogo Mirassol Fluminense} & 1610.1 & -46.5 \\
 		Liga MX & \makecell[l]{America Cruz Azul \\ Tigres UANL Monterrey Toluca} & 1584.2 & -72.4 \\
 		J1 League & \makecell[l]{Kashima Antlers Sanfrecce Hiroshima \\ Machida Zelvia Vissel Kobe Kawasaki Frontale} & 1571.6 & -85.0 \\
 		Liga Profesional Argentina & \makecell[l]{Boca Juniors River Plate \\ Racing Dep. Riestra Rosario Central} & 1559.8 & -96.8 \\
-		FutVe & \makecell[l]{Dep. Tachira Dep. LaGuaira \\ Carabobo Caracas UCV} & 1557.5 & -99.1 \\
+		FutVe & \makecell[l]{Dep. T\'achira Dep. La Guaira \\ Carabobo Caracas UCVFC} & 1557.5 & -99.1 \\
 		K League 1 & \makecell[l]{Jeonbuk Hyundai Ulsan HD \\ Pohang Steelers Daejeon Hana Citizen Sangju Sangmu} & 1531.6 & -125.0 \\
 		Major League Soccer & \makecell[l]{LAFC San Diego \\ Seattle Sounders Inter Miami Philadelphia Union} & 1512.8 & -143.8 \\
 		\bottomrule
 	\end{tabular}}%
 \end{table}
 
-El modelo LSTM Lite presenta la compresi\'on m\'as pronunciada. La Premier League (1644.9) sigue siendo la m\'as fuerte, pero la Super League de Grecia (1627.7) y la Saudi Pro League (1622.9) se sit\'uan muy cerca, lo que sugiere que en el escenario Lite las proyecciones tienden a igualar los niveles de las ligas europeas secundarias con las grandes ligas. Por su parte, la Persian Gulf Pro League (1606.7) aparece por encima de la Bundesliga y la Serie A, un resultado que, aunque sorprendente, es consistente con el patr\'on observado en G2A Lite y refleja la alta competitividad de los equipos iran\'ies en el panel completo.
+El modelo LSTM Lite presenta la compresi\'on m\'as pronunciada. La Premier League (1656.6) sigue siendo la m\'as fuerte. Le siguen LaLiga (1646.2) y la Saudi Pro League (1645.6), muy pr\'oximas entre s\'i, seguida por la Serie A (1635.2) y la Persian Gulf Pro League (1630.8). Esta \'ultima queda por encima de la Bundesliga (1626.8) y de la Super League de Grecia (1625.4), un resultado consistente con el patr\'on observado en G2A Lite y refleja la alta competitividad en el panel de ligas.
 
 \newpage
 
@@ -1461,7 +1461,7 @@ El modelo LSTM Lite presenta la compresi\'on m\'as pronunciada. La Premier Leagu
 	\end{tabular}}%
 \end{table}
 
-El modelo ARIMA Full mantiene a la Premier League en la cima (1691.04), pero la Saudi Pro League (1685.53) se acerca m\'as que en G2A Full, quedando a solo 5.5 puntos. La Serie A (1675.70) y LaLiga (1670.82) siguen muy de cerca, confirmando el equilibrio entre las grandes ligas europeas. El Brasileirao (1658.17) escala posiciones, superando a la Super League de Grecia y la Bundesliga, lo que refleja la alta valoraci\'on de equipos brasile\~nos como Flamengo y Palmeiras por parte del ARIMA. Las ligas americanas (MLS, Argentina) y asi\'aticas (J1, K League) quedan rezagadas con diferencias superiores a los 85 puntos, y m\'as de 130 en los casos de Argentina, MLS y K League.
+El modelo ARIMA Full mantiene a la Premier League en la cima (1691.1), pero la Saudi Pro League (1685.8) se acerca m\'as que en G2A Full, quedando a solo 5.3 puntos. La Serie A (1682.5) y LaLiga (1671.1) siguen muy de cerca, confirmando el equilibrio entre las grandes ligas europeas. El Brasileir\~ao (1655.6) escala posiciones, superando a la Super League de Grecia (1653.6) y la Bundesliga (1646.2), lo que refleja la alta valoraci\'on de equipos brasile\~nos como Flamengo y Palmeiras por parte del ARIMA. Las ligas americanas (MLS, Argentina) y asi\'aticas (J1, K League) quedan rezagadas con diferencias superiores a los 85 puntos, y en torno a los 130 en los casos de Argentina, MLS y K League.
 
 \begin{table}[htbp]
 	\centering
@@ -1492,7 +1492,7 @@ El modelo ARIMA Full mantiene a la Premier League en la cima (1691.04), pero la 
 	\end{tabular}}%
 \end{table}
 
-En el modelo ARIMA Lite, que cubre el per\'iodo 2017-2025, la jerarqu\'ia se comprime notablemente. La Premier League (1685.52) sigue liderando, pero la Serie A (1676.46) y la Persian Gulf Pro League (1676.34) quedan a menos de 10 puntos, seguidas muy de cerca por la Saudi Pro League (1674.64) y el Brasilei\~ao (1674.58). Este resultado es llamativo: la inclusi\'on de m\'as temporadas (2017-2019) eleva el nivel medio de la Serie A y de la liga iran\'i, mientras que la Bundesliga (1643.47) y la Super League de Grecia (1643.13) caen a la zona media. La liga venezolana (FutVe) mantiene una media de 1585.36, superando a la Liga Profesional Argentina (1575.42) en este modelo, lo que refleja el buen rendimiento hist\'orico de equipos como Dep. T\'achira y Carabobo en el panel completo. La MLS (1546.08) y la K League (1546.62) se sit\'uan en la cola, con diferencias superiores a los 138 puntos respecto a la Premier League.
+En el modelo ARIMA Lite, que cubre el per\'iodo 2017-2025, la jerarqu\'ia se comprime notablemente. La Premier League (1685.3) sigue liderando, pero la Serie A (1682.8) y la Persian Gulf Pro League (1676.3) quedan a menos de 10 puntos, seguidas muy de cerca por la Saudi Pro League (1674.6) y el Brasilei\~ao (1674.9). Este resultado es llamativo: la inclusi\'on de m\'as temporadas (2017-2019) eleva el nivel medio de la Serie A y de la liga iran\'i, mientras que la Bundesliga (1643.4) y la Super League de Grecia (1643.2) caen a la zona media. La liga venezolana (FutVe) mantiene una media de 1585.3, superando a la Liga Profesional Argentina (1575.9) en este modelo, lo que refleja el buen rendimiento hist\'orico de equipos como Dep. T\'achira y Carabobo en el panel completo. La MLS (1545.3) y la K League (1546.2) se sit\'uan en la cola, con diferencias superiores a los 138 puntos respecto a la Premier League.
 
 Una advertencia adicional es necesaria aqu\'i. Los resultados de las tablas de nivel de poder, aunque sugerentes, no deben interpretarse como una clasificaci\'on global definitiva de ligas. Como se ha se\~nalado al inicio de esta secci\'on, las \emph{islas de datos} impiden establecer comparaciones absolutas entre regiones. Por ejemplo, el hecho de que la Persian Gulf Pro League aparezca con un nivel de poder similar a la Bundesliga no implica necesariamente que los equipos iran\'ies sean tan fuertes como los alemanes; simplemente indica que, dentro de sus respectivos universos competitivos, ambos conjuntos de equipos han alcanzado ratings similares. La ausencia de enfrentamientos directos entre ambas ligas impide calibrar el verdadero valor de esa diferencia. En este sentido, el modelo de nivel de poder es una herramienta \'util para describir la estructura interna del ranking, pero no debe ser utilizado como un argumento de paridad competitiva entre regiones sin un an\'alisis adicional que incorpore partidos intercontinentales o mecanismos de calibraci\'on cruzada.
 
@@ -1508,7 +1508,7 @@ En primer lugar, el sistema Glicko‑2 modificado muestra una concordancia moder
 
 En segundo lugar, el modelo LSTM proyecta rankings que preservan la estructura ordinal del Glicko‑2 modificado con una fidelidad alta, con un coeficiente de Spearman superior a $0{.}97$ sobre el subconjunto de equipos en com\'un. Este resultado es importante porque indica que las proyecciones a futuro no introducen distorsiones sistem\'aticas en el ordenamiento de los equipos; es decir, el modelo neuronal aprende la jerarqu\'ia de fuerzas subyacente sin alterarla significativamente.
 
-En tercer lugar, las proyecciones LSTM a 2026 mantienen una concordancia aceptable con UEFA 2026 ($\rho = 0.708$) y moderada con ELO Septiembre 2026 ($\rho = 0.472$). La ca\'ida respecto a la concordancia del Glicko‑2 hist\'orico con ELO ($0.787$ vs $0.472$) refleja la incertidumbre inherente a cualquier proyecci\'on a un a\~no vista en un deporte de alta variabilidad como el f\'utbol. No obstante, el Overlap 10 de $0.70$ indica que el modelo acierta en el $70\,\%$ de los equipos que componen la \'elite, lo que sugiere que la p\'erdida de precisi\'on se concentra en las posiciones medias y bajas del ranking.
+En tercer lugar, las proyecciones LSTM a 2026 mantienen una concordancia aceptable con UEFA 2026 ($\rho = 0.708$) y moderada con ELO Septiembre 2026 ($\rho = 0.472$). La ca\'ida respecto a la concordancia del Glicko‑2 hist\'orico con ELO ($0.787$ vs $0.472$) refleja la incertidumbre inherente a cualquier proyecci\'on a un a\~no vista en un deporte de alta variabilidad como el f\'utbol. No obstante, el Overlap 10 de $0.90$ frente a UEFA 2026 indica que el modelo identifica correctamente nueve de los diez mejores equipos, mientras que el Overlap 20 de $0.70$ extiende esta coincidencia a 14 de los 20 primeros. Ambos valores sugieren que la p\'erdida de precisi\'on se concentra en las posiciones medias y bajas del ranking.
 
 En cuarto lugar, el modelo de nivel de poder revela una jerarqu\'ia de ligas que, con las salvedades ya se\~naladas sobre las islas de datos, es consistente con la percepci\'on general del f\'utbol de clubes: la Premier League se sit\'ua claramente por delante, seguida por un grupo compacto formado por LaLiga, Serie A y Bundesliga, con Ligue 1 y las ligas sudamericanas en posiciones intermedias, y las ligas asi\'aticas, con la excepci\'on de la Saudi Pro League, en la cola. La presencia de la Saudi Pro League y la Persian Gulf Pro League en posiciones altas dentro de sus respectivos modelos es un hallazgo que merece atenci\'on, aunque debe interpretarse con cautela debido a la limitaci\'on de las islas de datos.
 
@@ -1516,7 +1516,7 @@ En cuarto lugar, el modelo de nivel de poder revela una jerarqu\'ia de ligas que
 
 A pesar de la solidez de los resultados, es necesario reconocer varias limitaciones que condicionan el alcance de las conclusiones.
 
-La primera limitaci\'on es la \textbf{cobertura geogr\'afica incompleta}. El panel de ligas utilizado en este estudio, aunque extenso, no incluye confederaciones como CAF (\'Africa) u OFC (Ocean\'ia). Adem\'as, dentro de las confederaciones representadas, la cobertura no es exhaustiva: por ejemplo, de Sudam\'erica solo se incluyen Argentina, Brasil y Venezuela; de Asia, solo Arabia Saudita, Jap\'on, Corea del Sur e Ir\'an. Esto implica que los resultados de validaci\'on son representativos \'inicamente de las regiones y ligas activas en el estudio, y no necesariamente generalizables a otras.
+La primera limitaci\'on es la \textbf{cobertura geogr\'afica incompleta}. El panel de ligas utilizado en este estudio, aunque extenso, no incluye confederaciones como CAF (\'Africa) u OFC (Ocean\'ia). Adem\'as, dentro de las confederaciones representadas, la cobertura no es exhaustiva: por ejemplo, de Sudam\'erica solo se incluyen Argentina, Brasil y Venezuela; de Asia, solo Arabia Saudita, Jap\'on, Corea del Sur e Ir\'an. Esto implica que los resultados de validaci\'on son representativos \'unicamente de las regiones y ligas activas en el estudio, y no necesariamente generalizables a otras.
 
 La segunda limitaci\'on es el \textbf{reducido tama\~no muestral en las comparaciones con AFC}. Con solo 15--16 equipos en cada a\~no, las m\'etricas de concordancia ($\rho = 0.079$ en 2025 y $\rho = 0.170$ en 2026 para la LSTM) son estad\'isticamente inestables. Cualquier interpretaci\'on de estos valores debe hacerse con extrema precauci\'on, pues una diferencia en el orden de dos o tres equipos puede alterar dr\'asticamente el coeficiente de correlaci\'on. Esta limitaci\'on es inherente a la propia estructura del ranking AFC, que clasifica \'unicamente a los equipos que participan en competiciones continentales asi\'aticas.
 
@@ -1524,6 +1524,6 @@ La tercera limitaci\'on es la diferencia de escalas entre sistemas de puntuaci\'
 
 La cuarta limitaci\'on, ya anticipada, es la \textbf{existencia de islas de datos}. La escasa conectividad intercontinental entre ligas implica que los ratings de equipos de distintas regiones no son directamente comparables en t\'erminos absolutos. Un equipo con \(\mu = 1700\) en Europa y otro con \(\mu = 1700\) en Asia pueden no tener el mismo nivel de poder real, porque sus ratings se han construido en universos competitivos casi independientes. Esto afecta especialmente a las tablas de nivel de poder, donde se comparan medias de ligas de distintas confederaciones. El lector debe interpretar estas comparaciones como una descripci\'on de la estructura interna del ranking, no como una medici\'on objetiva de paridad global.
 
-Por \'ultimo, la incertidumbre de las proyecciones LSTM a horizontes largos es una limitaci\'on pr\'ctica. La concordancia con ELO Septiembre 2026 ($\rho = 0.472$ para la LSTM y $\rho = 0.473$ para ARIMA) indica que el error en el ordenamiento global es considerable. Esto es esperable dado el car\'acter estoc\'astico del f\'utbol, pero tambi\'en sugiere que las proyecciones m\'as all\'a de unos pocos meses deben interpretarse con cautela y, preferiblemente, complementarse con intervalos de confianza o an\'alisis de sensibilidad. En su estado actual, el sistema es m\'as fiable para proyecciones a corto plazo que para horizontes de un a\~no completo.
+Por \'ultimo, la incertidumbre de las proyecciones LSTM a horizontes largos es una limitaci\'on pr\'actica. La concordancia con ELO Septiembre 2026 ($\rho = 0.472$ para la LSTM y $\rho = 0.473$ para ARIMA) indica que el error en el ordenamiento global es considerable. Esto es esperable dado el car\'acter estoc\'astico del f\'utbol, pero tambi\'en sugiere que las proyecciones m\'as all\'a de unos pocos meses deben interpretarse con cautela y, preferiblemente, complementarse con intervalos de confianza o an\'alisis de sensibilidad. En su estado actual, el sistema es m\'as fiable para proyecciones a corto plazo que para horizontes de un a\~no completo.
 
 Estas limitaciones no invalidan los resultados obtenidos, pero s\'i delimitan el dominio de validez de las conclusiones. El sistema de ranking desarrollado es robusto dentro del conjunto de ligas y per\'iodos considerados, pero su generalizaci\'on a otras regiones, otros horizontes temporales o comparaciones intercontinentales directas requiere precauciones adicionales y, posiblemente, la incorporaci\'on de nuevas fuentes de datos y mecanismos de calibraci\'on.

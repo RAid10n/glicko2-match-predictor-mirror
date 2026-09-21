@@ -46,6 +46,31 @@
       \field{title}{Neural Networks and Deep Learning}
       \field{year}{2018}
     \endentry
+    \entry{arriojas2004}{book}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=7765a5d8151b34aca6f7a80f86b423ed}{%
+           family={Arriojas},
+           familyi={A\bibinitperiod},
+           given={Mercedes},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{7765a5d8151b34aca6f7a80f86b423ed}
+      \strng{fullhash}{7765a5d8151b34aca6f7a80f86b423ed}
+      \strng{fullhashraw}{7765a5d8151b34aca6f7a80f86b423ed}
+      \strng{bibnamehash}{7765a5d8151b34aca6f7a80f86b423ed}
+      \strng{authorbibnamehash}{7765a5d8151b34aca6f7a80f86b423ed}
+      \strng{authornamehash}{7765a5d8151b34aca6f7a80f86b423ed}
+      \strng{authorfullhash}{7765a5d8151b34aca6f7a80f86b423ed}
+      \strng{authorfullhashraw}{7765a5d8151b34aca6f7a80f86b423ed}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Notas de curso, Escuela de Matemáticas, UCV}
+      \field{title}{Teoría de las Probabilidades}
+      \field{year}{2004}
+    \endentry
     \entry{AFCRanking2024}{misc}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=2faf69667e649eb82bbff2c82354bd70}{%
@@ -588,6 +613,32 @@
       \field{title}{AFC Club Competitions Ranking 2026}
       \field{year}{2026}
     \endentry
+    \entry{BigData}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=fa7263add56a0b13f44cd85ad8dd0de5}{%
+           family={García},
+           familyi={G\bibinitperiod},
+           given={Miguel},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{fa7263add56a0b13f44cd85ad8dd0de5}
+      \strng{fullhash}{fa7263add56a0b13f44cd85ad8dd0de5}
+      \strng{fullhashraw}{fa7263add56a0b13f44cd85ad8dd0de5}
+      \strng{bibnamehash}{fa7263add56a0b13f44cd85ad8dd0de5}
+      \strng{authorbibnamehash}{fa7263add56a0b13f44cd85ad8dd0de5}
+      \strng{authornamehash}{fa7263add56a0b13f44cd85ad8dd0de5}
+      \strng{authorfullhash}{fa7263add56a0b13f44cd85ad8dd0de5}
+      \strng{authorfullhashraw}{fa7263add56a0b13f44cd85ad8dd0de5}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://www.marca.com/futbol/2024/02/19/65d37712268e3ed8438b45a0.html}}
+      \field{note}{Marca}
+      \field{title}{Big data y fútbol: datos, métricas y analítica avanzada para entender el deporte rey con MARCA}
+      \field{year}{2024}
+    \endentry
     \entry{Glickman1995}{misc}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=4fcda38858c83369e122fa60b42ae410}{%
@@ -778,6 +829,68 @@
       \field{labeltitlesource}{title}
       \field{note}{Material de clase}
       \field{title}{Series de Tiempo. Temas 2, 3, 4 y 5}
+    \endentry
+    \entry{hernandezBenito}{book}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=a8f1e920be416750708e379e7750d79d}{%
+           family={Hernández\bibnamedelima C.},
+           familyi={H\bibinitperiod\bibinitdelim C\bibinitperiod},
+           given={José\bibnamedelima Benito},
+           giveni={J\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{location}{1}{%
+        {Caracas, Venezuela}%
+      }
+      \list{publisher}{1}{%
+        {Universidad Central de Venezuela, Facultad de Ciencias, Escuela de Matemáticas}%
+      }
+      \strng{namehash}{a8f1e920be416750708e379e7750d79d}
+      \strng{fullhash}{a8f1e920be416750708e379e7750d79d}
+      \strng{fullhashraw}{a8f1e920be416750708e379e7750d79d}
+      \strng{bibnamehash}{a8f1e920be416750708e379e7750d79d}
+      \strng{authorbibnamehash}{a8f1e920be416750708e379e7750d79d}
+      \strng{authornamehash}{a8f1e920be416750708e379e7750d79d}
+      \strng{authorfullhash}{a8f1e920be416750708e379e7750d79d}
+      \strng{authorfullhashraw}{a8f1e920be416750708e379e7750d79d}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Material de curso}
+      \field{title}{Guía de Estadística con {R}}
+    \endentry
+    \entry{solorzano2025rn}{misc}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=a8f1e920be416750708e379e7750d79d}{%
+           family={Hernández\bibnamedelima C.},
+           familyi={H\bibinitperiod\bibinitdelim C\bibinitperiod},
+           given={José\bibnamedelima Benito},
+           giveni={J\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6a890777780d6671094b548b14214ee0}{%
+           family={Solórzano},
+           familyi={S\bibinitperiod},
+           given={Manuel},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{d8430245b132beea1e4d9b1cbc7eb61b}
+      \strng{fullhash}{d8430245b132beea1e4d9b1cbc7eb61b}
+      \strng{fullhashraw}{d8430245b132beea1e4d9b1cbc7eb61b}
+      \strng{bibnamehash}{d8430245b132beea1e4d9b1cbc7eb61b}
+      \strng{authorbibnamehash}{d8430245b132beea1e4d9b1cbc7eb61b}
+      \strng{authornamehash}{d8430245b132beea1e4d9b1cbc7eb61b}
+      \strng{authorfullhash}{d8430245b132beea1e4d9b1cbc7eb61b}
+      \strng{authorfullhashraw}{d8430245b132beea1e4d9b1cbc7eb61b}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Notas de curso, Facultad de Ciencias, Escuela de Matemáticas, Universidad Central de Venezuela}
+      \field{note}{Caracas, Venezuela}
+      \field{title}{Fundamentos de Redes Neuronales}
+      \field{year}{2025}
     \endentry
     \entry{hochreiter1997}{article}{}{}
       \name{author}{2}{}{%
@@ -1397,6 +1510,40 @@
       \verb https://www.alkaline-ml.com/pmdarima/
       \endverb
     \endentry
+    \entry{soccerment2017crossing}{online}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=d784781123ca82ec762c2d74a9744d70}{%
+           family={{Soccerment Research}},
+           familyi={S\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {Soccerment}%
+      }
+      \strng{namehash}{d784781123ca82ec762c2d74a9744d70}
+      \strng{fullhash}{d784781123ca82ec762c2d74a9744d70}
+      \strng{fullhashraw}{d784781123ca82ec762c2d74a9744d70}
+      \strng{bibnamehash}{d784781123ca82ec762c2d74a9744d70}
+      \strng{authorbibnamehash}{d784781123ca82ec762c2d74a9744d70}
+      \strng{authornamehash}{d784781123ca82ec762c2d74a9744d70}
+      \strng{authorfullhash}{d784781123ca82ec762c2d74a9744d70}
+      \strng{authorfullhashraw}{d784781123ca82ec762c2d74a9744d70}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Crossing: An effective strategy?}
+      \field{urlday}{11}
+      \field{urlmonth}{8}
+      \field{urlyear}{2026}
+      \field{year}{2017}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://soccerment.com/crossing-effective-strategy/
+      \endverb
+      \verb{url}
+      \verb https://soccerment.com/crossing-effective-strategy/
+      \endverb
+    \endentry
     \entry{spearman1904}{article}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=fe74eb0f9a2d4cd74c2a1f1dcf7caf85}{%
@@ -1501,6 +1648,37 @@
       \field{labeltitlesource}{title}
       \field{title}{SOCCERNOMICS - Why European Men and American Women Win and Billionaire Owners Are Destined to Lose}
       \field{year}{2022}
+    \endentry
+    \entry{thurstone1927}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=b8dcc68e31c2419d785890fb67be433b}{%
+           family={Thurstone},
+           familyi={T\bibinitperiod},
+           given={Louis\bibnamedelima Leon},
+           giveni={L\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {American Psychological Association}%
+      }
+      \strng{namehash}{b8dcc68e31c2419d785890fb67be433b}
+      \strng{fullhash}{b8dcc68e31c2419d785890fb67be433b}
+      \strng{fullhashraw}{b8dcc68e31c2419d785890fb67be433b}
+      \strng{bibnamehash}{b8dcc68e31c2419d785890fb67be433b}
+      \strng{authorbibnamehash}{b8dcc68e31c2419d785890fb67be433b}
+      \strng{authornamehash}{b8dcc68e31c2419d785890fb67be433b}
+      \strng{authorfullhash}{b8dcc68e31c2419d785890fb67be433b}
+      \strng{authorfullhashraw}{b8dcc68e31c2419d785890fb67be433b}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Psychological Review}
+      \field{title}{A Law of Comparative Judgment}
+      \field{year}{1927}
+      \verb{doi}
+      \verb 10.1037/h0070288
+      \endverb
     \endentry
     \entry{Transfermarkt}{online}{}{}
       \name{author}{1}{}{%

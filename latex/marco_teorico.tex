@@ -43,7 +43,7 @@ Los sistemas de rating buscan asignar a cada equipo una medida de su fuerza rela
 
 \subsection{Modelos fundacionales: Bradley-Terry y Elo}
 
-El fundamento probabil\'istico de todo sistema de rating moderno radica en el modelo de comparaciones pareadas de Bradley y Terry \cite{bradley1952}. Este modelo postula que la probabilidad de que una entidad $i$ derrote a una entidad $j$ depende de la proporci\'on de sus fuerzas latentes relativas.
+El fundamento probabil\'istico de todo sistema de rating moderno puede rastrearse hasta la ley del juicio comparativo de Thurstone \cite{thurstone1927}, y fue formalizado despu\'es en el modelo de comparaciones pareadas de Bradley y Terry \cite{bradley1952}. Este modelo postula que la probabilidad de que una entidad $i$ derrote a una entidad $j$ depende de la proporci\'on de sus fuerzas latentes relativas.
 
 \begin{definition}[Modelo de Bradley-Terry]
 	Sean $n$ equipos con fuerzas latentes $\pi_1, \pi_2, \dots, \pi_n > 0$. La probabilidad de que el equipo $i$ venza al equipo $j$ es:
@@ -139,8 +139,8 @@ El algoritmo opera sobre \emph{per\'iodos de rating}, dentro de los cuales todos
 	\paragraph*{Paso 2: Cambio de escala} Se transforman el rating y la desviaci\'on al espacio Glicko-2 mediante 
 	
 	\begin{equation}\label{eq:glicko2_scale}
-		\mu=\frac{R-1500}{173{,}7178},\qquad 
-		\phi=\frac{RD}{173{,}7178},
+		\mu=\frac{R-1500}{173{.}7178},\qquad 
+		\phi=\frac{RD}{173{.}7178},
 	\end{equation}
 	donde $173{,}7178\approx 400/\ln 10$. La volatilidad $\sigma$ no se transforma.
 	
@@ -318,6 +318,7 @@ La distribuci\'on de Poisson constituye el modelo can\'onico para variables de c
 	\begin{equation}\label{eq:poisson_pmf}
 		P(X = k) = \frac{e^{-\lambda} \lambda^{k}}{k!}, \qquad k = 0, 1, 2, \dots
 	\end{equation}
+	(v\'ease \cite{arriojas2004}, Cap.~2, para la construcci\'on de esta funci\'on de masa a partir de los axiomas de probabilidad).
 \end{definition}
 
 En el contexto deportivo, $\lambda$ representa la potencia ofensiva esperada del equipo en un partido. Para los rangos t\'ipicos del f\'utbol profesional suele ocurrir que $\lambda \in [0{.}5,\,3{.}0]$, y la moda de la distribuci\'on es $0$ o $1$ goles, lo que refleja la escasez del evento. 
@@ -389,6 +390,11 @@ A partir de las distribuciones de Poisson y Skellam, las probabilidades de los t
 	La expresi\'on \eqref{eq:prob_D_bessel} se obtiene identificando la serie con la funci\'on de Bessel $I_0$ evaluada en $2\sqrt{\lambda_H\lambda_A}$, seg\'un \eqref{eq:bessel_series} con $r=0$ y $\Gamma(k+1)=k!$. La probabilidad de victoria visitante se sigue por complemento, pues los tres eventos forman una partici\'on del espacio muestral.
 \end{proof}
 
+\begin{obs}
+	\label{obs:convencion_pd}
+	A lo largo del trabajo, cuando la probabilidad de empate aparezca como parte del componente del vector de resultados $(P_H,P_D,P_A)$ se denota sin el supra\'indice. Sin embargo al hacer referencia a ella de forma aislada , en particular como estimaci\'on derivada, se denotar\'a como $P_D^{(S)}$, o bien $\hat{P_D^{(S)}}$, donde el supra\'indice $(S)$ indica la procedencia de la distribuci\'on de Skellam. \eqref{eq:prob_D_bessel}
+\end{obs}
+
 La equivalencia entre \eqref{eq:prob_D} y \eqref{eq:prob_D_bessel} tiene valor computacional: la evaluaci\'on de $I_0$ mediante rutinas num\'ericas especializadas es m\'as eficiente que la suma doble, especialmente cuando $\lambda_H\lambda_A$ es grande.
 
 La estructura trinomial del modelo de Shelopugin y Sirotkin, presentada en la Secci\'on~\ref{subsec:shelopugin}, recobra aqu\'i una justificaci\'on probabil\'istica: el par\'ametro $s$ de probabilidad de empate no es un hiperpar\'ametro ex\'ogeno, pues emerge de la distribuci\'on de Skellam evaluada en $d=0$. El par\'ametro adicional $d\in\mathbb{R}$ introducido en la Definici\'on~\ref{def:expectativa_mod} act\'ua como t\'ermino de calibraci\'on que compensa desviaciones sistem\'aticas del modelo Poisson puro. Una vez estimadas $\lambda_H$ y $\lambda_A$, las probabilidades $(P_H, P_D, P_A)$ se inyectan en el sistema de rating como vector de expectativas trinomiales, acoplando los tres bloques del pipeline en un \'unico grafo de inferencia.
@@ -431,6 +437,8 @@ Es necesario verificar que las probabilidades asignadas por el modelo de conteo 
 	es decir, $P_H + P_D + P_A = 1$.
 \end{proof}
 
+La proposici\'on anterior es una consecuencia directa de los axiomas de una medida de probabilidad \cite{arriojas2004}.
+
 En una implementaci\'on computacional, las sumas infinitas se truncan en un entero $K$. Para la cola de una distribuci\'on de Poisson, la cota de Chernoff \cite{casella2002} garantiza que si $k > \lambda$,
 \begin{equation}\label{eq:chernoff_poisson}
 	P(X \geq k) \leq \left(\frac{e\lambda}{k}\right)^k e^{-\lambda}.
@@ -448,7 +456,7 @@ Para el rango t\'ipico $\lambda \in [0{.}5, 3{.}0]$, la elecci\'on $K = 16$ mant
 	El l\'imite \textit{(iii)} tiene interpretaci\'on deportiva inmediata: cuando dos equipos de muy bajo poder ofensivo se enfrentan, el modelo predice dominancia del empate a cero, fen\'omeno frecuente en ligas defensivas o en eliminatorias directas.
 \end{obs}
 
-Adicionalmente, se aplica una normalizaci\'on expl\'icita del vector $(P_H, P_D, P_A)$ para compensar posibles errores de redondeo en aritm\'etica de punto flotante que desv\'ien ligeramente el vector de probabilidades de la condicion $P+H+P_D+P_A=1$.
+Adicionalmente, se aplica una normalizaci\'on expl\'icita del vector $(P_H, P_D, P_A)$ para compensar posibles errores de redondeo en aritm\'etica de punto flotante que desv\'ien ligeramente el vector de probabilidades de la condicion $P_H+P_D+P_A=1$.
 
 Dos propiedades estructurales complementan el an\'alisis. Primero, la monotonicidad cruzada: $P_H$ es estrictamente creciente en $\lambda_H$ y decreciente en $\lambda_A$, con comportamiento an\'alogo para $P_A$. La probabilidad de empate $P_D$ no es mon\'otona en general: crece cuando las tasas se aproximan entre s\'i y decrece cuando una domina a la otra, lo que refleja que el empate es m\'as probable entre equipos equilibrados, esto lleva a una interpretaci\'on interesante y relevante, pues sugiere que el empate es m\'as probable cuando ambos equipos tienen un nivel ofensivo similar, incluso si es alto. Segundo, para tasas elevadas ($\lambda_H, \lambda_A \gtrsim 5$), debido al costo computacional de las sumas \eqref{eq:prob_H} y \eqref{eq:prob_D}, la distribuci\'on de Skellam admite la aproximaci\'on normal $D \approx \mathcal{N}(\lambda_H - \lambda_A, \lambda_H + \lambda_A)$, \'util como validaci\'on te\'orica en casos extremos, aunque rara vez necesaria en el f\'utbol profesional.
 
@@ -570,7 +578,7 @@ En el contexto de aprendizaje autom\'atico, la funci\'on de p\'erdida est\'andar
 	As\'i, el estimador que minimiza la log-loss coincide con el estimador de m\'axima verosimilitud.
 \end{proof}
 
-La Proposici\'on~\ref{prop:equivalencia} establece que, aunque el entrenamiento se realice con un optimizador de primer orden sobre mini-lotes en lugar de un m\'etodo de segundo orden sobre la muestra completa, la funci\'on objetivo que se minimiza es, en esencia, la verosimilitud negativa del modelo multinomial. Esto vincula la implementaci\'on computacional con la inferencia estad\'istica cl\'asica. La formulaci\'on categ\'orica \eqref{eq:logloss} es la m\'etrica principal de evaluaci\'on, pues impone la suma unitaria sobre las probabilidades predichas y respeta la estructura probabil\'istica conjunta del resultado. Adicionalmente, en la Secci\'on~\ref{subsec:logloss_metricas} se introduce una log-loss binaria sobre la partici\'on $\{H, \neg H\}$ con fines de  comparabilidad directa con el trabajo base de Shelopugin y Sirotkin \cite{Glicko2Mod}.
+La Proposici\'on~\ref{prop:equivalencia} es el caso particular, para el modelo multinomial, del principio general de estimaci\'on por m\'axima verosimilitud desarrollado en \cite{hernandezBenito}, Tema~2. Esta establece que, aunque el entrenamiento se realice con un optimizador de primer orden sobre mini-lotes en lugar de un m\'etodo de segundo orden sobre la muestra completa, la funci\'on objetivo que se minimiza es, en esencia, la verosimilitud negativa del modelo multinomial. Esto vincula la implementaci\'on computacional con la inferencia estad\'istica cl\'asica. La formulaci\'on categ\'orica \eqref{eq:logloss} es la m\'etrica principal de evaluaci\'on, pues impone la suma unitaria sobre las probabilidades predichas y respeta la estructura probabil\'istica conjunta del resultado. Adicionalmente, en la Secci\'on~\ref{subsec:logloss_metricas} se introduce una log-loss binaria sobre la partici\'on $\{H, \neg H\}$ con fines de  comparabilidad directa con el trabajo base de Shelopugin y Sirotkin \cite{Glicko2Mod}.
 
 \subsection{Optimizaci\'on num\'erica}
 \label{subsec:optimizacion}
@@ -609,6 +617,8 @@ En consecuencia, se introduce un perceptr\'on multicapa (MLP, \emph{Multilayer P
 \subsection{Formalizaci\'on de la red}
 \label{subsec:mlp_arquitectura}
 
+La formalizaci\'on descrita a continuaci\'on es la can\'onica en la literatura de redes neuronales; puede consultarse una exposici\'on introductoria en \cite{solorzano2025rn}, y el tratamiento de referencia en \cite{Charu2018}.
+
 Sea $L$ el n\'umero total de capas de la red, indexadas por $\ell = 1, \dots, L$, donde $\ell = 1$ corresponde a la capa de entrada y $\ell = L$ a la capa de salida. Denotemos por $n_\ell$ el n\'umero de neuronas de la capa $\ell$, y sea $\mathbf{a}^{(\ell)} \in \mathbb{R}^{n_\ell}$ el vector de activaciones de dicha capa, con $\mathbf{a}^{(0)} \equiv \mathbf{z}_{ij} \in \mathbb{R}^{3+p}$.
 
 \begin{definition}[Capa densa af\'in]
@@ -616,7 +626,7 @@ Sea $L$ el n\'umero total de capas de la red, indexadas por $\ell = 1, \dots, L$
 	\begin{equation}\label{eq:mlp_preact}
 		\mathbf{z}^{(\ell)} = \boldsymbol{W}^{(\ell)} \mathbf{a}^{(\ell-1)} + \mathbf{b}^{(\ell)},
 	\end{equation}
-	donde $\boldsymbol{W}^{(\ell)} \in \mathbb{R}^{n_\ell \times n_{\ell-1}}$ es la matriz de pesos y $\mathbf{b}^{(\ell)} \in \mathbb{R}^{n_\ell}$ es el vector de sesgos.
+	donde $\boldsymbol{W}^{(\ell)} \in \mathbb{R}^{n_\ell \times n_{\ell-1}}$ es la matriz de pesos y $\mathbf{b}^{(\ell)} \in \mathbb{R}^{n_\ell}$ es el vector de sesgos  \cite{Charu2018}.
 \end{definition}
 
 La activaci\'on de cada capa oculta se obtiene aplicando una funci\'on no lineal $\sigma: \mathbb{R} \to \mathbb{R}$ coordenada a coordenada, $\mathbf{a}^{(\ell)} = \sigma(\mathbf{z}^{(\ell)})$. En este trabajo, $\sigma$ es la unidad lineal rectificada, $\sigma_{\mathrm{ReLU}}(x) = \max\{0, x\}$. La elecci\'on es t\'ecnica: ReLU mitiga el problema del gradiente desvanecido y permite que la red aproxime funciones con quiebres sin suavizarlos.
@@ -635,6 +645,8 @@ La capa de salida se transforma mediante la funci\'on softmax para garantizar qu
 		\mathcal{S}(\mathbf{z}^{(L)})_j = \frac{\exp(z_j)}{\sum_{k=1}^{3} \exp(z_k)}, \qquad j = 1, 2, 3,
 	\end{equation}
 	donde $\Delta^2 = \{(p_1,p_2,p_3) \in \mathbb{R}^3 : p_j \geq 0,\; \sum_j p_j = 1\}$ es el simplex de probabilidad de dimensi\'on 2.
+	
+	Esta funci\'on es el est\'andar para la capa de salida en problemas de clasificaci\'on multiclase \cite{Charu2018,solorzano2025rn}.
 \end{definition}
 
 La salida refinada del modelo se denota $\tilde{\mathbf{P}}_{ij} = \mathcal{S}(f_{\boldsymbol{\theta}}(\mathbf{z}_{ij}))$.
@@ -663,9 +675,10 @@ La elecci\'on de un MLP como refinador se fundamenta en el siguiente resultado c
 	\[
 	\sup_{\mathbf{x} \in K} \| g(\mathbf{x}) - f_{\boldsymbol{\theta}}(\mathbf{x}) \| < \varepsilon.
 	\]
+	(V\'ease tambi\'en la discusi\'on en \cite{solorzano2025rn}, sobre arquitecturas multicapa y capacidad de aproximaci\'on.)
 \end{teo}
 
-El resultado fue establecido por Cybenko \cite{Cybenko1989} para activaciones sigmoidales y generalizado por Hornik \cite{Hornik1989}. En el contexto del presente trabajo, se aplica del siguiente modo. Sea $C: \mathbb{R}^{3+p} \to \Delta^2$ la funci\'on de correcci\'on \'optima que mapea el vector de probabilidades base m\'as covariables hacia las probabilidades refinadas verdaderas. Si $C$ es continua sobre un compacto que contenga el rango operativo de $\mathbf{z}_{ij}$, lo cual es razonable suponiendo que peque\~nas perturbaciones en las covariables no producen saltos discontinuos en la predicci\'on, entonces existe una arquitectura MLP capaz de aproximar $C$ con error uniforme tan peque\~no como se desee.
+El resultado fue establecido por Cybenko \cite{Cybenko1989} para activaciones sigmoidales y generalizado por Hornik \cite{Hornik1989}; puede consultarse una discusi\'on moderna de sus implicaciones pr\'acticas en \cite{Charu2018}. En el contexto del presente trabajo, se aplica del siguiente modo. Sea $C: \mathbb{R}^{3+p} \to \Delta^2$ la funci\'on de correcci\'on \'optima que mapea el vector de probabilidades base m\'as covariables hacia las probabilidades refinadas verdaderas. Si $C$ es continua sobre un compacto que contenga el rango operativo de $\mathbf{z}_{ij}$, lo cual es razonable suponiendo que peque\~nas perturbaciones en las covariables no producen saltos discontinuos en la predicci\'on, entonces existe una arquitectura MLP capaz de aproximar $C$ con error uniforme tan peque\~no como se desee.
 
 Esta propiedad justifica el uso del MLP no como una caja negra ad-hoc, sino como un aproximador funcional leg\'itimo dentro del marco de inferencia estad\'istica del trabajo. La red aprende la correcci\'on no lineal que el modelo param\'etrico (Glicko-2 + Skellam) no puede capturar por construcci\'on.
 
@@ -679,6 +692,8 @@ El entrenamiento del MLP consiste en estimar los par\'ametros $\boldsymbol{\thet
 		\mathcal{L}_{\mathrm{log}}(\boldsymbol{\theta}) = -\frac{1}{N}\sum_{i=1}^{N} \sum_{c\in\{H,D,A\}} y_{i,c} \log \tilde{P}_{c,i}(\boldsymbol{\theta}).
 	\end{equation}
 \end{definition}
+
+La funci\'on descrita en la definici\'on anterior es la entrop\'ia cruzada entre la etiqueta observada y la distribuci\'on predicha; su uso como criterio de clasificaci\'on multiclase se discute en \cite{hernandezBenito}, Tema~4.
 
 Por la Proposici\'on~\ref{prop:equivalencia}, minimizar \eqref{eq:mlp_logloss} respecto a $\boldsymbol{\theta}$ es equivalente a maximizar la log-verosimilitud del modelo multinomial. En consecuencia, el estimador $\hat{\boldsymbol{\theta}}$ que se obtiene al entrenar la red coincide con el estimador de m\'axima verosimilitud del modelo completo. Este hecho vincula la arquitectura neuronal con el principio de inferencia estad\'istica cl\'asica y evita que el MLP funcione como un cuerpo extra\~no dentro del trabajo.
 
