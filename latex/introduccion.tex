@@ -2,22 +2,90 @@
 \addcontentsline{toc}{chapter}{Introducci\'on}
 \markboth{Introducci\'on}{}
 
-El f\'utbol profesional ha experimentado una transformación digital en las \'ultimas d\'ecadas, generando un volumen de datos sin precedentes que permite abordar la predicci\'on de resultados desde una perspectiva probabil\'istica. Esta digitalizaci\'on ha facilitado la transici\'on de m\'etricas de conteo simple hacia variables m\'as sofisticadas, como los goles esperados (xG), que eval\'uan la calidad de las oportunidades creadas en lugar de los resultados brutos \cite{xG,MetricasBase,BigData}. Sin embargo, los sistemas de clasificaci\'on institucionales, como los rankings de FIFA \cite{FIFARanking2024} , UEFA\cite{UEFARanking2024} , CONMEBOL \cite{CONMEBOLRanking2021}, AFC \cite{AFCRanking2024}, CONCACAF \cite{CONCACAFRanking2023} e IFFHS \cite{IFFHSRanking2021}, operan bajo l\'ogicas predominantemente contables o adaptaciones pragm\'aticas del modelo Elo \cite{Elo1978} . Estos sistemas no cuantifican la incertidumbre estad\'istica asociada a la fuerza de cada equipo, no modelan el empate como categor\'ia estoc\'astica independiente y no integran covariables contextuales como factores econ\'omicos, ambientales o deportivos detallados.
+El f\'utbol profesional ha atravesado en las \'ultimas d\'ecadas una transformaci\'on
+que excede lo deportivo. La digitalizaci\'on masiva de los eventos de juego ha
+generado un volumen de datos sin precedentes y ha desplazado el an\'alisis desde el
+conteo simple hacia variables que estiman la calidad de las acciones, como los goles
+esperados (xG), que valoran las oportunidades creadas antes que el marcador final
+\cite{xG,MetricasBase,BigData}. En este entorno, predecir el resultado de un partido
+deja de ser un ejercicio de intuici\'on y se vuelve un problema de inferencia
+estad\'istica: aunque el desenlace individual conserva una varianza irreducible, el
+rendimiento agregado de los equipos exhibe regularidades que pueden estimarse y
+proyectarse.
 
-La pregunta de investigaci\'on que orienta este trabajo es la siguiente: ¿c\'omo estimar probabil\'isticamente el resultado de un partido integrando informaci\'on deportiva, econ\'omica y ambiental, de forma que el sistema sea actualizable secuencialmente y cuantifique la incertidumbre sobre la fuerza de cada equipo?
+El problema central de esa inferencia es asignar a cada enfrentamiento una
+distribuci\'on de probabilidad sobre sus tres resultados posibles, victoria local,
+empate o victoria visitante, a partir de una estimaci\'on de la fuerza relativa de
+los contendientes. Los organismos rectores del f\'utbol mundial abordan esta tarea
+mediante sistemas de clasificaci\'on institucionales, como los rankings de la FIFA
+\cite{FIFARanking2024}, la UEFA \cite{UEFARanking2024}, la CONMEBOL
+\cite{CONMEBOLRanking2021}, la AFC \cite{AFCRanking2024}, la CONCACAF
+\cite{CONCACAFRanking2023} y la IFFHS \cite{IFFHSRanking2021}. Estos sistemas, sin
+embargo, operan bajo l\'ogicas predominantemente contables o adaptaciones
+pragm\'aticas del modelo Elo \cite{Elo1978}: reducen la fuerza de cada equipo a un
+escalar determinista, no cuantifican la incertidumbre asociada a esa estimaci\'on,
+no tratan el empate como una categor\'ia con probabilidad propia y no incorporan
+informaci\'on contextual del encuentro. Cada una de estas limitaciones deja fuera un
+aspecto que la evidencia deportiva sugiere relevante para el resultado.
 
-Para responder a esta pregunta, se dise\~na un sistema predictivo en cascada que integra un bloque de conteo, un sistema de rating din\'amico y un refinador neuronal cuyos detalles ser\'an presentados m\'as adelante.
+Frente a ese vac\'io, conviene notar que el rendimiento de un equipo no depende
+\'unicamente de su historia de resultados. Factores ex\'ogenos al marcador, de
+naturaleza econ\'omica, como el valor de mercado de la plantilla o el balance de
+transferencias, y ambiental, como la altitud del estadio o las condiciones
+clim\'aticas, han sido se\~nalados por la literatura como posibles moduladores del
+desempe\~no \cite{SZYMAN1,Iskandaryan2020,West1996}. Determinar si esa informaci\'on
+aporta capacidad predictiva genuina, una vez controlada la fuerza intr\'inseca de los
+equipos, es una pregunta abierta y constituye uno de los ejes de este trabajo. De
+todo lo anterior se desprende la pregunta de investigaci\'on que orienta el estudio:
+\emph{\c{}c\'omo estimar probabil\'isticamente el resultado de un partido de f\'utbol
+integrando informaci\'on deportiva, econ\'omica y ambiental, de forma que el sistema
+sea actualizable secuencialmente y cuantifique la incertidumbre sobre la fuerza de
+cada equipo?}
 
-El trabajo se organiza en cinco cap\'itulos. El Cap\'itulo~\ref{ch:antecedentes} revisa los antecedentes del modelado probabil\'istico aplicado al f\'utbol y establece la brecha metodol\'ogica que motiva este trabajo. El Cap\'itulo~\ref{ch:marco} presenta el marco te\'orico que fundamenta los sistemas de rating, el modelamiento probabil\'istico del resultado y las m\'etricas de evaluaci\'on. El Cap\'itulo~\ref{ch:metodologia} describe la metodolog\'ia empleada para la recolecci\'on y procesamiento de datos, la selecci\'on de covariables y la implementaci\'on del pipeline predictivo. El Cap\'itulo~\ref{ch:resultados} expone los resultados emp\'iricos obtenidos sobre tres conjuntos de datos y discute sus implicaciones. Finalmente, el Cap\'itulo~\ref{ch:conclusiones} presenta las conclusiones, las limitaciones del estudio y las l\'ineas de investigación futuras.
+Para responderla se dise\~na un sistema predictivo organizado en cascada, en el que
+cada bloque cubre una limitaci\'on del anterior. Un primer bloque de conteo estima
+las tasas de goles esperados mediante modelos de \emph{gradient boosting} con
+funci\'on objetivo de Poisson y deriva la probabilidad de empate a trav\'es de la
+distribuci\'on de Skellam. Un segundo bloque de rating din\'amico, construido sobre
+una implementaci\'on propia del algoritmo Glicko-2 modificado de Shelopugin y
+Sirotkin \cite{Glicko2Mod}, actualiza secuencialmente la fuerza latente de cada
+equipo, incorpora el empate como categor\'ia estoc\'astica end\'ogena y cuantifica la
+incertidumbre de la estimaci\'on. Un tercer bloque, un refinador neuronal basado en
+un perceptr\'on multicapa, corrige las probabilidades base integrando las covariables
+ex\'ogenas del enfrentamiento. El sistema no pretende sustituir a los modelos
+existentes, sino articularlos en una \'unica arquitectura coherente y evaluar, con un
+protocolo estad\'istico expl\'icito, qu\'e aporta cada componente al desempe\~no
+global. En consecuencia, el objetivo general del trabajo es desarrollar ese sistema
+en cascada para estimar probabil\'isticamente el resultado de partidos de f\'utbol a
+partir de informaci\'on deportiva, econ\'omica y ambiental, garantizando la
+actualizaci\'on secuencial y la cuantificaci\'on de la incertidumbre sobre la fuerza
+de los equipos, as\'i como evaluar el aporte real de las covariables ex\'ogenas al
+desempe\~no predictivo. Este prop\'osito se concreta en implementar el bloque de
+conteo que estima las tasas de goles y deriva la probabilidad de empate, construir la
+implementaci\'on propia del Glicko-2 modificado con calibraci\'on de la ventaja de
+local\'ia por liga mediante m\'axima verosimilitud, dise\~nar el perceptr\'on
+multicapa que refina las probabilidades base con las covariables estandarizadas, y
+evaluar el sistema con un protocolo de diez corridas pareadas e inferencia
+estad\'istica mediante el test $t$ pareado, analizando el aporte incremental de cada
+bloque y el impacto de las variables econ\'omicas y ambientales en la calibraci\'on
+global y en la detecci\'on de empates.
 
-\textbf{Objetivo general}: Desarrollar un sistema predictivo en cascada que integre un modelo de conteo, un sistema de rating din\'amico y un refinador neuronal para estimar probabil\'isticamente el resultado de partidos de f\'utbol a partir de información deportiva, econ\'omica y ambiental, garantizando la actualizaci\'on secuencial y la cuantificaci\'on de la incertidumbre sobre la fuerza de los equipos.
-
-\textbf{Objetivos espec\'ificos}
-
-\begin{itemize}
-	\item Implementar un bloque de conteo basado en LightGBM con funci\'on objetivo Poisson para estimar las tasas de goles esperados y derivar la probabilidad de empate mediante la distribuci\'on de Skellam.
-	\item Construir una implementaci\'on propia del algoritmo Glicko-2 modificado de Andrei Shelopugin y Alexander Sirotkin \cite{Glicko2Mod} que incorpore el empate como categor\'ia estoc\'astica independiente y permita la calibración de la ventaja de local\'ia por liga mediante m\'axima verosimilitud.
-	\item Dise\~nar un perceptr\'on multicapa que refine las probabilidades base del sistema de rating integrando covariables ex\'ogenas estandarizadas.
-	\item Evaluar el sistema en tres conjuntos de datos: \textit{Lite}, \textit{Full} y \textit{Lite Recortado}; mediante m\'etricas probabil\'isticas (log-loss) y de clasificaci\'on (accuracy, F1-score, precisión), utilizando un protocolo de 10 corridas pareadas con inferencia estad\'istica mediante test t pareado.
-	\item Analizar el aporte incremental de cada bloque funcional y el impacto de las covariables ex\'ogenas en la calibraci\'on global y la detecc\'on de empates.
-\end{itemize}
+El estudio se realiza sobre datos de veintitr\'es competiciones de las principales
+confederaciones, comprendiendo las temporadas 2017-18 a 2024-25, organizados en tres
+conjuntos de datos que permiten aislar el efecto de las m\'etricas deportivas
+detalladas frente al de las variables econ\'omicas y ambientales. La evaluaci\'on
+privilegia la calidad de la distribuci\'on de probabilidad reportada, medida
+mediante la p\'erdida logar\'itmica, sobre el mero acierto de la clase m\'as
+probable, una distinci\'on que resulta central para interpretar correctamente el
+desempe\~no del modelo ante la clase empate. En cuanto a su organizaci\'on, el resto
+del documento se estructura en cuatro cap\'itulos. El Cap\'itulo~\ref{ch:marco}
+desarrolla el marco te\'orico que fundamenta los sistemas de rating, el modelamiento
+probabil\'istico del resultado, la integraci\'on de covariables y las m\'etricas de
+evaluaci\'on, y precisa la brecha metodol\'ogica que motiva el estudio. El
+Cap\'itulo~\ref{ch:metodologia} describe la recolecci\'on y el procesamiento de los
+datos, la selecci\'on de covariables y la implementaci\'on, entrenamiento y
+calibraci\'on de cada bloque del sistema. El Cap\'itulo~\ref{ch:resultados} presenta
+los resultados emp\'iricos obtenidos sobre los tres conjuntos de datos y discute sus
+implicaciones. Finalmente, el Cap\'itulo~\ref{ch:conclusiones} re\'une las
+conclusiones, expone las limitaciones del estudio y plantea las l\'ineas de
+investigaci\'on futuras.

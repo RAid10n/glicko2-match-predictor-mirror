@@ -1,7 +1,28 @@
 \chapter{Marco Te\'orico}
 \label{ch:marco}
 
-Este cap\'itulo construye el aparato formal que sustenta el sistema predictivo. Se organiza en seis bloques. El primero define las variables del modelo, agrupadas en tres dominios: deportivo, ambiental y econ\'omico. El segundo presenta los sistemas de rating, transitando desde las comparaciones pareadas de Bradley-Terry y el esquema Elo hasta el Glicko-2 y su adaptaci\'on trinomial al f\'utbol. El tercero desarrolla el modelado probabil\'istico del resultado como proceso de conteo. El cuarto formaliza la integraci\'on de covariables ex\'ogenas y la estimaci\'on por m\'axima verosimilitud. El quinto describe el refinador neuronal. El sexto cierra con las m\'etricas de evaluaci\'on.
+Este cap\'itulo desarrolla el aparato formal sobre el que se construye el sistema
+predictivo del trabajo. Lo recorre un solo problema: asignar a cada partido una
+distribuci\'on de probabilidad sobre los tres resultados posibles (victoria local,
+empate o victoria visitante), y hacerlo de manera que la estimaci\'on se actualice
+con cada nueva jornada y refleje la incertidumbre sobre la fuerza de los equipos.
+
+El desarrollo sigue el mismo orden en que operan los componentes del modelo. Se
+parte de las variables que describen el contexto de cada enfrentamiento, en sus
+dominios deportivo, ambiental y econ\'omico (Secci\'on~\ref{sec:variables}). Sobre
+ellas se levantan los sistemas de rating, cuya evoluci\'on se sigue desde las
+comparaciones pareadas de Bradley-Terry y el esquema Elo hasta el Glicko-2 y su
+adaptaci\'on trinomial al f\'utbol (Secci\'on~\ref{sec:rating}). El resultado se
+modela luego como un proceso de conteo de goles, del que se derivan las
+probabilidades de los tres desenlaces (Secci\'on~\ref{sec:modelo_probabilistico}).
+A partir de ah\'i se formaliza c\'omo las covariables ex\'ogenas se integran al
+sistema y bajo qu\'e principio se estiman sus par\'ametros
+(Secci\'on~\ref{sec:regresion}), se describe el refinador neuronal que corrige las
+probabilidades base (Secci\'on~\ref{sec:mlp}) y se cierra con las m\'etricas que
+miden el desempe\~no (Secci\'on~\ref{sec:metricas}). Un mismo principio articula
+todos estos bloques: la estimaci\'on por m\'axima verosimilitud, equivalente a la
+minimizaci\'on de la log-loss, que reaparece m\'as adelante como criterio de
+calibraci\'on y como m\'etrica de evaluaci\'on.
 
 \section{Variables del modelo}
 \label{sec:variables}
@@ -828,3 +849,28 @@ El F1-macro trata por igual a las tres clases y es sensible al desempe\~no en la
 Un fen\'omeno recurrente en la predicci\'on de resultados de f\'utbol es la dificultad de clasificar correctamente la clase empate bajo la regla $\arg\max$. En el marco del presente trabajo, este comportamiento no es una anomal\'ia de implementaci\'on, sino una propiedad estructural del modelo de conteo. En la Secci\'on~\ref{sec:modelo_probabilistico}, el empate no es una categor\'ia nativa del espacio muestral, sino el evento puntual $\{G_H = G_A\}$ en la diferencia de goles. Su probabilidad $P_D$ depende de la simetr\'ia y magnitud conjuntas de las tasas $\lambda_H$ y $\lambda_A$, y puede alcanzar valores no despreciables. Sin embargo, la regi\'on del simplex $\Delta^2$ donde $P_D > \max\{P_H, P_A\}$ es estrecha: en la mayor\'ia de los partidos existe alg\'un grado de asimetr\'ia estructural (ventaja de local\'ia, diferencias de nivel, condiciones ambientales) que desplaza la masa probabil\'istica hacia $H$ o hacia $A$, dejando a $D$ como segunda opci\'on frecuente pero raramente dominante.
 
 Esta observaci\'on revela una distinci\'on fundamental: un modelo puede estar perfectamente calibrado en sentido probabil\'istico (la media de las predicciones $\tilde{P}_D$ coincide con la frecuencia observada de empates) y, no obstante, exhibir un \emph{recall} nulo bajo la regla $\arg\max$. La calibraci\'on es una propiedad de la distribuci\'on predicha en su conjunto, mientras que la clasificaci\'on impone una partici\'on del simplex que ignora la magnitud de las probabilidades asignadas a las clases no elegidas. Esta tensi\'on justifica el uso de la log-loss como m\'etrica central de evaluaci\'on: al ser una regla de puntuaci\'on estrictamente propia (Proposici\'on~\ref{prop:proper}), incentiva al modelo a mantener masa significativa en $P_D$ aun cuando $\arg\max$ nunca seleccione la clase $D$. La escasa representaci\'on de la clase empate bajo clasificaci\'on dura no invalida el modelo; evidencia, m\'as bien, que el empate en el f\'utbol es un evento inherentemente difuso cuya predicci\'on \'optima requiere una evaluaci\'on distributiva m\'as que una etiqueta categ\'orica.
+
+\section*{S\'intesis del cap\'itulo}
+
+El aparato desarrollado a lo largo del cap\'itulo articula los tres bloques del
+sistema en una \'unica cadena de inferencia. El modelo de conteo traduce las tasas
+de anotaci\'on en una probabilidad de empate; el Glicko-2 modificado combina esa
+probabilidad con la fuerza latente de los equipos para producir el vector base
+$(P_H, P_D, P_A)$; y el refinador neuronal ajusta ese vector con la informaci\'on
+ex\'ogena del enfrentamiento. En cada paso se preserva la coherencia
+probabil\'istica, de modo que la salida de un bloque es siempre una entrada
+v\'alida para el siguiente.
+
+Dos elecciones vertebran el marco. La primera es la estimaci\'on por m\'axima
+verosimilitud, equivalente a la minimizaci\'on de la log-loss, que act\'ua a la vez
+como criterio de calibraci\'on de los par\'ametros y como m\'etrica principal de
+evaluaci\'on, por tratarse de una regla de puntuaci\'on estrictamente propia. La
+segunda es la distinci\'on entre calibraci\'on y clasificaci\'on: el colapso de la
+clase empate bajo la regla de m\'axima probabilidad no es una falla del modelo, sino
+una propiedad geom\'etrica del simplex, lo que lleva a evaluar el sistema por la
+calidad de la distribuci\'on que reporta antes que por su acierto categ\'orico.
+
+Con estas piezas fijadas, el Cap\'itulo~\ref{ch:metodologia} traslada el formalismo
+a la pr\'actica: describe las fuentes de datos, el procesamiento y la selecci\'on de
+covariables, y detalla la implementaci\'on, el entrenamiento y la calibraci\'on de
+cada bloque sobre los conjuntos de datos del estudio.
