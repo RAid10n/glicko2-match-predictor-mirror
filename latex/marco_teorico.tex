@@ -1,33 +1,14 @@
 \chapter{Marco Te\'orico}
 \label{ch:marco}
 
-Este cap\'itulo desarrolla el aparato formal sobre el que se construye el sistema
-predictivo del trabajo. Lo recorre un solo problema: asignar a cada partido una
-distribuci\'on de probabilidad sobre los tres resultados posibles (victoria local,
-empate o victoria visitante), y hacerlo de manera que la estimaci\'on se actualice
-con cada nueva jornada y refleje la incertidumbre sobre la fuerza de los equipos.
+Este cap\'itulo desarrolla el aparato formal sobre el que se construye el sistema predictivo del trabajo. Lo recorre un solo problema: asignar a cada partido una distribuci\'on de probabilidad sobre los tres resultados posibles (victoria local, empate o victoria visitante), y hacerlo de manera que la estimaci\'on se actualice con cada nueva jornada y refleje la incertidumbre sobre la fuerza de los equipos.
 
-El desarrollo sigue el mismo orden en que operan los componentes del modelo. Se
-parte de las variables que describen el contexto de cada enfrentamiento, en sus
-dominios deportivo, ambiental y econ\'omico (Secci\'on~\ref{sec:variables}). Sobre
-ellas se levantan los sistemas de rating, cuya evoluci\'on se sigue desde las
-comparaciones pareadas de Bradley-Terry y el esquema Elo hasta el Glicko-2 y su
-adaptaci\'on trinomial al f\'utbol (Secci\'on~\ref{sec:rating}). El resultado se
-modela luego como un proceso de conteo de goles, del que se derivan las
-probabilidades de los tres desenlaces (Secci\'on~\ref{sec:modelo_probabilistico}).
-A partir de ah\'i se formaliza c\'omo las covariables ex\'ogenas se integran al
-sistema y bajo qu\'e principio se estiman sus par\'ametros
-(Secci\'on~\ref{sec:regresion}), se describe el refinador neuronal que corrige las
-probabilidades base (Secci\'on~\ref{sec:mlp}) y se cierra con las m\'etricas que
-miden el desempe\~no (Secci\'on~\ref{sec:metricas}). Un mismo principio articula
-todos estos bloques: la estimaci\'on por m\'axima verosimilitud, equivalente a la
-minimizaci\'on de la log-loss, que reaparece m\'as adelante como criterio de
-calibraci\'on y como m\'etrica de evaluaci\'on.
+El desarrollo sigue el mismo orden en que operan los componentes del modelo. Se parte de las variables que describen el contexto de cada enfrentamiento, en sus dominios deportivo, ambiental y econ\'omico (Secci\'on~\ref{sec:variables}). Sobre ellas se levantan los sistemas de rating, cuya evoluci\'on se sigue desde las comparaciones pareadas de Bradley-Terry y el esquema Elo hasta el Glicko-2 y su adaptaci\'on trinomial al f\'utbol (Secci\'on~\ref{sec:rating}). El resultado se modela luego como un proceso de conteo de goles, del que se derivan las probabilidades de los tres desenlaces (Secci\'on~\ref{sec:modelo_probabilistico}). A partir de ah\'i se formaliza c\'omo las covariables ex\'ogenas se integran al sistema y bajo qu\'e principio se estiman sus par\'ametros (Secci\'on~\ref{sec:regresion}), se describe el refinador neuronal que corrige las probabilidades base (Secci\'on~\ref{sec:mlp}) y se cierra con las m\'etricas que miden el desempe\~no (Secci\'on~\ref{sec:metricas}). Un mismo principio articula todos estos bloques: la estimaci\'on por m\'axima verosimilitud, equivalente a la minimizaci\'on de la log-loss, que reaparece m\'as adelante como criterio de calibraci\'on y como m\'etrica de evaluaci\'on.
 
 \section{Variables del modelo}
 \label{sec:variables}
 
-Se llamar\'a variable externa, o bien covariable ex\'ogena, a todo aquel factor externo que pueda explicar, modular o alterar el resultado de un partido de f\'utbol. Estas covariables son muy importantes, y en casos extremos pueden llegar a ser determinantes para el resultado de un partido. El modelo se alimenta de tres bloques de variables: deportivas, ambientales y econ\'omicas. Cada bloque se describe a continuaci\'on en t\'erminos de las covariables que ingresan al pipeline.
+Se llamar\'a variable externa, o bien covariable ex\'ogena, a todo aquel factor externo que pueda explicar, modular o alterar el resultado de un partido de f\'utbol. Estas covariables son muy importantes, y en casos extremos pueden llegar a ser determinantes para el resultado de un partido. El modelo se alimenta de tres bloques de variables: deportivas, ambientales y econ\'omicas. Cada bloque se describe a continuaci\'on en t\'erminos de las covariables que ingresan al \textit{pipeline}.
 
 \subsection{M\'etricas deportivas}
 
@@ -43,9 +24,9 @@ Sobre este conjunto de m\'etricas primarias se construyen \'indices compuestos d
 
 El rendimiento deportivo no opera en un vac\'io f\'isico. Las condiciones meteorol\'ogicas y geogr\'aficas del lugar act\'uan como covariables que imponen restricciones fisiol\'ogicas sobre los jugadores y modulan la din\'amica del juego. La temperatura ambiente exhibe una correlaci\'on positiva documentada con el volumen de anotaci\'on: incrementos de $10^{\circ}\mathrm{C}$ sobre el promedio de la jornada se asocian con un aumento aproximado de $0{,}48$ goles por partido \cite{TemperaturaGoles}. La humedad relativa interact\'ua con la temperatura para definir el estr\'es t\'ermico percibido \cite{Iskandaryan2020}. En el presente trabajo se busca que estas magnitudes se incorporen naturalmente, no como ruido ambiental, si no como descriptores estructurales del contexto que permitan capturar la asimetr\'ia ambiental del encuentro.
 
-Un componente estructural clave es la altitud del estadio sobre el nivel del mar. Su relevancia radica en la variaci\'on de la presi\'on parcial de ox\'igeno (PiO2), que decrece con la elevaci\'on. La disminuci\'on de la disponibilidad de ox\'igeno reduce la capacidad aer\'obica m\'axima y acelera el umbral de fatiga, otorgando una ventaja adaptativa a las escuadras locales aclimatadas frente a visitantes no habituados \cite{West1996}. La idea es cuantificar la asimatr\'ia ambiental a trav\'es de la diferencia de presi\'on parcial de ox\'igeno usual a la que ambas plantillas est\'an acostumbradas. La derivaci\'on de la ley barom\'etrica que fundamenta este c\'alculo se presenta en la Secci\'on~\ref{sec:integracion}.
+Un componente estructural clave es la altitud del estadio sobre el nivel del mar. Su relevancia radica en la variaci\'on de la presi\'on parcial de ox\'igeno (PiO2), que decrece con la elevaci\'on. La disminuci\'on de la disponibilidad de ox\'igeno reduce la capacidad aer\'obica m\'axima y acelera el umbral de fatiga, otorgando una ventaja adaptativa a las escuadras locales aclimatadas frente a visitantes no habituados \cite{West1996}. La idea es cuantificar la asimetr\'ia ambiental a trav\'es de la diferencia de presi\'on parcial de ox\'igeno usual a la que ambas plantillas est\'an acostumbradas. La derivaci\'on de la ley barom\'etrica que fundamenta este c\'alculo se presenta en la Secci\'on~\ref{subsec:barometrica}.
 
-M\'as all\'a de las variables f\'isicas, la local\'ia constituye un sesgo sistem\'atico documentado. Factores como el tiempo de viaje, el desfase horario, la presi\'on de la afici\'on y la familiaridad con el terreno distorsionan la probabilidad a priori de victoria en favor del equipo anfitri\'on \cite{Iskandaryan2020}.
+M\'as all\'a de las variables f\'isicas, la local\'ia constituye un sesgo sistem\'atico documentado. Factores como el tiempo de viaje, el desfase horario, la presi\'on de la afici\'on y la familiaridad con el terreno distorsionan la probabilidad a previa de victoria en favor del equipo anfitri\'on \cite{Iskandaryan2020}.
 
 \subsection{Factores econ\'omicos}
 
@@ -221,7 +202,7 @@ El algoritmo opera sobre \emph{per\'iodos de rating}, dentro de los cuales todos
 \end{definition}
 
 \begin{obs}
-	La estructura de actualizaci\'on \eqref{eq:glicko2_phi_prime}--	\eqref{eq:glicko2_mu_prime} evidencia el car\'acter bayesiano del algoritmo: $\phi'$ es la desviaci\'on a posteriori resultante de combinar el priori difundido $\phi^{*}$ con la verosimilitud del per\'iodo (cuantificada por $v$), mientras que $\mu'$ desplaza el rating priori en proporci\'on al error de predicci\'on $(s_j-E)$ ponderado por la precisi\'on relativa de cada oponente.
+	La estructura de actualizaci\'on \eqref{eq:glicko2_phi_prime}--	\eqref{eq:glicko2_mu_prime} evidencia el car\'acter bayesiano del algoritmo: $\phi'$ es la desviaci\'on a posteriori resultante de combinar el valor previo difundido $\phi^{*}$ con la verosimilitud del per\'iodo (cuantificada por $v$), mientras que $\mu'$ desplaza el rating previo en proporci\'on al error de predicci\'on $(s_j-E)$ ponderado por la precisi\'on relativa de cada oponente.
 \end{obs}
 
 \subsection{Adaptaci\'on de Glicko-2 al f\'utbol: el modelo trinomial}
@@ -246,7 +227,7 @@ Para ello se define:
 	La probabilidad esperada de victoria del equipo local frente al visitante es
 	\begin{equation}
 		\label{eq:prob_victoria_local}
-		P_H = E(\tilde{\mu}, \mu_j, \phi_j, d, s) = \frac{\exp\bigl(g(\phi_j)(\tilde{\mu} - \mu_j)\bigr)}{1 + \exp\bigl(g(\phi_j)(\tilde{\mu} - \mu_j)\bigr) + \exp(d+s)}
+			P_H = E(\tilde{\mu}, \mu_j, \phi_j, d, s) = \frac{\exp\bigl(g(\phi_j)(\tilde{\mu} - \mu_j)\bigr)}{1 + \exp\bigl(g(\phi_j)(\tilde{\mu} - \mu_j)\bigr) + \exp(d+s)}
 	\end{equation}
 \end{definition}
 
@@ -314,9 +295,10 @@ La actualización del equipo visitante es análoga, utilizando su resultado $s_j
 
 En la implementaci\'on computacional del presente trabajo, a trav\'es del m\'odulo \texttt{G2Av1513.py}, el par\'ametro $s\in(0,1)$ de la Definici\'on \ref{def:expectativa_mod} se reparametriza mediante la transformaci\'on logit
 \begin{equation}
-	s_{\text{logit}} = \ln\!\left(\frac{s}{1-s}\right) \in \mathbb{R},
+	\label{eq:logit_pd}
+	s_\text{logit}  = \ln\!\left(\frac{s}{1-s}\right) \in \mathbb{R},
 \end{equation}
-de modo que el t\'ermino de empate en las Ecuaciones \eqref{eq:prob_victoria_local}--\eqref{eq:prob_victoria_visitante} se expresa como $\exp(d + s_{\text{logit}})$. Esta reparametrizaci\'on es un cambio de variable biyectivo sobre $(0,1)$ que preserva la estructura probabil\'istica del modelo trinomial (Proposici\'on \ref{prop:suma_unitaria_shelopugin}) mientras mejora la estabilidad num\'erica del optimizador L-BFGS-B al operar sobre el espacio no restringido $\mathbb{R}$ en lugar de $(0,1)$. La actualizaci\'on del estado de cada equipo tras observar un resultado sigue la misma l\'ogica bayesiana del Glicko-2, con la puntuaci\'on esperada modificada por la estructura trinomial. Estos cambios se ver\'an m\'as a profundidad en el Cap\'itulo~\ref{ch:metodologia}.
+de modo que el t\'ermino de empate en las Ecuaciones \eqref{eq:prob_victoria_local}--\eqref{eq:prob_victoria_visitante} se expresa como $\exp(d + s_\text{logit})$. Esta reparametrizaci\'on es un cambio de variable biyectivo sobre $(0,1)$ que preserva la estructura probabil\'istica del modelo trinomial (Proposici\'on \ref{prop:suma_unitaria_shelopugin}) mientras mejora la estabilidad num\'erica del optimizador L-BFGS-B al operar sobre el espacio no restringido $\mathbb{R}$ en lugar de $(0,1)$. La actualizaci\'on del estado de cada equipo tras observar un resultado sigue la misma l\'ogica bayesiana del Glicko-2, con la puntuaci\'on esperada modificada por la estructura trinomial. Estos cambios se ver\'an m\'as a profundidad en el Cap\'itulo~\ref{ch:metodologia}.
 
 
 % ============================================================
@@ -339,7 +321,7 @@ La distribuci\'on de Poisson constituye el modelo can\'onico para variables de c
 	\begin{equation}\label{eq:poisson_pmf}
 		P(X = k) = \frac{e^{-\lambda} \lambda^{k}}{k!}, \qquad k = 0, 1, 2, \dots
 	\end{equation}
-	(v\'ease \cite{arriojas2004}, Cap.~2, para la construcci\'on de esta funci\'on de masa a partir de los axiomas de probabilidad).
+	(v\'ease \cite{arriojas2004}, para la construcci\'on de esta funci\'on de masa a partir de los axiomas de probabilidad).
 \end{definition}
 
 En el contexto deportivo, $\lambda$ representa la potencia ofensiva esperada del equipo en un partido. Para los rangos t\'ipicos del f\'utbol profesional suele ocurrir que $\lambda \in [0{.}5,\,3{.}0]$, y la moda de la distribuci\'on es $0$ o $1$ goles, lo que refleja la escasez del evento. 
@@ -413,12 +395,13 @@ A partir de las distribuciones de Poisson y Skellam, las probabilidades de los t
 
 \begin{obs}
 	\label{obs:convencion_pd}
-	A lo largo del trabajo, cuando la probabilidad de empate aparezca como parte del componente del vector de resultados $(P_H,P_D,P_A)$ se denota sin el supra\'indice. Sin embargo al hacer referencia a ella de forma aislada , en particular como estimaci\'on derivada, se denotar\'a como $P_D^{(S)}$, o bien $\hat{P_D^{(S)}}$, donde el supra\'indice $(S)$ indica la procedencia de la distribuci\'on de Skellam. \eqref{eq:prob_D_bessel}
+	A lo largo del trabajo, la probabilidad de empate derivada de la distribuci\'on de Skellam se denota $P_D^{(S)}$ (o bien $\hat{P}_D^{(S)}$ para su estimador), donde el supra\'indice $(S)$ indica su procedencia \eqref{eq:prob_D_bessel}. Su transformaci\'on logit, empleada en el motor de rating, se denota $P_{D,\text{logit}}^{(S)}$. Cuando la probabilidad de empate aparece como componente del vector de resultados $(P_H, P_D, P_A)$ del modelo trinomial, se denota $P_D$ sin supra\'indice y corresponde al producto del motor de rating, no al insumo derivado del Skellam. Adicionalmente, en la Secci\'on~\ref{subsec:shelopugin}, el insumo de empate del motor de rating se denota $s$ sin especificar el modelo auxiliar del cual proviene, y su transformaci\'on logit se denota $s_{\text{logit}}$. La distribuci\'on de Skellam introducida en la presente secci\'on es la que se emplea en este trabajo como modelo auxiliar, de modo que $s \equiv P_D^{(S)}$ y $s_{\text{logit}} \equiv P_{D,\text{logit}}^{(S)}$. Esta equivalencia aplica a la Definici\'on~\ref{def:expectativa_mod}, las Ecuaciones \eqref{eq:prob_victoria_local}--\eqref{eq:prob_victoria_visitante}, la Proposici\'on~\ref{prop:suma_unitaria_shelopugin}, la Definici\'on~\ref{def:update_local}, la Ecuaci\'on~\eqref{eq:update_localia} y la reparametrizaci\'on logit \eqref{eq:logit_pd}.
+	Con esto, la notaci\'on queda unificada en lo que resta de este trabajo.
 \end{obs}
 
 La equivalencia entre \eqref{eq:prob_D} y \eqref{eq:prob_D_bessel} tiene valor computacional: la evaluaci\'on de $I_0$ mediante rutinas num\'ericas especializadas es m\'as eficiente que la suma doble, especialmente cuando $\lambda_H\lambda_A$ es grande.
 
-La estructura trinomial del modelo de Shelopugin y Sirotkin, presentada en la Secci\'on~\ref{subsec:shelopugin}, recobra aqu\'i una justificaci\'on probabil\'istica: el par\'ametro $s$ de probabilidad de empate no es un hiperpar\'ametro ex\'ogeno, pues emerge de la distribuci\'on de Skellam evaluada en $d=0$. El par\'ametro adicional $d\in\mathbb{R}$ introducido en la Definici\'on~\ref{def:expectativa_mod} act\'ua como t\'ermino de calibraci\'on que compensa desviaciones sistem\'aticas del modelo Poisson puro. Una vez estimadas $\lambda_H$ y $\lambda_A$, las probabilidades $(P_H, P_D, P_A)$ se inyectan en el sistema de rating como vector de expectativas trinomiales, acoplando los tres bloques del pipeline en un \'unico grafo de inferencia.
+La estructura trinomial del modelo de Shelopugin y Sirotkin, presentada en la Secci\'on~\ref{subsec:shelopugin}, recobra aqu\'i una justificaci\'on probabil\'istica: el par\'ametro $P_D^{(S)}$ de probabilidad de empate no es un hiperpar\'ametro ex\'ogeno, pues emerge de la distribuci\'on de Skellam evaluada en $d=0$. El par\'ametro adicional $d\in\mathbb{R}$ introducido en la Definici\'on~\ref{def:expectativa_mod} act\'ua como t\'ermino de calibraci\'on que compensa desviaciones sistem\'aticas del modelo Poisson puro. Una vez estimadas $\lambda_H$ y $\lambda_A$, las probabilidades $(P_H, P_D, P_A)$ se inyectan en el sistema de rating como vector de expectativas trinomiales, acoplando los tres bloques del \textit{pipeline} en un \'unico grafo de inferencia.
 
 \begin{obs}[Simetr\'ia del modelo]
 	\label{obs:simetria_trinomial}
@@ -477,7 +460,7 @@ Para el rango t\'ipico $\lambda \in [0{.}5, 3{.}0]$, la elecci\'on $K = 16$ mant
 	El l\'imite \textit{(iii)} tiene interpretaci\'on deportiva inmediata: cuando dos equipos de muy bajo poder ofensivo se enfrentan, el modelo predice dominancia del empate a cero, fen\'omeno frecuente en ligas defensivas o en eliminatorias directas.
 \end{obs}
 
-Adicionalmente, se aplica una normalizaci\'on expl\'icita del vector $(P_H, P_D, P_A)$ para compensar posibles errores de redondeo en aritm\'etica de punto flotante que desv\'ien ligeramente el vector de probabilidades de la condicion $P_H+P_D+P_A=1$.
+Adicionalmente, se aplica una normalizaci\'on expl\'icita del vector $(P_H, P_D, P_A)$ para compensar posibles errores de redondeo en aritm\'etica de punto flotante que desv\'ien ligeramente el vector de probabilidades de la condici\'on $P_H+P_D+P_A=1$.
 
 Dos propiedades estructurales complementan el an\'alisis. Primero, la monotonicidad cruzada: $P_H$ es estrictamente creciente en $\lambda_H$ y decreciente en $\lambda_A$, con comportamiento an\'alogo para $P_A$. La probabilidad de empate $P_D$ no es mon\'otona en general: crece cuando las tasas se aproximan entre s\'i y decrece cuando una domina a la otra, lo que refleja que el empate es m\'as probable entre equipos equilibrados, esto lleva a una interpretaci\'on interesante y relevante, pues sugiere que el empate es m\'as probable cuando ambos equipos tienen un nivel ofensivo similar, incluso si es alto. Segundo, para tasas elevadas ($\lambda_H, \lambda_A \gtrsim 5$), debido al costo computacional de las sumas \eqref{eq:prob_H} y \eqref{eq:prob_D}, la distribuci\'on de Skellam admite la aproximaci\'on normal $D \approx \mathcal{N}(\lambda_H - \lambda_A, \lambda_H + \lambda_A)$, \'util como validaci\'on te\'orica en casos extremos, aunque rara vez necesaria en el f\'utbol profesional.
 
@@ -495,7 +478,7 @@ El sistema de rating din\'amico desarrollado en la Secci\'on~\ref{subsec:shelopu
 \subsection{Covariables ex\'ogenas y vector de entrada}
 \label{subsec:covariables}
 
-El modelo de Shelopugin y Sirotkin \cite{Glicko2Mod} introduce la ventaja de local\'ia como un par\'ametro estructural $h$ que se suma al rating transformado del equipo anfitri\'on. En el marco original, la probabilidad de empate $s$ se obtiene de un modelo LightGBM con funci\'on objetivo Poisson, y el par\'ametro $d$ se calibra para compensar el sesgo de subestimaci\'on del empate. Esta arquitectura captura la din\'amica competitiva pura, pero no modela expl\'icitamente la asimetr\'ia econ\'omica, fisiol\'ogica o ambiental entre los contendientes.
+El modelo de Shelopugin y Sirotkin \cite{Glicko2Mod} introduce la ventaja de local\'ia como un par\'ametro estructural $h$ que se suma al rating transformado del equipo anfitri\'on. En el marco original, la probabilidad de empate  $P_D^{(S)}$ se obtiene de un modelo LightGBM con funci\'on objetivo Poisson, y el par\'ametro $d$ se calibra para compensar el sesgo de subestimaci\'on del empate. Esta arquitectura captura la din\'amica competitiva pura, pero no modela expl\'icitamente la asimetr\'ia econ\'omica, fisiol\'ogica o ambiental entre los contendientes.
 
 En el presente trabajo, el vector de probabilidades base $(P_H, P_D, P_A)$ definido por las ecuaciones \eqref{eq:prob_victoria_local}--\eqref{eq:prob_victoria_visitante} se enriquece con un conjunto de covariables ex\'ogenas que operan como descriptores del contexto del partido. Sea $\mathbf{x}_{ij} \in \mathbb{R}^p$ el vector de covariables asociado al enfrentamiento entre el equipo local $i$ y el visitante $j$. Sus componentes se organizan en tres bloques.
 
@@ -582,10 +565,14 @@ El principio de m\'axima verosimilitud consiste en estimar $\boldsymbol{\theta}$
 	\hat{\boldsymbol{\theta}}_{\mathrm{MV}} = \arg\max_{\boldsymbol{\theta}}\,\ell(\boldsymbol{\theta} \mid \mathbf{y}).
 \end{equation}
 
-En el contexto de aprendizaje autom\'atico, la funci\'on de p\'erdida est\'andar para clasificaci\'on multiclase es la \emph{log-loss} categ\'orica, tambi\'en denominada entrop\'ia cruzada, definida para el modelo trinomial como
+En el contexto de aprendizaje autom\'atico, la funci\'on de p\'erdida est\'andar para clasificaci\'on multiclase es la \emph{log-loss} categ\'orica, tambi\'en denominada p\'erdida logar\'itmica categ\'orica, o entrop\'ia cruzada, definida para el modelo trinomial como
 \begin{equation}\label{eq:logloss}
 	\mathcal{L}_{\mathrm{log}}(\boldsymbol{\theta}) = -\frac{1}{N}\sum_{i=1}^{N}\sum_{c\in\{H,D,A\}} \mathbb{I}(y_i=c)\,\log P_{c,i}(\boldsymbol{\theta}).
 \end{equation}
+
+\begin{obs}
+	La definici\'on operativa de esta misma cantidad en la notaci\'on one-hot que emplea el clasificador multiclase se presenta en la Secci\'on~\ref{subsec:mlp_entrenamiento}.
+\end{obs}
 
 \begin{prop}[Equivalencia log-loss y m\'axima verosimilitud]\label{prop:equivalencia}
 	Minimizar la log-loss $\mathcal{L}_{\mathrm{log}}(\boldsymbol{\theta})$ respecto a $\boldsymbol{\theta}$ es equivalente a maximizar la log-verosimilitud $\ell(\boldsymbol{\theta} \mid \mathbf{y})$.
@@ -632,7 +619,7 @@ La separaci\'on entre L-BFGS-B y Adam refleja la distinta naturaleza de los dos 
 
 El sistema de rating Glicko-2 modificado, junto con el modelo de conteo y la integraci\'on de covariables descritos en las secciones anteriores, proporciona un vector de probabilidades base $(P_H, P_D, P_A)$ que respeta la estructura probabil\'istica del enfrentamiento. No obstante, la relaci\'on entre las covariables y el resultado final no es, en general, lineal ni aditiva. La hip\'otesis central de esta secci\'on es que existen interacciones no lineales y efectos de orden superior entre las covariables que no son capturables mediante una correcci\'on param\'etrica simple sobre las tasas de goles.
 
-En consecuencia, se introduce un perceptr\'on multicapa (MLP, \emph{Multilayer Perceptron}) como refinador no param\'etrico del vector de probabilidades base. La red opera sobre el vector concatenado $\mathbf{z}_{ij}$ definido en \eqref{eq:input_mlp} y produce una distribuci\'on de probabilidad refinada que mantiene la coherencia probabil\'istica pero corrige las desviaciones sistem\'aticas no explicadas por el bloque param\'etrico previo.
+En consecuencia, se introduce un perceptr\'on multicapa (MLP, \emph{Multilayer Perceptron}) como refinador no param\'etrico del vector de probabilidades base. La red opera sobre el vector concatenado $\mathbf{z}_{ij}$ definido en \eqref{eq:input_mlp} y produce una distribuci\'on de probabilidad refinada que mantiene la coherencia probabil\'istica pero corrige las desviaciones sistem\'aticas no explicadas por el bloque param\'etrico previo. La arquitectura concreta empleada en este trabajo (n\'umero de capas, ancho, tasa de dropout, optimizador y protocolo de entrenamiento) se especifica en la Secci\'on~\ref{subsec:mlp} del Cap\'itulo~\ref{ch:metodologia}.
 
 
 \subsection{Formalizaci\'on de la red}
@@ -706,13 +693,17 @@ Esta propiedad justifica el uso del MLP no como una caja negra ad-hoc, sino como
 \subsection{Entrenamiento y funci\'on de p\'erdida}
 \label{subsec:mlp_entrenamiento}
 
-El entrenamiento del MLP consiste en estimar los par\'ametros $\boldsymbol{\theta}$ que mejor explican los resultados observados. Como se estableci\'o en la Secci\'on~\ref{subsec:logloss}, la funci\'on objetivo es la \emph{log-loss} categ\'orica, definida como sigue,
+El entrenamiento del MLP consiste en estimar los par\'ametros $\boldsymbol{\theta}$ que mejor explican los resultados observados. Como se estableci\'o en la Secci\'on~\ref{subsec:logloss}, la funci\'on objetivo es la log-loss categ\'orica, definida como sigue,
 \begin{definition}[Log-loss categ\'orica]
-	Sea $\mathbf{y}_i \in \{0,1\}^3$ el vector indicador one-hot del resultado observado del partido $i$, donde $y_{i,c} = 1$ si el resultado es $c \in \{H,D,A\}$ y $0$ en caso contrario. Sea $\tilde{\mathbf{P}}_i = (\tilde{P}_{H,i}, \tilde{P}_{D,i}, \tilde{P}_{A,i})^\top$ la salida softmax del modelo para dicho partido. La log-loss categ\'orica sobre una muestra de $N$ partidos es
+	Sea $\mathbf{y}_i \in \{0,1\}^3$ el vector indicador one-hot del resultado observado del partido $i$, donde $y_{i,c} = 1$ si el resultado es $c \in \{H,D,A\}$ y $0$ en caso contrario. Sea $\tilde{\mathbf{P}}_i = (\tilde{P}_{H,i}, \tilde{P}_{D,i}, \tilde{P}_{A,i})^\top$ la salida softmax del modelo para dicho partido. La log-loss categ\'orica, sobre una muestra de $N$ partidos es
 	\begin{equation}\label{eq:mlp_logloss}
 		\mathcal{L}_{\mathrm{log}}(\boldsymbol{\theta}) = -\frac{1}{N}\sum_{i=1}^{N} \sum_{c\in\{H,D,A\}} y_{i,c} \log \tilde{P}_{c,i}(\boldsymbol{\theta}).
 	\end{equation}
 \end{definition}
+
+\begin{obs}
+	Esta expresi\'on reescribe la log-loss categ\'orica introducida en la Ecuaci\'on~\eqref{eq:logloss}, con la etiqueta one-hot en lugar de la funci\'on indicadora. No es una cantidad distinta, sino la misma funci\'on de p\'erdida en la notaci\'on que utiliza el clasificador multiclase.
+\end{obs}
 
 La funci\'on descrita en la definici\'on anterior es la entrop\'ia cruzada entre la etiqueta observada y la distribuci\'on predicha; su uso como criterio de clasificaci\'on multiclase se discute en \cite{hernandezBenito}, Tema~4.
 
@@ -850,27 +841,31 @@ Un fen\'omeno recurrente en la predicci\'on de resultados de f\'utbol es la difi
 
 Esta observaci\'on revela una distinci\'on fundamental: un modelo puede estar perfectamente calibrado en sentido probabil\'istico (la media de las predicciones $\tilde{P}_D$ coincide con la frecuencia observada de empates) y, no obstante, exhibir un \emph{recall} nulo bajo la regla $\arg\max$. La calibraci\'on es una propiedad de la distribuci\'on predicha en su conjunto, mientras que la clasificaci\'on impone una partici\'on del simplex que ignora la magnitud de las probabilidades asignadas a las clases no elegidas. Esta tensi\'on justifica el uso de la log-loss como m\'etrica central de evaluaci\'on: al ser una regla de puntuaci\'on estrictamente propia (Proposici\'on~\ref{prop:proper}), incentiva al modelo a mantener masa significativa en $P_D$ aun cuando $\arg\max$ nunca seleccione la clase $D$. La escasa representaci\'on de la clase empate bajo clasificaci\'on dura no invalida el modelo; evidencia, m\'as bien, que el empate en el f\'utbol es un evento inherentemente difuso cuya predicci\'on \'optima requiere una evaluaci\'on distributiva m\'as que una etiqueta categ\'orica.
 
+\section{Brecha metodol\'ogica}
+\label{sec:brecha}
+
+Los sistemas de clasificaci\'on institucionales mencionados en la  Introducci\'on (FIFA \cite{FIFARanking2024}, UEFA \cite{UEFARanking2024}, CONMEBOL \cite{CONMEBOLRanking2021}, AFC  \cite{AFCRanking2024}, CONCACAF \cite{CONCACAFRanking2023} e IFFHS  \cite{IFFHSRanking2021}) comparten una limitaci\'on estructural: tratan la fuerza de los equipos como un escalar determinista, sin  cuantificar la incertidumbre estad\'istica asociada a la estimaci\'on. Esta carencia no es accidental, sino consecuencia de su l\'ogica de c\'alculo. El ranking FIFA adopta una variante del m\'etodo Elo con escala $600$ pero sin medida de dispersi\'on \cite{FIFARanking2024}. La UEFA y la CONMEBOL acumulan puntos sobre ventanas de varias temporadas sin ponderar la fuerza del oponente \cite{UEFARanking2024,CONMEBOLRanking2021}. La CONCACAF, pese a adoptar un esquema Elo con actualizaci\'on cero-sumatoria, codifica el empate como una ausencia de se\~nal ($0$) en lugar de modelarlo como categor\'ia estoc\'astica independiente \cite{CONCACAFRanking2023}. En los cuatro casos, el resultado del ranking es un n\'umero \'unico que no admite lectura probabil\'istica.
+
+Los sistemas probabil\'isticos de rating revisados en la Secci\'on~\ref{sec:rating} corrigieron parcialmente esta carencia. Glicko-2 \cite{Glickman2022} incorpora la incertidumbre mediante la desviaci\'on de rating $RD$, de modo que la fuerza latente de un equipo se modela como una distribuci\'on normal $\Theta_i \sim \mathcal{N}(R_i, RD_i^2)$ en lugar de un escalar. Shelopugin y Sirotkin \cite{Glicko2Mod} extienden este marco para contemplar el empate como categor\'ia estoc\'astica independiente con probabilidad end\'ogena, superando as\'i la restricci\'on binaria del Glicko-2 can\'onico. Sin embargo, ninguno de estos desarrollos integra covariables contextuales de naturaleza deportiva, econ\'omica o ambiental en la estimaci\'on de la probabilidad del resultado. El estado $(R, RD, \sigma)$ de un equipo resume su trayectoria hist\'orica de resultados, pero no incorpora el contexto espec\'ifico de cada enfrentamiento.
+
+Por otra parte, los modelos de conteo basados en la distribuci\'on de Poisson \cite{maher1982} y en la diferencia de goles a trav\'es de la distribuci\'on de Skellam \cite{skellam1946,karlis2003} ofrecen una formulaci\'on adecuada para derivar la probabilidad de empate a partir de las tasas de anotaci\'on esperadas. Karlis y Ntzoufras \cite{karlis2003} demostraron que el valor en $d=0$ de la distribuci\'on de Skellam proporciona la probabilidad de empate y captura adecuadamente la din\'amica del resultado. No obstante, estos modelos operan de forma est\'atica: las tasas $\lambda_H$ y $\lambda_A$ se estiman a partir de covariables observadas del partido y no incorporan un estado latente que evolucione secuencialmente conforme se dispone de nuevos resultados. Esta ausencia de actualizaci\'on din\'amica limita su capacidad para reflejar cambios en la forma competitiva de los equipos a lo largo de una temporada.
+
+La brecha que motiva el presente trabajo no es, entonces, la ausencia individual de cada componente, sino la falta de integraci\'on entre ellos. Los trabajos revisados abordan, a lo sumo, uno o dos de los siguientes elementos:
+
+\begin{itemize}
+	\item Un modelo de conteo que estime tasas de goles y derive probabilidades por resultado.
+	\item Un sistema de rating din\'amico que actualice la fuerza latente y su incertidumbre de forma secuencial.
+	\item Un mecanismo que incorpore covariables ex\'ogenas sobre las probabilidades base.
+\end{itemize}
+
+Ninguno los articula como un \textit{pipeline} coherente donde cada bloque cubra las limitaciones del anterior. En particular, la combinaci\'on no es trivial: el rating produce una fuerza latente en una escala arbitraria, el modelo de conteo produce tasas en goles por partido, y el refinador neuronal necesita un vector de entrada homog\'eneo. La traducci\'on entre estos espacios es parte del aporte del presente trabajo.
+
+El sistema propuesto no busca sustituir a los modelos revisados: los articula en una arquitectura en cascada donde el modelo de conteo aporta la estimaci\'on base, el sistema de rating introduce la din\'amica temporal y un refinador neuronal incorpora el contexto ex\'ogeno. El Cap\'itulo~\ref{ch:metodologia} describe la implementaci\'on y la evaluaci\'on emp\'irica de este sistema; y el Cap\'itulo~\ref{ch:resultados} presenta los resultados obtenidos sobre los tres conjuntos de datos considerados.
+
 \section*{S\'intesis del cap\'itulo}
 
-El aparato desarrollado a lo largo del cap\'itulo articula los tres bloques del
-sistema en una \'unica cadena de inferencia. El modelo de conteo traduce las tasas
-de anotaci\'on en una probabilidad de empate; el Glicko-2 modificado combina esa
-probabilidad con la fuerza latente de los equipos para producir el vector base
-$(P_H, P_D, P_A)$; y el refinador neuronal ajusta ese vector con la informaci\'on
-ex\'ogena del enfrentamiento. En cada paso se preserva la coherencia
-probabil\'istica, de modo que la salida de un bloque es siempre una entrada
-v\'alida para el siguiente.
+El aparato desarrollado a lo largo del cap\'itulo articula los tres bloques del sistema en una \'unica cadena de inferencia. El modelo de conteo traduce las tasas de anotaci\'on en una probabilidad de empate; el Glicko-2 modificado combina esa probabilidad con la fuerza latente de los equipos para producir el vector base $(P_H, P_D, P_A)$; y el refinador neuronal ajusta ese vector con la informaci\'on ex\'ogena del enfrentamiento. En cada paso se preserva la coherencia probabil\'istica, de modo que la salida de un bloque es siempre una entrada v\'alida para el siguiente.
 
-Dos elecciones vertebran el marco. La primera es la estimaci\'on por m\'axima
-verosimilitud, equivalente a la minimizaci\'on de la log-loss, que act\'ua a la vez
-como criterio de calibraci\'on de los par\'ametros y como m\'etrica principal de
-evaluaci\'on, por tratarse de una regla de puntuaci\'on estrictamente propia. La
-segunda es la distinci\'on entre calibraci\'on y clasificaci\'on: el colapso de la
-clase empate bajo la regla de m\'axima probabilidad no es una falla del modelo, sino
-una propiedad geom\'etrica del simplex, lo que lleva a evaluar el sistema por la
-calidad de la distribuci\'on que reporta antes que por su acierto categ\'orico.
+Dos elecciones vertebran el marco. La primera es la estimaci\'on por m\'axima verosimilitud, equivalente a la minimizaci\'on de la log-loss, que act\'ua a la vez como criterio de calibraci\'on de los par\'ametros y como m\'etrica principal de evaluaci\'on, por tratarse de una regla de puntuaci\'on estrictamente propia. La segunda es la distinci\'on entre calibraci\'on y clasificaci\'on: el colapso de la clase empate bajo la regla de m\'axima probabilidad no es una falla del modelo, sino una propiedad geom\'etrica del simplex, lo que lleva a evaluar el sistema por la calidad de la distribuci\'on que reporta antes que por su acierto categ\'orico.
 
-Con estas piezas fijadas, el Cap\'itulo~\ref{ch:metodologia} traslada el formalismo
-a la pr\'actica: describe las fuentes de datos, el procesamiento y la selecci\'on de
-covariables, y detalla la implementaci\'on, el entrenamiento y la calibraci\'on de
-cada bloque sobre los conjuntos de datos del estudio.
+Con estas piezas fijadas, y con la brecha que motiva su integraci\'on expuesta en la secci\'on precedente, el Cap\'itulo~\ref{ch:metodologia} traslada el formalismo a la pr\'actica: describe las fuentes de datos, el procesamiento y la selecci\'on de covariables, y detalla la implementaci\'on, el entrenamiento y la calibraci\'on de cada bloque sobre los conjuntos de datos del estudio.

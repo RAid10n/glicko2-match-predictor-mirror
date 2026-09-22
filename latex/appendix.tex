@@ -14,7 +14,7 @@ En el Cap\'itulo~\ref{ch:metodologia} se desarroll\'o el \textit{pipeline} princ
 \section{Motivaci\'on y formalismo}
 \label{sec:app_gru_formalismo}
 
-Mientras que el perceptr\'on multicapa (MLP) descrito en el cuerpo del trabajo opera sobre un vector de estado fijo $\mathbf{z}_{ij}\in\mathbb{R}^{d}$ con $d=10$ o $d=13$ seg\'un el \textit{dataset} (ver Secci\'on~\ref{subsec:conjunto_final}) que condensa la informaci\'on hist\'orica mediante promedios m\'oviles \textit{rolling} y el estado $(R,RD,\sigma)$ del sistema Glicko-2, una red recurrente modela expl\'icitamente la dependencia temporal en la secuencia de partidos de cada equipo. La hip\'otesis exploratoria es que el orden temporal de los resultados contiene patrones din\'amicos, rachas de forma, fatiga acumulada, adaptaci\'on t\'actica, entre otras, que no son capturables por agregaciones est\'aticas.
+Mientras que el perceptr\'on multicapa (MLP) descrito en el cuerpo del trabajo opera sobre un vector de estado fijo $\mathbf{z}_{ij}\in\mathbb{R}^{d}$ con $d=10$ o $d=13$ seg\'un el conjunto de datos (ver Secci\'on~\ref{subsec:conjunto_final}) que condensa la informaci\'on hist\'orica mediante promedios m\'oviles \textit{rolling} y el estado $(R,RD,\sigma)$ del sistema Glicko-2, una red recurrente modela expl\'icitamente la dependencia temporal en la secuencia de partidos de cada equipo. La hip\'otesis exploratoria es que el orden temporal de los resultados contiene patrones din\'amicos, rachas de forma, fatiga acumulada, adaptaci\'on t\'actica, entre otras, que no son capturables por agregaciones est\'aticas.
 
 La arquitectura explorada utiliza unidades recurrentes cerradas (GRU, \emph{Gated Recurrent Unit}) \cite{Charu2018}, una variante de la RNN cl\'asica que aborda la problem\'atica del gradiente desvaneciente mediante compuertas de actualizaci\'on y reinicio. El estado oculto $\mathbf{h}_t\in\mathbb{R}^{h}$ en el paso temporal $t$ se actualiza como
 \begin{align}
@@ -30,7 +30,7 @@ La red consta de dos codificadores GRU independientes que procesan, respectivame
 	\mathbf{h}_{\mathrm{concat}} = \bigl[\mathbf{h}_{\mathrm{home}};\;\mathbf{h}_{\mathrm{away}};\;\mathrm{ReLU}(\boldsymbol{W}_{\mathrm{proj}}\mathbf{c}_{ij}+\mathbf{b}_{\mathrm{proj}})\bigr]\in\mathbb{R}^{3h}.
 	\label{eq:gru_concat}
 \end{equation}
-Este vector alimenta una cabeza clasificadora densa compuesta por una capa oculta con activaci\'on \textit{ReLU}, \text{dropout} con tasa $0.2$, y una capa lineal de salida de dimensi\'on $3$, cuyas salidas indican: victoria local, empate o victoria visitante. A diferencia del MLP principal, esta arquitectura no recibe como entrada las probabilidades base $(P_H,P_D,P_A)$ generadas por el Glicko-2; construye su propia representaci\'on latente a partir de las secuencias hist\'oricas crudas, lo que hace la comparaci\'on directa de p\'erdida logar\'itmica (log-loss) con el \textit{pipeline} principal una evaluaci\'on de dificultad predictiva superior.
+Este vector alimenta una cabeza clasificadora densa compuesta por una capa oculta con activaci\'on \textit{ReLU}, \text{dropout} con tasa $0.2$, y una capa lineal de salida de dimensi\'on $3$, cuyas salidas indican: victoria local, empate o victoria visitante. A diferencia del MLP principal, esta arquitectura no recibe como entrada las probabilidades base $(P_H,P_D,P_A)$ generadas por el Glicko-2; construye su propia representaci\'on latente a partir de las secuencias hist\'oricas crudas, lo que hace la comparaci\'on directa de log-loss con el \textit{pipeline} principal una evaluaci\'on de dificultad predictiva superior.
 
 % ------------------------------------------------------------
 % A.2. Pipeline de datos e implementaci\'on
@@ -39,14 +39,14 @@ Este vector alimenta una cabeza clasificadora densa compuesta por una capa ocult
 \section{Arquitectura de datos e implementaci\'on}
 \label{sec:app_gru_arquitectura}
 
-En esta secci\'on se describe el pipeline de datos que transforma los registros de partidos en secuencias temporales adecuadas para el entrenamiento de la GRU, as\'i como la implementaci\'on de la red en \texttt{PyTorch}. Se detalla la construcci\'on de las secuencias hist\'oricas, el escalado de variables, la estructura de la clase \texttt{RRNN}, y los par\'ametros de entrenamiento. El objetivo es que el lector pueda reconstruir el flujo de datos desde las tablas crudas hasta el tensor de entrada de la red, y comprender las decisiones de dise\~no que motivaron cada etapa del procesamiento.
+En esta secci\'on se describe el \textit{pipeline} de datos que transforma los registros de partidos en secuencias temporales adecuadas para el entrenamiento de la GRU, as\'i como la implementaci\'on de la red en \texttt{PyTorch}. Se detalla la construcci\'on de las secuencias hist\'oricas, el escalado de variables, la estructura de la clase \texttt{RRNN}, y los par\'ametros de entrenamiento. El objetivo es que el lector pueda reconstruir el flujo de datos desde las tablas crudas hasta el tensor de entrada de la red, y comprender las decisiones de dise\~no que motivaron cada etapa del procesamiento.
 
 \subsection{Construcci\'on de secuencias hist\'oricas}
 \label{subsec:app_gru_secuencias}
 
 Para cada partido se construyen dos secuencias de longitud fija $T$ (\emph{seq\_len}), una por equipo, tomando los $T$ enfrentamientos cronol\'ogicamente anteriores. Cada paso temporal $\mathbf{x}_t$ tiene dimensi\'on $d_{\mathrm{hist}} = d_{\mathrm{base}} + d_{\mathrm{extra}}$, donde:
 \begin{itemize}
-	\item $d_{\mathrm{base}}$ corresponde al conjunto de covariables num\'ericas del dataset, con los metadatos excluidos, m\'as la probabilidad de empate del bloque Skellam (\texttt{draw\_prob}) (ver Secci\'on~\ref{subsec:conteo}). Estas variables se escalan con un \texttt{StandardScaler} ajustado exclusivamente sobre el conjunto de entrenamiento.
+	\item $d_{\mathrm{base}}$ corresponde al conjunto de covariables num\'ericas del conjunto de datos, con los metadatos excluidos, m\'as la probabilidad de empate del bloque Skellam (\texttt{draw\_prob}) (ver Secci\'on~\ref{subsec:conteo}). Estas variables se escalan con un \texttt{StandardScaler} ajustado exclusivamente sobre el conjunto de entrenamiento.
 	\item $d_{\mathrm{extra}} = 4$ son metadatos hist\'oricos propios del partido: indicadora de local\'ia (\texttt{is\_home}), goles a favor (\texttt{goals\_for}), goles en contra (\texttt{goals\_against}) y resultado codificado como $+1$ (victoria), $0$ (empate), $-1$ (derrota).
 \end{itemize}
 
@@ -73,7 +73,7 @@ La clase implementada utiliza una \'unica capa GRU unidireccional con \texttt{ba
 	\item $\hat{\mathbf{y}} \leftarrow \mathrm{Softmax}\bigl(\mathrm{MLP}_{\mathrm{head}}(\mathbf{x})\bigr)$.
 \end{enumerate}
 
-El n\'umero total de par\'ametros entrenables es $\mathcal{O}\bigl(h\,(d_{\mathrm{hist}}+d_{\mathrm{cur}})+h^{2}\bigr)$, donde $h$ es el tama\~no del estado oculto. Para la configuraci\'on estudiada ($T=8$, $h=64$), la complejidad param\'etrica es sustancialmente mayor que la del MLP \textit{feedforward}, que act\'ua con dos capas ocultas de $64$ neuronas, aunque la diferencia exacta depende de la dimensionalidad de entrada $d_{\mathrm{hist}}$ que var\'ia entre datasets.
+El n\'umero total de par\'ametros entrenables es $\mathcal{O}\bigl(h\,(d_{\mathrm{hist}}+d_{\mathrm{cur}})+h^{2}\bigr)$, donde $h$ es el tama\~no del estado oculto. Para la configuraci\'on estudiada ($T=8$, $h=64$), la complejidad param\'etrica es sustancialmente mayor que la del MLP \textit{feedforward}, que act\'ua con dos capas ocultas de $64$ neuronas, aunque la diferencia exacta depende de la dimensionalidad de entrada $d_{\mathrm{hist}}$ que var\'ia entre conjuntos de datos.
 
 % ------------------------------------------------------------
 % A.3. Protocolo de entrenamiento
@@ -115,12 +115,12 @@ Los resultados reportados en las secciones siguientes corresponden al modo \text
 \section{Resultados emp\'iricos}
 \label{sec:app_gru_resultados}
 
-En esta secci\'on se presentan los resultados obtenidos por la GRU en los tres \textit{datasets} analizados: \textit{dataset Full}, \textit{dataset Lite} y \textit{dataset Lite Recortado}. El an\'alisis se divide en dos partes. Primero, se examina la evoluci\'on del entrenamiento a lo largo de las \'epocas, con especial atenci\'on al diagn\'ostico de sobreajuste y a la divergencia entre las curvas de entrenamiento y validaci\'on. Segundo, se comparan las m\'etricas finales sobre el conjunto de prueba (log-loss categ\'orica, log-loss binaria y accuracy) con las l\'ineas base del \textit{pipeline} principal: el Glicko-2 modificado en aislamiento y el MLP completo. La comparaci\'on permite cuantificar la brecha de desempe\~no entre la arquitectura recurrente y el sistema en cascada, y evaluar si la GRU ofrece alguna ventaja predictiva.
+En esta secci\'on se presentan los resultados obtenidos por la GRU en los tres conjuntos de datos analizados: Dataset Full, Dataset Lite y Dataset Lite Recortado. El an\'alisis se divide en dos partes. Primero, se examina la evoluci\'on del entrenamiento a lo largo de las \'epocas, con especial atenci\'on al diagn\'ostico de sobreajuste y a la divergencia entre las curvas de entrenamiento y validaci\'on. Segundo, se comparan las m\'etricas finales sobre el conjunto de prueba (log-loss categ\'orica, log-loss binaria y accuracy) con las l\'ineas base del \textit{pipeline} principal: el Glicko-2 modificado en aislamiento y el MLP completo. La comparaci\'on permite cuantificar la brecha de desempe\~no entre la arquitectura recurrente y el sistema en cascada, y evaluar si la GRU ofrece alguna ventaja predictiva.
 
 \subsection{Evoluci\'on por \'epoca y diagn\'ostico de sobreajuste}
 \label{subsec:app_gru_curvas}
 
-La Tabla~\ref{tab:gru_curvas} resume la evoluci\'on del entrenamiento para los tres \textit{datasets}. Se reportan tres puntos clave: la primera \'epoca, la \'epoca de mejor p\'erdida de validaci\'on, y la \'epoca final ($30$).
+La Tabla~\ref{tab:gru_curvas} resume la evoluci\'on del entrenamiento para los tres conjuntos de datos. Se reportan tres puntos clave: la primera \'epoca, la \'epoca de mejor p\'erdida de validaci\'on, y la \'epoca final ($30$).
 
 \begin{table}[htbp]
 	\centering
@@ -130,7 +130,7 @@ La Tabla~\ref{tab:gru_curvas} resume la evoluci\'on del entrenamiento para los t
 		\toprule
 		& \multicolumn{2}{c}{\textbf{\'Epoca 1}} & \multicolumn{2}{c}{\textbf{Mejor val.}} & \multicolumn{2}{c}{\textbf{\'Epoca 30}} \\
 		\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
-		\textbf{Dataset} & Entrenamiento & Validaci\'on & \'Epoca & Validaci\'on & Entrenamiento & Validaci\'on \\
+		\textbf{Conjunto de datos} & Entrenamiento & Validaci\'on & \'Epoca & Validaci\'on & Entrenamiento & Validaci\'on \\
 		\midrule
 		Full & 1.0489 & 1.0054 & 4 & 0.9954 & 0.8964 & 1.0692 \\
 		Lite & 1.0411 & 1.0280 & 4 & 1.0231 & 0.9499 & 1.0566 \\
@@ -139,7 +139,7 @@ La Tabla~\ref{tab:gru_curvas} resume la evoluci\'on del entrenamiento para los t
 	\end{tabular}
 \end{table}
 
-El patr\'on es consistente en los tres conjuntos: la p\'erdida de validaci\'on alcanza su m\'inimo en las primeras \'epocas, para luego diverger mon\'otonamente mientras la p\'erdida de entrenamiento contin\'ua descendiendo. En el \textit{dataset Full}, la brecha entrenamiento--validaci\'on se ampl\'ia desde $0.0435$ en la \'epoca 1, hasta $0.1728$ en la \'epoca 30; la \textit{accuracy} de entrenamiento asciende del $46.2\%$ al $57.9\%$, mientras que la de validaci\'on desciende de $50.8\%$ a $47.0\%$. Este comportamiento es evidencia de sobreajuste. La red tiende a memorizar patrones del entrenamiento y su capacidad de generalizaci\'on se degrada.
+El patr\'on es consistente en los tres conjuntos: la p\'erdida de validaci\'on alcanza su m\'inimo en las primeras \'epocas, para luego diverger mon\'otonamente mientras la p\'erdida de entrenamiento contin\'ua descendiendo. En el Dataset Full, la brecha entrenamiento--validaci\'on se ampl\'ia desde $0.0435$ en la \'epoca 1, hasta $0.1728$ en la \'epoca 30; la \textit{accuracy} de entrenamiento asciende del $46.2\%$ al $57.9\%$, mientras que la de validaci\'on desciende de $50.8\%$ a $47.0\%$. Este comportamiento es evidencia de sobreajuste. La red tiende a memorizar patrones del entrenamiento y su capacidad de generalizaci\'on se degrada.
 
 \subsection{M\'etricas de evaluaci\'on sobre el conjunto de prueba}
 \label{subsec:app_gru_test}
@@ -152,7 +152,7 @@ La Tabla~\ref{tab:gru_test} reporta las m\'etricas finales sobre el $30\%$ crono
 	\label{tab:gru_test}
 	\begin{tabular}{lcccc}
 		\toprule
-		\textbf{Dataset} & \textbf{Modelo} & \textbf{LL Cat.} & \textbf{LL Bin.} & \textbf{Accuracy} \\
+		\textbf{Conjunto de datos} & \textbf{Modelo} & \textbf{LL Cat.} & \textbf{LL Bin.} & \textbf{Accuracy} \\
 		\midrule
 		\multirow{3}{*}{Full} & Glicko-2 aislado & 1.0425 & 0.6500 & --- \\
 		& MLP completo & 1.0261 & 0.6445 & 0.489 \\
@@ -169,7 +169,7 @@ La Tabla~\ref{tab:gru_test} reporta las m\'etricas finales sobre el $30\%$ crono
 	\end{tabular}
 \end{table}
 
-El componente GRU exhibe un desempe\~no sistem\'aticamente inferior al del \textit{pipeline} principal en todas las m\'etricas y todos los \textit{datasets}. Su p\'erdida logar\'itmica (log-loss) binaria se encuentra entre $0.657$ y $0.691$, superando la del Glicko-2 aislado ($0.6478$-$0.6500$) y la del MLP completo ($0.6402$-$0.6460$). La \textit{accuracy} se ubica entre $0.438$ y $0.466$, por debajo del $0.486$ del sistema en cascada. La comparaci\'on es asim\'etrica en dificultad: la GRU parte de \textit{features} crudos y secuencias hist\'oricas, mientras que el MLP recibe probabilidades base ya calibradas por el Glicko-2.
+El componente GRU exhibe un desempe\~no sistem\'aticamente inferior al del \textit{pipeline} principal en todas las m\'etricas y todos los conjuntos de datos. Su log-loss binaria se encuentra entre $0.657$ y $0.691$, superando la del Glicko-2 aislado ($0.6478$-$0.6500$) y la del MLP completo ($0.6402$-$0.6460$). La \textit{accuracy} se ubica entre $0.438$ y $0.466$, por debajo del $0.486$ del sistema en cascada. La comparaci\'on es asim\'etrica en dificultad: la GRU parte de las covariables ex\'ogenas crudas y secuencias hist\'oricas, mientras que el MLP recibe probabilidades base ya calibradas por el Glicko-2.
 
 % ============================================================
 % A.5. Discusi\'on
@@ -198,7 +198,7 @@ La GRU se mantuvo como componente exploratorio y se excluy\'o del sistema predic
 Este ap\'endice documenta el proceso de evoluci\'on desde el motor de referencia de Shelopugin y Sirotkin \cite{Glicko2Mod} hasta la implementaci\'on calibrada \texttt{G2Av1513}, que constituye el n\'ucleo del sistema predictivo. El contraste se organiza en cinco bloques: 
 
 \begin{itemize}
-	\item La filosof\'ia del baseline \textit{naive}, con sus par\'ametros can\'onicos fijos y el procesamiento \textit{multi-dataset}.
+	\item La filosof\'ia del baseline \textit{naive}, con sus par\'ametros can\'onicos fijos y el procesamiento de m\'ultiples conjuntos de datos.
 	\item Las mejoras arquitect\'onicas y num\'ericas del motor calibrado.
 	\item Una tabla comparativa de hiperpar\'ametros
 	\item Una comparaci\'on emp\'irica basada en las salidas de ambos motores, incluyendo an\'alisis de concordancia, discrepancias y la \'elite del \textit{ranking}.
@@ -225,7 +225,7 @@ El \textit{Notebook Autocontenido \textit{naive} Trinomial} implementa una reedi
 El motor \textit{naive} opera con los valores por defecto del algoritmo Glicko-2 est\'andar \cite{Glickman2022}, sin ajuste alguno por liga o contexto temporal:
 
 \begin{align}
-	\mu_0 &= 1500, &
+	R_0 &= 1500, &
 	RD_0 &= 350, &
 	\tau &= 0.8, &
 	\varepsilon &= 10^{-6}, &
@@ -236,7 +236,7 @@ La desviaci\'on est\'andar inicial $RD_0 = 350$ corresponde al valor original pr
 
 \subsection{Probabilidad de empate mediante Skellam externo}
 
-El baseline no incorpora la probabilidad de empate como par\'ametro interno del motor de rating, pues la recibe como una estimaci\'on externa proveniente de un bloque de conteo entrenado sobre los mismos datos. Para los dos dataset base: \textit{dataset Lite} y \textit{dataset Full}, se entrenan dos regresores LightGBM con funci\'on objetivo Poisson \cite{ke2017lightgbm} sobre las 32 variables de promedios m\'oviles de goles:
+El baseline no incorpora la probabilidad de empate como par\'ametro interno del motor de rating, pues la recibe como una estimaci\'on externa proveniente de un bloque de conteo entrenado sobre los mismos datos. Para los dos conjunto de datos base: Dataset Lite y Dataset Full, se entrenan dos regresores LightGBM con funci\'on objetivo Poisson \cite{ke2017lightgbm} sobre las 32 variables de promedios m\'oviles de goles:
 
 \begin{equation}
 	\hat{\lambda}_H = f_{\text{LGBM}}^{(H)}(\mathbf{x}_{\text{rolling}}), \qquad
@@ -246,11 +246,11 @@ El baseline no incorpora la probabilidad de empate como par\'ametro interno del 
 a partir de las cuales se deriva la probabilidad de empate mediante la funci\'on de masa de la distribuci\'on de Skellam evaluada en $k=0$:
 
 \begin{equation}
-	\hat{P}_D^{\text{(Skellam)}} = e^{-(\hat{\lambda}_H + \hat{\lambda}_A)} \, I_0\!\left(2\sqrt{\hat{\lambda}_H \hat{\lambda}_A}\right),
+	\hat{P}_D^{(S)} = e^{-(\hat{\lambda}_H + \hat{\lambda}_A)} \, I_0\!\left(2\sqrt{\hat{\lambda}_H \hat{\lambda}_A}\right),
 	\label{eq:skellam_draw_baseline_app}
 \end{equation}
 
-donde $I_0$ es la funci\'on de Bessel modificada de primera especie de orden cero (Definida en la secci\'on \ref{subsec:skellam}, ecuaci\'on \ref{eq:bessel_series}). Este valor se anexa al dataset como \texttt{draw\_prob} y se inyecta directamente en el motor Glicko-2 en la escala de probabilidad cruda $(0,1)$, sin transformaci\'on logit intermedia.
+donde $I_0$ es la funci\'on de Bessel modificada de primera especie de orden cero (Definida en la secci\'on \ref{subsec:skellam}, ecuaci\'on \ref{eq:bessel_series}). Este valor se anexa al conjunto de datos como \texttt{draw\_prob} y se inyecta directamente en el motor Glicko-2 en la escala de probabilidad cruda $(0,1)$, sin transformaci\'on logit intermedia.
 
 \subsection{Actualizaci\'on secuencial sin optimizaci\'on}
 
@@ -263,22 +263,22 @@ El motor \textit{naive} itera cronol\'ogicamente partido a partido, manteniendo 
 	\item Computa los nuevos valores de $\mu'$ y $\phi'$ seg\'un las ecuaciones de Glickman.
 \end{enumerate}
 
-No se realiza ning\'un proceso de optimizaci\'on de hiperpar\'ametros: $\tau$, $RD_0$ y $\mu_0$ permanecen invariantes en toda la ejecuci\'on. El algoritmo no distingue entre ligas, contextos temporales o condiciones excepcionales.
+No se realiza ning\'un proceso de optimizaci\'on de hiperpar\'ametros: $\tau$, $RD_0$ y $R_0$ permanecen invariantes en toda la ejecuci\'on. El algoritmo no distingue entre ligas, contextos temporales o condiciones excepcionales.
 
-\subsection{Procesamiento multi-dataset}
+\subsection{Procesamiento de m\'ultiples conjuntos de datos}
 
-El notebook procesa tres versiones de los datos, todas derivadas del mismo pipeline de integraci\'on descrito en el Cap\'itulo~\ref{ch:metodologia}:
+El notebook procesa tres versiones de los datos, todas derivadas del mismo \textit{pipeline} de integraci\'on descrito en el Cap\'itulo~\ref{ch:metodologia}:
 \begin{itemize}
 	\item \textbf{Dataset Lite} (37\,819 partidos, 2017--2025): sin m\'etricas deportivas compuestas de autor\'ia, con todas las ligas incluidas (23 competiciones).
 	\item \textbf{Dataset Full} (27\,067 partidos, 2019--2025): con las m\'etricas deportivas compuestas de autor\'ia (xG\_teo, xA\_teo, DDI), 21 competiciones.
 	\item \textbf{Dataset Lite Recortado} (27\,067 partidos, 2019--2025): misma ventana temporal que Full pero sin las m\'etricas deportivas compuestas de autor\'ia.
 \end{itemize}
 
-El motor \textit{naive} se ejecuta independientemente sobre cada dataset, partiendo de estados iniciales id\'enticos y sin transferencia de informaci\'on entre configuraciones.
+El motor \textit{naive} se ejecuta independientemente sobre cada conjunto de datos, partiendo de estados iniciales id\'enticos y sin transferencia de informaci\'on entre configuraciones.
 
 \subsection{Salidas del baseline}
 
-Para cada dataset, el \textit{notebook} produce:
+Para cada conjunto de datos, el \textit{notebook} produce:
 \begin{enumerate}
 	\item Un archivo CSV con los ratings finales de todos los equipos:\\ \texttt{ratings\_final\_\textit{naive}\_trinomial\_\{dataset\}.csv}.
 	\item Un archivo CSV con el historial completo de actualizaciones:\\ \texttt{ratings\_history\_\textit{naive}\_trinomial\_\{dataset\}.csv}.
@@ -296,8 +296,8 @@ Estos resultados constituyen la l\'inea base contra la cual se contrasta el dese
 El motor \texttt{G2Av1513.py} es una reimplementaci\'on integral del algoritmo Glicko-2 modificado, cuyas diferencias funcionales respecto al motor de referencia se describen en detalle en la Secci\'on~\ref{subsubsec:mejoras_g2av1513} del Cap\'itulo~\ref{ch:metodologia}. A modo de resumen, las mejoras introducidas son:
 
 \begin{enumerate}
-	\item \textbf{Correcci\'on algebraica del denominador trinomial:} se unifica el denominador como $1+e^\delta+e^{d+s_{\text{logit}}}$, garantizando una partici\'on consistente del simplex.
-	\item \textbf{Reparametrizaci\'on logit del par\'ametro de empate:} se aplica $s_{\text{logit}} = \ln(P_D/(1-P_D))$, eliminando restricciones de caja en el optimizador.
+	\item \textbf{Correcci\'on algebraica del denominador trinomial:} se unifica el denominador como $1+e^\delta+e^{d+P_{D,\text{logit}}^{(S)}}$, garantizando una partici\'on consistente del simplex.
+	\item \textbf{Reparametrizaci\'on logit del par\'ametro de empate:} se aplica $P_{D,\text{logit}}^{(S)} = \ln(P_D^{(S)}/(1-P_D^{(S)}))$, eliminando restricciones de caja en el optimizador.
 	\item \textbf{Heur\'istica de escala $g$:} se adopta $g_{\text{const}} = 3.0/\pi^2$, suavizando la superficie de p\'erdida.
 	\item \textbf{Sistema de ventaja parametrizada:} se calibra $h_\ell$ por liga mediante L-BFGS-B.
 	\item \textbf{Mecanismos de estabilidad num\'erica:} clamping, restricci\'on de $E$, divisi\'on protegida, y atenuaci\'on pand\'emica.
@@ -335,12 +335,12 @@ La Tabla~\ref{tab:hiperparam_comparativa_app} sistematiza las diferencias entre 
 		\midrule
 		$RD_0$ & 350 & 80 \\
 		$g_{\text{const}}$ & $1.5/\pi^2 \approx 0.152$ & $3.0/\pi^2 \approx 0.304$ \\
-		Denominador trinomial & Asim\'etrico ($P_A$ inducido por $\delta$) & Sim\'etrico ($1+e^\delta+e^{d+s_{\text{logit}}}$) \\
-		\textbf{Transformaci\'on de $P_D$} & \textbf{Cruda $(0,1)$ al exponente} & \textbf{$\operatorname{logit}(P_D)$} \\
+		Denominador trinomial & Asim\'etrico ($P_A$ inducido por $\delta$) & Sim\'etrico ($1+e^\delta+e^{d+P_{D,\text{logit}}^{(S)}}$) \\
+		\textbf{Transformaci\'on de $P_D$} & \textbf{Cruda $(0,1)$ al exponente} & \textbf{$\operatorname{logit}(P_D^{(S)})$} \\
 		\textbf{$d$ (correcci\'on de empate)} & \textbf{Fijo ($d=0$)} & \textbf{Calibrado ($d\approx 0.91$)} \\
 		Calibraci\'on param\'etrica & Ninguna (par\'ametros fijos) & L-BFGS-B sobre $\{d, \mu_{\text{init},\ell}, h_\ell\}$ \\
 		Ventaja de local\'ia & Fija (0.0) & Calibrada por liga $h_\ell \in [0,200]$ \\
-		Rating inicial & $\mu_0 = 1500$ universal & $\mu_{\text{init},\ell}$ por liga \\
+		Rating inicial & $R_0 = 1500$ universal & $\mu_{\text{init},\ell}$ por liga \\
 		Estabilidad num\'erica & M\'inima (riesgo de desbordamiento) & Clamping, restricci\'on de $E$, divisi\'on protegida \\
 		\bottomrule
 	\end{tabular}
@@ -362,7 +362,7 @@ Para cuantificar el impacto de la calibraci\'on, se comparan los ratings finales
 	\label{tab:comparativa_concordancia_app}
 	\begin{tabular}{lcccc}
 		\toprule
-		\textbf{Dataset} & \textbf{Equipos en com\'un} & \textbf{Spearman $\rho$} & \textbf{$\overline{|\Delta \mu|}$} & \textbf{$\overline{|\Delta \text{Rank}|}$} \\
+		\textbf{Conjunto de datos} & \textbf{Equipos en com\'un} & \textbf{Spearman $\rho$} & \textbf{$\overline{|\Delta \mu|}$} & \textbf{$\overline{|\Delta \text{Rank}|}$} \\
 		\midrule
 		Full & 337 & 0.9416 & 40.67 & 23.31 \\
 		Lite & 415 & 0.9260 & 51.31 & 33.23 \\
@@ -373,7 +373,7 @@ Para cuantificar el impacto de la calibraci\'on, se comparan los ratings finales
 	{\small \textit{Nota:} Lite Recortado comparte con Full los mismos 27\,067 partidos y los mismos ratings del motor calibrado, por lo que las m\'etricas de concordancia son id\'enticas.}
 \end{table}
 
-La correlaci\'on de Spearman supera $0.92$ en todos los casos, lo que indica que el ordenamiento jer\'arquico de fuerza latente es pr\'acticamente el mismo entre ambas configuraciones. La diferencia absoluta promedio en el rating $\mu$ se sit\'ua entre $40{.}67$ y $51{.}31$ puntos, mientras que la diferencia promedio en la posici\'on de ranking oscila entre $23{.}31$ y $33{.}23$ puestos. El \textit{dataset Lite} presenta una mayor dispersi\'on, atribuible a dos factores
+La correlaci\'on de Spearman supera $0.92$ en todos los casos, lo que indica que el ordenamiento jer\'arquico de fuerza latente es pr\'acticamente el mismo entre ambas configuraciones. La diferencia absoluta promedio en el rating $\mu$ se sit\'ua entre $40{.}67$ y $51{.}31$ puntos, mientras que la diferencia promedio en la posici\'on de ranking oscila entre $23{.}31$ y $33{.}23$ puestos. El Dataset Lite presenta una mayor dispersi\'on, atribuible a dos factores
 
 \begin{enumerate}
 	\item La inclusi\'on de ligas con menor cobertura estad\'istica.
@@ -384,11 +384,11 @@ En este conjunto, el rating inicial y la ventaja de local\'ia tienen un efecto m
 
 \subsection{An\'alisis de discrepancias: Top 10 global y por liga}
 
-Para comprender el origen de las diferencias, se analizan los equipos y ligas con mayor discrepancia entre ambos motores. La Tabla~\ref{tab:app_b_top10_full} muestra los diez equipos con mayor diferencia absoluta de rating $\mu$ en el \textit{dataset Full}.
+Para comprender el origen de las diferencias, se analizan los equipos y ligas con mayor discrepancia entre ambos motores. La Tabla~\ref{tab:app_b_top10_full} muestra los diez equipos con mayor diferencia absoluta de rating $\mu$ en el Dataset Full.
 
 \begin{table}[htbp]
 	\centering
-	\caption{Top 10 global de equipos con mayor $|\Delta \mu|$ (dataset Full).}
+	\caption{Top 10 global de equipos con mayor $|\Delta \mu|$ (Dataset Full).}
 	\label{tab:app_b_top10_full}
 	\small
 	\resizebox{\textwidth}{!}{%
@@ -416,7 +416,7 @@ La Tabla~\ref{tab:app_b_league_full} presenta, para cada liga, el equipo con may
 
 \begin{table}[htbp]
 	\centering
-	\caption{Top 10 ligas con mayor $|\Delta \mu|$ del equipo m\'as discrepante (dataset Full).}
+	\caption{Top 10 ligas con mayor $|\Delta \mu|$ del equipo m\'as discrepante (Dataset Full).}
 	\label{tab:app_b_league_full}
 	\small
 	\resizebox{\textwidth}{!}{%
@@ -438,11 +438,11 @@ La Tabla~\ref{tab:app_b_league_full} presenta, para cada liga, el equipo con may
 	\end{tabular}}%
 \end{table}
 
-El \textit{dataset Lite}, al incluir ligas adicionales, presenta una mayor dispersi\'on. La Tabla~\ref{tab:app_b_top10_lite} muestra el Top 10 global para este \textit{dataset}.
+El Dataset Lite, al incluir ligas adicionales, presenta una mayor dispersi\'on. La Tabla~\ref{tab:app_b_top10_lite} muestra el Top 10 global para este conjuntos de datos.
 
 \begin{table}[htbp]
 	\centering
-	\caption{Top 10 global de equipos con mayor $|\Delta \mu|$ (dataset Lite).}
+	\caption{Top 10 global de equipos con mayor $|\Delta \mu|$ (Dataset Lite).}
 	\label{tab:app_b_top10_lite}
 	\small
 	\resizebox{\textwidth}{!}{%
@@ -466,11 +466,11 @@ El \textit{dataset Lite}, al incluir ligas adicionales, presenta una mayor dispe
 
 \newpage
 
-Y la Tabla~\ref{tab:app_b_league_lite} muestra el Top 10 de ligas m\'as sensibles en el \textit{dataset Lite}.
+Y la Tabla~\ref{tab:app_b_league_lite} muestra el Top 10 de ligas m\'as sensibles en el Dataset Lite.
 
 \begin{table}[htbp]
 	\centering
-	\caption{Top 10 ligas con mayor $|\Delta \mu|$ del equipo m\'as discrepante (dataset Lite).}
+	\caption{Top 10 ligas con mayor $|\Delta \mu|$ del equipo m\'as discrepante (Dataset Lite).}
 	\label{tab:app_b_league_lite}
 	\small
 	\resizebox{\textwidth}{!}{%
@@ -494,11 +494,11 @@ Y la Tabla~\ref{tab:app_b_league_lite} muestra el Top 10 de ligas m\'as sensible
 
 \subsection{Top 10 de la \'elite seg\'un el modelo calibrado}
 
-Un complemento al an\'alisis de discrepancia es observar c\'omo se comporta la cima del ranking. La Tabla~\ref{tab:app_b_elite_full} muestra los diez equipos con mayor rating $\mu$ en el modelo calibrado para el dataset Full, junto con su posici\'on en el modelo \textit{naive}.
+Un complemento al an\'alisis de discrepancia es observar c\'omo se comporta la cima del ranking. La Tabla~\ref{tab:app_b_elite_full} muestra los diez equipos con mayor rating $\mu$ en el modelo calibrado para el Dataset Full, junto con su posici\'on en el modelo \textit{naive}.
 
 \begin{table}[htbp]
 	\centering
-	\caption{Top 10 de la \'elite seg\'un $\mu_{\text{G2}}$ (dataset Full).}
+	\caption{Top 10 de la \'elite seg\'un $\mu_{\text{G2}}$ (Dataset Full).}
 	\label{tab:app_b_elite_full}
 	\small
 	\begin{tabular}{lccccc}
@@ -519,11 +519,11 @@ Un complemento al an\'alisis de discrepancia es observar c\'omo se comporta la c
 	\end{tabular}
 \end{table}
 
-La Tabla~\ref{tab:app_b_elite_lite} muestra el equivalente para el dataset Lite.
+La Tabla~\ref{tab:app_b_elite_lite} muestra el equivalente para el Dataset Lite.
 
 \begin{table}[htbp]
 	\centering
-	\caption{Top 10 de la \'elite seg\'un $\mu_{\text{G2}}$ (dataset Lite).}
+	\caption{Top 10 de la \'elite seg\'un $\mu_{\text{G2}}$ (Dataset Lite).}
 	\label{tab:app_b_elite_lite}
 	\small
 	\begin{tabular}{lccccc}
@@ -552,7 +552,7 @@ Se observa que los equipos dominantes se mantienen en posiciones altas en ambos 
 
 \section{S\'intesis: el aporte diferencial de la calibraci\'on}
 
-La evidencia presentada en las secciones anteriores permite formular una conclusi\'on metodol\'ogica precisa: el aporte del motor G2Av1513 no reside en el algoritmo Glicko-2 \emph{per se}, sino en el sistema de calibraci\'on estructural y las mejoras num\'ericas que lo acompa\~nan.
+La evidencia presentada en las secciones anteriores permite formular una conclusi\'on metodol\'ogica precisa: el aporte del motor G2Av1513 no reside en el algoritmo Glicko-2 en s\'i mismo, sino en el sistema de calibraci\'on estructural y las mejoras num\'ericas que lo acompa\~nan.
 
 \subsection{El algoritmo como infraestructura, la calibraci\'on como se\~nal}
 
@@ -560,11 +560,11 @@ El motor \textit{naive} demuestra que una implementaci\'on correcta del algoritm
 
 \subsection{Los casos extremos de discrepancia}
 
-Los casos de mayor discrepancia de rating en el dataset Lite son CSA ($\Delta=183.13$, Brasileir\~ao), Platanias ($\Delta=166.05$, Super League Griega), Southampton ($\Delta=142.42$, Premier League) y Siah Jamegan ($\Delta=134.79$, Persian Gulf Pro League). En el \textit{naive}, estos equipos aparecen con \textit{ratings} alejados de su nivel real, y el motor calibrado los ajusta en m\'as de 130 puntos. El desplazamiento en el ranking no siempre acompa\~na la magnitud del ajuste de rating: CSA asciende 252 posiciones, mientras que Platanias y Southampton apenas modifican su posici\'on relativa porque el conjunto de su liga se desplaza en bloque. Este efecto es consistente con la literatura sobre asimetr\'ia geogr\'afica en competiciones panamericanas \cite{Iskandaryan2020}.
+Los casos de mayor discrepancia de rating en el Dataset Lite son CSA ($\Delta=183.13$, Brasileir\~ao), Platanias ($\Delta=166.05$, Super League Griega), Southampton ($\Delta=142.42$, Premier League) y Siah Jamegan ($\Delta=134.79$, Persian Gulf Pro League). En el \textit{naive}, estos equipos aparecen con \textit{ratings} alejados de su nivel real, y el motor calibrado los ajusta en m\'as de 130 puntos. El desplazamiento en el ranking no siempre acompa\~na la magnitud del ajuste de rating: CSA asciende 252 posiciones, mientras que Platanias y Southampton apenas modifican su posici\'on relativa porque el conjunto de su liga se desplaza en bloque. Este efecto es consistente con la literatura sobre asimetr\'ia geogr\'afica en competiciones panamericanas \cite{Iskandaryan2020}.
 
 \subsection{La \'elite global permanece estable}
 
-En contraste, la \'elite global (PSG, Real Madrid, Bayern, Liverpool) permanece pr\'acticamente inalterada, con diferencias de rating que no superan los 53 puntos y variaciones de ranking mayormente contenidas, aunque con excepciones notables en la zona media de la élite. La excepci\'on m\'as notable es Persepolis en el \textit{dataset Lite}, que asciende del puesto 14 al 6, pero se trata de un equipo de una liga con baja densidad de partidos donde el ajuste conjunto de rating inicial y ventaja de local\'ia tiene mayor impacto.
+En contraste, la \'elite global (PSG, Real Madrid, Bayern, Liverpool) permanece pr\'acticamente inalterada, con diferencias de rating que no superan los 53 puntos y variaciones de ranking mayormente contenidas, aunque con excepciones notables en la zona media de la élite. La excepci\'on m\'as notable es Persepolis en el Dataset Lite, que asciende del puesto 14 al 6, pero se trata de un equipo de una liga con baja densidad de partidos donde el ajuste conjunto de rating inicial y ventaja de local\'ia tiene mayor impacto.
 
 Este patr\'on confirma que la calibraci\'on act\'ua selectivamente sobre los sesgos estructurales sin distorsionar la jerarqu\'ia competitiva de las ligas de \'elite.
 
@@ -581,9 +581,9 @@ Sin estas mejoras, la optimizaci\'on conjunta de $\{d, \mu_{\text{init},\ell}, h
 
 \subsection{La transferibilidad del conocimiento calibrado}
 
-Un hallazgo relevante de la comparaci\'on entre el \textit{dataset Full} y el \textit{dataset Lite Recortado} es que la calibraci\'on por liga y la reducci\'on de $RD_0$ son transferibles entre configuraciones con y sin m\'etricas deportivas avanzadas. Los valores calibrados de $h_\ell$ en el \textit{dataset Full} y el \textit{dataset Lite Recortado} son pr\'acticamente id\'enticos (Tabla~\ref{tab:glicko_h_league_comparison} del Cap\'itulo~\ref{ch:resultados}), lo que indica que la ventaja de local\'ia es una propiedad estructural de cada competici\'on, independiente de la granularidad de las estad\'isticas de juego.
+Un hallazgo relevante de la comparaci\'on entre el Dataset Full y el Dataset Lite Recortado es que la calibraci\'on por liga y la reducci\'on de $RD_0$ son transferibles entre configuraciones con y sin m\'etricas deportivas avanzadas. Los valores calibrados de $h_\ell$ en el Dataset Full y el Dataset Lite Recortado son pr\'acticamente id\'enticos (Tabla~\ref{tab:glicko_h_league_comparison} del Cap\'itulo~\ref{ch:resultados}), lo que indica que la ventaja de local\'ia es una propiedad estructural de cada competici\'on, independiente de la granularidad de las estad\'isticas de juego.
 
-Esto sugiere que el sistema de calibraci\'on del motor \texttt{G2Av1513} captura informaci\'on contextual que trasciende el conjunto de caracter\'isticas utilizado en cada \textit{dataset}, constituyendo un conocimiento estable sobre la estructura competitiva del f\'utbol profesional.
+Esto sugiere que el sistema de calibraci\'on del motor \texttt{G2Av1513} captura informaci\'on contextual que trasciende el conjunto de caracter\'isticas utilizado en cada conjuntos de datos, constituyendo un conocimiento estable sobre la estructura competitiva del f\'utbol profesional.
 
 \subsection*{Observaci\'on final}
 
@@ -605,7 +605,7 @@ Se comparan dos enfoques:
 	\item Una red \textit{Long Short-Term Memory (LSTM)} global, que aprende patrones transferibles entre equipos compartiendo par\'ametros.
 \end{enumerate}
 
-La evaluaci\'on se realiza sobre el \textsc{dataset Full} y el \textsc{dataset Lite} en un r\'egimen de \textit{backtesting}, y se complementa con una proyecci\'on a futuro para el Ap\'endice~\ref{ap:validacion}. El horizonte de prueba abarca desde finales de 2023 hasta diciembre de 2025 para el \textit{dataset Full}, y desde mediados de 2023 hasta la misma fecha para el \textit{dataset Lite}, lo que permite evaluar el desempe\~no en condiciones reales de estacionalidad y parones competitivos.
+La evaluaci\'on se realiza sobre el Dataset Full y el Dataset Lite en un r\'egimen de \textit{backtesting}, y se complementa con una proyecci\'on a futuro para el Ap\'endice~\ref{ap:validacion}. El horizonte de prueba abarca desde finales de 2023 hasta diciembre de 2025 para el Dataset Full, y desde mediados de 2023 hasta la misma fecha para el Dataset Lite, lo que permite evaluar el desempe\~no en condiciones reales de estacionalidad y parones competitivos.
 
 \section{Justificaci\'on de la agregaci\'on semanal}
 \label{ap:justificacion_semanal}
@@ -674,16 +674,16 @@ El punto de partida son los archivos hist\'oricos de ratings generados por el m\
 	\item \textbf{Filtros de calidad}: Se eliminan equipos con desviaci\'on t\'ipica nula (\texttt{std == 0}) y aquellos con menos de 20 observaciones reales (\texttt{MIN\_OBSERVATIONS}), para garantizar series con suficiente variabilidad y soporte muestral.
 \end{enumerate}
 
-La Tabla~\ref{tab:panel_dimensiones} resume las dimensiones resultantes para cada dataset. N\'otese que el \textit{dataset Full} y el \textit{dataset Lite} difieren en ventanas temporales, (2019--2025) y (2017--2025) respectivamente, es decir, el \textit{dataset Lite} se extiende a las temporadas 2017--2018, lo que explica su mayor n\'umero de equipos y semanas.
+La Tabla~\ref{tab:panel_dimensiones} resume las dimensiones resultantes para cada conjunto de datos. N\'otese que el Dataset Full y el Dataset Lite difieren en ventanas temporales, (2019--2025) y (2017--2025) respectivamente, es decir, el Dataset Lite se extiende a las temporadas 2017--2018, lo que explica su mayor n\'umero de equipos y semanas.
 
 \begin{table}[htbp]
 	\centering
-	\caption{Dimensiones del panel semanal por dataset.}
+	\caption{Dimensiones del panel semanal por conjunto de datos.}
 	\label{tab:panel_dimensiones}
 	\resizebox{\textwidth}{!}{%
 		\begin{tabular}{lccccccc}
 			\toprule
-			\textbf{Dataset} & \textbf{Sem.} & \textbf{Equ. ini.} & \textbf{Elim. std=0} & \textbf{Elim. obs<20} & \textbf{Eq. fin.} & \textbf{Fecha split} & \textbf{Train / Test} \\
+			\textbf{Conjunto de datos} & \textbf{Sem.} & \textbf{Equ. ini.} & \textbf{Elim. std=0} & \textbf{Elim. obs<20} & \textbf{Eq. fin.} & \textbf{Fecha split} & \textbf{Train / Test} \\
 			\midrule
 			Full            & 346 & 337 & 0 & 3 & 334 & 2023-12-19 & 242 / 104 \\
 			Lite            & 424 & 415 & 0 & 3 & 412 & 2023-07-04 & 296 / 128 \\
@@ -718,15 +718,15 @@ Para cada semana del conjunto de prueba, se genera una predicci\'on \textit{one-
 \]
 Tras observar el valor real \(\mu_{t+1}\), se actualiza el modelo mediante \texttt{model.update([actual])}, permitiendo que el estimador incorpore la nueva informaci\'on en tiempo real, simulando as\'i un entorno de producci\'on.
 
-La Tabla~\ref{tab:arima_ejecucion} resume las estad\'isticas de ejecuci\'on. El tiempo total de procesamiento fue de aproximadamente 20 minutos para el \textsc{dataset Full} y 32 minutos para el \textsc{dataset Lite}. La ausencia de \textit{timeouts} y errores confirma la estabilidad de la configuraci\'on elegida.
+La Tabla~\ref{tab:arima_ejecucion} resume las estad\'isticas de ejecuci\'on. El tiempo total de procesamiento fue de aproximadamente 20 minutos para el Dataset Full y 32 minutos para el Dataset Lite. La ausencia de \textit{timeouts} y errores confirma la estabilidad de la configuraci\'on elegida.
 
 \begin{table}[htbp]
 	\centering
-	\caption{Estad\'isticas de ejecuci\'on del modelo ARIMA por dataset.}
+	\caption{Estad\'isticas de ejecuci\'on del modelo ARIMA por conjunto de datos.}
 	\label{tab:arima_ejecucion}
 	\begin{tabular}{lccccc}
 		\toprule
-		\textbf{Dataset} & \textbf{Equipos totales} & \textbf{\'Exitos} & \textbf{Saltados} & \textbf{Timeouts} & \textbf{Errores} \\
+		\textbf{Conjunto de datos} & \textbf{Equipos totales} & \textbf{\'Exitos} & \textbf{Saltados} & \textbf{Timeouts} & \textbf{Errores} \\
 		\midrule
 		Full            & 334 & 305 & 29 & 0 & 0 \\
 		Lite            & 412 & 377 & 35 & 0 & 0 \\
@@ -771,7 +771,7 @@ El entrenamiento se realiza con:
 \paragraph{Desescalado de predicciones.}
 Una vez obtenidas las predicciones en el espacio escalado, se aplica la transformaci\'on inversa de cada escalador para devolver los valores a la escala original de \(\mu\), utilizando el operador \texttt{scaler.inverse\_transform}.
 
-La Tabla~\ref{tab:lstm_dimensiones} muestra el n\'umero de secuencias generadas y los equipos con predicci\'on exitosa. El mayor volumen de datos en el \textsc{dataset Lite} resulta en un conjunto de entrenamiento de casi 76\,000 secuencias, que permite una convergencia estable del optimizador.
+La Tabla~\ref{tab:lstm_dimensiones} muestra el n\'umero de secuencias generadas y los equipos con predicci\'on exitosa. El mayor volumen de datos en el Dataset Lite resulta en un conjunto de entrenamiento de casi 76\,000 secuencias, que permite una convergencia estable del optimizador.
 
 \begin{table}[htbp]
 	\centering
@@ -779,7 +779,7 @@ La Tabla~\ref{tab:lstm_dimensiones} muestra el n\'umero de secuencias generadas 
 	\label{tab:lstm_dimensiones}
 	\begin{tabular}{lccc}
 		\toprule
-		\textbf{Dataset} & \textbf{Secuencias train} & \textbf{Secuencias test} & \textbf{Equipos con predicci\'on} \\
+		\textbf{Conjunto de datos} & \textbf{Secuencias train} & \textbf{Secuencias test} & \textbf{Equipos con predicci\'on} \\
 		\midrule
 		Full            & 52\,747 & 25\,736 & 284 \\
 		Lite            & 76\,551 & 35\,130 & 313 \\
@@ -787,7 +787,7 @@ La Tabla~\ref{tab:lstm_dimensiones} muestra el n\'umero de secuencias generadas 
 	\end{tabular}
 \end{table}
 
-De los 334 equipos cargados en el \textit{dataset Full}, 19 fueron descartados por no alcanzar el m\'inimo de \(T+1 = 9\) observaciones en el panel. Del resto, solo aquellos con actividad posterior a la fecha de corte generan secuencias de prueba, lo que deja 284 equipos con predicci\'on. En el \textit{dataset Lite}, 30 equipos fueron descartados por insuficiencia de observaciones, resultando en 313 equipos con predicci\'on.
+De los 334 equipos cargados en el Dataset Full, 19 fueron descartados por no alcanzar el m\'inimo de \(T+1 = 9\) observaciones en el panel. Del resto, solo aquellos con actividad posterior a la fecha de corte generan secuencias de prueba, lo que deja 284 equipos con predicci\'on. En el Dataset Lite, 30 equipos fueron descartados por insuficiencia de observaciones, resultando en 313 equipos con predicci\'on.
 
 \section{Evaluaci\'on comparativa}
 \label{ap:evaluacion_comparativa}
@@ -796,7 +796,7 @@ La comparaci\'on entre ARIMA y LSTM se realiza sobre el conjunto de prueba, util
 
 \subsection{M\'etricas globales}
 
-La Tabla~\ref{tab:metricas_globales} consolida los resultados para los tres datasets. Se observa un patr\'on consistente: el modelo ARIMA supera a la LSTM en RMSE y MAE en todos los casos, con una ventaja de $3{.}08$ puntos $\mu$ en RMSE para el \textit{dataset Full} y $1{.}31$ puntos $\mu$ para el \textit{dataset Lite}. Esta diferencia es atribuible a la estructura del conjunto de prueba: al incluir el par\'on estival de 2025, donde muchas series permanecen planas por \texttt{ffill}, el ARIMA (que esencialmente predice el \'ultimo valor observado) obtiene errores casi nulos en esas semanas. La LSTM, al intentar modelar din\'amicas no lineales, introduce variaciones que penalizan el error absoluto.
+La Tabla~\ref{tab:metricas_globales} consolida los resultados para los tres conjuntos de datos. Se observa un patr\'on consistente: el modelo ARIMA supera a la LSTM en RMSE y MAE en todos los casos, con una ventaja de $3{.}08$ puntos $\mu$ en RMSE para el Dataset Full y $1{.}31$ puntos $\mu$ para el Dataset Lite. Esta diferencia es atribuible a la estructura del conjunto de prueba: al incluir el par\'on estival de 2025, donde muchas series permanecen planas por \texttt{ffill}, el ARIMA (que esencialmente predice el \'ultimo valor observado) obtiene errores casi nulos en esas semanas. La LSTM, al intentar modelar din\'amicas no lineales, introduce variaciones que penalizan el error absoluto.
 
 \begin{table}[htbp]
 	\centering
@@ -804,7 +804,7 @@ La Tabla~\ref{tab:metricas_globales} consolida los resultados para los tres data
 	\label{tab:metricas_globales}
 	\begin{tabular}{lccccc}
 		\toprule
-		\textbf{Dataset} & \textbf{Modelo} & \textbf{RMSE} & \textbf{MAE} & \textbf{Spearman \(\rho\)} & \textbf{Gana LSTM} \\
+		\textbf{Conjunto de datos} & \textbf{Modelo} & \textbf{RMSE} & \textbf{MAE} & \textbf{Spearman \(\rho\)} & \textbf{Gana LSTM} \\
 		\midrule
 		\multirow{2}{*}{Full} & ARIMA & 6.8819 & 4.4250 & 0.9975 \(\pm\) 0.0013 & \multirow{2}{*}{19.2\%} \\
 		& LSTM  & 9.9615 & 7.1723 & 0.9966 \(\pm\) 0.0012 & \\
@@ -816,11 +816,11 @@ La Tabla~\ref{tab:metricas_globales} consolida los resultados para los tres data
 \end{table}
 
 \paragraph{Spearman \(\rho\): preservaci\'on del ranking.}
-Ambos modelos alcanzan coeficientes de Spearman superiores a \(0.99\) en todos los \textit{datasets}. Este resultado es notable: aunque la LSTM erre m\'as en la magnitud absoluta de \(\mu\), preserva el ordenamiento relativo de los equipos casi a la perfecci\'on. La desviaci\'on est\'andar de \(\rho\) es pr\'acticamente id\'entica entre ambos modelos en los dos conjuntos, con valores en torno a $0{.}0013$ para Full y $0{.}0025$ para Lite, lo que sugiere una estabilidad temporal similar en la preservaci\'on del ranking.
+Ambos modelos alcanzan coeficientes de Spearman superiores a \(0.99\) en todos los conjuntos de datos. Este resultado es notable: aunque la LSTM erre m\'as en la magnitud absoluta de \(\mu\), preserva el ordenamiento relativo de los equipos casi a la perfecci\'on. La desviaci\'on est\'andar de \(\rho\) es pr\'acticamente id\'entica entre ambos modelos en los dos conjuntos, con valores en torno a $0{.}0013$ para Full y $0{.}0025$ para Lite, lo que sugiere una estabilidad temporal similar en la preservaci\'on del ranking.
 
 \subsection{Desempe\~no por equipo}
 
-A nivel individual, la LSTM solo supera a ARIMA en el $19{.}2\%$ (\textit{dataset Full}) y $33{.}6\%$ (\textit{dataset Lite}) de los equipos. El an\'alisis de los casos donde la LSTM es superior revela que se trata, en su mayor\'ia, de equipos con alta volatilidad en su serie hist\'orica. Estos equipos presentan cambios bruscos en \(\mu\) asociados a reestructuraciones de plantilla o cambios de entrenador; la LSTM, al aprender patrones de otros equipos vol\'atiles, logra anticipar estas transiciones mejor que el ARIMA univariado. En contraste, para equipos estables el ARIMA es claramente superior.
+A nivel individual, la LSTM solo supera a ARIMA en el $19{.}2\%$ (Dataset Full) y $33{.}6\%$ (Dataset Lite) de los equipos. El an\'alisis de los casos donde la LSTM es superior revela que se trata, en su mayor\'ia, de equipos con alta volatilidad en su serie hist\'orica. Estos equipos presentan cambios bruscos en \(\mu\) asociados a reestructuraciones de plantilla o cambios de entrenador; la LSTM, al aprender patrones de otros equipos vol\'atiles, logra anticipar estas transiciones mejor que el ARIMA univariado. En contraste, para equipos estables el ARIMA es claramente superior.
 
 \subsection{Visualizaciones descriptivas}
 
@@ -880,14 +880,14 @@ Las Figuras~\ref{fig:ARIMAvsLSTMfull} y \ref{fig:ARIMAvsLSTMlite} agrupan, para 
 \end{figure}
 
 \paragraph{An\'alisis general.}
-En los dos \textit{datasets}, ambos modelos siguen la tendencia general del rating real, con coeficientes de Spearman superiores a \(0.99\) (Tabla~\ref{tab:metricas_globales}). Los diagramas de dispersi\'on muestran una alta concentraci\'on alrededor de la diagonal, confirmando la capacidad de ambos enfoques para preservar el ordenamiento relativo de los equipos. Los histogramas de errores, si bien centrados cerca de cero, presentan formas diferenciadas entre modelos y datasets. La LSTM exhibe colas m\'as altas en una distribuci\'on aproximadamente piramidal, reflejando su mayor RMSE y MAE. En contraste, ARIMA muestra una forma multimodal en el \textit{dataset Full}, con tres picos y el central dominante en cero, que se aten\'ua a una forma m\'as piramidal en el \textit{dataset Lite}; esta diferencia refleja la mayor sensibilidad de ARIMA a la estructura temporal de los datos y su inercia autorregresiva, que se manifiesta en una mayor concentraci\'on de errores en valores discretos durante per\'iodos de alta regularidad competitiva. La media del error de predicci\'on es negativa para ambos modelos en los dos conjuntos: ARIMA presenta medias de $-0{.}14$ (Full) y $-0{.}26$ (Lite), mientras que la LSTM exhibe medias de $-0{,}93$ (Full) y $-0{,}98$ (Lite). El sesgo negativo indica que ambos modelos tienden a subestimar ligeramente el rating real, en l\'inea con la asimetr\'ia observada en los diagramas de dispersi\'on. El sesgo de la LSTM es notablemente mayor que el de ARIMA, lo cual es consistente con su mayor RMSE: la LSTM no solo comete errores m\'as grandes en promedio, sino que los concentra sistem\'aticamente por debajo del valor real.
+En los dos conjuntos de datos, ambos modelos siguen la tendencia general del rating real, con coeficientes de Spearman superiores a \(0.99\) (Tabla~\ref{tab:metricas_globales}). Los diagramas de dispersi\'on muestran una alta concentraci\'on alrededor de la diagonal, confirmando la capacidad de ambos enfoques para preservar el ordenamiento relativo de los equipos. Los histogramas de errores, si bien centrados cerca de cero, presentan formas diferenciadas entre modelos y conjuntos de datos. La LSTM exhibe colas m\'as altas en una distribuci\'on aproximadamente piramidal, reflejando su mayor RMSE y MAE. En contraste, ARIMA muestra una forma multimodal en el Dataset Full, con tres picos y el central dominante en cero, que se aten\'ua a una forma m\'as piramidal en el Dataset Lite; esta diferencia refleja la mayor sensibilidad de ARIMA a la estructura temporal de los datos y su inercia autorregresiva, que se manifiesta en una mayor concentraci\'on de errores en valores discretos durante per\'iodos de alta regularidad competitiva. La media del error de predicci\'on es negativa para ambos modelos en los dos conjuntos: ARIMA presenta medias de $-0{.}14$ (Full) y $-0{.}26$ (Lite), mientras que la LSTM exhibe medias de $-0{,}93$ (Full) y $-0{,}98$ (Lite). El sesgo negativo indica que ambos modelos tienden a subestimar ligeramente el rating real, en l\'inea con la asimetr\'ia observada en los diagramas de dispersi\'on. El sesgo de la LSTM es notablemente mayor que el de ARIMA, lo cual es consistente con su mayor RMSE: la LSTM no solo comete errores m\'as grandes en promedio, sino que los concentra sistem\'aticamente por debajo del valor real.
 
-\paragraph{An\'alisis diferenciado por dataset.}
+\paragraph{An\'alisis diferenciado por conjunto de datos.}
 
 \begin{itemize}
 	\item \textbf{Dataset Full (Figura~\ref{fig:ARIMAvsLSTMfull}):} ARIMA y LSTM se comportan de manera consistente. Las series temporales muestran que ambos modelos capturan las fluctuaciones estacionales y los cambios de forma de los equipos, con la LSTM siendo m\'as estable en los per\'iodos de inactividad, sin divergencias significativas entre ambos. El scatter y los histogramas confirman la superioridad de ARIMA en error absoluto, coherente con los RMSE reportados (\(6.88\) vs \(9.96\)).
 	
-	\item \textbf{Dataset Lite (Figura~\ref{fig:ARIMAvsLSTMlite}):} Este dataset presenta un hallazgo estructural que no se observa en el \textit{dataset Full}: en equipos pertenecientes a torneos de calendario interanual (Manchester City, Bayern M\"unchen y Sepahan), ARIMA exhibe picos oscilatorios durante los per\'iodos de inactividad prolongada y durante ca\'idas bruscas de (\(\mu\)), esto \'ultimo queda en evidencia cuando el modelo autorregresivo, al actualizar secuencialmente con valores planos, genera efectos de rebote que se amortiguan lentamente. En contraste, LSTM se mantiene estable, moderando tanto las ca\'idas bruscas como los rebotes posteriores. Este fen\'omeno no ocurre en equipos de calendario anual, donde los parones son m\'as cortos y distribuidos, ni en el \textit{dataset Full}, donde la ventana temporal m\'as reducida (2019--2025) contiene menos ciclos completos de inactividad.
+	\item \textbf{Dataset Lite (Figura~\ref{fig:ARIMAvsLSTMlite}):} Este conjunto de datos presenta un hallazgo estructural que no se observa en el Dataset Full: en equipos pertenecientes a torneos de calendario interanual (Manchester City, Bayern M\"unchen y Sepahan), ARIMA exhibe picos oscilatorios durante los per\'iodos de inactividad prolongada y durante ca\'idas bruscas de (\(\mu\)), esto \'ultimo queda en evidencia cuando el modelo autorregresivo, al actualizar secuencialmente con valores planos, genera efectos de rebote que se amortiguan lentamente. En contraste, LSTM se mantiene estable, moderando tanto las ca\'idas bruscas como los rebotes posteriores. Este fen\'omeno no ocurre en equipos de calendario anual, donde los parones son m\'as cortos y distribuidos, ni en el Dataset Full, donde la ventana temporal m\'as reducida (2019--2025) contiene menos ciclos completos de inactividad.
 	
 	Un caso adicional merece menci\'on: en Inter Barinas, la LSTM diverge del rating real y de la predicci\'on ARIMA en aproximadamente 60 puntos, sobrevalorando sistem\'aticamente la trayectoria del equipo. Se trata de un equipo con pocas observaciones en el panel y una serie de $\mu$ con alta volatilidad, situaci\'on donde la LSTM global tiene dificultades para generalizar el patr\'on autorregresivo espec\'ifico.
 	
@@ -897,11 +897,11 @@ En los dos \textit{datasets}, ambos modelos siguen la tendencia general del rati
 \section{Ranking proyectado: \'ultima semana de test}
 \label{ap:ranking_proyectado}
 
-Como aplicaci\'on pr\'actica del componente exploratorio, se gener\'o un ranking proyectado para la \'ultima semana del conjunto de prueba. Para cada equipo, se calcul\'o su posici\'on real basada en \(\mu\) observado y las posiciones predichas por ARIMA y LSTM. La Tabla~\ref{tab:top20_full} presenta el Top 20 para el \textsc{dataset Full} y la Tabla~\ref{tab:top20_lite} hace lo propio para el \textsc{dataset Lite}. En ambos casos, el universo de equipos que alcanza la semana final del conjunto de prueba es menor que el total del panel: 214 equipos para Full y 239 para Lite, dado que no todos los equipos disputan partidos en la última semana del corte.
+Como aplicaci\'on pr\'actica del componente exploratorio, se gener\'o un ranking proyectado para la \'ultima semana del conjunto de prueba. Para cada equipo, se calcul\'o su posici\'on real basada en \(\mu\) observado y las posiciones predichas por ARIMA y LSTM. La Tabla~\ref{tab:top20_full} presenta el Top 20 para el Dataset Full y la Tabla~\ref{tab:top20_lite} hace lo propio para el Dataset Lite. En ambos casos, el universo de equipos que alcanza la semana final del conjunto de prueba es menor que el total del panel: 214 equipos para Full y 239 para Lite, dado que no todos los equipos disputan partidos en la última semana del corte.
 
 \begin{table}[htbp]
 	\centering
-	\caption{Top 20 del ranking proyectado para el \textsc{dataset Full} (semana del 2025-12-09).}
+	\caption{Top 20 del ranking proyectado para el Dataset Full (semana del 2025-12-09).}
 	\label{tab:top20_full}
 	\resizebox{\textwidth}{!}{%
 		\begin{tabular}{crrrcrrcr}
@@ -940,7 +940,7 @@ Se observa que el ARIMA reproduce exactamente las diez primeras posiciones del r
 
 \begin{table}[htbp]
 	\centering
-	\caption{Top 20 del ranking proyectado - Dataset \textsc{Lite} (semana del 2025-12-09).}
+	\caption{Top 20 del ranking proyectado - Conjunto de datos \textsc{Lite} (semana del 2025-12-09).}
 	\label{tab:top20_lite}
 	\resizebox{\textwidth}{!}{%
 		\begin{tabular}{lrrrrrrrr}
@@ -1061,10 +1061,10 @@ Se extraen el rating Elo y el ranking derivado.
 
 \subsection{G2A y LSTM}
 
-El motor Glicko‑2 modificado \texttt{G2Av1513} produce rankings para dos versiones del dataset:
+El motor Glicko‑2 modificado \texttt{G2Av1513} produce rankings para dos versiones del conjunto de datos:
 \begin{itemize}
-	\item \textbf{dataset Full}: 337 equipos.
-	\item \textbf{dataset Lite}: 415 equipos.
+	\item \textbf{Dataset Full}: 337 equipos.
+	\item \textbf{Dataset Lite}: 415 equipos.
 \end{itemize}
 
 El modelo LSTM genera proyecciones para:
@@ -1097,7 +1097,7 @@ Una de las tareas m\'as delicadas en la validaci\'on cruzada es la \textbf{armon
 	\item \textbf{Lista de exclusi\'on:} Creada para eliminar 190 equipos que no pertenecen al conjunto activo del estudio.
 \end{enumerate}
 
-Tras aplicar el mapeo, se verifica que ning\'un nombre quede sin correspondencia con el \textit{dataset Lite} de Glicko‑2, garantizando que las comparaciones estad\'isticas solo se realicen sobre la intersecci\'on de equipos comunes.
+Tras aplicar el mapeo, se verifica que ning\'un nombre quede sin correspondencia con el Dataset Lite de Glicko‑2, garantizando que las comparaciones estad\'isticas solo se realicen sobre la intersecci\'on de equipos comunes.
 
 \section{Metodolog\'ia de comparaci\'on por instant\'aneas}
 
@@ -1202,7 +1202,7 @@ Antes de presentar los resultados, es necesario se\~nalar una limitaci\'on estru
 
 \subsection{Concordancia cuantitativa}
 
-La Tabla~\ref{tab:validaciones_lite} resume las m\'etricas de concordancia para las ocho comparaciones realizadas. Cada fila enfrenta el ranking interno (Glicko‑2 con el \textit{dataset Lite} o LSTM) con una fuente externa, sobre la intersecci\'on de equipos comunes tras el mapeo de nombres. El conjunto de m\'etricas ofrece un diagn\'ostico completo de la calidad del ordenamiento.
+La Tabla~\ref{tab:validaciones_lite} resume las m\'etricas de concordancia para las ocho comparaciones realizadas. Cada fila enfrenta el ranking interno (Glicko‑2 con el Dataset Lite o LSTM) con una fuente externa, sobre la intersecci\'on de equipos comunes tras el mapeo de nombres. El conjunto de m\'etricas ofrece un diagn\'ostico completo de la calidad del ordenamiento.
 
 \begin{table}[htbp]
 	\centering
