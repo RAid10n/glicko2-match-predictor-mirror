@@ -4,7 +4,7 @@ Trabajo Especial de Grado (TEG) — modelo de nivel de poder para ligas de fútb
 
 ## Clonar el repositorio
 
-`Data/matches_definitive_complete.csv` (~64 MB) se versiona con **Git LFS**, no directamente en git. Para clonar el repo con ese archivo incluido:
+`Data/matches_definitive_complete.csv` (~70 MB) se versiona con **Git LFS**, no directamente en git. Para clonar el repo con ese archivo incluido:
 
 ```bash
 # 1. Instalar Git LFS una sola vez por máquina (si no lo tienes)
@@ -35,6 +35,8 @@ glicko2-match-predictor/
 │   ├── Carga.ipynb                      # Etapa 1
 │   ├── Limpieza.ipynb                   # Etapa 2
 │   ├── MacroEconomyEst.ipynb            # Imputación macro (input de Limpieza)
+│   ├── AnalisisVariables.ipynb          # Análisis de variables del pipeline
+│   ├── LogLossOVR.ipynb                 # Evaluación Log-Loss one-vs-rest
 │   ├── Extra2.ipynb                     # Etapa 4: proyección ARIMA/LSTM
 │   ├── Extra1.ipynb                     # Etapa 5: baseline Naive + validaciones
 │   │
@@ -44,6 +46,8 @@ glicko2-match-predictor/
 │   ├── MacroEconomy2_imputado.csv       # [input] macro por país/año
 │   ├── TeamsEconomyDB.csv               # [input] economía por club/semestre
 │   ├── PartidosExtra.csv                # [input] partidos cargados a mano
+│   ├── df_raw.csv                       # [Carga → Carga] snapshot consolidado crudo
+│   ├── df_raw_limpio.csv                # [Carga → Carga] versión sin columnas de jugador
 │   ├── uefa_ranking_2025.csv            # [input] ranking UEFA
 │   ├── uefa_ranking_2026.csv
 │   ├── RankingAFC2025.csv               # [input] ranking AFC
@@ -118,7 +122,7 @@ Versiones sucesivas conservadas en `Data/Legacy ipynb py/` y `Data/ScraperV4c.py
 ## Notebooks de limpieza y preparación (`Data/`)
 
 - **`Carga.ipynb`** — carga y consolidación inicial de los datos crudos scrapeados de FBRef. Normaliza los nombres de columnas, filtra por las 15 ligas nacionales objetivo y torneos continentales asociados, y depura los partidos de fútbol femenino por `team_id` (combinando listas de equipos conocidos y detección heurística por nombre). Separa los datos en dos datasets operativos: local (`db_matches_final_home.csv`) y visitante (`db_matches_final_away.csv`), más una versión plana (`db_matches_final.csv`) para auditoría.
-- **`Limpieza.ipynb`** — integra variables climáticas (Open-Meteo, agregadas por equipo/mes/año desde `open_meteo_out/`), variables económicas de club (`TeamsEconomyDB`) y macro (`MacroEconomy2_imputado`); calcula las features de diferencia (`diff_*`) usadas por el modelo; verifica que no queden partidos femeninos tras el filtrado de `Carga`; y exporta los datasets finales: `matches_final_model_full2.csv` (27.067 filas) y `matches_final_model_clean2.csv` (37.819 filas).
+- **`LimpiezaFinal.ipynb`** — integra variables climáticas (Open-Meteo, agregadas por equipo/mes/año desde `open_meteo_out/`), variables económicas de club (`TeamsEconomyDB`) y macro (`MacroEconomy2_imputado`); calcula las features de diferencia (`diff_*`) usadas por el modelo; verifica que no queden partidos femeninos tras el filtrado de `Carga`; y exporta los datasets finales: `matches_final_model_full2.csv` (27.067 filas) y `matches_final_model_clean2.csv` (37.819 filas).
 - **`MacroEconomyEst.ipynb`** — imputa los valores faltantes de las variables macroeconómicas por país (métodos: spline cúbico, ARIMA, auto-ARIMA, MICE).
 
 ## Modelo y entrenamiento
