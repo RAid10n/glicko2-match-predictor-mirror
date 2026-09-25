@@ -12,7 +12,7 @@ Se llamar\'a variable externa, o bien covariable ex\'ogena, a todo aquel factor 
 
 \subsection{M\'etricas deportivas}
 
-La cuantificaci\'on del rendimiento en el f\'utbol ha evolucionado hacia la construcci\'on de caracter\'isticas que alimentan modelos probabilisticos. Este trabajo se apoya en un conjunto de m\'etricas primarias que describen la producci\'on ofensiva, la recuperaci\'on defensiva y el contexto del jugador. En el bloque ofensivo, los goles anotados (Gls)  constituyen la variable de \'exito por excelencia, mientras que los remates totales (Sh) y los remates a puerta (SoT) aproximan el potencial de anotaci\'on con independencia de la efectividad del portero rival \cite{xG}. A este n\'ucleo se suman las asistencias (Ast), los penaltis intentados (PKatt) y penaltis anotados (PK), las faltas recibidas (Fld), los centros (Crs) y las posiciones adelantadas (Off), que en conjunto describen la amplitud y profundidad del ataque.
+La cuantificaci\'on del rendimiento en el f\'utbol ha evolucionado hacia la construcci\'on de caracter\'isticas que alimentan modelos probabil\'isticos. Este trabajo se apoya en un conjunto de m\'etricas primarias que describen la producci\'on ofensiva, la recuperaci\'on defensiva y el contexto del jugador. En el bloque ofensivo, los goles anotados (Gls)  constituyen la variable de \'exito por excelencia, mientras que los remates totales (Sh) y los remates a puerta (SoT) aproximan el potencial de anotaci\'on con independencia de la efectividad del portero rival \cite{xG}. A este n\'ucleo se suman las asistencias (Ast), los penaltis intentados (PKatt) y penaltis anotados (PK), las faltas recibidas (Fld), los centros (Crs) y las posiciones adelantadas (Off), que en conjunto describen la amplitud y profundidad del ataque.
 
 La eficiencia defensiva se mide a trav\'es de acciones que interrumpen la progresi\'on rival. Las entradas ganadas (TklW) y las intercepciones (Int) cuantifican la recuperaci\'on de posesi\'on en zonas medias y avanzadas, mientras que las faltas cometidas (Fls) reflejan la intensidad defensiva con su costo asociado en tarjetas. Las tarjetas amarillas (CrdY) y tarjetas rojas (CrdR) alteran la distribuci\'on de probabilidades del resultado al modificar la simetr\'ia num\'erica del encuentro \cite{Iskandaryan2020}. Los goles en propia puerta (OG) y los penaltis concedidos (PKcon), aunque eventos raros, se incorporan como indicadores de error defensivo.
 
@@ -22,11 +22,11 @@ Sobre este conjunto de m\'etricas primarias se construyen \'indices compuestos d
 
 \subsection{Factores ambientales}
 
-El rendimiento deportivo no opera en un vac\'io f\'isico. Las condiciones meteorol\'ogicas y geogr\'aficas del lugar act\'uan como covariables que imponen restricciones fisiol\'ogicas sobre los jugadores y modulan la din\'amica del juego. La temperatura ambiente exhibe una correlaci\'on positiva documentada con el volumen de anotaci\'on: incrementos de $10^{\circ}\mathrm{C}$ sobre el promedio de la jornada se asocian con un aumento aproximado de $0{,}48$ goles por partido \cite{TemperaturaGoles}. La humedad relativa interact\'ua con la temperatura para definir el estr\'es t\'ermico percibido \cite{Iskandaryan2020}. En el presente trabajo se busca que estas magnitudes se incorporen naturalmente, no como ruido ambiental, si no como descriptores estructurales del contexto que permitan capturar la asimetr\'ia ambiental del encuentro.
+El rendimiento deportivo no opera en un vac\'io f\'isico. Las condiciones meteorol\'ogicas y geogr\'aficas del lugar act\'uan como covariables que imponen restricciones fisiol\'ogicas sobre los jugadores y modulan la din\'amica del juego. La temperatura ambiente exhibe una correlaci\'on positiva documentada con el volumen de anotaci\'on: incrementos de $10^{\circ}\mathrm{C}$ sobre el promedio de la jornada se asocian con un aumento aproximado de $0{,}48$ goles por partido \cite{TemperaturaGoles}. La humedad relativa interact\'ua con la temperatura para definir el estr\'es t\'ermico percibido \cite{Iskandaryan2020}. En el presente trabajo se busca que estas magnitudes se incorporen naturalmente, no como ruido ambiental, sino como descriptores estructurales del contexto que permitan capturar la asimetr\'ia ambiental del encuentro.
 
 Un componente estructural clave es la altitud del estadio sobre el nivel del mar. Su relevancia radica en la variaci\'on de la presi\'on parcial de ox\'igeno (PiO2), que decrece con la elevaci\'on. La disminuci\'on de la disponibilidad de ox\'igeno reduce la capacidad aer\'obica m\'axima y acelera el umbral de fatiga, otorgando una ventaja adaptativa a las escuadras locales aclimatadas frente a visitantes no habituados \cite{West1996}. La idea es cuantificar la asimetr\'ia ambiental a trav\'es de la diferencia de presi\'on parcial de ox\'igeno usual a la que ambas plantillas est\'an acostumbradas. La derivaci\'on de la ley barom\'etrica que fundamenta este c\'alculo se presenta en la Secci\'on~\ref{subsec:barometrica}.
 
-M\'as all\'a de las variables f\'isicas, la local\'ia constituye un sesgo sistem\'atico documentado. Factores como el tiempo de viaje, el desfase horario, la presi\'on de la afici\'on y la familiaridad con el terreno distorsionan la probabilidad a previa de victoria en favor del equipo anfitri\'on \cite{Iskandaryan2020}.
+M\'as all\'a de las variables f\'isicas, la local\'ia constituye un sesgo sistem\'atico documentado. Factores como el tiempo de viaje, el desfase horario, la presi\'on de la afici\'on y la familiaridad con el terreno distorsionan la probabilidad previa de victoria en favor del equipo anfitri\'on \cite{Iskandaryan2020}.
 
 \subsection{Factores econ\'omicos}
 
@@ -56,7 +56,7 @@ El fundamento probabil\'istico de todo sistema de rating moderno puede rastrears
 
 Esta definici\'on, aunque captura la esencia de la comparaci\'on binaria, no incorpora incertidumbre sobre la estimaci\'on de las fuerzas latentes ni permite actualizaci\'on secuencial.
 
-Por este motivo, la transici\'on hacia un esquema din\'amico se hizo una necesidad para satisfacer una forma mas completa de medir estas fuerzas latentes, esto se materializ\'o en el sistema de calificaci\'on desarrollado por Elo \cite{Elo1978}. El n\'ucleo de este modelo reside modelar la probabilidad esperada de victoria mediante una funci\'on log\'istica.
+Por este motivo, la transici\'on hacia un esquema din\'amico se hizo una necesidad para satisfacer una forma m\'as completa de medir estas fuerzas latentes, esto se materializ\'o en el sistema de calificaci\'on desarrollado por Elo \cite{Elo1978}. El n\'ucleo de este modelo reside modelar la probabilidad esperada de victoria mediante una funci\'on log\'istica.
 
 \begin{definition}[Funci\'on de rendimiento esperado Elo]\label{eq:rendimiento_esperado_elo}
 	Sean $R_i, R_j \in \mathbb{R}$ las calificaciones de dos equipos. La probabilidad esperada de victoria del equipo $i$ frente al equipo $j$ es:
@@ -268,7 +268,7 @@ Es importante notar que:
 	La estructura trinomial \eqref{eq:prob_victoria_local}--\eqref{eq:prob_victoria_visitante} recobra una justificaci\'on probabil\'istica desde el modelo de goles de la Secci\'on \ref{subsec:prob_tres_resultados}, donde $P_D$ emerge de la distribuci\'on de Skellam evaluada en $k=0$. No obstante, la condici\'on de suma unitaria es puramente algebraica y no depende de los supuestos de conteo de goles.
 \end{obs}
 
-De manera analoga al modelo Glicko-2 se sigue una definici\'on b\'asica, esta se usa para actualizar el rating de los equipos como sigue:
+De manera an\'aloga al modelo Glicko-2 se sigue una definici\'on b\'asica, esta se usa para actualizar el rating de los equipos como sigue:
 
 \begin{definition}[Operador de actualizaci\'on del equipo local]
 	\label{def:update_local}

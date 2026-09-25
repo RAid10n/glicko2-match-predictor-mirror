@@ -5,7 +5,7 @@
 \chapter{Componente exploratorio: red neuronal recurrente}
 \label{app:gru}
 
-En el Cap\'itulo~\ref{ch:metodologia} se desarroll\'o el \textit{pipeline} principal del sistema predictivo, basado en una arquitectura en cascada que combina el bloque de conteo Skellam/LGBM, un sistema de rating din\'amico Glicko-2 modificado y un perceptr\'on multicapa (MLP) que refina las probabilidades base. Como parte del proceso de exploraci\'on metodol\'ogica, se evalu\'o una arquitectura alternativa basada en redes neuronales recurrentes (GRU)  que modela expl\'icitamente la dependencia temporal en la secuencia de partidos de cada equipo. La motivaci\'on de esta exploraci\'on era emular, desde un enfoque puramente secuencial, la l\'ogica de actualizaci\'on del sistema en cascada: la GRU procesa el historial de partidos para construir una representaci\'on latente del estado del equipo, similar a la que el Glicko-2 proporciona a trav\'es de sus par\'ametros \((R, RD, \sigma)\). Este ap\'endice documenta dicho componente exploratorio , su implementaci\'on, sus resultados emp\'iricos y las razones por las que fue desestimado al no lograr extraer se\~nal predictiva adicional ni superar el desempe\~no del MLP en el \textit{pipeline} principal.
+En el Cap\'itulo~\ref{ch:metodologia} se desarroll\'o el \textit{pipeline} principal del sistema predictivo, basado en una arquitectura en cascada que combina el bloque de conteo Skellam/LGBM, un sistema de rating din\'amico Glicko-2 modificado y un perceptr\'on multicapa (MLP) que refina las probabilidades base. Como parte del proceso de exploraci\'on metodol\'ogica, se evalu\'o una arquitectura alternativa basada en redes neuronales recurrentes (GRU)  que modela expl\'icitamente la dependencia temporal en la secuencia de partidos de cada equipo. La motivaci\'on de esta exploraci\'on era emular, desde un enfoque puramente secuencial, la l\'ogica de actualizaci\'on del sistema en cascada: la GRU procesa el historial de partidos para construir una representaci\'on latente del estado del equipo, similar a la que el Glicko-2 proporciona a trav\'es de sus par\'ametros \((R, RD, \sigma)\). Este ap\'endice documenta dicho componente exploratorio, su implementaci\'on, sus resultados emp\'iricos y las razones por las que fue desestimado al no lograr extraer se\~nal predictiva adicional ni superar el desempe\~no del MLP en el \textit{pipeline} principal.
 
 % ------------------------------------------------------------
 % A.1. Formalismo
@@ -126,6 +126,7 @@ La Tabla~\ref{tab:gru_curvas} resume la evoluci\'on del entrenamiento para los t
 	\centering
 	\caption{Evoluci\'on del entrenamiento GRU (modo \textit{Deep}, $T=8$). P\'erdida de entrop\'ia cruzada y \emph{accuracy}.}
 	\label{tab:gru_curvas}
+	\resizebox{\textwidth}{!}{%
 	\begin{tabular}{lcccccc}
 		\toprule
 		& \multicolumn{2}{c}{\textbf{\'Epoca 1}} & \multicolumn{2}{c}{\textbf{Mejor val.}} & \multicolumn{2}{c}{\textbf{\'Epoca 30}} \\
@@ -136,7 +137,7 @@ La Tabla~\ref{tab:gru_curvas} resume la evoluci\'on del entrenamiento para los t
 		Lite & 1.0411 & 1.0280 & 4 & 1.0231 & 0.9499 & 1.0566 \\
 		Lite Recortado & 1.0443 & 1.0086 & 4 & 1.0039 & 0.9324 & 1.0665 \\
 		\bottomrule
-	\end{tabular}
+	\end{tabular}}%
 \end{table}
 
 El patr\'on es consistente en los tres conjuntos: la p\'erdida de validaci\'on alcanza su m\'inimo en las primeras \'epocas, para luego diverger mon\'otonamente mientras la p\'erdida de entrenamiento contin\'ua descendiendo. En el Dataset Full, la brecha entrenamiento--validaci\'on se ampl\'ia desde $0.0435$ en la \'epoca 1, hasta $0.1728$ en la \'epoca 30; la \textit{accuracy} de entrenamiento asciende del $46.2\%$ al $57.9\%$, mientras que la de validaci\'on desciende de $50.8\%$ a $47.0\%$. Este comportamiento es evidencia de sobreajuste. La red tiende a memorizar patrones del entrenamiento y su capacidad de generalizaci\'on se degrada.
@@ -236,7 +237,7 @@ La desviaci\'on est\'andar inicial $RD_0 = 350$ corresponde al valor original pr
 
 \subsection{Probabilidad de empate mediante Skellam externo}
 
-El baseline no incorpora la probabilidad de empate como par\'ametro interno del motor de rating, pues la recibe como una estimaci\'on externa proveniente de un bloque de conteo entrenado sobre los mismos datos. Para los dos conjunto de datos base: Dataset Lite y Dataset Full, se entrenan dos regresores LightGBM con funci\'on objetivo Poisson \cite{ke2017lightgbm} sobre las 32 variables de promedios m\'oviles de goles:
+El baseline no incorpora la probabilidad de empate como par\'ametro interno del motor de rating, pues la recibe como una estimaci\'on externa proveniente de un bloque de conteo entrenado sobre los mismos datos. Para los dos conjuntos de datos base: Dataset Lite y Dataset Full, se entrenan dos regresores LightGBM con funci\'on objetivo Poisson \cite{ke2017lightgbm} sobre las 32 variables de promedios m\'oviles de goles:
 
 \begin{equation}
 	\hat{\lambda}_H = f_{\text{LGBM}}^{(H)}(\mathbf{x}_{\text{rolling}}), \qquad
@@ -269,7 +270,7 @@ No se realiza ning\'un proceso de optimizaci\'on de hiperpar\'ametros: $\tau$, $
 
 El notebook procesa tres versiones de los datos, todas derivadas del mismo \textit{pipeline} de integraci\'on descrito en el Cap\'itulo~\ref{ch:metodologia}:
 \begin{itemize}
-	\item \textbf{Dataset Lite} (37\,819 partidos, 2017--2025): sin m\'etricas deportivas compuestas de autor\'ia, con todas las ligas incluidas (23 competiciones).
+	\item \textbf{Dataset Lite} (37\,819 partidos, 2017--2025): sin m\'etricas deportivas compuestas de autor\'ia, con todas las ligas incluidas (25 competiciones).
 	\item \textbf{Dataset Full} (27\,067 partidos, 2019--2025): con las m\'etricas deportivas compuestas de autor\'ia (xG\_teo, xA\_teo, DDI), 21 competiciones.
 	\item \textbf{Dataset Lite Recortado} (27\,067 partidos, 2019--2025): misma ventana temporal que Full pero sin las m\'etricas deportivas compuestas de autor\'ia.
 \end{itemize}
@@ -438,7 +439,7 @@ La Tabla~\ref{tab:app_b_league_full} presenta, para cada liga, el equipo con may
 	\end{tabular}}%
 \end{table}
 
-El Dataset Lite, al incluir ligas adicionales, presenta una mayor dispersi\'on. La Tabla~\ref{tab:app_b_top10_lite} muestra el Top 10 global para este conjuntos de datos.
+El Dataset Lite, al incluir ligas adicionales, presenta una mayor dispersi\'on. La Tabla~\ref{tab:app_b_top10_lite} muestra el Top 10 global para este conjunto de datos.
 
 \begin{table}[htbp]
 	\centering
@@ -507,7 +508,7 @@ Un complemento al an\'alisis de discrepancia es observar c\'omo se comporta la c
 		\midrule
 		PSG & 1807.35 & 1 & 1833.89 & 1 & 26.55 \\
 		Al Hilal & 1788.86 & 2 & 1779.70 & 3 & 9.16 \\
-		Bayern Munich & 1773.51 & 3 & 1777.46 & 4 & 3.95 \\
+		Bayern & 1773.51 & 3 & 1777.46 & 4 & 3.95 \\
 		Real Madrid & 1766.36 & 4 & 1795.41 & 2 & 29.06 \\
 		Olympiacos & 1765.96 & 5 & 1765.48 & 6 & 0.48 \\
 		Liverpool & 1749.68 & 6 & 1772.76 & 5 & 23.08 \\
@@ -532,7 +533,7 @@ La Tabla~\ref{tab:app_b_elite_lite} muestra el equivalente para el Dataset Lite.
 		\midrule
 		PSG & 1801.79 & 1 & 1838.05 & 1 & 36.26 \\
 		Al Hilal & 1793.53 & 2 & 1789.83 & 4 & 3.70 \\
-		Bayern Munich & 1774.13 & 3 & 1782.45 & 6 & 8.32 \\
+		Bayern & 1774.13 & 3 & 1782.45 & 6 & 8.32 \\
 		Real Madrid & 1763.30 & 4 & 1815.36 & 2 & 52.06 \\
 		Olympiacos & 1758.35 & 5 & 1787.40 & 5 & 29.05 \\
 		Persepolis & 1752.41 & 6 & 1727.44 & 14 & 24.97 \\
@@ -583,7 +584,7 @@ Sin estas mejoras, la optimizaci\'on conjunta de $\{d, \mu_{\text{init},\ell}, h
 
 Un hallazgo relevante de la comparaci\'on entre el Dataset Full y el Dataset Lite Recortado es que la calibraci\'on por liga y la reducci\'on de $RD_0$ son transferibles entre configuraciones con y sin m\'etricas deportivas avanzadas. Los valores calibrados de $h_\ell$ en el Dataset Full y el Dataset Lite Recortado son pr\'acticamente id\'enticos (Tabla~\ref{tab:glicko_h_league_comparison} del Cap\'itulo~\ref{ch:resultados}), lo que indica que la ventaja de local\'ia es una propiedad estructural de cada competici\'on, independiente de la granularidad de las estad\'isticas de juego.
 
-Esto sugiere que el sistema de calibraci\'on del motor \texttt{G2Av1513} captura informaci\'on contextual que trasciende el conjunto de caracter\'isticas utilizado en cada conjuntos de datos, constituyendo un conocimiento estable sobre la estructura competitiva del f\'utbol profesional.
+Esto sugiere que el sistema de calibraci\'on del motor \texttt{G2Av1513} captura informaci\'on contextual que trasciende el conjunto de caracter\'isticas utilizado en cada conjunto de datos, constituyendo un conocimiento estable sobre la estructura competitiva del f\'utbol profesional.
 
 \subsection*{Observaci\'on final}
 
@@ -596,7 +597,7 @@ El contraste entre el motor \textit{naive} y el motor calibrado revela una lecci
 \chapter{Proyecci\'on temporal de ratings: modelos ARIMA y LSTM}
 \label{ap:proyeccion_temporal}
 
-Este ap\'endice documenta un componente exploratorio del sistema predictivo, en el que se analiza la capacidad de proyecci\'on temporal de los ratings din\'amicos \(\mu\) generados por el Glicko-2 modificado. A diferencia del bloque de refinamiento neuronal (Cap\'itulo~\ref{ch:resultados}), que opera sobre vectores de caracter\'isticas est\'aticos para corregir probabilidades de resultado, en este ap\'endice se aborda el problema desde la perspectiva de la serie temporal univariante: dado el historial semanal de \(\mu\) de cada equipo, ¿es posible anticipar su evoluci\'on futura?
+Este ap\'endice documenta un componente exploratorio del sistema predictivo, en el que se analiza la capacidad de proyecci\'on temporal de los ratings din\'amicos \(\mu\) generados por el Glicko-2 modificado \texttt{G2Av1513}. A diferencia del bloque de refinamiento neuronal (Cap\'itulo~\ref{ch:resultados}), que opera sobre vectores de caracter\'isticas est\'aticos para corregir probabilidades de resultado, en este ap\'endice se aborda el problema desde la perspectiva de la serie temporal univariante: dado el historial semanal de \(\mu\) de cada equipo, ¿es posible anticipar su evoluci\'on futura?
 
 Se comparan dos enfoques: 
 
@@ -693,8 +694,8 @@ La Tabla~\ref{tab:panel_dimensiones} resume las dimensiones resultantes para cad
 
 La selecci\'on autom\'atica de equipos representativos para la visualizaci\'on posterior arroj\'o los siguientes conjuntos:
 \begin{itemize}
-	\item \textbf{Full}: Manchester City, Bayern M\:unchen, Vitoria Bahia, Anyang, Toronto, Cincinnati.
-	\item \textbf{Lite}: Manchester City, Bayern M\:unchen, Instituto C\'ordoba, Inter Barinas, Sepahan, Cincinnati.
+	\item \textbf{Full}: Manchester City, Bayern, Vitoria Bahia, Anyang, Toronto, Cincinnati.
+	\item \textbf{Lite}: Manchester City, Bayern, Instituto C\'ordoba, Inter Barinas, Sepahan, Cincinnati.
 \end{itemize}
 
 Esta selecci\'on cubre equipos de alto rating (Top 2), rating medio (pr\'oximos a la mediana) y alta volatilidad, asegurando una muestra diversa para el an\'alisis gr\'afico.
@@ -887,7 +888,7 @@ En los dos conjuntos de datos, ambos modelos siguen la tendencia general del rat
 \begin{itemize}
 	\item \textbf{Dataset Full (Figura~\ref{fig:ARIMAvsLSTMfull}):} ARIMA y LSTM se comportan de manera consistente. Las series temporales muestran que ambos modelos capturan las fluctuaciones estacionales y los cambios de forma de los equipos, con la LSTM siendo m\'as estable en los per\'iodos de inactividad, sin divergencias significativas entre ambos. El scatter y los histogramas confirman la superioridad de ARIMA en error absoluto, coherente con los RMSE reportados (\(6.88\) vs \(9.96\)).
 	
-	\item \textbf{Dataset Lite (Figura~\ref{fig:ARIMAvsLSTMlite}):} Este conjunto de datos presenta un hallazgo estructural que no se observa en el Dataset Full: en equipos pertenecientes a torneos de calendario interanual (Manchester City, Bayern M\"unchen y Sepahan), ARIMA exhibe picos oscilatorios durante los per\'iodos de inactividad prolongada y durante ca\'idas bruscas de (\(\mu\)), esto \'ultimo queda en evidencia cuando el modelo autorregresivo, al actualizar secuencialmente con valores planos, genera efectos de rebote que se amortiguan lentamente. En contraste, LSTM se mantiene estable, moderando tanto las ca\'idas bruscas como los rebotes posteriores. Este fen\'omeno no ocurre en equipos de calendario anual, donde los parones son m\'as cortos y distribuidos, ni en el Dataset Full, donde la ventana temporal m\'as reducida (2019--2025) contiene menos ciclos completos de inactividad.
+	\item \textbf{Dataset Lite (Figura~\ref{fig:ARIMAvsLSTMlite}):} Este conjunto de datos presenta un hallazgo estructural que no se observa en el Dataset Full: en equipos pertenecientes a torneos de calendario interanual (Manchester City, Bayern y Sepahan), ARIMA exhibe picos oscilatorios durante los per\'iodos de inactividad prolongada y durante ca\'idas bruscas de (\(\mu\)), esto \'ultimo queda en evidencia cuando el modelo autorregresivo, al actualizar secuencialmente con valores planos, genera efectos de rebote que se amortiguan lentamente. En contraste, LSTM se mantiene estable, moderando tanto las ca\'idas bruscas como los rebotes posteriores. Este fen\'omeno no ocurre en equipos de calendario anual, donde los parones son m\'as cortos y distribuidos, ni en el Dataset Full, donde la ventana temporal m\'as reducida (2019--2025) contiene menos ciclos completos de inactividad.
 	
 	Un caso adicional merece menci\'on: en Inter Barinas, la LSTM diverge del rating real y de la predicci\'on ARIMA en aproximadamente 60 puntos, sobrevalorando sistem\'aticamente la trayectoria del equipo. Se trata de un equipo con pocas observaciones en el panel y una serie de $\mu$ con alta volatilidad, situaci\'on donde la LSTM global tiene dificultades para generalizar el patr\'on autorregresivo espec\'ifico.
 	
@@ -1006,7 +1007,7 @@ En general, el ejercicio de \textit{backtesting} demuestra que, en el contexto d
 \chapter{Validaci\'on contra rankings institucionales}
 \label{ap:validacion}
 
-El sistema predictivo desarrollado en este trabajo no solo estima probabilidades de resultado, sino que tambi\'en genera un \textbf{ordenamiento competitivo} de los clubes a trav\'es del rating \(\mu\) del sistema Glicko‑2 modificado \texttt{G2Av1513}. Este ap\'endice tiene como objetivo validar externamente dicho ordenamiento, as\'i como los rankings proyectados por el modelo LSTM y ARIMA a maera de extensi\'on del Ap\'endice~\ref{ap:proyeccion_temporal}, contrast\'andolos con cuatro fuentes institucionales de referencia:
+El sistema predictivo desarrollado en este trabajo no solo estima probabilidades de resultado, sino que tambi\'en genera un \textbf{ordenamiento competitivo} de los clubes a trav\'es del rating \(\mu\) del sistema Glicko‑2 modificado \texttt{G2Av1513}. Este ap\'endice tiene como objetivo validar externamente dicho ordenamiento, as\'i como los rankings proyectados por el modelo LSTM y ARIMA a manera de extensi\'on del Ap\'endice~\ref{ap:proyeccion_temporal}, contrast\'andolos con cuatro fuentes institucionales de referencia:
 
 \begin{itemize}
 	\item \textbf{Ranking UEFA}. \cite{kassiesa2025, kassiesa2026}
@@ -1019,7 +1020,7 @@ La validaci\'on se realiza en tres escenarios temporales:
 \begin{enumerate}
 	\item \textbf{Agosto 2025:} Cierre de las temporadas interanuales 2024/25. En esta ventana se compara el ranking del motor Glicko‑2 (\texttt{G2Av1513}) contra las fuentes externas disponibles para ese per\'iodo: UEFA, AFC y ClubElo.
 	\item \textbf{Diciembre 2025:} Cierre de las temporadas anuales 2025. En esta ventana se compara el ranking del motor Glicko‑2 (\texttt{G2Av1513}) contra las fuentes externas de CONMEBOL.
-	\item \textbf{Septiembre 2026} Cierre de las temporadas interanuales 2025/26. En esta ventana se comparan los rankings proyectados por LSTM contra las fuentes externas disponibles para ese periodo: UEFA, AFC y ClubElo.
+	\item \textbf{Septiembre 2026:} Cierre de las temporadas interanuales 2025/26. En esta ventana se comparan los rankings proyectados por LSTM contra las fuentes externas disponibles para ese periodo: UEFA, AFC y ClubElo.
 \end{enumerate}
 
 Adicionalmente, se construye un \textbf{modelo de nivel de poder} basado en el \textit{Top 20 global} y el \textit{Top 5 por liga}, que permite visualizar las diferencias sistem\'aticas entre los sistemas de \textit{rating} y cuantificar la jerarqu\'ia competitiva entre competiciones.
@@ -1112,7 +1113,7 @@ En este trabajo se emplean instant\'aneas en tres momentos estrat\'egicos:
 	\item \textbf{Momento 3 (septiembre 2026)}: estado a punto de comenzar la temporada interanual 2026/27.
 \end{itemize}
 
-Esto permite evaluar tanto la capacidad del Glicko‑2 para reflejar el estado real del f\'utbol de clubes como la habilidad del modelo LSTM para proyectar el ordenamiento con un a\~no de antelaci\'on, pues los \textit{rankings} CONMEBOL UEFA y AFC se publican con periodicidad anual, no existe una serie semanal disponible para estas fuentes, mientras que para ClubElo, se selecciona la \'ultima fecha disponible anterior o igual al momento de corte o bien la \'ultima fecha disponible en la \textit{Wayback Machine}. Para UEFA, AFC y CONMEBOL, se toma directamente el ranking publicado para el a\~no correspondiente. 
+Esto permite evaluar tanto la capacidad del Glicko‑2 para reflejar el estado real del f\'utbol de clubes como la habilidad del modelo LSTM para proyectar el ordenamiento con un a\~no de antelaci\'on, pues los \textit{rankings} CONMEBOL, UEFA y AFC se publican con periodicidad anual, no existe una serie semanal disponible para estas fuentes, mientras que para ClubElo, se selecciona la \'ultima fecha disponible anterior o igual al momento de corte o bien la \'ultima fecha disponible en la \textit{Wayback Machine}. Para UEFA, AFC y CONMEBOL, se toma directamente el ranking publicado para el a\~no correspondiente. 
 
 \begin{table}[htbp]
 	\centering
@@ -1229,9 +1230,9 @@ La Tabla~\ref{tab:validaciones_lite} resume las m\'etricas de concordancia para 
 
 Los resultados permiten extraer varias conclusiones inmediatas. En primer lugar, el motor Glicko‑2 modificado muestra una concordancia \emph{moderada-alta} con las fuentes externas m\'as consolidadas. La comparaci\'on con ELO Agosto 2025 arroja el mejor desempe\~no global ($\rho = 0.787$, $\tau = 0.612$), esto indica que el sistema de rating captura una estructura de fuerzas muy similar a la del sistema Elo de ClubElo, considerado un est\'andar de referencia en el \'ambito deportivo. Las comparaciones con UEFA 2025 ($\rho = 0.655$) y CONMEBOL 2026 ($\rho = 0.645$) muestran concordancias ligeramente inferiores, lo cual es esperable dado que los coeficientes UEFA y CONMEBOL se basan exclusivamente en el rendimiento en competiciones continentales, mientras que Glicko‑2 y Elo integran todos los partidos disputados por cada equipo, incluyendo ligas dom\'esticas y torneos continentales.
 
-En segundo lugar, la comparaci\'on con AFC 2025 (\(\rho = 0.079\)) es notablemente baja. Sin embargo, este resultado debe interpretarse con cautela: el tama\~no muestral es muy reducido (\(n = 16\)) y el ranking AFC se construye \'unicamente a partir del rendimiento en competiciones asi\'aticas, mientras que Glicko‑2 incluye tambi\'en el desempe\~no en ligas dom\'esticas de cada pa\'is. La baja concordancia refleja, m\'as que una deficiencia del modelo, la naturaleza regional y especializada del la fuente.
+En segundo lugar, la comparaci\'on con AFC 2025 (\(\rho = 0.079\)) es notablemente baja. Sin embargo, este resultado debe interpretarse con cautela: el tama\~no muestral es muy reducido (\(n = 16\)) y el ranking AFC se construye \'unicamente a partir del rendimiento en competiciones asi\'aticas, mientras que Glicko‑2 incluye tambi\'en el desempe\~no en ligas dom\'esticas de cada pa\'is. La baja concordancia refleja, m\'as que una deficiencia del modelo, la naturaleza regional y especializada de la fuente.
 
-En tercer lugar, los modelos ARIMA y LSTM proyectados a 2026 mantiene una concordancia aceptable con las fuentes externas. LSTM Lite alcanza $\rho=0.708$ y $\tau=0.543$ contra UEFA 2026 y $\rho=0.472$ y $\tau=0.332$ contra ELO de Septiembre 2026, mientras que ARIMA Lite obtiene valores ligeramente inferiores ($\rho=0.680$ y $\rho=0.473$ respectivamente). Una diferencia peque\~na, pero que sugiere que la LSTM preserva ligeramente mejor la estructura original en horizontes de un a\~no que ARIMA. No obstante, ambos modelos muestran una ca\'ida frente a ELO Septiembre 2026 ($\rho=0.472$ para la LSTM y $\rho=0.473$ para ARIMA), lo que refleja la incertidumbre inherente a las proyecciones a largo plazo y las diferencias metodol\'ogicas entre sistemas de \textit{rating}. Los Overlap 20 de $0.65$ para la LSTM y $0.60$ para ARIMA indican que, aunque el orden global se pueda degradar, la identificaci\'on de la \'elite competitiva se mantiene en al menos un $60\%$.
+En tercer lugar, los modelos ARIMA y LSTM proyectados a 2026 mantienen una concordancia aceptable con las fuentes externas. LSTM Lite alcanza $\rho=0.708$ y $\tau=0.543$ contra UEFA 2026 y $\rho=0.472$ y $\tau=0.332$ contra ELO de Septiembre 2026, mientras que ARIMA Lite obtiene valores ligeramente inferiores ($\rho=0.680$ y $\rho=0.473$ respectivamente). Una diferencia peque\~na, pero que sugiere que la LSTM preserva ligeramente mejor la estructura original en horizontes de un a\~no que ARIMA. No obstante, ambos modelos muestran una ca\'ida frente a ELO Septiembre 2026 ($\rho=0.472$ para la LSTM y $\rho=0.473$ para ARIMA), lo que refleja la incertidumbre inherente a las proyecciones a largo plazo y las diferencias metodol\'ogicas entre sistemas de \textit{rating}. Los Overlap 20 de $0.65$ para la LSTM y $0.60$ para ARIMA indican que, aunque el orden global se pueda degradar, la identificaci\'on de la \'elite competitiva se mantiene en al menos un $60\%$.
 
 Por ultimo, no se incluyen en la tabla las comparaciones entre ARIMA/LSTM y Glicko-2 Lite, pues ARIMA y LSTM son proyecciones del mismo sistema de rating que se entrenan sobre las series hist\'oricas generadas por Glicko-2 modificado, y sus concordancias internas (\(\rho > 0.98\)) son matem\'aticamente esperadas y no constituyen una validaci\'on externa.
 
@@ -1273,7 +1274,7 @@ Por ultimo, no se incluyen en la tabla las comparaciones entre ARIMA/LSTM y Glic
 	\label{fig:scatter_validacion}
 \end{figure}
 
-Los diagramas de dispersi\'on de la Figura~\ref{fig:scatter_validacion} complementan las m\'etricas de la Tabla~\ref{tab:validaciones_lite}. En la comparaci\'on con ELO Agosto 2025 ($\rho=0.787$), la nube de puntos dibuja dos par\'abolas, la una par\'abola superior cercana a la diagonal en los extremos y una par\'abola inferior m\'as separada, lo que indica que ambos sistemas coinciden en la \'elite y la cola, pero divergen sistem\'aticamente en la zona media. Cuatro puntos at\'ipicos muy por debajo de la diagonal y uno por encima refuerzan esta interpretaci\'on. La comparaci\'on con UEFA 2025 ($\rho=0.655$) muestra muchos puntos cerca de la diagonal, con aproximadamente un 10\% de desviaciones notables, reflejando la naturaleza regional del coeficiente UEFA. El scatter con CONMEBOL 2026 ($\rho=0.645$) presenta unos varios equipos alineados sobre la diagonal y una dispersi\'on moderada en el resto, coherente con la ponderaci\'on continental. Las proyecciones LSTM a 2026 mantienen una concordancia aceptable con UEFA ($\rho=0.708$), con la mayor\'ia de los puntos cerca de la diagonal; sin embargo, la comparaci\'on con ELO Septiembre 2026 ($\rho=0.472$) exhibe una dispersi\'on generalizada, evidenciando la incertidumbre de horizontes largos y las diferencias metodol\'ogicas entre sistemas de rating.
+Los diagramas de dispersi\'on de la Figura~\ref{fig:scatter_validacion} complementan las m\'etricas de la Tabla~\ref{tab:validaciones_lite}. En la comparaci\'on con ELO Agosto 2025 ($\rho=0.787$), la nube de puntos dibuja dos par\'abolas, la una par\'abola superior cercana a la diagonal en los extremos y una par\'abola inferior m\'as separada, lo que indica que ambos sistemas coinciden en la \'elite y la cola, pero divergen sistem\'aticamente en la zona media. Cuatro puntos at\'ipicos muy por debajo de la diagonal y uno por encima refuerzan esta interpretaci\'on. La comparaci\'on con UEFA 2025 ($\rho=0.655$) muestra muchos puntos cerca de la diagonal, con aproximadamente un 10\% de desviaciones notables, reflejando la naturaleza regional del coeficiente UEFA. El scatter con CONMEBOL 2026 ($\rho=0.645$) presenta varios equipos alineados sobre la diagonal y una dispersi\'on moderada en el resto, coherente con la ponderaci\'on continental. Las proyecciones LSTM a 2026 mantienen una concordancia aceptable con UEFA ($\rho=0.708$), con la mayor\'ia de los puntos cerca de la diagonal; sin embargo, la comparaci\'on con ELO Septiembre 2026 ($\rho=0.472$) exhibe una dispersi\'on generalizada, evidenciando la incertidumbre de horizontes largos y las diferencias metodol\'ogicas entre sistemas de rating.
 
 \subsection{Comparaci\'on tangible: Top 10 global}
 
@@ -1302,11 +1303,11 @@ M\'as all\'a de las m\'etricas agregadas, resulta ilustrativo observar directame
 	\end{tabular}}%
 \end{table}
 
-Varios aspectos destacan de esta comparaci\'on. El primero es que \textbf{PSG} encabeza tanto G2A Lite como LSTM Lite mientras que UEFA y ELO colocan al \textbf{Bayern} en las primera posici\'on. Esta discrepancia refleja una diferencia metodol\'ogica fundamental: el sistema Glicko‑2 otorga un peso considerable al dominio dom\'estico del PSG en la Ligue 1, as\'i como a su rendimiento en todas las competiciones disputadas, mientras que UEFA ponderan m\'as el rendimiento en competiciones europeas de \'elite, donde el Bayern ha acumulado m\'as coeficiente.
+Varios aspectos destacan de esta comparaci\'on. El primero es que \textbf{PSG} encabeza tanto G2A Lite como LSTM Lite mientras que UEFA y ELO colocan al \textbf{Bayern} en la primera posici\'on. Esta discrepancia refleja una diferencia metodol\'ogica fundamental: el sistema Glicko‑2 otorga un peso considerable al dominio dom\'estico del PSG en la Ligue 1, as\'i como a su rendimiento en todas las competiciones disputadas, mientras que UEFA ponderan m\'as el rendimiento en competiciones europeas de \'elite, donde el Bayern ha acumulado m\'as coeficiente.
 
-El segundo aspecto relevante es la presencia del \textbf{Al Hilal} en el Top 3 de G2A y LSTM, que por obvios motivos no figura en UEFA, pero destaca su no presencia en el Top 10 de ELO. Esto evidencia la diferencia en la arquitectura entre G2A y ClubElo, el motivo real de esto fue comentado brevemente en la introducci\'on de este cap\'itulo: las \textit{islas de datos}, pues el \textit{ranking} ClubElo busca mitigar esto utilizando todos los partidos disponibles, incluyendo amistosos y copas menores, asignandoles pesos menores y aligerando el cambio de medias (\(\mu\)). El hecho de que Glicko‑2 y LSTM sit\'uen al Al Hilal entre los tres mejores clubes del mundo es justamente un reflejo de las \textit{islas de datos}, as\'i como el impacto de las inversiones millonarias en la liga saud\'i.
+El segundo aspecto relevante es la presencia del \textbf{Al Hilal} en el Top 3 de G2A y LSTM, que por obvios motivos no figura en UEFA, pero destaca su no presencia en el Top 10 de ELO. Esto evidencia la diferencia en la arquitectura entre G2A y ClubElo, el motivo real de esto fue comentado brevemente en la introducci\'on de este cap\'itulo: las \textit{islas de datos}, pues el \textit{ranking} ClubElo busca mitigar esto utilizando todos los partidos disponibles, incluyendo amistosos y copas menores, asign\'andoles pesos menores y aligerando el cambio de medias (\(\mu\)). El hecho de que Glicko‑2 y LSTM sit\'uen al Al Hilal entre los tres mejores clubes del mundo es justamente un reflejo de las \textit{islas de datos}, as\'i como el impacto de las inversiones millonarias en la liga saud\'i.
 
-El tercer aspecto es que el \textbf{Bayern} es el \'unico equipo que aparece en el Top 3 de las cuatro fuentes. Esta consistencia los consolida como el club de mayor fortaleza a nivel global, un hallazgo que refuerza la validez de los rankings generados por el sistema, junto con la consistencia del \textbf{PSG} estando en el Top 3 en 3 de las 4 fuentes y el \textbf{Real Madrid} apareciendo en el Top 5 de las cuatro fuentes.
+El tercer aspecto es que el \textbf{Bayern} es el \'unico equipo que aparece en el Top 3 de las cuatro fuentes. Esta consistencia lo consolida como el club de mayor fortaleza a nivel global, un hallazgo que refuerza la validez de los rankings generados por el sistema, junto con la consistencia del \textbf{PSG} estando en el Top 3 en 3 de las 4 fuentes y el \textbf{Real Madrid} apareciendo en el Top 5 de las cuatro fuentes.
 
 \subsection{Modelos de nivel de poder}
 
@@ -1339,7 +1340,7 @@ El concepto de \emph{nivel de poder} se introduce como una herramienta para cuan
 	\end{tabular}}%
 \end{table}
 
-En el modelo G2A Full, la Premier League encabeza claramente el nivel de poder con una media de 1690.3, superando en 13.2 puntos a la Saudi Pro League (1677.1), que ocupa el segundo lugar. Este resultado es notable: la liga saud\'i, impulsada por inversiones masivas en fichajes de primer nivel, aparece por delante de Serie A (1674.4) y LaLiga (1667.9). La Serie A y LaLiga se sit\'uan muy pr\'oximas, con una diferencia de 6.5 puntos entre ambas, lo que refleja el equilibrio competitivo entre ambas., cierra el top 5 la Ligue 1 (1652.2). La Bundesliga, a pesar de contar con Bayern, queda rezagada debido a la menor profundidad de su \'elite. Por otro lado, Las ligas no europeas ocupan posiciones intermedias, mientras que la Liga Profesional Argentina, la MLS y la K League 1 se sit\'uan en la cola, con diferencias superiores a los 120 puntos respecto a la Premier League.
+En el modelo G2A Full, la Premier League encabeza claramente el nivel de poder con una media de 1690.3, superando en 13.2 puntos a la Saudi Pro League (1677.1), que ocupa el segundo lugar. Este resultado es notable: la liga saud\'i, impulsada por inversiones masivas en fichajes de primer nivel, aparece por delante de Serie A (1674.4) y LaLiga (1667.9). La Serie A y LaLiga se sit\'uan muy pr\'oximas, con una diferencia de 6.5 puntos entre ambas, lo que refleja el equilibrio competitivo entre ambas, cierra el top 5 la Ligue 1 (1652.2). La Bundesliga, a pesar de contar con Bayern, queda rezagada debido a la menor profundidad de su \'elite. Por otro lado, las ligas no europeas ocupan posiciones intermedias, mientras que la Liga Profesional Argentina, la MLS y la K League 1 se sit\'uan en la cola, con diferencias superiores a los 120 puntos respecto a la Premier League.
 
 \begin{table}[htbp]
 	\centering
@@ -1492,7 +1493,7 @@ El modelo ARIMA Full mantiene a la Premier League en la cima (1691.1), pero la S
 	\end{tabular}}%
 \end{table}
 
-En el modelo ARIMA Lite, que cubre el per\'iodo 2017-2025, la jerarqu\'ia se comprime notablemente. La Premier League (1685.3) sigue liderando, pero la Serie A (1682.8) y la Persian Gulf Pro League (1676.3) quedan a menos de 10 puntos, seguidas muy de cerca por la Saudi Pro League (1674.6) y el Brasilei\~ao (1674.9). Este resultado es llamativo: la inclusi\'on de m\'as temporadas (2017-2019) eleva el nivel medio de la Serie A y de la liga iran\'i, mientras que la Bundesliga (1643.4) y la Super League de Grecia (1643.2) caen a la zona media. La liga venezolana (FutVe) mantiene una media de 1585.3, superando a la Liga Profesional Argentina (1575.9) en este modelo, lo que refleja el buen rendimiento hist\'orico de equipos como Dep. T\'achira y Carabobo en el panel completo. La MLS (1545.3) y la K League (1546.2) se sit\'uan en la cola, con diferencias superiores a los 138 puntos respecto a la Premier League.
+En el modelo ARIMA Lite, que cubre el per\'iodo 2017-2025, la jerarqu\'ia se comprime notablemente. La Premier League (1685.3) sigue liderando, pero la Serie A (1682.8) y la Persian Gulf Pro League (1676.3) quedan a menos de 10 puntos, seguidas muy de cerca por la Saudi Pro League (1674.6) y el Brasileir\~ao (1674.9). Este resultado es llamativo: la inclusi\'on de m\'as temporadas (2017-2019) eleva el nivel medio de la Serie A y de la liga iran\'i, mientras que la Bundesliga (1643.4) y la Super League de Grecia (1643.2) caen a la zona media. La liga venezolana (FutVe) mantiene una media de 1585.3, superando a la Liga Profesional Argentina (1575.9) en este modelo, lo que refleja el buen rendimiento hist\'orico de equipos como Dep. T\'achira y Carabobo en el panel completo. La MLS (1545.3) y la K League (1546.2) se sit\'uan en la cola, con diferencias superiores a los 138 puntos respecto a la Premier League.
 
 Una advertencia adicional es necesaria aqu\'i. Los resultados de las tablas de nivel de poder, aunque sugerentes, no deben interpretarse como una clasificaci\'on global definitiva de ligas. Como se ha se\~nalado al inicio de esta secci\'on, las \emph{islas de datos} impiden establecer comparaciones absolutas entre regiones. Por ejemplo, el hecho de que la Persian Gulf Pro League aparezca con un nivel de poder similar a la Bundesliga no implica necesariamente que los equipos iran\'ies sean tan fuertes como los alemanes; simplemente indica que, dentro de sus respectivos universos competitivos, ambos conjuntos de equipos han alcanzado ratings similares. La ausencia de enfrentamientos directos entre ambas ligas impide calibrar el verdadero valor de esa diferencia. En este sentido, el modelo de nivel de poder es una herramienta \'util para describir la estructura interna del ranking, pero no debe ser utilizado como un argumento de paridad competitiva entre regiones sin un an\'alisis adicional que incorpore partidos intercontinentales o mecanismos de calibraci\'on cruzada.
 
@@ -1504,7 +1505,7 @@ Los resultados presentados en la Secci\'on anterior ofrecen una validaci\'on ext
 
 Los resultados de este ap\'endice pueden resumirse en cuatro hallazgos principales.
 
-En primer lugar, el sistema Glicko‑2 modificado muestra una concordancia moderada-alta con los rankings externos m\'es consolidados. La correlaci\'on de Spearman con ELO Agosto 2025 alcanza $\rho = 0.787$, mientras que con UEFA 2025 y CONMEBOL 2026 se sit\'ua en $\rho = 0.655$ y $\rho = 0.645$ respectivamente. Estas cifras, aunque no perfectas, son consistentes con las diferencias metodol\'ogicas esperables entre sistemas de rating que ponderan de forma distinta los partidos dom\'esticos, continentales e intercontinentales. La concordancia m\'as alta con ELO, un sistema tambi\'en basado en actualizaci\'on secuencial de ratings, refuerza la validez del enfoque Glicko‑2 con las modificaciones.
+En primer lugar, el sistema Glicko‑2 modificado muestra una concordancia moderada-alta con los rankings externos m\'as consolidados. La correlaci\'on de Spearman con ELO Agosto 2025 alcanza $\rho = 0.787$, mientras que con UEFA 2025 y CONMEBOL 2026 se sit\'ua en $\rho = 0.655$ y $\rho = 0.645$ respectivamente. Estas cifras, aunque no perfectas, son consistentes con las diferencias metodol\'ogicas esperables entre sistemas de rating que ponderan de forma distinta los partidos dom\'esticos, continentales e intercontinentales. La concordancia m\'as alta con ELO, un sistema tambi\'en basado en actualizaci\'on secuencial de ratings, refuerza la validez del enfoque Glicko‑2 con las modificaciones.
 
 En segundo lugar, el modelo LSTM proyecta rankings que preservan la estructura ordinal del Glicko‑2 modificado con una fidelidad alta, con un coeficiente de Spearman superior a $0{.}97$ sobre el subconjunto de equipos en com\'un. Este resultado es importante porque indica que las proyecciones a futuro no introducen distorsiones sistem\'aticas en el ordenamiento de los equipos; es decir, el modelo neuronal aprende la jerarqu\'ia de fuerzas subyacente sin alterarla significativamente.
 

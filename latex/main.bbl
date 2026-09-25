@@ -539,34 +539,6 @@
       \field{title}{Revision of the {FIFA/Coca-Cola} World Ranking}
       \field{year}{2024}
     \endentry
-    \entry{Fonseca}{masterthesis}{}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=eebc33e0909f24ac1e8ed71ed9c43dbc}{%
-           family={Fonseca},
-           familyi={F\bibinitperiod},
-           given={Jose},
-           giveni={J\bibinitperiod},
-           givenun=0}}%
-      }
-      \list{institution}{1}{%
-        {Instituto Superior Técnico}%
-      }
-      \strng{namehash}{eebc33e0909f24ac1e8ed71ed9c43dbc}
-      \strng{fullhash}{eebc33e0909f24ac1e8ed71ed9c43dbc}
-      \strng{fullhashraw}{eebc33e0909f24ac1e8ed71ed9c43dbc}
-      \strng{bibnamehash}{eebc33e0909f24ac1e8ed71ed9c43dbc}
-      \strng{authorbibnamehash}{eebc33e0909f24ac1e8ed71ed9c43dbc}
-      \strng{authornamehash}{eebc33e0909f24ac1e8ed71ed9c43dbc}
-      \strng{authorfullhash}{eebc33e0909f24ac1e8ed71ed9c43dbc}
-      \strng{authorfullhashraw}{eebc33e0909f24ac1e8ed71ed9c43dbc}
-      \field{sortinit}{F}
-      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{title}{Assessing Team Success in the Big-5 European Football Leagues}
-      \field{type}{Thesis to obtain the Master of Science Degree in Industrial Engineering and Management}
-      \field{year}{2022}
-    \endentry
     \entry{footyrankings2025}{misc}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=125e18360037058eb1a7282605212458}{%
