@@ -124,9 +124,8 @@
 \contentsline {subsection}{\numberline {3.3.3}Inferencia estad\'istica: test $t$ pareado}{81}{subsection.3.3.3}%
 \contentsline {section}{\numberline {3.4}Discusi\'on integrada}{82}{section.3.4}%
 \contentsline {subsection}{\numberline {3.4.1}Aporte predictivo de cada bloque}{82}{subsection.3.4.1}%
-\contentsline {chapter}{\numberline {4}Conclusiones, limitaciones y l\'ineas futuras}{85}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Conclusiones}{85}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Limitaciones del estudio}{87}{section.4.2}%
+\contentsline {chapter}{\numberline {4}Conclusiones}{85}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Limitaciones del estudio}{87}{section.4.1}%
 \contentsline {paragraph}{Colapso persistente del empate bajo decisi\'on dura.}{87}{paragraph*.87}%
 \contentsline {paragraph}{Sensibilidad del perceptr\'on multicapa a la composici\'on de covariables.}{88}{paragraph*.88}%
 \contentsline {paragraph}{Tratamiento de sedes neutrales.}{88}{paragraph*.89}%
@@ -137,14 +136,14 @@
 \contentsline {paragraph}{Cuello de botella en la recolecci\'on de datos.}{89}{paragraph*.94}%
 \contentsline {paragraph}{Disponibilidad de m\'etricas b\'asicas en la fuente deportiva.}{89}{paragraph*.95}%
 \contentsline {paragraph}{Granularidad agregada por equipo versus individual.}{89}{paragraph*.96}%
-\contentsline {section}{\numberline {4.3}L\'ineas de investigaci\'on futuras}{90}{section.4.3}%
+\contentsline {section}{\numberline {4.2}L\'ineas de investigaci\'on futuras}{89}{section.4.2}%
 \contentsline {paragraph}{Expansi\'on del panel sin covariables.}{90}{paragraph*.97}%
 \contentsline {paragraph}{Expansi\'on del panel con covariables.}{90}{paragraph*.98}%
 \contentsline {paragraph}{Exploraci\'on de arquitecturas alternativas de refinamiento.}{90}{paragraph*.99}%
 \contentsline {paragraph}{Uso de m\'etricas reales de goles esperados.}{90}{paragraph*.100}%
 \contentsline {paragraph}{Inclusi\'on de nuevas covariables ex\'ogenas.}{90}{paragraph*.101}%
 \contentsline {paragraph}{Mejora de la calibraci\'on de la ventaja de local\'ia.}{90}{paragraph*.102}%
-\contentsline {paragraph}{Comparaci\'on extendida con el trabajo base.}{91}{paragraph*.103}%
+\contentsline {paragraph}{Comparaci\'on extendida con el trabajo base.}{90}{paragraph*.103}%
 \contentsline {paragraph}{Validaci\'on externa con datos de otras fuentes.}{91}{paragraph*.104}%
 \contentsline {paragraph}{Implementaci\'on de un sistema de predicci\'on en lote.}{91}{paragraph*.105}%
 \contentsline {paragraph}{Modelado a nivel de jugador.}{91}{paragraph*.106}%
