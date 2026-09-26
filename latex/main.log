@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.18.1 (MiKTeX 24.4) (format=lualatex 2026.8.10)  24 SEP 2026 22:28
+This is LuaHBTeX, Version 1.18.1 (MiKTeX 24.4) (format=lualatex 2026.8.10)  25 SEP 2026 20:21
  restricted system commands enabled.
 **main.tex
 (./main.tex
@@ -1680,11 +1680,6 @@ terecortado.png>] (./figures/tabla_glicko_convergencia.tex)
 [77] (./figures/tabla_stage2_resumen.tex)
 
 [78] (./figures/tabla_stage2_f1d.tex)
-Overfull \hbox (1.16374pt too wide) in paragraph at lines 188--189
-[]\TU/LatinModernRoman(0)/m/n/11.5 La con-fi-gu-ra-ción com-ple-ta re-cu-pe-ra par-cial-men-te la cla-se em-pa-te en el Da-ta-set Full ($\OML/cmm/m/it/11.5 F\OT1/cmr/m/n/11.5 1[] =
- []
-
-
 
 [79]
 
@@ -1844,35 +1839,35 @@ Overfull \hbox (2.51627pt too wide) in paragraph at lines 781--789
 [117]
 
 [118]
-<figures/ARIMAvsLSTMfull.png, id=2275, 1146.9249pt x 964.8045pt>
+<figures/ARIMAvsLSTMfull.png, id=2272, 1146.9249pt x 964.8045pt>
 File: figures/ARIMAvsLSTMfull.png Graphic file (type png)
 <use figures/ARIMAvsLSTMfull.png>
 Package luatex.def Info: figures/ARIMAvsLSTMfull.png  used on input line 834.
 (luatex.def)             Requested size: 389.13692pt x 327.33727pt.
-<figures/ARIMAvsLSTMlite.png, id=2276, 1146.2022pt x 964.8045pt>
+<figures/ARIMAvsLSTMlite.png, id=2273, 1146.2022pt x 964.8045pt>
 File: figures/ARIMAvsLSTMlite.png Graphic file (type png)
 <use figures/ARIMAvsLSTMlite.png>
 Package luatex.def Info: figures/ARIMAvsLSTMlite.png  used on input line 842.
 (luatex.def)             Requested size: 389.13692pt x 327.54337pt.
-<figures/ScatterARIMALSTMfull.png, id=2277, 1003.8303pt x 354.123pt>
+<figures/ScatterARIMALSTMfull.png, id=2274, 1003.8303pt x 354.123pt>
 File: figures/ScatterARIMALSTMfull.png Graphic file (type png)
 <use figures/ScatterARIMALSTMfull.png>
 Package luatex.def Info: figures/ScatterARIMALSTMfull.png  used on input line 8
 52.
 (luatex.def)             Requested size: 274.6857pt x 96.9005pt.
-<figures/ScatterARIMALSTMlite.png, id=2278, 1003.8303pt x 354.123pt>
+<figures/ScatterARIMALSTMlite.png, id=2275, 1003.8303pt x 354.123pt>
 File: figures/ScatterARIMALSTMlite.png Graphic file (type png)
 <use figures/ScatterARIMALSTMlite.png>
 Package luatex.def Info: figures/ScatterARIMALSTMlite.png  used on input line 8
 58.
 (luatex.def)             Requested size: 274.6857pt x 96.9005pt.
-<figures/ErrorARIMALSTMfull.png, id=2279, 1003.8303pt x 281.853pt>
+<figures/ErrorARIMALSTMfull.png, id=2276, 1003.8303pt x 281.853pt>
 File: figures/ErrorARIMALSTMfull.png Graphic file (type png)
 <use figures/ErrorARIMALSTMfull.png>
 Package luatex.def Info: figures/ErrorARIMALSTMfull.png  used on input line 869
 .
 (luatex.def)             Requested size: 274.6857pt x 77.1249pt.
-<figures/ErrorARIMALSTMlite.png, id=2280, 1004.553pt x 281.853pt>
+<figures/ErrorARIMALSTMlite.png, id=2277, 1004.553pt x 281.853pt>
 File: figures/ErrorARIMALSTMlite.png Graphic file (type png)
 <use figures/ErrorARIMALSTMlite.png>
 Package luatex.def Info: figures/ErrorARIMALSTMlite.png  used on input line 875
@@ -1948,31 +1943,31 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 [134]
 
 [135]
-<figures/scatter_ELO_Ago_2025.png, id=2411, 433.62pt x 433.62pt>
+<figures/scatter_ELO_Ago_2025.png, id=2408, 433.62pt x 433.62pt>
 File: figures/scatter_ELO_Ago_2025.png Graphic file (type png)
 <use figures/scatter_ELO_Ago_2025.png>
 Package luatex.def Info: figures/scatter_ELO_Ago_2025.png  used on input line 1
 242.
 (luatex.def)             Requested size: 146.5009pt x 146.50253pt.
-<figures/scatter_UEFA_2025.png, id=2412, 433.62pt x 433.62pt>
+<figures/scatter_UEFA_2025.png, id=2409, 433.62pt x 433.62pt>
 File: figures/scatter_UEFA_2025.png Graphic file (type png)
 <use figures/scatter_UEFA_2025.png>
 Package luatex.def Info: figures/scatter_UEFA_2025.png  used on input line 1248
 .
 (luatex.def)             Requested size: 146.5009pt x 146.50253pt.
-<figures/scatter_CONMEBOL_2026.png, id=2413, 433.62pt x 433.62pt>
+<figures/scatter_CONMEBOL_2026.png, id=2410, 433.62pt x 433.62pt>
 File: figures/scatter_CONMEBOL_2026.png Graphic file (type png)
 <use figures/scatter_CONMEBOL_2026.png>
 Package luatex.def Info: figures/scatter_CONMEBOL_2026.png  used on input line 
 1254.
 (luatex.def)             Requested size: 146.5009pt x 146.50253pt.
-<figures/scatter_LSTM_vs_UEFA_2026.png, id=2414, 433.62pt x 433.62pt>
+<figures/scatter_LSTM_vs_UEFA_2026.png, id=2411, 433.62pt x 433.62pt>
 File: figures/scatter_LSTM_vs_UEFA_2026.png Graphic file (type png)
 <use figures/scatter_LSTM_vs_UEFA_2026.png>
 Package luatex.def Info: figures/scatter_LSTM_vs_UEFA_2026.png  used on input l
 ine 1262.
 (luatex.def)             Requested size: 146.5009pt x 146.50253pt.
-<figures/scatter_LSTM_vs_ELO_Sep_2026.png, id=2415, 433.62pt x 433.62pt>
+<figures/scatter_LSTM_vs_ELO_Sep_2026.png, id=2412, 433.62pt x 433.62pt>
 File: figures/scatter_LSTM_vs_ELO_Sep_2026.png Graphic file (type png)
 <use figures/scatter_LSTM_vs_ELO_Sep_2026.png>
 Package luatex.def Info: figures/scatter_LSTM_vs_ELO_Sep_2026.png  used on inpu
@@ -2067,7 +2062,7 @@ Here is how much of LuaTeX's memory you used:
 45
  48532 multiletter control sequences out of 65536+600000
  158 fonts using 14272991 bytes
- 94i,16n,135p,2535b,2400s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 94i,16n,135p,2376b,2400s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Program Files/MiKTeX/fonts/opentype/public/lm/lmroman7-regular.otf><C:/Progr
 am Files/MiKTeX/fonts/opentype/public/lm/lmroman10-bolditalic.otf><C:/Program Fi
 les/MiKTeX/fonts/opentype/public/lm/lmroman10-bold.otf><C:/Program Files/MiKTeX/
@@ -2098,9 +2093,9 @@ m Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Program Files/MiKTeX
 /fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTeX/fonts/type1/p
 ublic/amsfonts/symbols/msam10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/am
 sfonts/symbols/msbm10.pfb>
-Output written on main.pdf (159 pages, 2435651 bytes).
+Output written on main.pdf (159 pages, 2437002 bytes).
 
-PDF statistics: 2741 PDF objects out of 2984 (max. 8388607)
+PDF statistics: 2738 PDF objects out of 2984 (max. 8388607)
  695 named destinations out of 1000 (max. 131072)
  1097 words of extra memory for PDF output out of 10000 (max. 100000000)
 

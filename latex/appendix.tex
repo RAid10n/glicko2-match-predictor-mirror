@@ -155,22 +155,22 @@ La Tabla~\ref{tab:gru_test} reporta las m\'etricas finales sobre el $30\%$ crono
 		\toprule
 		\textbf{Conjunto de datos} & \textbf{Modelo} & \textbf{LL Cat.} & \textbf{LL Bin.} & \textbf{Accuracy} \\
 		\midrule
-		\multirow{3}{*}{Full} & Glicko-2 aislado & 1.0425 & 0.6500 & --- \\
-		& MLP completo & 1.0261 & 0.6445 & 0.489 \\
+		\multirow{3}{*}{Full} & Glicko-2 aislado & 1.0425 & 0.6496 & --- \\
+		& MLP completo & 1.0261 & 0.6440 & 0.489 \\
 		& GRU & 1.1027 & 0.6910 & 0.438 \\
 		\midrule
-		\multirow{3}{*}{Lite} & Glicko-2 aislado & 1.0414 & 0.6478 & --- \\
-		& MLP completo & 1.0224 & 0.6402 & 0.488 \\
+		\multirow{3}{*}{Lite} & Glicko-2 aislado & 1.0412 & 0.6473 & --- \\
+		& MLP completo & 1.0226 & 0.6402 & 0.489 \\
 		& GRU & 1.0535 & 0.6574 & 0.466 \\
 		\midrule
-		\multirow{3}{*}{Lite Rec.} & Glicko-2 aislado & 1.0425 & 0.6500 & --- \\
-		& MLP completo & 1.0273 & 0.6460 & 0.486 \\
+		\multirow{3}{*}{Lite Rec.} & Glicko-2 aislado & 1.0425 & 0.6496 & --- \\
+		& MLP completo & 1.0276 & 0.6457 & 0.486 \\
 		& GRU & 1.0807 & 0.6802 & 0.448 \\
 		\bottomrule
 	\end{tabular}
 \end{table}
 
-El componente GRU exhibe un desempe\~no sistem\'aticamente inferior al del \textit{pipeline} principal en todas las m\'etricas y todos los conjuntos de datos. Su log-loss binaria se encuentra entre $0.657$ y $0.691$, superando la del Glicko-2 aislado ($0.6478$-$0.6500$) y la del MLP completo ($0.6402$-$0.6460$). La \textit{accuracy} se ubica entre $0.438$ y $0.466$, por debajo del $0.486$ del sistema en cascada. La comparaci\'on es asim\'etrica en dificultad: la GRU parte de las covariables ex\'ogenas crudas y secuencias hist\'oricas, mientras que el MLP recibe probabilidades base ya calibradas por el Glicko-2.
+El componente GRU exhibe un desempe\~no sistem\'aticamente inferior al del \textit{pipeline} principal en todas las m\'etricas y todos los conjuntos de datos. Su log-loss binaria se encuentra entre $0.657$ y $0.691$, superando la del Glicko-2 aislado ($0.6473$-$0.6496$) y la del MLP completo ($0.6402$-$0.6457$). La \textit{accuracy} se ubica entre $0.438$ y $0.466$, por debajo del $0.486$ del sistema en cascada. La comparaci\'on es asim\'etrica en dificultad: la GRU parte de las covariables ex\'ogenas crudas y secuencias hist\'oricas, mientras que el MLP recibe probabilidades base ya calibradas por el Glicko-2.
 
 % ============================================================
 % A.5. Discusi\'on
