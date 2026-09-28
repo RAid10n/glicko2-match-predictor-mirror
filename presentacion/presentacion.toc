@@ -4,4 +4,4 @@
 \beamer@sectionintoc {3}{Motor predictor G2Av1513}{20}{0}{3}
 \beamer@sectionintoc {4}{Refinamiento neuronal}{27}{0}{4}
 \beamer@sectionintoc {5}{Estudios Exploratorios}{36}{0}{5}
-\beamer@sectionintoc {6}{Conclusiones}{52}{0}{6}
+\beamer@sectionintoc {6}{Conclusiones}{56}{0}{6}

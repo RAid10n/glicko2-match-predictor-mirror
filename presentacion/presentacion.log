@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.18.1 (MiKTeX 24.4) (format=lualatex 2026.8.10)  27 SEP 2026 23:22
+This is LuaHBTeX, Version 1.18.1 (MiKTeX 24.4) (format=lualatex 2026.8.10)  28 SEP 2026 15:06
  restricted system commands enabled.
 **presentacion.tex
 (./presentacion.tex
@@ -2116,22 +2116,50 @@ Package luatex.def Info: figures/ARIMAvsLSTMlite.png  used on input line 1082.
 [46
 
 <./figures/ARIMAvsLSTMlite.png>]
+<figures/ARIMAvsLSTMlitetop.png, id=553, 1146.2022pt x 302.0886pt>
+File: figures/ARIMAvsLSTMlitetop.png Graphic file (type png)
+<use figures/ARIMAvsLSTMlitetop.png>
+Package luatex.def Info: figures/ARIMAvsLSTMlitetop.png  used on input line 108
+9.
+(luatex.def)             Requested size: 367.60843pt x 96.88235pt.
+
 
 [47
 
-]
+<./figures/ARIMAvsLSTMlitetop.png>]
+<figures/ARIMAvsLSTMlitebot.png, id=564, 1146.2022pt x 299.1978pt>
+File: figures/ARIMAvsLSTMlitebot.png Graphic file (type png)
+<use figures/ARIMAvsLSTMlitebot.png>
+Package luatex.def Info: figures/ARIMAvsLSTMlitebot.png  used on input line 109
+6.
+(luatex.def)             Requested size: 367.60843pt x 95.95525pt.
+
 
 [48
 
-]
+<./figures/ARIMAvsLSTMlitebot.png>]
+<figures/ErrorARIMALSTMlite.png, id=575, 1004.553pt x 281.853pt>
+File: figures/ErrorARIMALSTMlite.png Graphic file (type png)
+<use figures/ErrorARIMALSTMlite.png>
+Package luatex.def Info: figures/ErrorARIMALSTMlite.png  used on input line 110
+3.
+(luatex.def)             Requested size: 379.21667pt x 106.39993pt.
+
 
 [49
 
-]
+<./figures/ErrorARIMALSTMlite.png>]
+<figures/ScatterARIMALSTMlite.png, id=586, 1003.8303pt x 354.123pt>
+File: figures/ScatterARIMALSTMlite.png Graphic file (type png)
+<use figures/ScatterARIMALSTMlite.png>
+Package luatex.def Info: figures/ScatterARIMALSTMlite.png  used on input line 1
+110.
+(luatex.def)             Requested size: 348.25937pt x 122.8534pt.
+
 
 [50
 
-]
+<./figures/ScatterARIMALSTMlite.png>]
 
 [51
 
@@ -2152,16 +2180,6 @@ Package luatex.def Info: figures/ARIMAvsLSTMlite.png  used on input line 1082.
 [55
 
 ]
-Overfull \hbox (17.8243pt too wide) in paragraph at lines 1388--1388
- [][] 
- []
-
-
-Overfull \hbox (2.61336pt too wide) in paragraph at lines 1388--1388
- [][] 
- []
-
-
 
 [56
 
@@ -2178,6 +2196,16 @@ Overfull \hbox (2.61336pt too wide) in paragraph at lines 1388--1388
 [59
 
 ]
+Overfull \hbox (17.8243pt too wide) in paragraph at lines 1416--1416
+ [][] 
+ []
+
+
+Overfull \hbox (2.61336pt too wide) in paragraph at lines 1416--1416
+ [][] 
+ []
+
+
 
 [60
 
@@ -2185,35 +2213,51 @@ Overfull \hbox (2.61336pt too wide) in paragraph at lines 1388--1388
 
 [61
 
-
 ]
 
 [62
-
 
 ]
 
 [63
 
-
 ]
 
 [64
+
+]
+
+[65
+
+
+]
+
+[66
+
+
+]
+
+[67
+
+
+]
+
+[68
 
 
 ]
 File: logos/ucv.png Graphic file (type png)
 <use logos/ucv.png>
-Package luatex.def Info: logos/ucv.png  used on input line 1462.
+Package luatex.def Info: logos/ucv.png  used on input line 1490.
 (luatex.def)             Requested size: 36.98807pt x 36.98857pt.
 File: logos/escuela-matematica.jpg Graphic file (type jpg)
 <use logos/escuela-matematica.jpg>
-Package luatex.def Info: logos/escuela-matematica.jpg  used on input line 1462.
+Package luatex.def Info: logos/escuela-matematica.jpg  used on input line 1490.
 
 (luatex.def)             Requested size: 80.2314pt x 31.29802pt.
 
 
-[65
+[69
 
 ]
 \tf@nav=\write7
@@ -2242,7 +2286,7 @@ Package logreq Info: Writing requests to 'presentacion.run.xml'.
 )
 
 Here is how much of LuaTeX's memory you used:
- 45665 strings out of 475664
+ 45728 strings out of 475664
  125165,2373549 words of node,token memory allocated
  5416 words of node memory still in use:
    88 hlist, 7 vlist, 19 rule, 12 disc, 6 local_par, 102 glue, 65 kern, 15 penal
@@ -2251,11 +2295,11 @@ pos, 92 pdf_literal, 44 pdf_colorstack, 2 pdf_setmatrix, 2 pdf_save, 2 pdf_resto
 re nodes
    avail lists: 1:4,2:1669,3:837,4:373,5:1732,6:107,7:4362,8:53,9:694,10:19,11:4
 03
- 67182 multiletter control sequences out of 65536+600000
- 122 fonts using 9644183 bytes
+ 67225 multiletter control sequences out of 65536+600000
+ 122 fonts using 9646743 bytes
  128i,17n,116p,700b,2115s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-warning  (pdf backend): unreferenced destination with name 'NAVIGATION52'
+warning  (pdf backend): unreferenced destination with name 'NAVIGATION56'
 
 warning  (pdf backend): unreferenced destination with name 'NAVIGATION36'
 
@@ -2292,9 +2336,9 @@ b><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program
 fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX/fonts/type1/pu
 blic/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/
 cm/cmsy9.pfb>
-Output written on presentacion.pdf (65 pages, 894220 bytes).
+Output written on presentacion.pdf (69 pages, 1168707 bytes).
 
-PDF statistics: 879 PDF objects out of 1000 (max. 8388607)
- 159 named destinations out of 1000 (max. 131072)
+PDF statistics: 924 PDF objects out of 1000 (max. 8388607)
+ 167 named destinations out of 1000 (max. 131072)
  304 words of extra memory for PDF output out of 10000 (max. 100000000)
 
