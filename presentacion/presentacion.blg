@@ -1,0 +1,14 @@
+[0] Config.pm:308> INFO - This is Biber 2.20
+[1] Config.pm:311> INFO - Logfile is 'presentacion.blg'
+[437] biber-MSWIN64:340> INFO - === 
+[579] Biber.pm:420> INFO - Reading 'presentacion.bcf'
+[999] Biber.pm:994> INFO - Found 16 citekeys in bib section 0
+[1073] Biber.pm:4463> INFO - Processing section 0
+[1138] Biber.pm:4654> INFO - Looking for bibtex file 'references.bib' for section 0
+[1364] bibtex.pm:1713> INFO - LaTeX decoding ...
+[1580] bibtex.pm:1519> INFO - Found BibTeX data source 'references.bib'
+[1977] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1977] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1977] Biber.pm:4283> INFO - Sorting list 'nty/global//global/global/global' of type 'entry' with template 'nty' and locale 'es-ES'
+[2043] bbl.pm:676> INFO - Writing 'presentacion.bbl' with encoding 'UTF-8'
+[2068] bbl.pm:779> INFO - Output to presentacion.bbl

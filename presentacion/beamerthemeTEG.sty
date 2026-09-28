@@ -1,0 +1,334 @@
+% =====================================================================
+%  beamerthemeTEG.sty
+%  Tema Beamer para presentaciones de Trabajo Especial de Grado
+%  Escuela de Matemática · Facultad de Ciencias · UCV
+%
+%  Compilar con XeLaTeX o LuaLaTeX (usa fontspec).
+%  Tipografía: Schibsted Grotesk (carpeta fonts/)
+% =====================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemeTEG}[2026/09/24 Tema TEG minimalista]
+
+% ---------------------------------------------------------------------
+%  Opciones
+%    progreso / sinprogreso : barra de avance en el pie (por defecto sí)
+% ---------------------------------------------------------------------
+\newif\ifteg@progreso \teg@progresotrue
+\DeclareOptionBeamer{progreso}{\teg@progresotrue}
+\DeclareOptionBeamer{sinprogreso}{\teg@progresofalse}
+\ProcessOptionsBeamer
+
+\RequirePackage{tikz}
+\usetikzlibrary{calc}
+\RequirePackage{fontspec}
+\RequirePackage{xcolor}
+\RequirePackage{booktabs}
+
+% ---------------------------------------------------------------------
+%  Paleta
+% ---------------------------------------------------------------------
+\definecolor{tegNegro}{HTML}{1B1A1E}        % texto principal (negro frío)
+\definecolor{tegGris}{HTML}{625F68}         % texto secundario
+\definecolor{tegGrisClaro}{HTML}{E7E5EB}    % líneas y divisores
+\definecolor{tegBlanco}{HTML}{FFFFFF}       % fondo
+\definecolor{tegAcento}{HTML}{582C6D}       % violeta profundo (acento, mismo tono que C198D4)
+\definecolor{tegAcentoMedio}{HTML}{C198D4}  % lila
+\definecolor{tegAcentoClaro}{HTML}{EADAF1}  % lila claro
+
+% ---------------------------------------------------------------------
+%  Tipografía
+% ---------------------------------------------------------------------
+\usefonttheme{professionalfonts}
+\setsansfont{SchibstedGrotesk}[
+  Path           = fonts/,
+  Extension      = .ttf,
+  UprightFont    = *-Regular,
+  BoldFont       = *-Bold,
+  ItalicFont     = *-Italic,
+  BoldItalicFont = *-BoldItalic,
+  FontFace       = {mb}{n}{*-Medium},
+  Ligatures      = TeX
+]
+\renewcommand{\familydefault}{\sfdefault}
+\newcommand{\medio}{\fontseries{mb}\selectfont}
+
+\setbeamerfont{normal text}{size=\normalsize}
+\setbeamerfont{frametitle}{size=\LARGE,series=\bfseries}
+\setbeamerfont{framesubtitle}{size=\normalsize,series=\mdseries}
+\setbeamerfont{title}{size=\LARGE,series=\bfseries}
+\setbeamerfont{subtitle}{size=\large,series=\mdseries}
+\setbeamerfont{author}{size=\small,series=\bfseries}
+\setbeamerfont{institute}{size=\scriptsize}
+\setbeamerfont{date}{size=\scriptsize}
+\setbeamerfont{footline}{size=\scriptsize}
+\setbeamerfont{block title}{size=\small,series=\bfseries}
+\setbeamerfont{block body}{size=\small}
+\setbeamerfont{caption}{size=\scriptsize}
+\setbeamerfont{section in toc}{size=\normalsize}
+\setbeamerfont{subsection in toc}{size=\small}
+\setbeamerfont{itemize/enumerate subbody}{size=\normalsize}
+
+% ---------------------------------------------------------------------
+%  Colores de Beamer
+% ---------------------------------------------------------------------
+\setbeamercolor{normal text}{fg=tegNegro,bg=tegBlanco}
+\setbeamercolor{background canvas}{bg=tegBlanco}
+\setbeamercolor{structure}{fg=tegAcento}
+\setbeamercolor{alerted text}{fg=tegAcento}
+\setbeamercolor{example text}{fg=tegAcentoMedio}
+\setbeamercolor{frametitle}{fg=tegNegro}
+\setbeamercolor{framesubtitle}{fg=tegGris}
+\setbeamercolor{title}{fg=tegNegro}
+\setbeamercolor{subtitle}{fg=tegGris}
+\setbeamercolor{author}{fg=tegNegro}
+\setbeamercolor{institute}{fg=tegGris}
+\setbeamercolor{date}{fg=tegGris}
+\setbeamercolor{footline}{fg=tegGris}
+\setbeamercolor{item}{fg=tegAcento}
+\setbeamercolor{subitem}{fg=tegAcentoMedio}
+\setbeamercolor{caption name}{fg=tegAcento}
+\setbeamercolor{caption}{fg=tegGris}
+\setbeamercolor{bibliography item}{fg=tegAcento}
+\setbeamercolor{bibliography entry author}{fg=tegNegro}
+\setbeamercolor{bibliography entry title}{fg=tegNegro}
+\setbeamercolor{bibliography entry note}{fg=tegGris}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{bibliography item}[text]
+\setbeamersize{text margin left=12mm,text margin right=12mm}
+
+% ---------------------------------------------------------------------
+%  Utilidades
+% ---------------------------------------------------------------------
+% Número de dos cifras: 1 -> 01
+\newcommand{\teg@dos}[1]{\ifnum#1<10 0\fi#1}
+
+% Etiqueta pequeña en mayúsculas espaciadas
+\newcommand{\tegetiqueta}[1]{%
+  {\usebeamercolor[fg]{structure}\scriptsize\bfseries\addfontfeature{LetterSpace=12}\MakeUppercase{#1}}}
+
+% Campos extra para la portada
+\def\teg@tutor{}      \newcommand{\tutor}[1]{\def\teg@tutor{#1}}
+\def\teg@grado{}      \newcommand{\grado}[1]{\def\teg@grado{#1}}
+\def\teg@etiqueta{Trabajo Especial de Grado}
+\newcommand{\etiquetaportada}[1]{\def\teg@etiqueta{#1}}
+\def\teg@contacto{}   \newcommand{\contacto}[1]{\def\teg@contacto{#1}}
+\def\teg@logoizq{}    \newcommand{\logoizquierdo}[1]{\def\teg@logoizq{#1}}
+\def\teg@logoder{}    \newcommand{\logoderecho}[1]{\def\teg@logoder{#1}}
+
+% Franja de tres lilas en el borde derecho (portada, secciones, cierre)
+\newcommand{\teg@franja}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \coordinate (NE) at (current page.north east);
+    \coordinate (SE) at (current page.south east);
+    \fill[tegAcento]    ($(NE)+(-4mm,0)$) rectangle ($(SE)!0.38!(NE)$);
+    \fill[tegAcentoMedio] ($(SE)!0.38!(NE)+(-4mm,0)$) rectangle ($(SE)!0.14!(NE)$);
+    \fill[tegAcentoClaro] ($(SE)!0.14!(NE)+(-4mm,0)$) rectangle (SE);
+  \end{tikzpicture}}
+
+% ---------------------------------------------------------------------
+%  Portada
+% ---------------------------------------------------------------------
+\setbeamertemplate{title page}{%
+  \teg@franja
+  \begin{tikzpicture}[remember picture,overlay]
+    % logos
+    \node[anchor=north west,inner sep=0] at ($(current page.north west)+(12mm,-7mm)$) {%
+      \ifx\teg@logoizq\empty\else\teg@logoizq\hspace{4mm}\fi
+      \ifx\teg@logoder\empty\else\teg@logoder\fi};
+    % bloque central
+    \node[anchor=north west,inner sep=0,text width=.74\paperwidth,align=left]
+      at ($(current page.north west)+(12mm,-25mm)$) {%
+      \tegetiqueta{\teg@etiqueta}\\[3mm]
+      {\usebeamerfont{title}\usebeamercolor[fg]{title}\linespread{1.08}\selectfont\inserttitle\par}
+      \ifx\insertsubtitle\empty\else
+        \vspace{2mm}{\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+      \fi
+      \vspace{4mm}{\color{tegAcento}\rule{14mm}{1.4pt}}};
+    % datos inferiores
+    \node[anchor=south west,inner sep=0,text width=\paperwidth-28mm]
+      at ($(current page.south west)+(12mm,8mm)$) {%
+      \begin{minipage}[t]{40mm}\raggedright
+        {\tiny\color{tegGris}\addfontfeature{LetterSpace=8}AUTOR}\\[.6mm]
+        {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor}
+        \ifx\teg@grado\empty\else\\[.4mm]{\tiny\color{tegGris}\teg@grado}\fi
+      \end{minipage}%
+      \ifx\teg@tutor\empty\else
+      \begin{minipage}[t]{40mm}\raggedright
+        {\tiny\color{tegGris}\addfontfeature{LetterSpace=8}TUTOR(A)}\\[.8mm]
+        {\usebeamerfont{author}\color{tegNegro}\teg@tutor}
+      \end{minipage}\fi%
+      \hfill
+      \begin{minipage}[t]{48mm}\raggedleft
+        {\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute}\\[.8mm]
+        {\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate}
+      \end{minipage}};
+  \end{tikzpicture}}
+
+% ---------------------------------------------------------------------
+%  Título de lámina
+% ---------------------------------------------------------------------
+\setbeamertemplate{frametitle}{%
+  \vskip 7mm
+  \ifx\insertsection\empty\else
+    \tegetiqueta{\teg@dos{\insertsectionnumber}\enspace\insertsection}\par\vskip 1.6mm
+  \fi
+  {\usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle\par}
+  \ifx\insertframesubtitle\empty\else
+    \vskip 1mm{\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\par}
+  \fi
+  \vskip 2mm}
+
+% ---------------------------------------------------------------------
+%  Pie: barra de progreso + autor · título corto + número
+% ---------------------------------------------------------------------
+\setbeamertemplate{footline}{%
+  \usebeamerfont{footline}\usebeamercolor[fg]{footline}%
+  \ifteg@progreso
+    \begin{tikzpicture}[overlay]
+      \useasboundingbox (0,0) rectangle (\paperwidth,0);
+      \fill[tegGrisClaro] (12mm,9mm) rectangle (\paperwidth-12mm,9.35mm);
+      \pgfmathsetmacro{\teg@frac}{\insertframenumber/max(\inserttotalframenumber,1)}
+      \fill[tegAcento] (12mm,9mm) rectangle ($(12mm,9.35mm)!\teg@frac!(\paperwidth-12mm,9.35mm)$);
+    \end{tikzpicture}%
+  \else
+    \begin{tikzpicture}[overlay]
+      \useasboundingbox (0,0) rectangle (\paperwidth,0);
+      \fill[tegGrisClaro] (12mm,9mm) rectangle (\paperwidth-12mm,9.2mm);
+    \end{tikzpicture}%
+  \fi
+  \hbox to \paperwidth{%
+    \hskip 12mm\insertshortauthor\ifx\insertshorttitle\empty\else\enspace·\enspace\insertshorttitle\fi
+    \hfill
+    {\color{tegNegro}\medio\teg@dos{\insertframenumber}}\,/\,\teg@dos{\inserttotalframenumber}%
+    \hskip 12mm}%
+  \vskip 4.5mm}
+
+% ---------------------------------------------------------------------
+%  Página de sección (automática)
+% ---------------------------------------------------------------------
+\setbeamertemplate{section page}{%
+  \teg@franja
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=west,inner sep=0,text width=.75\paperwidth]
+      at ($(current page.west)+(12mm,2mm)$) {%
+      {\fontsize{64}{64}\selectfont\bfseries\color{tegAcentoMedio}\teg@dos{\insertsectionnumber}}\\[3mm]
+      {\Huge\bfseries\color{tegAcento}\insertsectionhead}\\[4mm]
+      {\color{tegGrisClaro}\rule{.55\paperwidth}{.6pt}}};
+  \end{tikzpicture}}
+\newif\ifteg@secciones \teg@seccionestrue
+\newcommand{\sinpaginasdeseccion}{\teg@seccionesfalse}
+\AtBeginSection{%
+  \ifteg@secciones
+  {\setbeamertemplate{footline}{}
+   \begin{frame}[plain,noframenumbering]\sectionpage\end{frame}}
+  \fi}
+
+% ---------------------------------------------------------------------
+%  Índice
+% ---------------------------------------------------------------------
+\setbeamertemplate{section in toc}{%
+  \vskip -3.2mm\leavevmode
+  \hbox to 12mm{\color{tegAcentoMedio}\bfseries\teg@dos{\inserttocsectionnumber}\hfill}%
+  {\color{tegNegro}\inserttocsection}\par
+  \vskip .6mm{\color{tegGrisClaro}\rule{.78\textwidth}{.4pt}}\par\vskip .4mm}
+\setbeamertemplate{subsection in toc}{%
+  \leavevmode\hskip 12mm{\color{tegGris}\inserttocsubsection}\par}
+\setbeamertemplate{section in toc shaded}[default][40]
+
+% ---------------------------------------------------------------------
+%  Listas
+% ---------------------------------------------------------------------
+\setbeamertemplate{itemize item}{\raisebox{.25ex}{\color{tegAcento}\rule{1.3mm}{1.3mm}}}
+\setbeamertemplate{itemize subitem}{\raisebox{.45ex}{\color{tegAcentoMedio}\rule{2mm}{.8pt}}}
+\setbeamertemplate{itemize subsubitem}{\color{tegGris}\tiny$\bullet$}
+\setbeamertemplate{enumerate item}{\color{tegAcento}\bfseries\insertenumlabel.}
+\setbeamertemplate{enumerate subitem}{\color{tegAcento}\bfseries\insertenumlabel.\insertsubenumlabel}
+\setlength{\leftmargini}{5mm}
+\setlength{\leftmarginii}{5mm}
+
+% ---------------------------------------------------------------------
+%  Bloques (teorema, definición, ejemplo, alerta)
+% ---------------------------------------------------------------------
+\RequirePackage[most]{tcolorbox}
+\newcommand{\teg@caja}[2]{% #1 color de la línea superior, #2 color de fondo
+  \begin{tcolorbox}[enhanced,boxrule=0pt,frame hidden,arc=0mm,
+      colback=#2,left=4mm,right=4mm,top=2.5mm,bottom=3mm,
+      borderline north={1.2pt}{0pt}{#1},
+      before skip=2mm,after skip=2mm]}
+\newcommand{\teg@titulobloque}{%
+  \ifx\insertblocktitle\empty\else
+    {\usebeamerfont{block title}\color{tegAcento}\insertblocktitle\par}\vskip 1.2mm
+  \fi
+  \usebeamerfont{block body}\color{tegNegro}}
+\setbeamertemplate{block begin}{\teg@caja{tegAcento}{tegGrisClaro!35}\teg@titulobloque}
+\setbeamertemplate{block end}{\end{tcolorbox}}
+\setbeamertemplate{block alerted begin}{\teg@caja{tegAcento}{tegAcentoClaro!35}\teg@titulobloque}
+\setbeamertemplate{block alerted end}{\end{tcolorbox}}
+\setbeamertemplate{block example begin}{\teg@caja{tegAcentoMedio}{tegBlanco}\teg@titulobloque}
+\setbeamertemplate{block example end}{\end{tcolorbox}}
+
+% Teoremas en español
+\setbeamertemplate{theorems}[numbered]
+\uselanguage{Spanish}\languagepath{Spanish}
+\deftranslation[to=Spanish]{Theorem}{Teorema}
+\deftranslation[to=Spanish]{Definition}{Definición}
+\deftranslation[to=Spanish]{Example}{Ejemplo}
+\deftranslation[to=Spanish]{Lemma}{Lema}
+\deftranslation[to=Spanish]{Corollary}{Corolario}
+\deftranslation[to=Spanish]{Proof}{Demostración}
+\theoremstyle{definition}
+\newtheorem{proposicion}[theorem]{Proposición}
+\newtheorem{observacion}[theorem]{Observación}
+\setbeamertemplate{theorem begin}{%
+  \teg@caja{tegAcento}{tegGrisClaro!35}%
+  {\usebeamerfont{block title}\color{tegAcento}\inserttheoremname\ \inserttheoremnumber
+   \ifx\inserttheoremaddition\empty\else\enspace{\mdseries\color{tegGris}(\inserttheoremaddition)}\fi\par}\vskip 1.2mm
+  \usebeamerfont{block body}\color{tegNegro}}
+\setbeamertemplate{theorem end}{\end{tcolorbox}}
+\expandafter\let\csname th@plain\expandafter\endcsname\csname th@definition\endcsname
+\renewcommand{\qedsymbol}{{\color{tegAcento}\rule{1.6mm}{1.6mm}}}
+\setbeamertemplate{proof begin}{\par\vskip 1mm\small{\color{tegAcento}\bfseries\insertproofname}\enspace}
+\setbeamertemplate{proof end}{\par\vskip 1mm}
+
+% ---------------------------------------------------------------------
+%  Comandos de conveniencia
+% ---------------------------------------------------------------------
+% Lámina de mensaje clave (cita o resultado principal)
+\newcommand{\destacado}[2][]{%
+  \begin{frame}[plain,noframenumbering]
+    \begin{tikzpicture}[remember picture,overlay]
+      \fill[tegAcento] (current page.north west) rectangle (current page.south east);
+      \node[anchor=west,text width=.78\paperwidth,align=left,text=tegBlanco]
+        at ($(current page.west)+(14mm,0)$) {%
+        \ifx\relax#1\relax\else{\scriptsize\bfseries\color{tegAcentoClaro}\addfontfeature{LetterSpace=12}\MakeUppercase{#1}}\\[5mm]\fi
+        {\LARGE\bfseries\linespread{1.15}\selectfont #2}};
+    \end{tikzpicture}
+  \end{frame}}
+
+% Lámina de cierre
+\newcommand{\cierre}[1][¡Gracias!]{%
+  \begin{frame}[plain,noframenumbering]
+    \teg@franja
+    \begin{tikzpicture}[remember picture,overlay]
+      \node[anchor=west,inner sep=0,text width=.72\paperwidth]
+        at ($(current page.west)+(12mm,4mm)$) {%
+        {\fontsize{48}{52}\selectfont\bfseries\color{tegAcento}#1}\\[5mm]
+        {\large\color{tegGris}Preguntas y comentarios}\\[8mm]
+        {\color{tegAcento}\rule{14mm}{1.4pt}}\\[4mm]
+        {\small\bfseries\color{tegNegro}\insertauthor}\\[.8mm]
+        {\small\color{tegGris}\teg@contacto}};
+      \node[anchor=south west,inner sep=0] at ($(current page.south west)+(12mm,10mm)$) {%
+        \ifx\teg@logoizq\empty\else\teg@logoizq\hspace{5mm}\fi
+        \ifx\teg@logoder\empty\else\teg@logoder\fi};
+    \end{tikzpicture}
+  \end{frame}}
+
+% Texto secundario (gris)
+\newcommand{\secundario}[1]{{\color{tegGris}#1}}
+% Número grande para métricas o resultados
+\newcommand{\cifra}[2]{%
+  {\fontsize{28}{30}\selectfont\bfseries\color{tegAcento}#1}\\[1mm]{\small\color{tegGris}#2}}
+
+\endinput
