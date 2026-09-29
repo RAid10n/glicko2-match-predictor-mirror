@@ -1,7 +1,7 @@
 \babel@toc {spanish}{}\relax 
 \beamer@sectionintoc {1}{Contexto y brecha}{3}{0}{1}
 \beamer@sectionintoc {2}{\textit {Pipeline} de datos}{9}{0}{2}
-\beamer@sectionintoc {3}{Motor predictor G2Av1513}{20}{0}{3}
-\beamer@sectionintoc {4}{Refinamiento neuronal}{27}{0}{4}
-\beamer@sectionintoc {5}{Estudios Exploratorios}{36}{0}{5}
-\beamer@sectionintoc {6}{Conclusiones}{56}{0}{6}
+\beamer@sectionintoc {3}{Motor predictor G2Av1513}{21}{0}{3}
+\beamer@sectionintoc {4}{Refinamiento neuronal}{28}{0}{4}
+\beamer@sectionintoc {5}{Estudios Exploratorios}{37}{0}{5}
+\beamer@sectionintoc {6}{Conclusiones}{57}{0}{6}

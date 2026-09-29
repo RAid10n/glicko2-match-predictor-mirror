@@ -215,13 +215,59 @@
 		\bottomrule
 	\end{tabular}}%
 	\vfill
-	\secundario{\small 26 competiciones $\cdot$ 4 confederaciones $\cdot$ 2017--2025.}
+	\secundario{\small 25 competiciones $\cdot$ 4 confederaciones $\cdot$ 2017--2025.}
+\end{frame}
+
+% ---------- Slide: Alcance del estudio ----------
+\begin{frame}{Alcance del estudio}{25 competiciones, 4 confederaciones}
+	\vspace*{-0.3cm}
+	\begin{columns}[T,onlytextwidth]
+		\column{.24\textwidth}
+		\tegetiqueta{Europa}\par\vskip 2mm
+		\scriptsize
+		Premier League \\
+		LaLiga \\
+		Bundesliga \\
+		Serie A \\
+		Ligue 1 \\
+		Super League Grecia \\
+		UEFA Champions League \\
+		UEFA Europa League \\
+		UEFA Conference League
+		\column{.24\textwidth}
+		\tegetiqueta{Norteam\'erica}\par\vskip 2mm
+		\scriptsize
+		Major League Soccer \\
+		Liga MX \\
+		CONCACAF Champions League
+		\vskip 4mm
+		\tegetiqueta{Intercontinental}\par\vskip 2mm
+		\scriptsize
+		FIFA Club World Cup
+		\column{.24\textwidth}
+		\tegetiqueta{Sudam\'erica}\par\vskip 2mm
+		\scriptsize
+		Liga Profesional Argentina \\
+		Brasileir\~ao \\
+		Liga FutVe \\
+		Copa Libertadores \\
+		Copa Sudamericana
+		\column{.24\textwidth}
+		\tegetiqueta{Asia}\par\vskip 2mm
+		\scriptsize
+		J1 League \\
+		K League 1 \\
+		Saudi Pro League \\
+		Persian Gulf Pro League \\
+		AFC Champions League Elite \\
+		AFC Champions League Two
+	\end{columns}
 \end{frame}
 
 % ---------- Slide 10: Limpieza y filtrado ----------
 \begin{frame}{Limpieza y filtrado}{El embudo: de archivos crudos a partidos únicos}
 	\centering
-	\resizebox{0.8\textwidth}{!}{%
+	\resizebox{0.75\textwidth}{!}{%
 		\begin{tikzpicture}[
 			caja/.style={rectangle, draw=tegAcento, fill=tegGrisClaro,
 				rounded corners, text width=3.6cm, align=center,
@@ -462,6 +508,7 @@
 
 % ---------- Slide 21: Modelo base (parte 2: probabilidades del resultado) ----------
 \begin{frame}{Modelo base (2/2)}{Probabilidades del resultado}
+	\vspace*{-0.2cm}
 	\footnotesize
 	Se definen dos t\'erminos auxiliares:
 	\[
@@ -475,17 +522,18 @@
 		P_D = \frac{B}{1 + A + B} \text{ , }
 		P_A = \frac{1}{1 + A + B}
 	\end{equation*}\supercite{Glicko2Mod}
-	\vskip 1mm
+	\vskip 0.5mm
 	\secundario{\footnotesize $s$ es la probabilidad de empate derivada de la distribuci\'on de Skellam.}
 \end{frame}
 
 % ---------- Slide 22: Las 3 correcciones del G2Av1513 ----------
 \begin{frame}{Modelo G2Av1513}{Correcciones y ajustes al Glicko-2 modificado\supercite{Glicko2Mod}}
+	\vspace*{-0.4cm}
 	\centering
 	\scriptsize
 	\renewcommand{\arraystretch}{1.4}
-	\resizebox{0.92\textwidth}{!}{%
-		\begin{tabular}{p{3.2cm} p{5.2cm} p{5.2cm}}
+	\resizebox{0.85\textwidth}{!}{%
+		\begin{tabular}{p{3.4cm} p{5.2cm} p{5.2cm}}
 			\toprule
 			\textbf{Cambio} & \textbf{Original (Shelopugin-Sirotkin)} & \textbf{G2Av1513} \\
 			\midrule
@@ -504,8 +552,12 @@
 			Desviaci\'on inicial $RD_0$ &
 			$350$. &
 			$80$. \\
+			Estabilidad num\'erica & Ninguna & Clamping ($\delta$, $E$), protecci\'on ($v$) \\
+			Ventaja & Escalar fijo & Combinaci\'on lineal de covariables\\
 			\bottomrule
-	\end{tabular}}%
+		\end{tabular}}%
+\vskip 1mm
+\secundario{\scriptsize Existe una implementaci\'on de atenuaci\'on por desastres implementada pero no activada en este trabajo.}
 \end{frame}
 
 % ---------- Slide 23: Evaluaci\'on aislada del G2Av1513 ----------
