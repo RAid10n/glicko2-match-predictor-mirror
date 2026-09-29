@@ -23,7 +23,7 @@
 \grado{Licenciatura en Matemática}
 \tutor{Profa. Maira Valera-L\'opez}
 \institute{Escuela de Matemática\\Facultad de Ciencias · UCV}
-\date{Caracas, 01 de Octubre de 2026}
+\date{Caracas, 30 de Noviembre de 2026}
 \contacto{ruben.arellano@ciens.ucv.ve}
 
 \logoizquierdo{\includegraphics[height=13mm]{logos/ucv.png}}
@@ -542,7 +542,7 @@
 			Sim\'etrico: $1 + e^{\delta} + e^{d + P_{D,\text{logit}}^{(S)}}$. Partici\'on consistente del simplex. \\
 			Reparametrizaci\'on del empate &
 			$P_D^{(S)} \in (0,1)$. &
-			$P_{D,\text{logit}}^{(S)} = (P_D^{(S)}/1-P_D^{(S)})$. \\
+			$P_{D,\text{logit}}^{(S)} = \ln (P_D^{(S)}/1-P_D^{(S)})$. \\
 			Constante de atenuaci\'on $g$ &
 			$1{.}5/\pi^2$. &
 			$3{.}0/\pi^2$.\\
@@ -750,7 +750,7 @@
 				\bottomrule
 		\end{tabular}}%
 		\newline
-		\secundario{\scriptsize $^{*}$: significativo al $5\%$. Signo positivo: mejora el modelo completo.}
+		\secundario{\scriptsize $^{*}$: sig. al $5\%$. En log-loss, $t<0$ deteriora. En $F1_D$, $t<0$ mejora.}
 		\column{.46\textwidth}
 		\tegetiqueta{Lectura}\par\vskip 2mm
 		\footnotesize
@@ -846,7 +846,7 @@
 			\item Cuales de los torneos poseen una fuerte ventaja local.
 		\end{itemize}
 		\column{.48\textwidth}
-		\tegetiqueta{¿Qu\'e m\'as se puede explorar a part\'ir de esto?}\par\vskip 2mm
+		\tegetiqueta{¿Qu\'e m\'as se puede explorar a partir de esto?}\par\vskip 2mm
 		\footnotesize
 		\begin{itemize}
 			\item ¿Podr\'ia una red neuronal sustituir el sistema en cascada?
@@ -1047,7 +1047,7 @@
 			\item Split cronol\'ogico: 70/30.
 		\end{itemize}
 	\end{columns}
-	\vfill
+	\vskip 1mm
 	\secundario{\footnotesize La semana es la unidad m\'inima que garantiza al menos una observaci\'on por equipo.}
 \end{frame}
 
@@ -1438,7 +1438,7 @@
 			Glicko-2 modificado & 0.5832 \\
 			\bottomrule
 		\end{tabular}
-		\vskip 2mm
+		\vskip 1mm
 		\secundario{\scriptsize $\sim$366\,000 partidos}
 		\column{.28\textwidth}
 		\tegetiqueta{Presente trabajo (Lite)}\par\vskip 2mm
@@ -1454,8 +1454,8 @@
 			MLP completo & 0.5963 \\
 			\bottomrule
 		\end{tabular}
-		\vskip 2mm
-		\secundario{\scriptsize 26\,473 partidos}
+		\vskip 1mm
+		\secundario{\scriptsize 31\,819 partidos}
 		\column{.36\textwidth}
 		\tegetiqueta{Lectura}\par\vskip 2mm
 		\footnotesize
@@ -1473,7 +1473,7 @@
 		\column{.32\textwidth}
 		\tegetiqueta{GRU}\par\vskip 2mm
 		\scriptsize
-		No supera al G2A aislado. Menor costo computacional (5 min vs 3 h) a cambio de menor precisi\'on. Rechazada por precisi\'on, no por inviabilidad.
+		No supera al G2A aislado. Menor costo computacional a cambio de menor precisi\'on. Rechazada por precisi\'on, no por inviabilidad.
 		\column{.32\textwidth}
 		\tegetiqueta{ARIMA vs LSTM}\par\vskip 2mm
 		\scriptsize
